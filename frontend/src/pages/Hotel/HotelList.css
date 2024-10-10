@@ -1,0 +1,23 @@
+.HotelList{
+    width: 768px;
+    height: 1500px;
+    background-color: rgb(240, 240, 240);
+    padding-top: 10px;
+   
+}
+
+.HotelGrid{
+    width: 700px;
+    height: 80%;
+    background-color: white;
+    margin : auto;
+   
+}
+
+.HotelRow{
+    padding-top: 100px;   
+}
+
+.HotelCol{
+    display: flex;
+}

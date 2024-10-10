@@ -2,11 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home/Home'
 import Login from './pages/Login/Login';
 import LoginPopup from './pages/Login/LoginPopup';
+import HotelList from './pages/Hotel/HotelList';
+
 
 
 const router = createBrowserRouter([
@@ -17,7 +19,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: '/login', element: <Login /> },
-      { path: '/login-opup', element: <LoginPopup /> }
+      { path: '/login-opup', element: <LoginPopup /> },
+      { path: '/hotelList', element: <HotelList /> }
       // {
       //   path: '/products/new',
       //   element: <NewProduct />,
