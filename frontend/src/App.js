@@ -3,12 +3,11 @@ import './App.css';
 
 function App() {
   return (
-    
-      <Outlet />
-        
-      
-
-    
+    <div className="App">
+      <div className='App-Cotainer'>
+        <Outlet />
+      </div>
+    </div>
   );
 }
 
