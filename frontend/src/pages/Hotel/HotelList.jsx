@@ -10,11 +10,20 @@ export default function hotelList() {
   return (
     <Container className='HotelList'>
       <div className='HotelGrid'>
-        <Row className='HotelRow'>
-          <Col className='HotelCol'>
-            <img src='/HotelList/호텔1.jpg'></img>
-          </Col>
-        </Row> 
+        <div className='HotelRow'>
+          <div className='HotelCol'>
+            <img src='/HotelList/호텔1.jpg' className='HotelImg'/>
+            <div className='HotelInfo'>
+              <p>등급분류</p>
+              호텔명
+              위치
+              후기평점
+            </div>
+            <div className='HotelPrice'>
+              411,400원
+            </div>
+          </div>
+        </div> 
       </div>
     </Container>
   )
