@@ -1,0 +1,30 @@
+.back-history-wrap {
+    display: flex;
+    align-items: center;
+    padding: 6px 15px;
+    justify-content: space-between;
+    min-width: 768px;
+    border-bottom: 1px solid black;
+}
+
+.back-history-wrap>button {
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border: none;
+}
+
+.back-history-wrap>span {
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+}
+
+.none {
+    width: 40px;
+    margin: 0;
+}
