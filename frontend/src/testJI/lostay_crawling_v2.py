@@ -1,7 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time 
-
+import os
+import requests
+import random
+import re
 
 
 
@@ -24,6 +27,7 @@ for i in range(1,11):
     for hotel_id, link in enumerate(links):
 
         hotel_thumbnail = ''
+        hotel_thumbnail_name=''
         hotel_images = []
         hotel_name = ''
         hotel_service = []
@@ -31,16 +35,23 @@ for i in range(1,11):
         hotel_location = ''
         hotel_touristPlace=[]
         hotel_level=''
+        hhotel_images_name=[]
 
-        room_title = []
-        number_person = []
-        room_thumbnail = ''
-        room_images = []
+        hotel_folder=''
+        hotel_list_folder=''
+        thumbnail_folder=''
+        images_folder=''
+        images_path_str = ''
+        hotel_service_str = ''
+        hotel_touristPlace_str = ''
+
 
         print(f"링크: {link}")
         driver.get(link)
 
         try:
+
+
             # 호텔 이미지 가져오기
             driver.find_element(By.CSS_SELECTOR, '#overview > article > div.css-12lmpk7 > ul > div > button').click()
             time.sleep(2)
@@ -48,6 +59,7 @@ for i in range(1,11):
             image_urls = [img.get_attribute('src') for img in image_elements]
 
             for idx, url in enumerate(image_urls):
+                file_name = os.path.basename(url)
                 if idx == 0:
                     hotel_thumbnail = url
 
@@ -57,7 +69,38 @@ for i in range(1,11):
 
             time.sleep(2)
 
+            # 호텔 폴더 생성
+            hotel_folder = f'hotel'
+            os.makedirs(hotel_folder, exist_ok=True)  # 호텔 폴더 생성
 
+            # 호텔 폴더리스트 폴더 생성
+            hotel_list_folder = os.path.join(hotel_folder, f'hotel_{hotel_id+1}')
+            os.makedirs(hotel_folder, exist_ok=True)  # 호텔 폴더 생성
+
+            # 썸네일 폴더 생성
+            thumbnail_folder = os.path.join(hotel_list_folder, 'thumbnail')
+            os.makedirs(thumbnail_folder, exist_ok=True)
+
+            # 이미지 폴더 생성
+            images_folder = os.path.join(hotel_list_folder, 'images')
+            os.makedirs(images_folder, exist_ok=True)
+
+            # 호텔 썸네일 저장
+            if hotel_thumbnail:
+                thumbnail_response = requests.get(hotel_thumbnail)
+                if thumbnail_response.status_code == 200:
+                    hotel_thumbnail_name = os.path.basename(hotel_thumbnail)  # 파일명 추출
+                    with open(os.path.join(thumbnail_folder, hotel_thumbnail_name), 'wb') as f:
+                        f.write(thumbnail_response.content)
+
+            # 호텔 이미지 저장
+            for img_url in hotel_images:
+                img_response = requests.get(img_url)
+                if img_response.status_code == 200:
+                    img_name = os.path.basename(img_url)  # 파일명 추출
+                    hhotel_images_name.append(img_name)
+                    with open(os.path.join(images_folder, img_name), 'wb') as f:
+                        f.write(img_response.content)
 
             # 호텔 이름 가져오기
             get_hotel_name = driver.find_elements(By.CSS_SELECTOR, 'h1.css-17we8hh')
@@ -107,15 +150,28 @@ for i in range(1,11):
                 for place in get_hotel_touristPlace:
                     hotel_touristPlace.append(place.text)
             
-            print('호텔명 : ',hotel_name)
-            print('호텔 등급 : ', hotel_level)
-            print('호텔소개 : ',hotel_info)
-            print('호텔서비스 : ',hotel_service)
-            print('호텔주소 : ',hotel_location)
-            print('호텔관광명소 : ',hotel_touristPlace)
-            print('호텔 썸네일 : ',hotel_thumbnail)
-            print('호텔 이미지 : ',hotel_images)
-            print(f"INSERT INTO HOTEL VALUES('{hotel_name}', '{hotel_thumbnail}', '{hotel_images}', '{hotel_service}', '{hotel_level}', '{hotel_location}', '{hotel_touristPlace}', '{hotel_info}')")
+            # print('호텔명 : ',hotel_name)
+            # print('호텔 등급 : ', hotel_level)
+            # print('호텔소개 : ',hotel_info)
+            # print('호텔서비스 : ',hotel_service)
+            # print('호텔주소 : ',hotel_location)
+            # print('호텔관광명소 : ',hotel_touristPlace)
+            # print('호텔 썸네일 : ',hotel_thumbnail_name)
+            # print('호텔 이미지 : ',hhotel_images_name)
+
+            # 호텔 데이터 삽입 쿼리 출력
+            thumbnail_path = os.path.join(thumbnail_folder, hotel_thumbnail_name)
+            thumbnail_path = thumbnail_path.replace('\\', '/')
+            images_path = [os.path.join(images_folder, img_name).replace('\\', '/') for img_name in hhotel_images_name]
+            images_path_str = ', '.join(s for s in images_path)
+            hotel_service_str = ', '.join(s for s in hotel_service)
+            hotel_touristPlace_str = ', '.join(s for s in hotel_touristPlace)
+
+
+            hotel_query = f"INSERT INTO HOTEL VALUES(DEFAULT,'{hotel_name}', '{thumbnail_path}', '{images_path_str}', '{hotel_service_str}', '{hotel_level}', '{hotel_location}', '{hotel_touristPlace_str}', '{hotel_info}');"
+
+            with open('hotel_insert_queries.txt', 'a', encoding='utf-8') as file:
+                file.write(hotel_query + '\n')  # 쿼리와 줄 바꿈 추가
 
             #객실 더보기 버튼이 있으면 클릭하기
             try:
@@ -130,16 +186,28 @@ for i in range(1,11):
             # 객실
             room_list = driver.find_elements(By.CSS_SELECTOR, 'div.gc-domestic-item-card')
             
-            for idx, room in enumerate(room_list):
+            # 룸 폴더 생성
+            rooms_folder = os.path.join(hotel_list_folder, 'rooms')
+            os.makedirs(rooms_folder, exist_ok=True)
+
+            for room_idx, room in enumerate(room_list):
                 room_images=[]
                 number_person=''
                 room_title=''
                 room_info=[]
                 room_service=[]
                 room_price=''
-                if idx == 0:
+                room_images_name=[]
+                if room_idx == 0:
                     pre_room_price='50,000'
                 room_discount = 0
+                room_folder=''
+                room_thumbnail_folder=''
+                room_images_folder=''
+                room_images_path_str = ''
+                room_service_str = ''
+                room_info_str = ''
+
 
                 # 객실 이름 가져오기
                 get_room_title = room.find_element(By.CSS_SELECTOR, '.css-rs79op')
@@ -148,6 +216,18 @@ for i in range(1,11):
                 # 객실 인원수 가져오기
                 get_number_person = room.find_element(By.CSS_SELECTOR, '.css-12ibmpc > div:nth-child(1) > div.css-1wr23hb')
                 number_person = get_number_person.text
+
+                # 최대 체크인 체크아웃 시간
+                #room > div.css-g6g7mu > div:nth-child(14) > div.css-gp2jfw > div.css-hn31yc > div.css-1bpi9ty > div > div > div.css-1mmyylq > div.css-1tn66r8 > div:nth-child(1)
+                #room > div.css-g6g7mu > div:nth-child(14) > div.css-gp2jfw > div.css-hn31yc > div.css-1bpi9ty > div > div > div.css-1mmyylq > div.css-1tn66r8 > div:nth-child(2)
+                get_checkin_time = room.find_element(By.CSS_SELECTOR, 'div.css-1tn66r8 > div:nth-child(1)')
+                checkin_time_text = get_checkin_time.text
+                checkin_time = checkin_time_text.replace("입실 ", "")
+    
+
+                get_checkout_time = room.find_element(By.CSS_SELECTOR, 'div.css-1tn66r8 > div:nth-child(2)')
+                checkout_time_text = get_checkout_time.text
+                checkout_time = checkout_time_text.replace("퇴실 ", "")
 
                 # 객실 썸네일 및 이미지 가져오기
                 room.find_element(By.CSS_SELECTOR, 'div.css-1qsj5pv').click()
@@ -164,6 +244,39 @@ for i in range(1,11):
 
                 driver.find_element(By.CSS_SELECTOR, 'div.css-kytcrd').click()
                 time.sleep(2)
+                
+
+
+                # 객실별 폴더 생성
+                room_folder = os.path.join(rooms_folder, f'room_{room_idx+1}')
+                
+                # 썸네일 폴더 생성
+                room_thumbnail_folder = os.path.join(room_folder, 'thumbnail')
+                os.makedirs(room_thumbnail_folder, exist_ok=True)
+
+                # 이미지 폴더 생성
+                room_images_folder = os.path.join(room_folder, 'images')
+                os.makedirs(room_images_folder, exist_ok=True)
+
+                # 룸 썸네일 저장
+                if room_thumbnail:
+                    room_thumbnail_response = requests.get(room_thumbnail)
+                    if room_thumbnail_response.status_code == 200:
+                        room_thumbnail_name = os.path.basename(room_thumbnail)  # 파일명 추출
+                        with open(os.path.join(room_thumbnail_folder, room_thumbnail_name), 'wb') as f:
+                            f.write(room_thumbnail_response.content)
+
+
+                # 객실 이미지 저장
+                for room_img_url in room_images:
+                    room_img_response = requests.get(room_img_url)
+                    if room_img_response.status_code == 200:
+                        room_img_name = os.path.basename(room_img_url)  # 파일명 추출
+                        room_images_name.append(room_img_name)
+                        with open(os.path.join(room_images_folder, room_img_name), 'wb') as f:
+                            f.write(room_img_response.content)
+
+
 
                 # 객실 정보 및 시설 서비스 가져오기
                 room.find_element(By.CSS_SELECTOR, 'div.css-jyer5m').click()
@@ -229,14 +342,57 @@ for i in range(1,11):
                 driver.find_element(By.CSS_SELECTOR, 'div.css-kytcrd').click()
                 time.sleep(2)
 
-                print('객실 이름 : ',room_title)
-                print('객실 정보 : ',room_info)
-                print('객실 인원수 : ',number_person)
-                print('객실 편의시설 : ',room_service)
-                print('객실 썸네일 : ',room_thumbnail)
-                print('객실 이미지 : ',room_images)
-                print('객실 가격 : ',room_price)
-                print('객실 할인율 : ',room_discount)
+                # print('객실 이름 : ',room_title)
+                # print('객실 정보 : ',room_info)
+                # print('객실 인원수 : ',number_person)
+                # print('객실 편의시설 : ',room_service)
+                # print('객실 썸네일 : ',room_thumbnail)
+                # print('객실 이미지 : ',room_images)
+                # print('객실 가격 : ',room_price)
+                # print('객실 할인율 : ',room_discount)
+
+                max_person = 0
+                for info in room_info:
+                    match = re.search(r'최대\s*(\d+)', info)
+                    if match:
+                        max_person = match.group(1)  # 숫자를 가져옴
+                        break  # 첫 번째로 찾은 경우 루프 종료
+
+
+                # 객실 데이터 삽입 쿼리 출력
+                room_thumbnail_path = os.path.join(room_thumbnail_folder, room_thumbnail_name)
+                room_thumbnail_path = room_thumbnail_path.replace('\\', '/')
+                room_images_path = [os.path.join(room_images_folder, room_img_name).replace('\\', '/') for room_img_name in room_images_name]
+
+                # print(f"INSERT INTO ROOM VALUES(DEFAULT,'{hotel_id+1}', '{room_title}', {max_person}, '{number_person}', {random.randint(1,5)}, '{room_thumbnail_path}', '{room_images_path}', "
+                #     f"{int(room_price.replace(',', ''))}, '{room_discount}', '{room_service}', '{room_info}', "
+                #     f"STR_TO_DATE('{checkin_time}', '%H:%i'), STR_TO_DATE('{checkout_time}', '%H:%i'));")
+                
+                room_images_path_str = ', '.join(s for s in room_images_path)
+                room_service_str = ', '.join(s for s in room_service)
+                room_info_str = ', '.join(s for s in room_info)
+                
+                room_query = (
+                            f"INSERT INTO ROOM VALUES("
+                            f"DEFAULT,"
+                            f"{hotel_id + 1}, "
+                            f"'{room_title}', "
+                            f"{max_person}, "
+                            f"'{number_person}', "
+                            f"{random.randint(1, 5)}, "
+                            f"'{room_thumbnail_path}', "
+                            f"'{room_images_path_str}', "
+                            f"{int(room_price.replace(',', ''))}, "
+                            f"'{room_discount}', "
+                            f"'{room_service_str}', "
+                            f"'{room_info_str}', "
+                            f"STR_TO_DATE('{checkin_time}', '%H:%i'), "
+                            f"STR_TO_DATE('{checkout_time}', '%H:%i'))"
+                )
+
+                with open('room_insert_queries.txt', 'a', encoding='utf-8') as file:
+                    file.write(room_query + '\n')  # 쿼리와 줄 바꿈 추가
+
 
 
                 
