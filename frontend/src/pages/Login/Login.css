@@ -2,7 +2,6 @@
     width: 100%;
     height: 30px;
     margin: 0;
-    background-color: #fff;
 }
 
 .logo {
@@ -16,7 +15,7 @@
     align-items: center;
     justify-content: center;
     gap: 30px;
-    height: 100vh;
+    height: 80vh;
 }
 
 .loginBtn {
@@ -54,7 +53,7 @@
 .googleBtn {
     background-color: #fff;
     color: #1a1a1a;
-    border: 1px, solid, #a1a1a1;
+    border: 1px, solid, var(--lightGrayColor);
     font-weight: bold;
 }
 
