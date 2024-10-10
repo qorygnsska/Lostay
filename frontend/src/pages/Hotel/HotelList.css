@@ -33,11 +33,47 @@
 }
 
 .HotelInfo{
-    width: 200px;
-    background-color: aqua;
+
 }
 
+.HotelRank{
+    font-size: 15px;
+}
+
+.HotelName{
+    font-size: 20px;
+}
+
+.HotelLo{
+    font-size: 10px;
+}
+
+.StarDiv{
+    display: flex;
+}
+
+.Star{
+    display: flex;
+    width: 50px;
+    height: 30px;
+    background-color: rgb(255, 195, 66);
+    border-radius: 10px;
+    margin-right: 10px;
+    align-items: center;
+    
+}
+
+.StarIcon{
+    font-size: 10px;
+    margin-left: 9px;
+    margin-right: 3px;
+}
+
+.StarNum{
+    font-size: 14px;
+}
+
+
 .HotelPrice{
-    width: 200px;
-    background-color: aquamarine;
+ 
 }
