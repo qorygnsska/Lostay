@@ -1,0 +1,13 @@
+.page_admin_event h1 {      /* 이벤트페이지 */
+
+    color: red;
+
+}
+
+.page_admin_review h1 {     /* 리뷰페이지 */
+    color: green;
+}
+
+.page_admin_user h1 {       /* 사용자페이지 */
+    color: blue;
+}
