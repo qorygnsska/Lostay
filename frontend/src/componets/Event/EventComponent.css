@@ -1,0 +1,13 @@
+
+
+.event_insert .testP {  /* EventInsert 컴포넌트*/
+    color: red;
+}
+
+.event_unit .testP {    /* EventUnit 컴포넌트*/
+    color: green;
+}
+
+.event_update .testP {    /* EventUpdate 컴포넌트*/
+    color: blue;
+}

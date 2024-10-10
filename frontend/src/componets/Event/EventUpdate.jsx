@@ -2,6 +2,10 @@ import React from 'react'
 
 export default function EventUpdate() {
   return (
-    <div>EventUpdate</div>
+    <>
+      <div className='event_update'>
+        <p className='testP'>EventUpdate</p>
+      </div>
+    </>
   )
 }
