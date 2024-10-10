@@ -5,6 +5,8 @@ import App from './App';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home/Home'
+import Login from './pages/Login/Login';
+import LoginPopup from './pages/Login/LoginPopup';
 
 
 const router = createBrowserRouter([
@@ -14,7 +16,8 @@ const router = createBrowserRouter([
     //    errorElement: < />, // 404페이지
     children: [
       { index: true, element: <Home /> },
-      // { path: '/products', element: <AllProducts /> },
+      { path: '/login', element: <Login /> },
+      { path: '/login-opup', element: <LoginPopup /> }
       // {
       //   path: '/products/new',
       //   element: <NewProduct />,

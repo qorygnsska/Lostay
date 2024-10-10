@@ -21,7 +21,7 @@ for i in range(1,11):
     hotel_lest = driver.find_elements(By.CSS_SELECTOR, 'a.gc-thumbnail-type-seller-card')
     links = [ele.get_attribute('href') for ele in hotel_lest]
 
-    for link in links:
+    for hotel_id, link in enumerate(links):
 
         hotel_thumbnail = ''
         hotel_images = []
@@ -115,6 +115,7 @@ for i in range(1,11):
             print('호텔관광명소 : ',hotel_touristPlace)
             print('호텔 썸네일 : ',hotel_thumbnail)
             print('호텔 이미지 : ',hotel_images)
+            print(f"INSERT INTO HOTEL VALUES('{hotel_name}', '{hotel_thumbnail}', '{hotel_images}', '{hotel_service}', '{hotel_level}', '{hotel_location}', '{hotel_touristPlace}', '{hotel_info}')")
 
             #객실 더보기 버튼이 있으면 클릭하기
             try:
