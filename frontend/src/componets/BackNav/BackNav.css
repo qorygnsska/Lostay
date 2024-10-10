@@ -1,10 +1,10 @@
 .back-history-wrap {
     display: flex;
     align-items: center;
-    padding: 6px 15px;
+    padding: 15px 15px;
     justify-content: space-between;
     min-width: 768px;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--lightGrayColor);
 }
 
 .back-history-wrap>button {

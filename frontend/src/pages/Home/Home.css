@@ -1,0 +1,15 @@
+.slick-test {
+    width: 600px;
+    overflow: hidden;
+    outline: 1px solid blue;
+}
+
+.slick-test .slick-list {
+    margin: 0 -10px;
+}
+
+.slick-test .slick-slide {
+    height: 200px;
+    margin: 0 10px;
+    background: skyblue;
+}

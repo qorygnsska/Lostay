@@ -2,6 +2,20 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+
+
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-style: normal;
+
+}
+
+:root {
+  --logoColor: #fb6969;
+  --lightGrayColor: #a1a1a1;
+  --lightGrayColor2: #828282;
+  --lightGrayColor3: #e7e7e7;
+
 }
 
 a {

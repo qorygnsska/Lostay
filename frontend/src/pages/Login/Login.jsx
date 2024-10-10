@@ -39,7 +39,7 @@ export default function Login() {
 
             <div className='loginWrap'>
                 <div className='logoWrap'>
-                    <img src='LoginIcon/ic-login-kakao.svg' alt='icon' className='icon' />
+                    <h1>로고 들어와야함</h1>
                 </div>
 
 
