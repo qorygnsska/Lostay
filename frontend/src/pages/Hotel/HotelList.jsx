@@ -21,13 +21,18 @@ export default function hotelList() {
                   <FaStar className='StarIcon'/>
                    <div className='StarNum'>9.6</div>
                 </div>
-                <span>901명 평가</span>
+                <span className='StarCount'>901명 평가</span>
               </div>
             </div>
             <div className='HotelPrice'>
-              411,400원
+              <div className='RealPrice'>300,000원</div>
+              <div className='HotelDiscount'>
+                <div className='Discount'>10%</div>
+                <div className='DiscountPrice'>270,000원</div>
+              </div>
             </div>
           </div>
+          <div className='RowLine'></div>
         </div> 
       </div>
     </Container>
