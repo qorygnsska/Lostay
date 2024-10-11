@@ -11,6 +11,7 @@ import '../src/componets/Header/HeaderComponent.css'
 import '../src/componets/Navbar/Navbar.css'
 import '../src/componets/Search/SearchComponent.css'
 
+
 // CustomCSS for pages
 import '../src/pages/Admin/AdminPage.css'
 import '../src/pages/Event/EventPage.css'

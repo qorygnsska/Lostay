@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { IoSearchOutline } from "react-icons/io5";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Carousel from '../../componets/Carousel/EventCarousel';
+import EventCarousel from '../../componets/Carousel/EventCarousel';
 import CardCarousel from '../../componets/Carousel/CardCarousel';
 
 export default function Home() {
@@ -15,15 +15,20 @@ export default function Home() {
         , '66fac140e8c113.870765961_6.png']); // 이미지 상태 초기화
 
     return (
-        <div className='page_admin_user'>
-            <h1>로스테이</h1>
+        <div className='home--container'>
+            <div className='logo'>
+                <h1>로스테이</h1>
+            </div>
 
-            <button>
-                <IoSearchOutline />
-                <span>여행지나 숙소를 검새해보세요.</span>
-            </button>
+            <div className='search--btn--wrap'>
+                <button className='search--btn'>
+                    <IoSearchOutline />
+                    <span>여행지나 숙소를 검색해보세요.</span>
+                </button>
+            </div>
 
-            <Carousel images={images} />
+
+            <EventCarousel images={images} />
 
             <h2>인기호텔</h2>
             <div>인기호텔 리스트</div>
