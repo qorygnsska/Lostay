@@ -1,19 +1,14 @@
-package com.lostay.backend.cartentity;
-
-import javax.persistence.*;
-
+package com.lostay.backend.cart.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Cart {
+public class CartDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cart_no;		// 찜넘버
 	 
 	private Long user_no;		// 회원넘버

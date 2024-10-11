@@ -6,6 +6,17 @@
         padding-left: 5px;
         padding-right: 5px;
         height: 400px;
+
+        .review--wrap{
+            display: flex;
+            justify-content:flex-start;
+            align-items: center;
+            width: 45px;
+
+            .star--Icon{
+                color: rgb(248, 183, 43);
+            }
+        }
     }
     
     .slick-slide img {
