@@ -30,23 +30,49 @@ export default function CardCarousel({ hotelList }) {
 
     return (
         <div className="card--carousle--container">
-            <h2>Single Item</h2>
             <Slider ref={sliderRef} {...settings}>
                 {hotelList.map((hotel, index) => (
                     <div key={index} className="slick-slide">
-                        <img src={`eventList/${hotel.image}`} alt={`슬라이드 ${index + 1}`} className="carousel-image" />
-                        <p>{hotel.hotelRating}</p>
-                        <p>{hotel.hotelName}</p>
-                        <div className="review--wrap">
-                            <FaStar className='star--Icon' />
-                            <div>
-                                <span>{hotel.reviewAvg}</span>
+                        <a href="#">
+                            <img src={`eventList/${hotel.image}`} alt={`슬라이드 ${index + 1}`} className="carousel-image" />
+                            <div className="hotel--info--wrap">
+                                <div className="hotel--info">
+                                    <div>
+                                        <span>{hotel.hotelRating}</span>
+                                    </div>
+
+                                    <div>
+                                        <span>{hotel.hotelName}</span>
+                                    </div>
+
+                                    <div>
+                                        <div className="review--wrap">
+                                            <FaStar className='star--Icon' />
+                                            <span>{hotel.reviewAvg}</span>
+                                            <span>({hotel.reviewCnt})</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div className="hotel--price--wrap">
+                                    {
+                                        hotel.discount !== 0
+                                            ? <div className="hotel--discount--price--wrap">
+                                                <span>{hotel.discount}%</span>
+                                                <span>{hotel.discountPrice.toLocaleString()}</span>
+                                            </div>
+                                            : null
+                                    }
+                                    <strng>{hotel.oriPrice.toLocaleString()}~</strng>
+                                </div>
                             </div>
-                        </div>
-                        <span>({hotel.reviewCnt})</span>
+
+                        </a>
                     </div>
-                ))}
-            </Slider>
+                ))
+                }
+            </Slider >
 
             <div className="moveBtn">
                 {currentSlide > 0
@@ -61,6 +87,6 @@ export default function CardCarousel({ hotelList }) {
                     </button>
                 )}
             </div>
-        </div>
+        </div >
     );
 }
