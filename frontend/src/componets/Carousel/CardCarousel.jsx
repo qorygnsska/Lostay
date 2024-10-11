@@ -1,9 +1,10 @@
 import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaStar } from "react-icons/fa6";
 import './CardCarousel.css'; // CSS 파일 임포트
 
-export default function CardCarousel({ images }) {
+export default function CardCarousel({ hotelList }) {
 
     const sliderRef = useRef(null);
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -31,10 +32,18 @@ export default function CardCarousel({ images }) {
         <div className="card--carousle--container">
             <h2>Single Item</h2>
             <Slider ref={sliderRef} {...settings}>
-                {images.map((image, index) => (
+                {hotelList.map((hotel, index) => (
                     <div key={index} className="slick-slide">
-                        <img src={`eventList/${image}`} alt={`슬라이드 ${index + 1}`} className="carousel-image" />
-                        <p>하이염</p>
+                        <img src={`eventList/${hotel.image}`} alt={`슬라이드 ${index + 1}`} className="carousel-image" />
+                        <p>{hotel.hotelRating}</p>
+                        <p>{hotel.hotelName}</p>
+                        <div className="review--wrap">
+                            <FaStar className='star--Icon' />
+                            <div>
+                                <span>{hotel.reviewAvg}</span>
+                            </div>
+                        </div>
+                        <span>({hotel.reviewCnt})</span>
                     </div>
                 ))}
             </Slider>
@@ -46,7 +55,7 @@ export default function CardCarousel({ images }) {
                     </button>
                     : <div></div>
                 }
-                {currentSlide < images.length - slideShowCtn && ( // slidesToShow 수에 따라 조정
+                {currentSlide < hotelList.length - slideShowCtn && ( // slidesToShow 수에 따라 조정
                     <button onClick={() => sliderRef.current.slickNext()} className="arrow-button">
                         <FaChevronRight className="arrow" />
                     </button>
