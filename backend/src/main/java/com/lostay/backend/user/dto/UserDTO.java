@@ -1,20 +1,14 @@
-package com.lostay.backend.userentity;
-
-import javax.persistence.*;
-
+package com.lostay.backend.user.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Entity
-public class User {
-
+@AllArgsConstructor
+public class UserDTO {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long user_no;       // 회원넘버
 	
 	private String user_name;		// 회원이름
