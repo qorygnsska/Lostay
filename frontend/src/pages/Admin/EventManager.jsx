@@ -1,8 +1,7 @@
 import React from 'react'
-import EventInsert from '../../componets/Event/EventInsert'
-import EventUpdate from '../../componets/Event/EventUpdate'
+import CompEventInserter from '../../componets/Event/CompEventInserter'
+import CompEventUpdater from '../../componets/Event/CompEventUpdater'
 
-import './AdminPage.css'
 
 export default function EventManager() {
 
@@ -13,10 +12,10 @@ export default function EventManager() {
 
   return (
 
-    <div className='page_admin_event'>
+    <div className='event--manager--container'>
       <h1>EventManager</h1>
-      <EventInsert />
-      <EventUpdate />
+      <CompEventInserter />
+      <CompEventUpdater />
     </div>
 
 

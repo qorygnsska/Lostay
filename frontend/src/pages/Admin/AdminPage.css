@@ -1,13 +1,27 @@
-.page_admin_event h1 {      /* 이벤트페이지 */
+.page--event--manager--container {
+    /* 관리자 이벤트페이지 */
 
-    color: red;
+    h1 {
+        color: blue;
+    }
 
 }
 
-.page_admin_review h1 {     /* 리뷰페이지 */
-    color: green;
+.page--review--manager--container {
+    /* 관리자 리뷰페이지 */
+
+    h1 {
+        color: green;
+    }
+
 }
 
-.page_admin_user h1 {       /* 사용자페이지 */
-    color: blue;
+.page--user-manager--container {
+    /* 관리자 사용자페이지 */
+
+    h1 {
+        color: red;
+    }
+
+
 }

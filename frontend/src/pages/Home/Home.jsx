@@ -15,7 +15,7 @@ export default function Home() {
         , '66fac140e8c113.870765961_6.png']); // 이미지 상태 초기화
 
     return (
-        <div>
+        <div className='page_admin_user'>
             <h1>로스테이</h1>
 
             <button>
