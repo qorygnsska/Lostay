@@ -1,0 +1,25 @@
+.comp--calendar--picker--container {
+    /* CalendarPicker 컴포넌트 */
+
+    p {
+        color: red;
+    }
+
+}
+
+.comp--member--picker--container {
+    /*MemberPicker 컴포넌트 */
+
+    p {
+        color: blue;
+    }
+
+}
+
+.comp--search--box--container {
+    /*SearchBOx 컴포넌트 */
+
+    p {
+        color: yellowgreen;
+    }
+}
