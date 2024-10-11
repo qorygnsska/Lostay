@@ -42,7 +42,7 @@ public class User {
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL) // room 엔티티와의 관계 설정
 	private Set<Review> reviews; // 리뷰 목록
 	
-	@ManyToMany(mappedBy = "user",cascade = CascadeType.ALL) // room 엔티티와의 관계 설정
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL) // room 엔티티와의 관계 설정
 	private Set<Payment> payments; // 결제 목록
 	
 	@OneToOne(mappedBy = "user",cascade = CascadeType.ALL) // room 엔티티와의 관계 설정
