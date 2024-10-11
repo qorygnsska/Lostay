@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { IoMdPause, IoMdPlay } from "react-icons/io";
 import './EventCarousel.css'
 
 export default function Carousel({ images }) {
@@ -39,28 +40,40 @@ export default function Carousel({ images }) {
 
 
     return (
-        <div>
+        <div className="event--carousel--container">
             <Slider ref={sliderRef} {...settings}>
                 {images.map((image, index) => (
                     <div key={index}>
-                        <img src={`eventList/${image}`} alt={`슬라이드 ${index + 1}`} />
+                        <a href="#">
+                            <img src={`eventList/${image}`} alt={`슬라이드 ${index + 1}`} />
+                        </a>
                     </div>
                 ))}
             </Slider>
 
-            <div>
-                <button onClick={handlePlayPause}>
-                    {isPlaying ? '정지' : '재생'}
-                </button>
-                <button onClick={() => sliderRef.current.slickPrev()}>
-                    <FaChevronLeft />
-                </button>
-                <span>
-                    {currentSlide + 1} / {totalSlides} {/* 현재 슬라이드와 총 슬라이드 수 표시 */}
-                </span>
-                <button onClick={() => sliderRef.current.slickNext()}>
-                    <FaChevronRight />
-                </button>
+            <div className="event--btn--wrap">
+                <div className="event--btn--box">
+                    <button onClick={handlePlayPause}>
+                        {isPlaying ? <IoMdPause /> : <IoMdPlay />}
+                    </button>
+
+                    <span className="">
+
+                    </span>
+
+                    <button onClick={() => sliderRef.current.slickPrev()}>
+                        <FaChevronLeft />
+                    </button>
+
+                    <span>
+                        <strong>{currentSlide + 1}</strong> / {totalSlides}
+                    </span>
+
+                    <button onClick={() => sliderRef.current.slickNext()}>
+                        <FaChevronRight />
+                    </button>
+                </div>
+
             </div>
         </div>
     );

@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import './App.css';
 import '../src/componets/Event/EventComponent.css'
 import '../src/componets/Header/HeaderComponent.css'
+import '../src/pages/Home/Home.css'
 
 
 
