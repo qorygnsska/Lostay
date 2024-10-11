@@ -26,5 +26,6 @@ public class Refresh_Token {
 	@JoinColumn(name = "user_no" , nullable = false)
 	@OneToOne(cascade = CascadeType.ALL)
 	private User user;	// 회원넘버 외래키
+	
 	private int rt_token;	// 리프레쉬토큰
 }

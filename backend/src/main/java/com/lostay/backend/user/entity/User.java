@@ -35,19 +35,19 @@ public class User {
 	private String user_token;		// 소셜토큰
 	 
 
-    @OneToMany(mappedBy = "user") // Cart 엔티티와의 관계 설정
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL) // Cart 엔티티와의 관계 설정
     private Set<Cart> carts; // 카트 목록
     
 	
-	@OneToMany(mappedBy = "user") // room 엔티티와의 관계 설정
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL) // room 엔티티와의 관계 설정
 	private Set<Review> reviews; // 리뷰 목록
 	
-	@ManyToMany(mappedBy = "user") // room 엔티티와의 관계 설정
+	@ManyToMany(mappedBy = "user",cascade = CascadeType.ALL) // room 엔티티와의 관계 설정
 	private Set<Payment> payments; // 결제 목록
 	
-	@OneToOne(mappedBy = "user") // room 엔티티와의 관계 설정
-	private Set<Refresh_Token> refresh_tokens; // 리프레쉬 토큰 목록
+	@OneToOne(mappedBy = "user",cascade = CascadeType.ALL) // room 엔티티와의 관계 설정
+	private Refresh_Token refresh_tokens; // 리프레쉬 토큰 목록
 	
-	@OneToMany(mappedBy = "user") // room 엔티티와의 관계 설정
-	private Set<Point> points; // 결제 목록
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL) // room 엔티티와의 관계 설정
+	private Set<Point> points; // 포인트 목록
 }

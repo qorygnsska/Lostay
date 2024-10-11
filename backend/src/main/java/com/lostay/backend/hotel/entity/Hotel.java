@@ -30,7 +30,7 @@ public class Hotel {
 	private String hotel_tourist_attraction;	// 호텔관광명소
 	private String hotel_introduction;			// 호텔소개
 
-	@OneToMany(mappedBy = "hotel") // Cart 엔티티와의 관계 설정
+	@ManyToMany(mappedBy = "hotels") // Cart 엔티티와의 관계 설정
     private Set<Cart> carts;           // 카트 목록
 	
 	@OneToMany(mappedBy = "hotel") // Room 엔티티와의 관계 설정

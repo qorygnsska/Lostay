@@ -16,6 +16,7 @@ public class PaymentDTO {
 	
 	private Long user_no;				// 회원넘버
 	
+	private String pay_type;		// 결제 수단
 	private LocalDateTime pay_day;		// 결제날짜
 	private String pay_status;			// 결제상태
 	private int pay_price;				// 결제가격
