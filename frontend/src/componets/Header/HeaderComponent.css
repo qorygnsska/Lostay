@@ -1,0 +1,12 @@
+.header_admin .headerP {     /*HeaderAdmin 컴포넌트*/
+
+    color: red;
+}
+
+
+.header_user .headerP {      /*HeaderUser 컴포넌트*/
+
+    color: blue;
+}
+
+
