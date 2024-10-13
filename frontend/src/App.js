@@ -19,6 +19,8 @@ import '../src/pages/Home/Home.css'
 import '../src/pages/Hotel/HotelList.css'
 import '../src/pages/Login/Login.css'
 import '../src/pages/MyPage/MyPage.css'
+import '../src/pages/Hotel/HotelList.css';
+
 
 
 function App() {

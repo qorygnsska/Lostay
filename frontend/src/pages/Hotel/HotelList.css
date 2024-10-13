@@ -1,7 +1,7 @@
 .hotel--list{
     width: 768px;
     height: 100%;
-    background-color: rgb(240, 240, 240);
+    background-color: white;
     padding-top: 10px;
 
     .HotelGrid{
@@ -125,6 +125,10 @@
         box-shadow: 0 0 0 0.3px rgb(206, 206, 206);
         margin-top: 25px;
     }
-   
+
+    #BtnF{
+        color: red !important;
+        background-color: black;
+    }
 }
 
