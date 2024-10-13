@@ -14,7 +14,11 @@
   --logoColor: #fb6969;
   --lightGrayColor: #a1a1a1;
   --lightGrayColor2: #828282;
-  --lightGrayColor3: #e7e7e7;
+  --lightGrayColor3: #6d6d6d;
+  --regularBlueColor: #0386ff;
+  --ligthBuleColor: #e6eefa;
+  --redColor : #FF0303;
+
 
 }
 
@@ -22,4 +26,8 @@
 .App-Container {
   max-width: 768px;
   margin: auto;
+}
+
+ul{
+  list-style: none;
 }

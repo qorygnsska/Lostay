@@ -1,9 +1,9 @@
-.home--container{
+.home--container {
 
     padding-left: 10px;
     padding-right: 10px;
 
-    .logo{
+    .logo {
         width: 100%;
         display: flex;
         align-items: center;
@@ -13,14 +13,14 @@
         color: var(--logoColor);
     }
 
-    .search--btn--wrap{
+    .search--btn--wrap {
 
         display: flex;
         justify-content: center;
         align-items: center;
         margin-bottom: 50px;
 
-        .search--btn{
+        .search--btn {
             width: 80%;
             height: 45px;
             border-radius: 30px;
@@ -32,5 +32,21 @@
             background-color: #fff;
         }
     }
-   
+
+    h2 {
+        font-weight: bold;
+        margin-top: 60px;
+        margin-bottom: 20px;
+        padding-left: 7px;
+        font-size: 22px;
+    }
+
+    .popular--hotel {
+        color: var(--regularBlueColor);
+    }
+
+    .sale--hotel {
+        color: var(--redColor);
+    }
+
 }

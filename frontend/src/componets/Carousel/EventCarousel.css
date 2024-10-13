@@ -1,39 +1,39 @@
-.event--carousel--container{
+.event--carousel--container {
     .slick-slide {
         padding-left: 5px;
         padding-right: 5px;
+
+        img {
+            border-radius: 8px;
+            width: 100%;
+            height: 120px;
+        }
     }
 
-    .slick-slide img {
-        border-radius: 8px;
-        width: 100%;
-        height: 100px;
-    }
 
-    .event--btn--wrap{
+    .event--btn--wrap {
         display: flex;
         justify-content: center;
         align-items: center;
         margin-top: 20px;
 
-        .event--btn--box{
+        .event--btn--box {
             width: 130px;
             display: flex;
             justify-content: space-between;
             align-items: center;
 
-            button{
+            button {
                 background-color: #fff;
                 border: none;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
-            
-            span{
+
+            span {
                 font-size: 17px;
             }
         }
     }
 }
-

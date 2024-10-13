@@ -1,0 +1,160 @@
+.metropolitan--hotel--carousle--container {
+
+    position: relative;
+
+    .metroplitan--name--list {
+        display: flex;
+        gap: 5px;
+        padding-left: 4px;
+        margin-bottom: 20px;
+
+        li {
+            button {
+                background-color: #fff;
+                width: 50px;
+                height: 30px;
+                border-radius: 20px;
+                border: 1px solid var(--lightGrayColor2);
+                font-size: 13px;
+                color: var(--lightGrayColor3);
+                margin-right: 5px;
+            }
+
+            button.active {
+                color: var(--regularBlueColor);
+                background-color: var(--ligthBuleColor);
+                font-weight: bold;
+            }
+        }
+    }
+
+    .slick-slide {
+        display: grid !important;
+        gap: 8px;
+        padding-left: 4px;
+
+        a {
+            color: black;
+            text-decoration: none;
+
+            img {
+                width: 110px;
+                height: 120px;
+                border-radius: 10px;
+            }
+
+
+            .hotel--list--info {
+                display: grid !important;
+                grid-auto-flow: row;
+                grid-template-columns: 1fr 2fr;
+                padding-right: 8px;
+
+                .hotel--info--wrap {
+                    display: flex;
+                    justify-content: space-between;
+                    flex-direction: column;
+
+
+                    .hotel--info {
+                        display: flex;
+                        flex-direction: column;
+
+
+                        .review--wrap {
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+
+                            .star--Icon {
+                                color: rgb(248, 183, 43);
+                            }
+                        }
+                    }
+
+                    .hotel--info>div:nth-child(1) {
+                        font-size: 11px;
+                        color: var(--lightGrayColor2)
+                    }
+
+                    .hotel--info>div:nth-child(2) {
+                        font-size: 14px;
+                        font-weight: bold;
+                    }
+
+                    .hotel--info>div:nth-child(3) {
+                        font-size: 12px;
+                    }
+
+                    .hotel--price--wrap {
+                        display: flex;
+                        justify-content: end;
+                        gap: 5px;
+                        margin-top: 20px;
+                        align-items: end;
+                        font-size: 15px;
+
+                        .hotel--discount--price--wrap {
+                            display: flex;
+                            flex-direction: column;
+
+                            span {
+                                color: var(--lightGrayColor2);
+                            }
+                        }
+
+
+                        .hotel--discount--price--wrap>span:nth-child(1) {
+                            font-size: 12px;
+                        }
+
+                        .hotel--discount--price--wrap>span:nth-child(2) {
+                            text-decoration: line-through;
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .moveBtn {
+        position: absolute;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        top: 50%;
+        opacity: 0;
+
+        .arrow {
+            width: 15px;
+            height: 15px;
+        }
+    }
+
+    .moveBtn button {
+        background: #fff;
+        border: 1px solid black;
+        cursor: pointer;
+        border-radius: 100%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .moveBtn button:nth-child(1) {
+        transform: translateX(-12px);
+    }
+
+    .moveBtn button:nth-child(2) {
+        transform: translateX(12px);
+    }
+}
+
+.metropolitan--hotel--carousle--container:hover {
+    .moveBtn {
+        opacity: 1;
+    }
+}

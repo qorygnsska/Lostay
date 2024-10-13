@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { IoSearchOutline } from "react-icons/io5";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import EventCarousel from '../../componets/Carousel/EventCarousel';
-import CardCarousel from '../../componets/Carousel/CardCarousel';
+import CardCarousel from '../../componets/Carousel/HotelCarousel';
+import MetropolitanCarousel from '../../componets/Carousel/MetropolitanCarousel';
+import MetropolitanHotelCarousel from '../../componets/Carousel/MetropolitanHotelCarousel';
 
 export default function Home() {
 
@@ -23,6 +25,62 @@ export default function Home() {
         { image: '66fac140e8c113.870765961_1.png', hotelRating: '5등급', hotelName: '스카이베이호텔 경포', reviewAvg: 4.1, reviewCnt: 1220, oriPrice: 405000, discount: 5, discountPrice: 100000 }
     ]; // 이미지 상태 초기화
 
+    const metropolitanList = [
+        { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', metropolitanName: '제주도' },
+        { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', metropolitanName: '부산' },
+        { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', metropolitanName: '인천' },
+        { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', metropolitanName: '울산' },
+        { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', metropolitanName: '서울' },
+        { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', metropolitanName: '대구' },
+        { image: '66fac140e8c113.870765961_1.png', metropolitanName: '광주' },
+        { image: '66fac140e8c113.870765961_1.png', metropolitanName: '대전' },
+
+    ];
+
+
+    const metropolitanHotelList = [{
+        metropolitan: '인천',
+        hotelList: [{ image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '인천1', hotelName: '구월 호텔반월', reviewAvg: 4.9, reviewCnt: 122, oriPrice: 208000, discount: 8, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '인천2', hotelName: '롯데 시티호텔 울산', reviewAvg: 4.7, reviewCnt: 3015, oriPrice: 72800, discount: 0, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '인천3', hotelName: '스탠포드 호텔', reviewAvg: 4.6, reviewCnt: 303, oriPrice: 390000, discount: 0, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '인천4', hotelName: '세인트존스 호텔', reviewAvg: 4.9, reviewCnt: 122, oriPrice: 208000, discount: 20, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '인천5', hotelName: '호텔 U5', reviewAvg: 4.2, reviewCnt: 150, oriPrice: 108000, discount: 4, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '5등급', hotelName: '스카이베이호텔 경포', reviewAvg: 4.1, reviewCnt: 1220, oriPrice: 405000, discount: 5, discountPrice: 100000 }
+        ]
+    },
+    {
+        metropolitan: '대전',
+        hotelList: [{ image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '대전1', hotelName: '구월 호텔반월', reviewAvg: 4.9, reviewCnt: 122, oriPrice: 208000, discount: 8, discountPrice: 100000 },
+        { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '대전2', hotelName: '롯데 시티호텔 울산', reviewAvg: 4.7, reviewCnt: 3015, oriPrice: 72800, discount: 0, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '3등급', hotelName: '스탠포드 호텔', reviewAvg: 4.6, reviewCnt: 303, oriPrice: 390000, discount: 0, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '대전4', hotelName: '세인트존스 호텔', reviewAvg: 4.9, reviewCnt: 122, oriPrice: 208000, discount: 20, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '2등급', hotelName: '호텔 U5', reviewAvg: 4.2, reviewCnt: 150, oriPrice: 108000, discount: 4, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '5등급', hotelName: '스카이베이호텔 경포', reviewAvg: 4.1, reviewCnt: 1220, oriPrice: 405000, discount: 5, discountPrice: 100000 }
+        ]
+    },
+    {
+        metropolitan: '부산',
+        hotelList: [{ image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '부산1', hotelName: '구월 호텔반월', reviewAvg: 4.9, reviewCnt: 122, oriPrice: 208000, discount: 8, discountPrice: 100000 },
+        { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '5등급', hotelName: '롯데 시티호텔 울산', reviewAvg: 4.7, reviewCnt: 3015, oriPrice: 72800, discount: 0, discountPrice: 100000 },
+        { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '3등급', hotelName: '스탠포드 호텔', reviewAvg: 4.6, reviewCnt: 303, oriPrice: 390000, discount: 0, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '부산4', hotelName: '세인트존스 호텔', reviewAvg: 4.9, reviewCnt: 122, oriPrice: 208000, discount: 20, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '2등급', hotelName: '호텔 U5', reviewAvg: 4.2, reviewCnt: 150, oriPrice: 108000, discount: 4, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '5등급', hotelName: '스카이베이호텔 경포', reviewAvg: 4.1, reviewCnt: 1220, oriPrice: 405000, discount: 5, discountPrice: 100000 }
+        ]
+    },
+    {
+        metropolitan: '대구',
+        hotelList: [{ image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '대구1', hotelName: '구월 호텔반월', reviewAvg: 4.9, reviewCnt: 122, oriPrice: 208000, discount: 8, discountPrice: 100000 },
+        { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '대구2', hotelName: '롯데 시티호텔 울산', reviewAvg: 4.7, reviewCnt: 3015, oriPrice: 72800, discount: 0, discountPrice: 100000 },
+        { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '3등급', hotelName: '스탠포드 호텔', reviewAvg: 4.6, reviewCnt: 303, oriPrice: 390000, discount: 0, discountPrice: 100000 },
+        { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '대구4', hotelName: '세인트존스 호텔', reviewAvg: 4.9, reviewCnt: 122, oriPrice: 208000, discount: 20, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '2등급', hotelName: '호텔 U5', reviewAvg: 4.2, reviewCnt: 150, oriPrice: 108000, discount: 4, discountPrice: 100000 },
+        { image: '66fac140e8c113.870765961_1.png', hotelRating: '5등급', hotelName: '스카이베이호텔 경포', reviewAvg: 4.1, reviewCnt: 1220, oriPrice: 405000, discount: 5, discountPrice: 100000 }
+        ]
+    },
+
+    ];
+
     return (
         <div className='home--container'>
             <div className='logo'>
@@ -39,19 +97,18 @@ export default function Home() {
 
             <EventCarousel images={images} />
 
-            <h2>인기호텔</h2>
+            <h2><span className='popular--hotel'>최근 HOT</span> 인기호텔</h2>
             <CardCarousel hotelList={hotelList} />
 
             <h2>국내 인기 여행지</h2>
-            <div>국내 인기 여행지 리스트</div>
+            <MetropolitanCarousel metropolitanList={metropolitanList} />
 
             <h2>여행지별 숙소</h2>
-            <div>
-                여행지별 숙소리스트
-            </div>
+            <MetropolitanHotelCarousel metropolitanHotelList={metropolitanHotelList} />
 
-            <h2>What?! 특가야 가자</h2>
-            <div>특가 캐러셀</div>
+
+            <h2><span className='sale--hotel'>What?!</span> 특가야 가자</h2>
+            <CardCarousel hotelList={hotelList} />
 
             <div>
                 푸터
