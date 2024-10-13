@@ -54,7 +54,7 @@ export default function HotelList() {
   // 무한 스크롤
   const [ref, inView] = useInView();
   const [page, setPage] = useState(1);
-  
+
   const [hotels, setHotels] = useState([]);
 
   // 더미 데이터 생성 함수
@@ -102,7 +102,7 @@ export default function HotelList() {
   // 슬라이더
   const [minValue, setMinValue] = useState(0); // 초기 최소값
   const [maxValue, setMaxValue] = useState(500000); // 초기 최대값
-  
+
   // 버튼
   const rankBtn = ['5성급', '4성급', '블랙', '리조트', '가족호텔'];
   const bedBtn = ['싱글', '더블', '트윈', '온돌'];
@@ -139,13 +139,13 @@ export default function HotelList() {
         <Modal.Header>
           <Modal.Title>필터</Modal.Title>
           <div>초기화<CiRedo /></div>
-          
+
         </Modal.Header>
         <Modal.Body>
           <Form>
             <div className='SoldOutF border-bottom pb-3 mb-3 d-flex'>
               <span>매진 숙소 제외</span>
-              <Form.Check type="switch" id="custom-switch"/>
+              <Form.Check type="switch" id="custom-switch" />
             </div>
 
             <div className='PriceF border-bottom pb-3 mb-3'>
@@ -161,7 +161,7 @@ export default function HotelList() {
                 onChange={(values) => {
                   const newMin = Math.max(values[0], 0); // 최소값은 0으로 제한
                   const newMax = Math.min(values[1], 500000); // 최대값은 500,000으로 제한
-                  
+
                   // 왼쪽 슬라이더는 오른쪽 슬라이더보다 50,000 작게 설정
                   if (newMax - 50000 >= newMin) {
                     setMinValue(newMin); // 왼쪽 슬라이더 값 업데이트
@@ -187,7 +187,7 @@ export default function HotelList() {
                         right: `${(500000 - maxValue) / 500000 * 100}%`, // 오른쪽 핸들의 위치
                         backgroundColor: '#007bff',
                         transition: 'left 0.2s ease, right 0.2s ease'
-                        
+
                       }}
                     />
                     {children} {/* 슬라이더 핸들 */}
@@ -199,18 +199,18 @@ export default function HotelList() {
                     style={{
                       height: '16px',
                       width: '16px',
-                      backgroundColor: '#ffffff', 
-                      borderRadius: '50%', 
-                      cursor: 'pointer', 
-                      position: 'absolute', 
-                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)', 
+                      backgroundColor: '#ffffff',
+                      borderRadius: '50%',
+                      cursor: 'pointer',
+                      position: 'absolute',
+                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
                       transition: 'transform 0.2s ease'
                     }}
                   >
                   </div>
                 )}
               />
-              
+
             </div>
             <div className='EventF border-bottom pb-3 mb-3'>
               <p>할인혜택</p>
@@ -220,7 +220,7 @@ export default function HotelList() {
             <div className='RankF border-bottom pb-3 mb-3'>
               <p>등급</p>
               {rankBtn.map(name => (
-                <input type='button' value={name} key={name} name={name} id='BtnF'/>
+                <input type='button' value={name} key={name} name={name} id='BtnF' />
               ))}
             </div>
 
