@@ -28,6 +28,7 @@ public class Hotel {
 	private String hotel_rating;		// 호텔등급
 	private String hotel_adress;		// 호텔주소
 	private String hotel_tourist_attraction;	// 호텔관광명소
+	@Lob
 	private String hotel_introduction;			// 호텔소개
 
 	@ManyToMany(mappedBy = "hotels") // Cart 엔티티와의 관계 설정

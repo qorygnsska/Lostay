@@ -51,3 +51,13 @@ public class User {
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL) // room 엔티티와의 관계 설정
 	private Set<Point> points; // 포인트 목록
 }
+
+
+
+
+
+
+
+
+
+
