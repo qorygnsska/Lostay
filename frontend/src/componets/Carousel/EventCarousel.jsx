@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
-import './EventCarousel.css'
 
 export default function Carousel({ images }) {
 
@@ -29,10 +28,10 @@ export default function Carousel({ images }) {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 4,
+        slidesToShow: 3,
         slidesToScroll: 1,
         autoplay: true,
-        autoplaySpeed: 1000,
+        autoplaySpeed: 3000,
         arrows: false,
         beforeChange: handleBeforeChange,
     };
@@ -44,7 +43,7 @@ export default function Carousel({ images }) {
             <Slider ref={sliderRef} {...settings}>
                 {images.map((image, index) => (
                     <div key={index}>
-                        <a href="#">
+                        <a href="https://example.com">
                             <img src={`eventList/${image}`} alt={`슬라이드 ${index + 1}`} />
                         </a>
                     </div>

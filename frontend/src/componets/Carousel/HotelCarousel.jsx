@@ -2,13 +2,13 @@ import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
-import './CardCarousel.css'; // CSS 파일 임포트
 
 export default function CardCarousel({ hotelList }) {
 
     const sliderRef = useRef(null);
     const [currentSlide, setCurrentSlide] = useState(0);
     const slideShowCtn = 3
+    const totalSlides = hotelList.length;
 
 
 
@@ -18,8 +18,7 @@ export default function CardCarousel({ hotelList }) {
 
     const settings = {
         dots: false,
-        infinite: true,
-        speed: 500,
+        infinite: false,
         slidesToShow: slideShowCtn,
         slidesToScroll: 1,
         arrows: false,
@@ -29,11 +28,11 @@ export default function CardCarousel({ hotelList }) {
 
 
     return (
-        <div className="card--carousle--container">
+        <div className="hotel--carousle--container">
             <Slider ref={sliderRef} {...settings}>
                 {hotelList.map((hotel, index) => (
-                    <div key={index} className="slick-slide">
-                        <a href="#">
+                    <div key={index} >
+                        <a href="https://example.com">
                             <img src={`eventList/${hotel.image}`} alt={`슬라이드 ${index + 1}`} className="carousel-image" />
                             <div className="hotel--info--wrap">
                                 <div className="hotel--info">
@@ -48,7 +47,7 @@ export default function CardCarousel({ hotelList }) {
                                     <div>
                                         <div className="review--wrap">
                                             <FaStar className='star--Icon' />
-                                            <span>{hotel.reviewAvg}</span>
+                                            <span><strong>{hotel.reviewAvg}</strong></span>
                                             <span>({hotel.reviewCnt})</span>
                                         </div>
                                     </div>
@@ -60,11 +59,11 @@ export default function CardCarousel({ hotelList }) {
                                         hotel.discount !== 0
                                             ? <div className="hotel--discount--price--wrap">
                                                 <span>{hotel.discount}%</span>
-                                                <span>{hotel.discountPrice.toLocaleString()}</span>
+                                                <span>{hotel.discountPrice.toLocaleString()}원</span>
                                             </div>
                                             : null
                                     }
-                                    <strng>{hotel.oriPrice.toLocaleString()}~</strng>
+                                    <strong>{hotel.oriPrice.toLocaleString()}원~</strong>
                                 </div>
                             </div>
 
@@ -81,7 +80,7 @@ export default function CardCarousel({ hotelList }) {
                     </button>
                     : <div></div>
                 }
-                {currentSlide < hotelList.length - slideShowCtn && ( // slidesToShow 수에 따라 조정
+                {currentSlide < totalSlides - slideShowCtn && ( // slidesToShow 수에 따라 조정
                     <button onClick={() => sliderRef.current.slickNext()} className="arrow-button">
                         <FaChevronRight className="arrow" />
                     </button>

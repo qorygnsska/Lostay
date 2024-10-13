@@ -1,0 +1,79 @@
+.metropolitan--carousel--container {
+
+    position: relative;
+
+    .slick-slide {
+        padding-left: 4px;
+
+        .image--box {
+            position: relative;
+
+            img {
+                border-radius: 8px;
+                width: 140px;
+                height: 135px;
+            }
+
+            .overlay {
+                position: absolute;
+                width: 140px;
+                height: 135px;
+                border-radius: 8px;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(211, 211, 211, 0.2);
+                /* 반투명 검은색 배경 */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                /* 텍스트 색상 */
+                font-size: 25px;
+                /* 텍스트 크기 */
+                font-weight: bold;
+                opacity: 0.9;
+
+                .text {
+                    opacity: 1;
+                }
+            }
+        }
+
+    }
+
+    .moveBtn {
+        position: absolute;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        top: 40%;
+
+
+        .arrow {
+            width: 15px;
+            height: 15px;
+        }
+    }
+
+    .moveBtn button {
+        background: #fff;
+        border: 1px solid black;
+        cursor: pointer;
+        border-radius: 100%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .moveBtn button:nth-child(1) {
+        transform: translateX(-12px);
+    }
+
+    .moveBtn button:nth-child(2) {
+        transform: translateX(12px);
+    }
+}
