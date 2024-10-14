@@ -3,9 +3,11 @@ import { IoSearchOutline } from "react-icons/io5";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import EventCarousel from '../../componets/Carousel/EventCarousel';
-import CardCarousel from '../../componets/Carousel/HotelCarousel';
+import HotelCarousel from '../../componets/Carousel/HotelCarousel';
 import MetropolitanCarousel from '../../componets/Carousel/MetropolitanCarousel';
 import MetropolitanHotelCarousel from '../../componets/Carousel/MetropolitanHotelCarousel';
+import Footer from '../../componets/Footer/Footer';
+import Navbar from '../../componets/Navbar/Navbar';
 
 export default function Home() {
 
@@ -98,7 +100,7 @@ export default function Home() {
             <EventCarousel images={images} />
 
             <h2><span className='popular--hotel'>최근 HOT</span> 인기호텔</h2>
-            <CardCarousel hotelList={hotelList} />
+            <HotelCarousel hotelList={hotelList} />
 
             <h2>국내 인기 여행지</h2>
             <MetropolitanCarousel metropolitanList={metropolitanList} />
@@ -108,12 +110,15 @@ export default function Home() {
 
 
             <h2><span className='sale--hotel'>What?!</span> 특가야 가자</h2>
-            <CardCarousel hotelList={hotelList} />
+            <HotelCarousel hotelList={hotelList} />
 
             <div>
-                푸터
+                <Footer />
             </div>
 
+            <div className='navbar'>
+                <Navbar />
+            </div>
         </div>
     )
 }

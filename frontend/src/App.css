@@ -15,9 +15,12 @@
   --lightGrayColor: #a1a1a1;
   --lightGrayColor2: #828282;
   --lightGrayColor3: #6d6d6d;
+  --footerBackgroundColor: #d2d2d2;
+  --navbarBackgroundColor: hsla(0, 0%, 100%, .9);
   --regularBlueColor: #0386ff;
   --ligthBuleColor: #e6eefa;
-  --redColor : #FF0303;
+  --redColor: #FF0303;
+
 
 
 }
@@ -28,6 +31,6 @@
   margin: auto;
 }
 
-ul{
+ul {
   list-style: none;
 }

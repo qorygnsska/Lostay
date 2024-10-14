@@ -1,0 +1,42 @@
+.footer--container {
+    margin-top: 50px;
+    padding: 30px 16px 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    background-color: var(--footerBackgroundColor);
+
+    h1 {
+        font-weight: bold;
+        color: var(--lightGrayColor3);
+        font-size: 30px;
+    }
+
+    .footer-info {
+        p {
+            margin-bottom: 4px;
+            color: var(--lightGrayColor2);
+            font-weight: 500;
+        }
+    }
+
+    .footer--service--btn {
+        display: flex;
+        gap: 20px;
+
+        a {
+            button {
+                padding: 2px 8px;
+                background-color: var(--footerBackgroundColor);
+                border: 1px solid var(--lightGrayColor2);
+                color: var(--lightGrayColor3);
+                font-weight: bold;
+            }
+        }
+
+    }
+
+    .footer--company {
+        color: var(--lightGrayColor3);
+    }
+}
