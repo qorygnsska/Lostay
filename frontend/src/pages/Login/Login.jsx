@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import "./Login.css";
-import BackHeader from '../../componets/BackNav/BackNav';
+import BackNav from '../../componets/BackNav/BackNav';
+import Navbar from '../../componets/Navbar/Navbar';
 
 
 export default function Login() {
@@ -32,9 +33,9 @@ export default function Login() {
     }, []); // 의존성 배열이 비어 있어 컴포넌트가 마운트될 때만 실행
 
     return (
-        <>
+        <div className='login--container'>
             <diV>
-                <BackHeader title='로그인' />
+                <BackNav title='로그인' />
             </diV>
 
             <div className='loginWrap'>
@@ -56,7 +57,11 @@ export default function Login() {
                     <span>Google로 시작하기</span>
                 </button>
             </div>
-        </>
+
+            <div>
+                <Navbar />
+            </div>
+        </div>
 
     );
 }

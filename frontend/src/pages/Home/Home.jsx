@@ -41,6 +41,7 @@ export default function Home() {
 
 
     const metropolitanHotelList = [{
+        id: 1,
         metropolitan: '인천',
         hotelList: [{ image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '인천1', hotelName: '구월 호텔반월', reviewAvg: 4.9, reviewCnt: 122, oriPrice: 208000, discount: 8, discountPrice: 100000 },
         { image: '66fac140e8c113.870765961_1.png', hotelRating: '인천2', hotelName: '롯데 시티호텔 울산', reviewAvg: 4.7, reviewCnt: 3015, oriPrice: 72800, discount: 0, discountPrice: 100000 },
@@ -51,6 +52,7 @@ export default function Home() {
         ]
     },
     {
+        id: 2,
         metropolitan: '대전',
         hotelList: [{ image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '대전1', hotelName: '구월 호텔반월', reviewAvg: 4.9, reviewCnt: 122, oriPrice: 208000, discount: 8, discountPrice: 100000 },
         { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '대전2', hotelName: '롯데 시티호텔 울산', reviewAvg: 4.7, reviewCnt: 3015, oriPrice: 72800, discount: 0, discountPrice: 100000 },
@@ -61,6 +63,7 @@ export default function Home() {
         ]
     },
     {
+        id: 3,
         metropolitan: '부산',
         hotelList: [{ image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '부산1', hotelName: '구월 호텔반월', reviewAvg: 4.9, reviewCnt: 122, oriPrice: 208000, discount: 8, discountPrice: 100000 },
         { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '5등급', hotelName: '롯데 시티호텔 울산', reviewAvg: 4.7, reviewCnt: 3015, oriPrice: 72800, discount: 0, discountPrice: 100000 },
@@ -71,6 +74,7 @@ export default function Home() {
         ]
     },
     {
+        id: 4,
         metropolitan: '대구',
         hotelList: [{ image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '대구1', hotelName: '구월 호텔반월', reviewAvg: 4.9, reviewCnt: 122, oriPrice: 208000, discount: 8, discountPrice: 100000 },
         { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '대구2', hotelName: '롯데 시티호텔 울산', reviewAvg: 4.7, reviewCnt: 3015, oriPrice: 72800, discount: 0, discountPrice: 100000 },
@@ -116,7 +120,7 @@ export default function Home() {
                 <Footer />
             </div>
 
-            <div className='navbar'>
+            <div>
                 <Navbar />
             </div>
         </div>

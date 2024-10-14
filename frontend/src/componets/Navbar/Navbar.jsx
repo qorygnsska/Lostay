@@ -7,7 +7,7 @@ export default function Navbar() {
     return (
         <div className='navbar--container'>
             <div className='navbar--wrap'>
-                <Link to="/ff" className='link'>
+                <Link to="/wishlist" className='link'>
                     <FaRegHeart className='icon' />
                 </Link>
 
