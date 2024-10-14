@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,11 +31,11 @@ public class Review {
 	private Long reviewNo;						// 리뷰넘버
 	
 	@JoinColumn(name = "roomNo", nullable = false)
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Room room;						// 객실넘버 외래키
 	
 	@JoinColumn(name = "userNo", nullable = false)
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private User user;						// 회원넘버 외래키
 	
 	private int reviewRating;					// 리뷰별점
