@@ -1,0 +1,29 @@
+.comp--admin--btn--container {
+    /* AdminBtn 컴포넌트*/
+
+    border: none;
+}
+
+.comp--admin--btn--container:hover {
+    /* AdminBtn 컴포넌트:hover*/
+
+    color: red;
+    font-weight: bold;
+}
+
+.comp--admin--search--container {
+    /* AdminSearch 컴포넌트*/
+
+    display: flex;
+
+
+    #input_search {}
+
+    #btn_search {
+        width: 50px;
+
+        padding: 0;
+    }
+
+
+}

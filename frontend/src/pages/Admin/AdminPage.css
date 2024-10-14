@@ -1,0 +1,67 @@
+.page--admin--home--container {
+    width: 100%;
+    position: absolute;
+    left: 0;
+
+
+
+    h1 {
+        color: red;
+    }
+}
+
+
+
+.page--event--manager--container {
+    /* 관리자 이벤트페이지 */
+
+    h1 {
+        color: blue;
+    }
+
+    
+    #btn_enroll {
+
+    }
+
+
+
+    #table_header {
+        text-align: center;
+    }
+
+    #table_body {
+        text-align: center;
+    }
+
+    .btn_container {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+
+
+}
+
+
+
+.page--review--manager--container {
+    /* 관리자 리뷰페이지 */
+
+    h1 {
+        color: green;
+    }
+
+}
+
+
+
+.page--user--manager--container {
+    /* 관리자 사용자페이지 */
+
+    h1 {
+        color: red;
+    }
+
+
+}

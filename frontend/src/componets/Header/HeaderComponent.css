@@ -1,0 +1,36 @@
+.comp--header--admin--container {
+    /*HeaderAdmin 컴포넌트*/
+
+    /* margin: 0 !important;
+    padding: 0 !important; */
+
+    #container_navbar {
+        /* margin: 0 !important;
+        padding: 0 !important; */
+    }
+
+    #brand_navbar_admin {
+        color: #fb6969;
+    }
+
+
+    #btn_container {
+        align-self: center;
+    }
+
+
+
+
+
+
+}
+
+
+.comp--header--general--container {
+    /*HeaderGeneral 컴포넌트*/
+
+    p {
+
+        color: blue;
+    }
+}

@@ -1,0 +1,19 @@
+.page--event--detail--container {
+    /* 이벤트 상세페이지 */
+
+    h1 {
+
+        color: red;
+    }
+
+}
+
+.page--event--list--container {
+    /* 이벤트 리스트페이지 */
+
+    h1 {
+        color: blue;
+
+    }
+
+}
