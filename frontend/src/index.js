@@ -16,7 +16,8 @@ import PageAdminHome from './pages/Admin/PageAdminHome'; //관리자 홈 페이�
 import PageEventManager from './pages/Admin/PageEventManager'; //이벤트관리 페이지
 import PageReviewManager from './pages/Admin/PageReviewManager'; //리뷰관리 페이지
 import PageUserManager from './pages/Admin/PageUserManager'; //사용자관리 페이지
-
+import MyPage from './pages/MyPage/MyPage'; // 마이 페이지
+import WishList from './pages/Wish/WishList';
 
 
 
@@ -30,14 +31,15 @@ const router = createBrowserRouter([
       { path: '/login', element: <Login /> },
       { path: '/hotelList', element: <HotelList /> },
       { path: '/login-popup', element: <LoginPopup /> },
-      { path: '/event-list', element: <PageEventList/>},
-      { path: '/event-detail', element: <PageEventDetail />},
-      { path: '/admin-home', element: <PageAdminHome />},
-      { path: '/admin-event', element: <PageEventManager />},
-      { path: '/admin-review', element: <PageReviewManager />},
-      { path: '/admin-user', element: <PageUserManager />}
+      { path: '/event-list', element: <PageEventList /> },
+      { path: '/event-detail', element: <PageEventDetail /> },
+      { path: '/admin-home', element: <PageAdminHome /> },
+      { path: '/admin-event', element: <PageEventManager /> },
+      { path: '/admin-review', element: <PageReviewManager /> },
+      { path: '/admin-user', element: <PageUserManager /> },
+      { path: '/mypage', element: <MyPage /> },
+      { path: '/wishlist', element: <WishList /> },
 
-      
       // {
       //   path: '/products/new',
       //   element: <NewProduct />,

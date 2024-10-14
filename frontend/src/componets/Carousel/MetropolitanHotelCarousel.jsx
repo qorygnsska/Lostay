@@ -36,7 +36,7 @@ export default function MetropolitanHotelCarousel({ metropolitanHotelList }) {
         <div className="metropolitan--hotel--carousle--container">
             <ul className="metroplitan--name--list">
                 {metropolitanHotelList.map((metropolitan, index) => (
-                    <li key={metropolitan.metropolitan}>
+                    <li key={index}>
                         <button
                             className={activeIndex === index ? 'active' : ''} // active 클래스 추가
                             onClick={() => handleButtonClick(index)}
@@ -48,11 +48,11 @@ export default function MetropolitanHotelCarousel({ metropolitanHotelList }) {
             </ul>
 
             <Slider ref={sliderRef} {...settings}>
-                {metropolitanHotelList.map((metropolitanHotel) =>
-                    <div className="hotel--list--wrap">
+                {metropolitanHotelList.map((metropolitanHotel, metropolitanHotelIndex) =>
+                    <div key={metropolitanHotelIndex} className="hotel--list--wrap">
                         {metropolitanHotel.hotelList.map((hotel, hotelIndex) => (
-                            <a href="ex.com">
-                                <div key={hotelIndex} className="hotel--list--info">
+                            <a key={hotelIndex} href="ex.com">
+                                <div className="hotel--list--info">
 
                                     <img src={`eventList/${hotel.image}`} alt={`슬라이드`} className="carousel-image" />
                                     <div className="hotel--info--wrap">

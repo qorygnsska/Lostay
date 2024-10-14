@@ -48,9 +48,4 @@
     .sale--hotel {
         color: var(--redColor);
     }
-
-    .navbar {
-        position: relative;
-    }
-
 }
