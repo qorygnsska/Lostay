@@ -1,10 +1,28 @@
 .comp--header--admin--container {
     /*HeaderAdmin 컴포넌트*/
 
-    p {
+    /* margin: 0 !important;
+    padding: 0 !important; */
 
-        color: red;
+    #container_navbar {
+        /* margin: 0 !important;
+        padding: 0 !important; */
     }
+
+    #brand_navbar_admin {
+        color: #fb6969;
+    }
+
+
+    #btn_container {
+        align-self: center;
+    }
+
+
+
+
+
+
 }
 
 

@@ -1,9 +1,39 @@
+.page--admin--home--container {
+
+    h1 {
+        color: red;
+    }
+}
+
+
 .page--event--manager--container {
     /* 관리자 이벤트페이지 */
 
     h1 {
         color: blue;
     }
+
+    #table_header {
+        text-align: center;
+    }
+
+    #table_body {
+        text-align: center;
+    }
+
+    .btn_container {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .btn_manager {
+        border: none;
+    }
+
+    .btn_manager:hover {
+        color: red;
+    }
+
 
 }
 
@@ -16,7 +46,7 @@
 
 }
 
-.page--user-manager--container {
+.page--user--manager--container {
     /* 관리자 사용자페이지 */
 
     h1 {
