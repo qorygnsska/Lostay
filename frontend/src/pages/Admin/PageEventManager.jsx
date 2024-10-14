@@ -3,19 +3,33 @@ import CompEventInserter from '../../componets/Event/CompEventInserter'
 import CompEventUpdater from '../../componets/Event/CompEventUpdater'
 import CompHeaderAdmin from '../../componets/Header/CompHeaderAdmin'
 import { Button, Table } from 'react-bootstrap'
-import CompSearchBoxAdmin from '../../componets/Search/CompSearchBoxAdmin'
+import CompAdminBtn from '../../componets/Admin/CompAdminBtn'
+import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
+
+
 
 export default function PageEventManager() {
+
+    const enrollEvent = () => {
+
+        console.log('click_enroll_event');
+        
+    }
+
+
     return (
         <>
             <div className='page--event--manager--container'>
                 <CompHeaderAdmin />
+
                 <h1>PageEventManager</h1>
 
+                <div className='d-flex justify-content-between mb-3'>
+                <Button id="btn_enroll" variant="outline-success" size="sm" type="button" onClick={enrollEvent}>이벤트 등록</Button>
+                <CompAdminSearch />
+                </div>
 
-                
-                <CompSearchBoxAdmin />
-                <Table striped bordered hover>
+                <Table striped bordered hover id='table_entire_event'>
                     <thead id="table_header">
                         <tr>
                             <th>#</th>
@@ -30,8 +44,8 @@ export default function PageEventManager() {
                             <td>이벤트 제목1</td>
                             <td>24.10.14. ~ 24.10.21.</td>
                             <td className='btn_container'>
-                                <button className="btn_manager">수정</button>
-                                <button className="btn_manager">삭제</button>
+                                <CompAdminBtn>수정</CompAdminBtn>
+                                <CompAdminBtn>삭제</CompAdminBtn>
                             </td>
                         </tr>
                     </tbody>

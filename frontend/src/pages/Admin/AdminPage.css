@@ -13,6 +13,13 @@
         color: blue;
     }
 
+    
+    #btn_enroll {
+
+    }
+
+
+
     #table_header {
         text-align: center;
     }
@@ -26,13 +33,6 @@
         justify-content: space-evenly;
     }
 
-    .btn_manager {
-        border: none;
-    }
-
-    .btn_manager:hover {
-        color: red;
-    }
 
 
 }

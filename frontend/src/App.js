@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import './App.css';
 
 // CustomCSS for components
+import '../src/componets/Admin/AdminComponent.css'
 import '../src/componets/BackNav/BackNav.css'
 import '../src/componets/Carousel/HotelCarousel.css'
 import '../src/componets/Carousel/EventCarousel.css'
