@@ -10,6 +10,7 @@ import com.lostay.backend.room.entity.Room;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
@@ -35,7 +36,8 @@ public class Hotel {
 	@ManyToMany(mappedBy = "hotels") // Cart 엔티티와의 관계 설정
     private Set<Cart> carts;           // 카트 목록
 	
-	@OneToMany(mappedBy = "hotel") // Room 엔티티와의 관계 설정
+	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY) // Room 엔티티와의 관계 설정
+	@ToString.Exclude
 	private Set<Room> rooms; // 카트 목록
 	
 }
