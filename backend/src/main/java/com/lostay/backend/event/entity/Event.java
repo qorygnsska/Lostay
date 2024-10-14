@@ -10,8 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -19,11 +21,11 @@ public class Event {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long event_no;						// 이벤트넘버
+	private Long eventNo;						// 이벤트넘버
 	
-	private LocalDateTime event_create_At;		// 시작날짜
-	private LocalDateTime event_end_At;			// 마감날짜
+	private LocalDateTime eventCreateAt;		// 시작날짜
+	private LocalDateTime eventEndAt;			// 마감날짜
 	@Lob
-	private String event_img;					// 이벤트이미지
-	private String event_title;					// 이벤트제목
+	private String eventImg;					// 이벤트이미지
+	private String eventTitle;					// 이벤트제목
 }

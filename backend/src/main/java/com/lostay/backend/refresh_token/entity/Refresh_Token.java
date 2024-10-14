@@ -12,8 +12,10 @@ import javax.persistence.OneToOne;
 import com.lostay.backend.user.entity.User;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -21,11 +23,11 @@ public class Refresh_Token {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long rt_no;		// 토큰넘버
+	private Long rtNo;		// 토큰넘버
 	
-	@JoinColumn(name = "user_no" , nullable = false)
+	@JoinColumn(name = "userNo" , nullable = false)
 	@OneToOne(cascade = CascadeType.ALL)
 	private User user;	// 회원넘버 외래키
 	
-	private int rt_token;	// 리프레쉬토큰
+	private int rtToken;	// 리프레쉬토큰
 }

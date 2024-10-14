@@ -11,9 +11,10 @@ import com.lostay.backend.refresh_token.entity.Refresh_Token;
 import com.lostay.backend.review.entity.Review;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -22,17 +23,17 @@ public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long user_no;       // 회원넘버
+	private Long userNo;       // 회원넘버
 	
-	private String user_name;		// 회원이름
-	private String user_nickname;	// 회원닉네임
-	private String user_email;		// 회원이메일
-	private String user_phone;		// 전화번호
-	private int user_point;			// 회원포인트
-	private String user_role;		// 역할
-	private String user_status;		// 탈퇴여부
-	private String user_create_At;	// 가입일자
-	private String user_token;		// 소셜토큰
+	private String userName;		// 회원이름
+	private String userNickname;	// 회원닉네임
+	private String userEmail;		// 회원이메일
+	private String userPhone;		// 전화번호
+	private int userPoint;			// 회원포인트
+	private String userRole;		// 역할
+	private String userStatus;	// 탈퇴여부
+	private String userCreateAt;	// 가입일자
+	private String userToken;		// 소셜토큰
 	 
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL) // Cart 엔티티와의 관계 설정

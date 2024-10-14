@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CartDTO {
 
-	private Long cart_no;		// 찜넘버
+	private Long cartNo;		// 찜넘버
 	 
-	private Long user_no;		// 회원넘버
-	private Long hotel_no; 		// 호텔넘버
+	private Long userNo;		// 회원넘버
+	private Long hotelNo; 		// 호텔넘버
 }

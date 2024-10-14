@@ -1,9 +1,14 @@
-package com.lostay.backend.discount.entity;
+package com.lostay.backend.location.entity;
+
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.lostay.backend.cart.entity.Cart;
+import com.lostay.backend.room.entity.Room;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,12 +18,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Discount {
+public class Location {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long disNo;			// 할인넘버
+	private Long locationNo;
 	
-	private String disCategory;	// 결제유형
-	private double disRate;		// 할인율(pay에 관한 할인)
+	private String locationName;
+	private String locationImage;
 }
