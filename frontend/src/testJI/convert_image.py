@@ -22,5 +22,5 @@ def convert_images_to_webp(folder_path):
                     print(f"Error processing {filename}: {e}")
 
 # 사용 예시
-folder_path = 'C:/Users/user/Desktop/jejudo'  # 변환할 이미지 폴더 경로
+folder_path = 'C:/Users/user/Desktop/jejudo/jejudo'  # 변환할 이미지 폴더 경로
 convert_images_to_webp(folder_path)
