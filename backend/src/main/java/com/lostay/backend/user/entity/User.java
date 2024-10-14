@@ -13,6 +13,7 @@ import com.lostay.backend.review.entity.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
@@ -36,20 +37,25 @@ public class User {
 	private String userToken;		// 소셜토큰
 	 
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL) // Cart 엔티티와의 관계 설정
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Cart 엔티티와의 관계 설정
+    @ToString.Exclude
     private Set<Cart> carts; // 카트 목록
     
 	
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL) // room 엔티티와의 관계 설정
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
+	@ToString.Exclude
 	private Set<Review> reviews; // 리뷰 목록
 	
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL) // room 엔티티와의 관계 설정
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
+	@ToString.Exclude
 	private Set<Payment> payments; // 결제 목록
 	
-	@OneToOne(mappedBy = "user",cascade = CascadeType.ALL) // room 엔티티와의 관계 설정
+	@OneToOne(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
+	@ToString.Exclude
 	private Refresh_Token refresh_tokens; // 리프레쉬 토큰 목록
 	
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL) // room 엔티티와의 관계 설정
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
+	@ToString.Exclude
 	private Set<Point> points; // 포인트 목록
 }
 

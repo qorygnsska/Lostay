@@ -3,6 +3,7 @@ package com.lostay.backend.refresh_token.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +27,7 @@ public class Refresh_Token {
 	private Long rtNo;		// 토큰넘버
 	
 	@JoinColumn(name = "userNo" , nullable = false)
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private User user;	// 회원넘버 외래키
 	
 	private int rtToken;	// 리프레쉬토큰
