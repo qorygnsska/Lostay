@@ -16,8 +16,10 @@ import com.lostay.backend.room.entity.Room;
 import com.lostay.backend.user.entity.User;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -25,19 +27,19 @@ public class Review {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long review_no;						// 리뷰넘버
+	private Long reviewNo;						// 리뷰넘버
 	
-	@JoinColumn(name = "room_no", nullable = false)
+	@JoinColumn(name = "roomNo", nullable = false)
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Room room;						// 객실넘버 외래키
 	
-	@JoinColumn(name = "user_no", nullable = false)
+	@JoinColumn(name = "userNo", nullable = false)
 	@ManyToOne(cascade = CascadeType.ALL)
 	private User user;						// 회원넘버 외래키
 	
-	private int review_rating;					// 리뷰별점
-	private String review_content;				// 리뷰내용
+	private int reviewRating;					// 리뷰별점
+	private String reviewContent;				// 리뷰내용
 	@Lob
-	private String review_img;					// 리뷰이미지
-	private LocalDateTime review_create_At;		// 작성날짜
+	private String reviewImg;					// 리뷰이미지
+	private LocalDateTime reviewCreateAt;		// 작성날짜
 }

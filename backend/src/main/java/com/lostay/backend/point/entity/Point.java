@@ -13,8 +13,10 @@ import javax.persistence.ManyToOne;
 import com.lostay.backend.user.entity.User;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -22,12 +24,12 @@ public class Point {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long point_no;				// 포인트넘버
+	private Long pointNo;				// 포인트넘버
 	
-	@JoinColumn(name = "user_no", nullable = false)
+	@JoinColumn(name = "userNo", nullable = false)
 	@ManyToOne(cascade = CascadeType.ALL)
 	private User user;			// 회원넘버(포인트) 외래키
 	
-	private LocalDateTime point_day;	// 포인트(적립,사용)날짜
-	private int point_plus_minus;		// 포인트증감
+	private LocalDateTime pointDay;	// 포인트(적립,사용)날짜
+	private int pointPlusMinus;		// 포인트증감
 }

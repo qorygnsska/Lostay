@@ -19,8 +19,10 @@ import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.room.entity.Room;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -28,13 +30,13 @@ public class Reservation {
 
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long reservation_no; // 예약넘버
+	    private Long reservationNo; // 예약넘버
 
-	    @JoinColumn(name = "pay_no", nullable = false) // 결제번호 외래키
+	    @JoinColumn(name = "payNo", nullable = false) // 결제번호 외래키
 	    @OneToOne(cascade = CascadeType.ALL)
 	    private Payment payment;
 
-	    private LocalDateTime check_in; // 체크인날짜
-	    private LocalDateTime check_out; // 체크아웃날짜
+	    private LocalDateTime checkIn; // 체크인날짜
+	    private LocalDateTime checkOut; // 체크아웃날짜
 	
 }
