@@ -4,7 +4,7 @@ export default function CompEventUpdater() {
     return (
         <>
             <div className='comp--event--updater--container'>
-                <p>CompEventUpdater</p>
+                <p>CompEventUpdaterMoadl</p>
             </div>
         </>
 

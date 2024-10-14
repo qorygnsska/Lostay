@@ -4,7 +4,7 @@ export default function CompEventInserter() {
     return (
         <>
             <div className='comp--event--inserter--container'>
-                <p>CompEventInserter</p>
+                <p>CompEventInserterModal</p>
             </div>
         </>
 

@@ -1,0 +1,24 @@
+.comp--admin--btn--container {
+    border: none;
+}
+
+.comp--admin--btn--container:hover {
+    color: red;
+    font-weight: bold;
+}
+
+.comp--admin--search--container {
+    display: flex;
+
+    #input_search {
+
+    }
+
+    #btn_search {
+        width: 50px;
+
+        padding: 0;
+    }
+
+
+}

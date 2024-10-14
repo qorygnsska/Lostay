@@ -1,0 +1,94 @@
+.wishList--component--container {
+    padding: 10px 10px;
+
+
+    a {
+        text-decoration: none;
+        color: black;
+
+
+        .wishList--wrap {
+            display: flex;
+            gap: 20px;
+            padding-bottom: 20px;
+
+
+            img {
+                width: 160px;
+                height: 170px;
+                border-radius: 10px;
+            }
+
+            .wishList--box {
+                flex: 1 2;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                .hotel--info {
+                    display: flex;
+                    flex-direction: column;
+
+                    .review--wrap {
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+
+                        .star--Icon {
+                            color: rgb(248, 183, 43);
+                        }
+                    }
+                }
+
+                .hotel--info>div:nth-child(1) {
+                    font-size: 15px;
+                    color: var(--lightGrayColor2)
+                }
+
+                .hotel--info>div:nth-child(2) {
+                    font-weight: bold;
+                    font-size: 18px;
+                }
+
+                .hotel--info>div:nth-child(3) {
+                    font-size: 15px;
+                }
+
+                .hotel--price--wrap {
+                    display: flex;
+                    justify-content: end;
+                    gap: 5px;
+                    margin-top: 20px;
+                    align-items: end;
+
+                    .hotel--discount--price--wrap {
+                        display: flex;
+                        flex-direction: column;
+
+                        span {
+                            color: var(--lightGrayColor2);
+                        }
+                    }
+
+
+                    .hotel--discount--price--wrap>span:nth-child(1) {
+                        font-size: 14px;
+                    }
+
+                    .hotel--discount--price--wrap>span:nth-child(2) {
+                        text-decoration: line-through;
+
+                    }
+
+
+                }
+
+            }
+        }
+
+        .wishList--wrap:last-child {
+            border-bottom: 1px solid var(--lightGrayColor2);
+        }
+
+    }
+}
