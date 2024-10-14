@@ -11,7 +11,9 @@ import { CiRedo } from "react-icons/ci";
 import { Range } from 'react-range'; // 슬라이더
 import { useInView } from 'react-intersection-observer'; // 무한 스크롤
 import 'bootstrap/dist/css/bootstrap.css'
-export default function HotelList() {
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+export default function HotelList(props) {
 
   // const [hotels, setHotels] = useState([]);
 
@@ -125,23 +127,63 @@ export default function HotelList() {
     '장애인편의'
   ];
 
+
+  // 버튼 췍
+  const [activeButtons, setActiveButtons] = useState([]);
+
+  const handleButtonClick = (name) => {
+    if (activeButtons.includes(name)) {
+      // 이미 선택된 버튼 클릭 시 비활성화
+      setActiveButtons(activeButtons.filter(button => button !== name));
+    } else {
+      // 새로운 버튼 클릭 시 활성화
+      setActiveButtons([...activeButtons, name]);
+    }
+  };
+
+  // 드롭다운
+  const [selectedOption, setSelectedOption] = useState('평점 높은 순');
+
+  const drop = [
+    '평점 높은 순', '리뷰 많은 순', '낮은 가격 순', '높은 가격 순'
+  ];
+
+  const handleSelect = (eventKey) => {
+    setSelectedOption(eventKey);
+  };
+  
+
   return (
     <Container className='hotel--list'>
 
       <div className='HotelFilter'>
-        <div className='SearchCount'>'제주도' 검색 결과 158개</div>
-        <div onClick={handleShow} className='FilterIcon'>
-          <FaFilter /> 필터
+        <div className='FilterBox'>
+          <div className='SearchCount'>'제주도' 검색 결과 158개</div>
+          <div onClick={handleShow} className='FilterIcon'>
+            <FaFilter /> 필터
+          </div>
+        </div>
+        <div className='DropFilter'>
+          <DropdownButton id="dropdown-basic-button" title={selectedOption} onSelect={handleSelect}>
+            {drop.map(option => (
+              <Dropdown.Item key={option} eventKey={option} className={selectedOption === option ? 'active' : ''}>
+               {option}
+              </Dropdown.Item>
+            ))}
+          </DropdownButton>
         </div>
       </div>
 
-      <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false} className='Filter'>
-        <Modal.Header>
+      <Modal show={show} onHide={handleClose} keyboard={false} scrollable={true} className='hotel--list--Filter'
+        {...props}
+        size='lg'
+      >
+        <Modal.Header className='FilterHead'>
           <Modal.Title>필터</Modal.Title>
           <div>초기화<CiRedo /></div>
 
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ maxHeight: '75vh' }}>
           <Form>
             <div className='SoldOutF border-bottom pb-3 mb-3 d-flex'>
               <span>매진 숙소 제외</span>
@@ -214,49 +256,83 @@ export default function HotelList() {
             </div>
             <div className='EventF border-bottom pb-3 mb-3'>
               <p>할인혜택</p>
-              <Button variant="light" name='할인특가'>할인특가</Button>
+              <input type='button' value='할인특가' key='할인특가' name='할인특가' className='BtnF' id='할인특가'
+                  onClick={() => handleButtonClick('할인특가')}
+                  style={{
+                    backgroundColor: activeButtons.includes('할인특가') ? 'rgb(237, 247, 255)' : '',
+                    color: activeButtons.includes('할인특가') ? 'rgb(0, 83, 192)' : '',
+                    border: activeButtons.includes('할인특가') ? '1px solid rgb(167, 215, 255)' : ''
+                  }}
+                />
             </div>
 
             <div className='RankF border-bottom pb-3 mb-3'>
               <p>등급</p>
               {rankBtn.map(name => (
-                <input type='button' value={name} key={name} name={name} id='BtnF' />
+                <input type='button' value={name} key={name} name={name} className='BtnF' id={name}
+                onClick={() => handleButtonClick(name)}
+                style={{
+                  backgroundColor: activeButtons.includes(name) ? 'rgb(237, 247, 255)' : '',
+                  color: activeButtons.includes(name) ? 'rgb(0, 83, 192)' : '',
+                  border: activeButtons.includes(name) ? '1px solid rgb(167, 215, 255)' : ''
+                }}
+              />
               ))}
             </div>
 
             <div className='BedF border-bottom pb-3 mb-3'>
               <p>베드타입</p>
               {bedBtn.map(name => (
-                <Button variant="light" name={name} key={name} className="m-2">
-                  {name}
-                </Button>
+                <input type='button' value={name} key={name} name={name} className='BtnF' id={name}
+                  onClick={() => handleButtonClick(name)}
+                  style={{
+                    backgroundColor: activeButtons.includes(name) ? 'rgb(237, 247, 255)' : '',
+                    color: activeButtons.includes(name) ? 'rgb(0, 83, 192)' : '',
+                    border: activeButtons.includes(name) ? '1px solid rgb(167, 215, 255)' : ''
+                  }}
+                />
               ))}
             </div>
 
             <div className='PublicF border-bottom pb-3 mb-3'>
               <p>공용시설</p>
               {publicBtn.map(name => (
-                <Button variant="light" name={name} key={name} className="m-2">
-                  {name}
-                </Button>
+                <input type='button' value={name} key={name} name={name} className='BtnF' id={name}
+                onClick={() => handleButtonClick(name)}
+                style={{
+                  backgroundColor: activeButtons.includes(name) ? 'rgb(237, 247, 255)' : '',
+                  color: activeButtons.includes(name) ? 'rgb(0, 83, 192)' : '',
+                  border: activeButtons.includes(name) ? '1px solid rgb(167, 215, 255)' : ''
+                }}
+              />
               ))}
             </div>
 
             <div className='RoomF border-bottom pb-3 mb-3'>
               <p>객실 내 시설</p>
               {roomBtn.map(name => (
-                <Button variant="light" name={name} key={name} className="m-2">
-                  {name}
-                </Button>
+                <input type='button' value={name} key={name} name={name} className='BtnF' id={name}
+                onClick={() => handleButtonClick(name)}
+                style={{
+                  backgroundColor: activeButtons.includes(name) ? 'rgb(237, 247, 255)' : '',
+                  color: activeButtons.includes(name) ? 'rgb(0, 83, 192)' : '',
+                  border: activeButtons.includes(name) ? '1px solid rgb(167, 215, 255)' : ''
+                }}
+              />
               ))}
             </div>
 
             <div className='OtherF'>
               <p>기타 시설</p>
               {otherBtn.map(name => (
-                <Button variant="light" name={name} key={name} className="m-2">
-                  {name}
-                </Button>
+                <input type='button' value={name} key={name} name={name} className='BtnF' id={name}
+                onClick={() => handleButtonClick(name)}
+                style={{
+                  backgroundColor: activeButtons.includes(name) ? 'rgb(237, 247, 255)' : '',
+                  color: activeButtons.includes(name) ? 'rgb(0, 83, 192)' : '',
+                  border: activeButtons.includes(name) ? '1px solid rgb(167, 215, 255)' : ''
+                }}
+              />
               ))}
             </div>
           </Form>
@@ -301,7 +377,7 @@ export default function HotelList() {
         {hotels.map((hotel) => (
           <div className='HotelRow' key={hotel.id}>
             <div className='HotelCol'>
-              <img src={hotel.image} className='HotelImg' />
+              <img src={hotel.image} alt='호텔이미지' className='HotelImg' />
               <div className='HotelInfo'>
                 <div className='HotelRank'>{hotel.rank}</div>
                 <div className='HotelName'>{hotel.name}{hotel.id}</div>
