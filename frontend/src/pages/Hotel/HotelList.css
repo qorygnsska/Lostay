@@ -4,6 +4,26 @@
     background-color: white;
     padding-top: 10px;
 
+    .HotelFilter{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .FilterBox{
+        display: flex;
+        align-items: center;
+    }
+
+    .SearchCount{
+        margin-right: 15px;
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .FilterIcon{
+        color: rgb(88, 88, 88);
+    }
+
     .HotelGrid {
         width: 700px;
         height: 100%;
@@ -13,7 +33,7 @@
     }
 
     .HotelRow {
-        padding-top: 100px;
+        padding-top: 30px;
         width: 100%;
         height: 250px;
     }
@@ -126,8 +146,23 @@
         margin-top: 25px;
     }
 
-    #BtnF {
-        color: red !important;
-        background-color: black;
+   
+}
+
+.hotel--list--Filter{
+
+    .BtnF {
+        background-color: white;
+        border-radius: 20px;
+        border: 1px solid rgb(226, 226, 226);
+        min-width: 100px;
+        height: 35px;
+        margin-right: 10px;
+        margin-bottom: 20px;
+        
+    }
+
+    .BtnF:hover{
+        background-color: rgb(240, 240, 240);
     }
 }
