@@ -1,9 +1,12 @@
 package com.lostay.backend.user.entity;
 
+
 import java.time.LocalDateTime;
+
 import java.util.Set;
 
 import javax.persistence.*;
+
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -29,6 +32,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userNo;       // 회원넘버
 	
+
 	@Column(nullable = false)
 	private String userName;		// 회원이름
 	
