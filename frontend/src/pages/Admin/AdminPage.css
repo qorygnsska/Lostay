@@ -1,9 +1,15 @@
 .page--admin--home--container {
+    width: 100%;
+    position: absolute;
+    left: 0;
+
+
 
     h1 {
         color: red;
     }
 }
+
 
 
 .page--event--manager--container {
@@ -37,6 +43,8 @@
 
 }
 
+
+
 .page--review--manager--container {
     /* 관리자 리뷰페이지 */
 
@@ -45,6 +53,8 @@
     }
 
 }
+
+
 
 .page--user--manager--container {
     /* 관리자 사용자페이지 */
