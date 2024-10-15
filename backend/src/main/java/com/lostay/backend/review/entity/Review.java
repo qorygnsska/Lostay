@@ -38,7 +38,7 @@ public class Review {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private User user;						// 회원넘버 외래키
 	
-	private int reviewRating;					// 리뷰별점
+	private double reviewRating;					// 리뷰별점
 	private String reviewContent;				// 리뷰내용
 	@Lob
 	private String reviewImg;					// 리뷰이미지
