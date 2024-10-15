@@ -123,6 +123,7 @@ public class PaymentService {
 		savePay.setPayPrice(payPrice);
 		savePay.setPayPrice(payPrice);
 		savePay.setPayPoint(payPoint);
+		savePay.setPayStatus(payStatus);
 		
 		payRepo.save(savePay);
 		System.out.println("============================씨발 성공했다!!!!!!!!!!!");

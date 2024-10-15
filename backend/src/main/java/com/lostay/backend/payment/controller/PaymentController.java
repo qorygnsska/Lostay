@@ -73,7 +73,8 @@ public class PaymentController {
 	public void paymentinsert(@RequestParam(defaultValue = "1") long userNo
 										  ,@RequestParam(defaultValue = "2") long roomNo
 										  ,@RequestParam(defaultValue = "kakao") String payType
-										  ,@RequestParam(defaultValue = "2024-10-20T12:00:00") LocalDateTime payDay
+										  ,@RequestParam(defaultValue = "2024-10-20T15:00:00") // ISO 8601 형식
+										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime payDay
 										  ,@RequestParam(defaultValue = "Y") String payStatus
 										  ,@RequestParam(defaultValue = "200000") int payPrice
 										  ,@RequestParam(defaultValue = "400") int payPoint){
