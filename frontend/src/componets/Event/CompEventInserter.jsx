@@ -4,14 +4,10 @@ import { Button, Form, Modal } from 'react-bootstrap'
 export default function CompEventInserter(props) {
 
 
-    //모달 컴포넌트 jsx at /Admin
-    //inserterFunc jsx at /Admin
-    //updaterterFunc jsx at /Admin
-
 
     return (
         <>
-            <Modal className='comp--event--inserter--container'
+            <Modal className='comp--event--inserter--container comp--event--manager--modal'
                 {...props}
                 size="lg"
                 centered
@@ -50,11 +46,6 @@ export default function CompEventInserter(props) {
                     <Button variant="outline-success" >추가하기</Button>
                 </Modal.Footer>
             </Modal>
-
-
-
-
         </>
-
     )
 }

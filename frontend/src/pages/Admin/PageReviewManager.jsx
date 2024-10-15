@@ -19,8 +19,8 @@ export default function PageReviewManager() {
 
 
     function deleteReview() {   //하위요소 '삭제' 버튼에 상속해줄 함수
-        console.log('click_delete_review');
-        
+        alert('정말 삭제?');
+
     }
 
 

@@ -8,15 +8,12 @@ export default function CompHeaderAdmin() {
 
     const selectedLink = location.pathname.toString();
     //console.log(`selectedNavItem: ${selectedLink}`);
-
     //console.log(location.search);//url에서 parameter가져오기 cf.useParams()
     
     
-    const handleLogout = (elem) => {    //#btn_logout 클릭 시 : 관리자 로그아웃
-        
-        //console.log(elem);
-        console.log('click_logout_admin');
-        
+    const handleLogout = (event) => {    //#btn_logout 클릭 시 : 관리자 로그아웃
+        //console.log(event);
+        alert('정말 로그아웃?');
     }
 
 
@@ -25,7 +22,7 @@ export default function CompHeaderAdmin() {
             <Navbar className='comp--header--admin--container' bg="secondary" data-bs-theme="dark">
                 <Container id='container_navbar'>
 
-                    {/* 부트스트랩 기존 컴포넌트 vs React-router 'Link' 컴포넌트 */}
+                    {/* 부트스트랩 'Nav.Link'(a)  vs  React-router 'Link'(a) 컴포넌트 */}
 
 
                     {/* <Navbar.Brand id="brand_navbar_admin" href="/admin-home">로스테이_관리자</Navbar.Brand> */}

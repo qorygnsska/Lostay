@@ -27,7 +27,6 @@ export default function PageEventManager() {
     const [inserterShow, setInserterShow] = useState(false);
 
     const openEventInserter = () => {
-        console.log('click_open_eventInserter');
         setInserterShow(true);
     }
 
@@ -37,12 +36,11 @@ export default function PageEventManager() {
 
 
     function openEventUpdater() {   //'수정' 버튼에 상속해줄 함수
-        console.log('click_open_eventUpdater');
         setUpdaterShow(true);
     }
 
     function deleteEvent() {    //'삭제' 버튼에 상속해줄 함수
-        console.log('click_delete_event');
+        alert('정말 삭제?');
     }
 
 
@@ -80,10 +78,8 @@ export default function PageEventManager() {
                             </tr>
                         </tbody>
                     </Table>
-
                     <CompEventInserter show={inserterShow} onHide={() => setInserterShow(false)} />
-                    {/* <CompEventUpdater show={updaterShow} onHide={() => setUpdaterShow(false)} /> */}
-                    <CompEventInserter show={updaterShow} onHide={() => setUpdaterShow(false)} />
+                    <CompEventUpdater show={updaterShow} onHide={() => setUpdaterShow(false)} />
 
                 </Container>
             </div>
