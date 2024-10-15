@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { IoSearchOutline } from "react-icons/io5";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -8,7 +8,6 @@ import MetropolitanCarousel from '../../componets/Carousel/MetropolitanCarousel'
 import MetropolitanHotelCarousel from '../../componets/Carousel/MetropolitanHotelCarousel';
 import Footer from '../../componets/Footer/Footer';
 import Navbar from '../../componets/Navbar/Navbar';
-import { instance } from '../../api/api.js'
 
 export default function Home() {
 

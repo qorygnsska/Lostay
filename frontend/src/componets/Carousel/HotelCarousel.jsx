@@ -57,20 +57,20 @@ export default function CardCarousel({ hotelList }) {
                                 <div className="hotel--price--wrap">
                                     {
                                         hotel.discount !== 0
-                                            ? <div className="hotel--discount--price--wrap">
+                                            ? <><div className="hotel--discount--price--wrap">
                                                 <span>{hotel.discount}%</span>
-                                                <span>{hotel.discountPrice.toLocaleString()}원</span>
+                                                <span>{hotel.oriPrice.toLocaleString()}원</span>
                                             </div>
-                                            : null
+                                                <strong>{hotel.discountPrice.toLocaleString()}원~</strong></>
+                                            : <strong>{hotel.oriPrice.toLocaleString()}원~</strong>
                                     }
-                                    <strong>{hotel.oriPrice.toLocaleString()}원~</strong>
+
                                 </div>
                             </div>
 
                         </a>
                     </div>
-                ))
-                }
+                ))}
             </Slider >
 
             <div className="moveBtn">
