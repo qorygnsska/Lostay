@@ -31,7 +31,11 @@ public class MainController {
 	@PostMapping("/locationMain")
 	public ResponseEntity<?>locationMain(){
 		log.info("locationMaint실행");
-		return new ResponseEntity<>(mainService.findAll(),HttpStatus.OK);
+		return new ResponseEntity<>(mainService.locationFindAll(),HttpStatus.OK);
 	}
-	
+	@PostMapping("/eventMain")
+	public ResponseEntity<?>eventMain(){
+		log.info("locationMaint실행");
+		return new ResponseEntity<>(mainService.eventFindAll(),HttpStatus.OK);
+	}
 }
