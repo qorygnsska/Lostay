@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+import React, { useEffect } from 'react'
+=======
 import React from 'react'
+>>>>>>> 42c0fb299b6ca82d17f980d13972b9fd4acf555a
 import { IoSearchOutline } from "react-icons/io5";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -8,9 +12,34 @@ import MetropolitanCarousel from '../../componets/Carousel/MetropolitanCarousel'
 import MetropolitanHotelCarousel from '../../componets/Carousel/MetropolitanHotelCarousel';
 import Footer from '../../componets/Footer/Footer';
 import Navbar from '../../componets/Navbar/Navbar';
+<<<<<<< HEAD
+import { instance } from '../../api/api.js'
 
 export default function Home() {
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await instance.get('/api/some-endpoint'); // Replace with your actual endpoint
+    //             // Handle response data here
+    //             console.log(response.data);
+    //         } catch (error) {
+    //             console.error('API 요청 실패:', error);
+    //             if (error.response && error.response.status === 401) {
+    //                 console.log('토큰이 만료되었거나 유효하지 않습니다.');
+    //                 // Redirect to login or handle accordingly
+    //             }
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, []);
+
+=======
+
+export default function Home() {
+
+>>>>>>> 42c0fb299b6ca82d17f980d13972b9fd4acf555a
     const images = ['66fac140e8c113.870765961_1.png'
         , '66fac140e8c113.870765961_2.png'
         , '66fac140e8c113.870765961_3.png'
