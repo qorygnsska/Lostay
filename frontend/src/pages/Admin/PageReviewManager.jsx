@@ -5,6 +5,16 @@ import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
 import CompAdminBtn from '../../componets/Admin/CompAdminBtn'
 
 export default function PageReviewManager() {
+
+    
+    function deleteReview() {   //'삭제' 버튼에 상속해줄 함수
+        console.log('click_delete-review');
+        
+    }
+
+
+
+
     return (
         <>
             <div className='page--review--manager--container page--admin'>
@@ -33,7 +43,7 @@ export default function PageReviewManager() {
                                 <td>작성자1</td>
                                 <td>24.10.15.</td>
                                 <td className='btn_container'>
-                                    <CompAdminBtn >삭제</CompAdminBtn>
+                                    <CompAdminBtn click={deleteReview}>삭제</CompAdminBtn>
                                 </td>
                             </tr>
                         </tbody>

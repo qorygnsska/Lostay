@@ -19,18 +19,16 @@ export default function PageEventManager() {
     //CompAdminSearch_#btn_search 누르면 #input_search 값 가져오기(jQuery)
 
 
-    // const deleteEvent = () => {
-    //     console.log('click_delete_event');
-    // }
 
-    // function openEventUpdater() {
-    //     console.log('click_open_eventInserter');
 
-    // }
+    function openEventUpdater() {   //'수정' 버튼에 상속해줄 함수
+        console.log('click_open_eventUpdater');
 
-    // function deleteEvent() {
-    //     console.log('click_delete_event');
-    // }
+    }
+
+    function deleteEvent() {    //'삭제' 버튼에 상속해줄 함수
+        console.log('click_delete_event');
+    }
 
 
 
@@ -61,8 +59,8 @@ export default function PageEventManager() {
                                 <td>이벤트 제목1</td>
                                 <td>24.10.14. ~ 24.10.21.</td>
                                 <td className='btn_container'>
-                                    <CompAdminBtn >수정</CompAdminBtn>
-                                    {/* <CompAdminBtn click={deleteEvent}>삭제</CompAdminBtn> */}
+                                    <CompAdminBtn click={openEventUpdater}>수정</CompAdminBtn>
+                                    <CompAdminBtn click={deleteEvent}>삭제</CompAdminBtn> 
                                 </td>
                             </tr>
                         </tbody>
