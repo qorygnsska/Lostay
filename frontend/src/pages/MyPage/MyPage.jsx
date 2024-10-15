@@ -65,7 +65,7 @@ export default function MyPage() {
 
                     <div className='info--horizontal--box'>
                         <div className='info--horizontal'>
-                            <button className='info--horizontal--btn'>
+                            <Link to="/reivew" className='info--horizontal--btn'>
                                 <div>
                                     <BsChatText className='icon' />
                                 </div>
@@ -73,7 +73,7 @@ export default function MyPage() {
                                 <div>
                                     <span>내 리뷰</span>
                                 </div>
-                            </button>
+                            </Link>
                         </div>
 
                         <span className='separation '></span>

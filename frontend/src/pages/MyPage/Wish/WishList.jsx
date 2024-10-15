@@ -1,7 +1,7 @@
 import React from 'react'
-import BackNav from '../../componets/BackNav/BackNav';
-import Navbar from '../../componets/Navbar/Navbar';
-import WishListComponent from '../../componets/WishList/WishList';
+import BackNav from '../../../componets/BackNav/BackNav';
+import Navbar from '../../../componets/Navbar/Navbar';
+import WishListComponent from '../../../componets/MyPage/WishList/WishList';
 
 export default function WishList() {
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import "./Login.css";
 import BackHeader from '../../componets/BackNav/BackNav';
 
@@ -17,9 +17,9 @@ export default function Login() {
 
     return (
         <div className='login--container'>
-            <diV>
+            <div>
                 <BackHeader title='로그인' />
-            </diV>
+            </div>
 
             <div className='loginWrap'>
                 <div className='logoWrap'>

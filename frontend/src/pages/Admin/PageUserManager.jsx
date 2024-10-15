@@ -1,9 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import CompHeaderAdmin from '../../componets/Header/CompHeaderAdmin'
 import { Container, Table } from 'react-bootstrap'
 import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
 
 export default function PageUserManager() {
+
+    //하위요소가 넘겨줄 값을 담을 변수
+    const [text_fromChild, setText_fromChild] = useState('');
+
+    //하위요소가 값을 넘겨주면 실행할 함수
+    const functionForMyChild = (fromMyChild) => {
+        //fromMyChild: 하위요소가 넘겨준 변수(text_search)의 매개변수
+        console.log('text_fromChild: ' + text_fromChild);   //previousState
+        console.log('fromChild: ' + fromMyChild);
+        setText_fromChild(fromMyChild);
+    }
+
+
+
+
+    const user1 = {
+        user_no: 1,
+        user_name: '심재호',
+        user_email: 'shim@lostay.com',
+        user_phone: '010-1111-1111',
+        user_create_at: '24.10.14.',
+        user_point: 1200,
+        user_status: '탈퇴'
+    };
+
+    const user2 = {
+        user_no: 2,
+        user_name: '박정일',
+        user_email: 'qwer@lostay.com',
+        user_phone: '010-2222-2222',
+        user_create_at: '24.10.14.',
+        user_point: 2000,
+        user_status: '활동'
+    };
+
+    const userList = [user1, user2];
+    //map, find, filter, ...
+
+
+
+
     return (
         <>
             <div className='page--user--manager--container page--admin'>
@@ -12,7 +53,7 @@ export default function PageUserManager() {
                 <Container id='section_container'>
 
                     <div className='d-flex justify-content-end mb-3'>
-                        <CompAdminSearch/>
+                        <CompAdminSearch where={'admin-user'} callParent={functionForMyChild} />
                     </div>
 
                     <Table striped bordered hover id='table_entire_user'>
@@ -28,15 +69,23 @@ export default function PageUserManager() {
                             </tr>
                         </thead>
                         <tbody id="table_body">
-                            <tr>
-                                <td>1</td>
-                                <td>이름1</td>
-                                <td>email1@test1.com</td>
-                                <td>010-0000-0000</td>
-                                <td>24.10.14.</td>
-                                <td>1,200P</td>
-                                <td>활동(or탈퇴)</td>
-                            </tr>
+
+                            {
+                                userList.map(function (user, index) {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{user.user_no}</td>
+                                            <td>{user.user_name}</td>
+                                            <td>{user.user_email}</td>
+                                            <td>{user.user_phone}</td>
+                                            <td>{user.user_create_at}</td>
+                                            <td>{user.user_point}</td>
+                                            <td>{user.user_status}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
+
                         </tbody>
                     </Table>
 

@@ -9,15 +9,16 @@ import Login from './pages/Login/Login';
 import LoginPopup from './pages/Login/LoginPopup';
 import HotelList from './pages/Hotel/HotelList';
 
-import PageEventList from './pages/Event/PageEventList'; //이벤트리스트 페이지
-import PageEventDetail from './pages/Event/PageEventDetail'; //이벤트상세 페이지
+import PageEventList from './pages/Event/PageEventList';          //이벤트리스트 페이지
+import PageEventDetail from './pages/Event/PageEventDetail';      //이벤트상세 페이지
 
-import PageAdminHome from './pages/Admin/PageAdminHome'; //관리자 홈 페이지
-import PageEventManager from './pages/Admin/PageEventManager'; //이벤트관리 페이지
-import PageReviewManager from './pages/Admin/PageReviewManager'; //리뷰관리 페이지
-import PageUserManager from './pages/Admin/PageUserManager'; //사용자관리 페이지
-import MyPage from './pages/MyPage/MyPage'; // 마이 페이지
-import WishList from './pages/Wish/WishList';
+import PageAdminHome from './pages/Admin/PageAdminHome';          //관리자 홈 페이지
+import PageEventManager from './pages/Admin/PageEventManager';    //이벤트관리 페이지
+import PageReviewManager from './pages/Admin/PageReviewManager';  //리뷰관리 페이지
+import PageUserManager from './pages/Admin/PageUserManager';      //사용자관리 페이지
+import MyPage from './pages/MyPage/MyPage';                       // 마이 페이지
+import WishList from './pages/MyPage/Wish/WishList';              // 찜 목록 페이지
+import Profile from './pages/MyPage/Profile/Profile';             // 내 정보 관리 페이지
 
 
 
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
       { path: '/admin-user', element: <PageUserManager /> },
       { path: '/mypage', element: <MyPage /> },
       { path: '/wishlist', element: <WishList /> },
+      { path: '/Profile', element: <Profile /> },
 
       // {
       //   path: '/products/new',
@@ -58,8 +60,6 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <RouterProvider router={router} />
 );
 

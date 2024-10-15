@@ -66,7 +66,7 @@ public class SecurityConfig {
 				.httpBasic((auth) -> auth.disable()) // HTTP Basic 인증 방식 disable
 
 				// JWTFilter 추가
-			//	.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
 
 				// oauth2
 				.oauth2Login((oauth2) -> oauth2
@@ -75,10 +75,12 @@ public class SecurityConfig {
 						.successHandler(customSuccessHandler).failureHandler(customFailureHandler))
 
 				
-//				.authorizeHttpRequests((auth) -> 
-//						auth.antMatchers("/locationMain", "/reissue", "/hotelList/*", "/event/*").permitAll()
-//							//.antMatchers("/mypage", "/whislist").hasAnyRole("USER")
-//							.anyRequest().authenticated())
+				.authorizeHttpRequests((auth) -> 
+						auth.antMatchers("/", "/reissue", "/hotelList/*", "/event/*", "/locationMain").permitAll()
+							.antMatchers("/mypage/*", "/whislist/*").hasAnyRole("USER")
+							.antMatchers("/admin/*").hasAnyRole("ADMIN")
+							.anyRequest().authenticated())
+
 
 				.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 

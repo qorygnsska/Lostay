@@ -72,13 +72,16 @@ export default function MetropolitanHotelCarousel({ metropolitanHotelList }) {
                                             </div>
                                         </div>
                                         <div className="hotel--price--wrap">
-                                            {hotel.discount !== 0 && (
-                                                <div className="hotel--discount--price--wrap">
-                                                    <span>{hotel.discount}%</span>
-                                                    <span>{hotel.discountPrice.toLocaleString()}원</span>
-                                                </div>
-                                            )}
-                                            <strong>{hotel.oriPrice.toLocaleString()}원~</strong>
+                                            {
+                                                hotel.discount !== 0
+                                                    ? <><div className="hotel--discount--price--wrap">
+                                                        <span>{hotel.discount}%</span>
+                                                        <span>{hotel.oriPrice.toLocaleString()}원</span>
+                                                    </div>
+                                                        <strong>{hotel.discountPrice.toLocaleString()}원~</strong></>
+                                                    : <strong>{hotel.oriPrice.toLocaleString()}원~</strong>
+                                            }
+
                                         </div>
                                     </div>
 
