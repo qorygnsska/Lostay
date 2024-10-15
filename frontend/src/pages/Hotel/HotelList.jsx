@@ -5,14 +5,17 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import { FaStar } from "react-icons/fa6";
-import { FaFilter } from "react-icons/fa6";
+import { VscSettings } from "react-icons/vsc";
 import { CiRedo } from "react-icons/ci";
+import { IoCheckmark } from "react-icons/io5";
 
 import { Range } from 'react-range'; // 슬라이더
 import { useInView } from 'react-intersection-observer'; // 무한 스크롤
 import 'bootstrap/dist/css/bootstrap.css'
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+
+
 export default function HotelList(props) {
 
   // const [hotels, setHotels] = useState([]);
@@ -95,6 +98,17 @@ export default function HotelList(props) {
     loadMoreHotels();
   }, []);
 
+    // 드롭다운
+    const [selectedOption, setSelectedOption] = useState('평점 높은 순');
+
+    const drop = [
+      '평점 높은 순', '리뷰 많은 순', '낮은 가격 순', '높은 가격 순'
+    ];
+  
+    const handleSelect = (eventKey) => {
+      setSelectedOption(eventKey);
+    };
+
 
   // 모달
   const [show, setShow] = useState(false);
@@ -141,16 +155,21 @@ export default function HotelList(props) {
     }
   };
 
-  // 드롭다운
-  const [selectedOption, setSelectedOption] = useState('평점 높은 순');
-
-  const drop = [
-    '평점 높은 순', '리뷰 많은 순', '낮은 가격 순', '높은 가격 순'
-  ];
-
-  const handleSelect = (eventKey) => {
-    setSelectedOption(eventKey);
+  // 초기화
+  const handleReset = () => {
+    setMinValue(0);
+    setMaxValue(500000);
+    setActiveButtons([]);
+    setIsSoldOutExcluded(false);
   };
+
+  // 스위치
+  const [isSoldOutExcluded, setIsSoldOutExcluded] = useState(false);
+
+  const handleSwitchChange = (e) => {
+    setIsSoldOutExcluded(e.target.checked);
+  };
+
   
 
   return (
@@ -160,14 +179,17 @@ export default function HotelList(props) {
         <div className='FilterBox'>
           <div className='SearchCount'>'제주도' 검색 결과 158개</div>
           <div onClick={handleShow} className='FilterIcon'>
-            <FaFilter /> 필터
+            <VscSettings /> 필터
           </div>
         </div>
         <div className='DropFilter'>
           <DropdownButton id="dropdown-basic-button" title={selectedOption} onSelect={handleSelect}>
             {drop.map(option => (
               <Dropdown.Item key={option} eventKey={option} className={selectedOption === option ? 'active' : ''}>
-               {option}
+                <div className='DropBox'>
+                  {option}
+                  {selectedOption === option && <IoCheckmark id='check'/>} 
+                </div>
               </Dropdown.Item>
             ))}
           </DropdownButton>
@@ -180,14 +202,13 @@ export default function HotelList(props) {
       >
         <Modal.Header className='FilterHead'>
           <Modal.Title>필터</Modal.Title>
-          <div>초기화<CiRedo /></div>
-
+          <div className='FilterReset' onClick={handleReset}>초기화<CiRedo /></div>
         </Modal.Header>
         <Modal.Body style={{ maxHeight: '75vh' }}>
           <Form>
             <div className='SoldOutF border-bottom pb-3 mb-3 d-flex'>
-              <span>매진 숙소 제외</span>
-              <Form.Check type="switch" id="custom-switch" />
+              <span className='RoomExclude'>매진 숙소 제외</span>
+              <Form.Check type="switch" id="custom-switch"  checked={isSoldOutExcluded} onChange={handleSwitchChange}/>
             </div>
 
             <div className='PriceF border-bottom pb-3 mb-3'>

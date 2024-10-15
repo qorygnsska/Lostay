@@ -21,15 +21,16 @@ export default function PageEventManager() {
 
 
 
-    const openEventUpdater = () => {
-        console.log('click_open_eventInserter');
+    function openEventUpdater() {   //'수정' 버튼에 상속해줄 함수
+        console.log('click_open_eventUpdater');
 
     }
 
-    const deleteEvent = () => {
+    function deleteEvent() {    //'삭제' 버튼에 상속해줄 함수
         console.log('click_delete_event');
-
     }
+
+
 
     return (
         <>
@@ -58,8 +59,8 @@ export default function PageEventManager() {
                                 <td>이벤트 제목1</td>
                                 <td>24.10.14. ~ 24.10.21.</td>
                                 <td className='btn_container'>
-                                    <CompAdminBtn onClick={openEventUpdater}>수정</CompAdminBtn>
-                                    <CompAdminBtn onclick={deleteEvent}>삭제</CompAdminBtn>
+                                    <CompAdminBtn click={openEventUpdater}>수정</CompAdminBtn>
+                                    <CompAdminBtn click={deleteEvent}>삭제</CompAdminBtn> 
                                 </td>
                             </tr>
                         </tbody>

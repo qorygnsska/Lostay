@@ -34,77 +34,61 @@ public class JWTFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {        
     	
-
-
-    	String accessToken = null;
     	
-		Cookie[] cookies = request.getCookies();
-		
-		for(Cookie cookie : cookies) {
-			if(cookie.getName().equals("access")) {
-				accessToken = cookie.getValue();
-			}
-		}
-    	
-    	// access 토큰이 없다면 필터로 넘김
-    	if(accessToken == null) {
-    		filterChain.doFilter(request, response);
-    		
-    		return;
+    	String accessToken = request.getHeader("access");
+
+    	if (accessToken == null) {
+
+    	    filterChain.doFilter(request, response);
+
+    	    return;
     	}
-    
 
-        //토큰 만료 여부 확인
+    	// 토큰 만료 여부 확인, 만료시 다음 필터로 넘기지 않음
     	try {
-			
-    		jwtUtil.isExpired(accessToken);
-		} catch (ExpiredJwtException e) {
-			 System.out.println("token expired");
-			 
-			 // response body
-			 PrintWriter writer = response.getWriter();
-			 writer.print("access token expired");
+    	    jwtUtil.isExpired(accessToken);
+    	} catch (ExpiredJwtException e) {
 
-			 // response status code
-			 // 프론트와 협의한 코드 보내기
-			 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	         
-	           return;
-        }
+    	    //response body
+    	    PrintWriter writer = response.getWriter();
+    	    writer.print("access token expired");
+
+    	    //response status code
+    	    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    	    return;
+    	}
 
     	// 토큰이 access인지 확인 (발급시 페이로드에 명시)
-    	String category = jwtUtil.getCategoty(accessToken);
-    	
-    	if(!category.equals("access")) {
-    		
-    		// response body
-    		PrintWriter writer = response.getWriter();
-    		writer.print("invalid access token");
-    		
-    		// response status code
-    		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    		return;
+    	String category = jwtUtil.getCategory(accessToken);
+
+    	if (!category.equals("access")) {
+
+    	    //response body
+    	    PrintWriter writer = response.getWriter();
+    	    writer.print("invalid access token");
+
+    	    //response status code
+    	    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    	    return;
     	}
+
+    	// username, role 값을 획득
+    	String username = jwtUtil.getUsername(accessToken);
+    	String role = jwtUtil.getRole(accessToken);
+    	Long userNo = jwtUtil.getUserNo(accessToken);
+
+    	UserDTO userDTO = new UserDTO();
+    	userDTO.setUserName(username);
+    	userDTO.setUserRole(role);
+    	userDTO.setUserNo(userNo);
+    	CustomOAuth2User CustomOAuth2User = new CustomOAuth2User(userDTO);
+
+    	Authentication authToken = new UsernamePasswordAuthenticationToken(CustomOAuth2User, null, CustomOAuth2User.getAuthorities());
+    	SecurityContextHolder.getContext().setAuthentication(authToken);
+
+    	System.out.println("탔니" + role);
     	
-    	
-        //토큰에서 username과 role 획득
-        String username = jwtUtil.getUsername(accessToken);
-        String role = jwtUtil.getRole(accessToken);
-
-        //userDTO를 생성하여 값 set
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUserName(username);
-        userDTO.setUserRole(role);
-
-        //UserDetails에 회원 정보 객체 담기
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDTO);
-
-        //스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
-        
-        //세션에 사용자 등록
-        SecurityContextHolder.getContext().setAuthentication(authToken);
-
-        filterChain.doFilter(request, response);
+    	filterChain.doFilter(request, response);
     }
+    
 }

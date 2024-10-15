@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Container, Nav, Navbar } from 'react-bootstrap'
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function CompHeaderAdmin() {
 
@@ -24,21 +24,36 @@ export default function CompHeaderAdmin() {
         <>
             <Navbar className='comp--header--admin--container' bg="secondary" data-bs-theme="dark">
                 <Container id='container_navbar'>
-                    <Navbar.Brand id="brand_navbar_admin" href="/admin-home">로스테이_관리자</Navbar.Brand>
+
+                    {/* 부트스트랩 기존 컴포넌트 vs React-router 'Link' 컴포넌트 */}
+
+
+                    {/* <Navbar.Brand id="brand_navbar_admin" href="/admin-home">로스테이_관리자</Navbar.Brand> */}
+                    <Link to="/admin-home" id="brand_navbar_admin" className="navbar-brand">로스테이_관리자</Link>
+
                     <Nav variant="underline" >
+
                         <Nav.Item>
-                            <Nav.Link href="/admin-event" className={`selectedLink ${selectedLink=="/admin-event"?"active":""}`} >이벤트</Nav.Link>
+                            {/* <Nav.Link href="/admin-event" className={`${selectedLink=="/admin-event"?"active":""}`} >이벤트</Nav.Link> */}
+                            <Link to="/admin-event" className={`nav-link ${selectedLink=="/admin-event"?"active":""}`}>이벤트</Link>
                         </Nav.Item>
+
                         <Nav.Item>
-                            <Nav.Link href="/admin-review" className={`selectedLink ${selectedLink =="/admin-review"?"active":""}`} >리뷰</Nav.Link>
+                            {/* <Nav.Link href="/admin-review" className={`${selectedLink =="/admin-review"?"active":""}`} >리뷰</Nav.Link> */}
+                            <Link to="/admin-review" className={`nav-link ${selectedLink=="/admin-review"?"active":""}`}>리뷰</Link>
+
                         </Nav.Item>
+
                         <Nav.Item>
-                            <Nav.Link href="/admin-user" className={`selectedLink ${selectedLink=="/admin-user"?"active":""}`} >회원</Nav.Link>
+                            {/* <Nav.Link href="/admin-user" className={`${selectedLink=="/admin-user"?"active":""}`} >회원</Nav.Link> */}
+                            <Link to="/admin-user" className={`nav-link ${selectedLink=="/admin-user"?"active":""}`}>회원</Link>
                         </Nav.Item>
+
                         <Nav.Item id="btn_container">
                             <Button id="btn_logout" variant="outline-dark" size="sm" type="button" onClick={handleLogout}>로그아웃</Button>
                             {/* onclick={함수명()} : 렌더링 시(클릭할 때가 아니라) 함수가 호출됨, 함수명만 써준다!! */}
                         </Nav.Item>
+
                     </Nav>
                 </Container>
             </Navbar>
