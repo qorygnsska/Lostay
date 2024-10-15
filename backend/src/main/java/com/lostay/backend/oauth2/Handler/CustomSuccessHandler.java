@@ -34,18 +34,19 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
 
-        CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
-        String username = customUserDetails.getName();
+        String username = customOAuth2User.getName();
+        Long userNo = customOAuth2User.getNo();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String refreshToken = jwtUtil.createJwt("refresh",username, role, 24 * 60 * 60L); // 1일 유지
+        String refreshToken = jwtUtil.createJwt("refresh",username, role, userNo, 24 * 60 * 60 * 60L); // 1일 유지
 
-        response.addCookie(createCookie("refreshToken", refreshToken));
+        response.addCookie(createCookie("refresh", refreshToken));
         response.sendRedirect("http://localhost:3000/login-popup?success=true");
     }
 
