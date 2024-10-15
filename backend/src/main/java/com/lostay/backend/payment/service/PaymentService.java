@@ -72,9 +72,9 @@ public class PaymentService {
 	// 결제 진행 페이지에서 호텔과 객실(투숙)정보 가져오기
 	public RoomDTO findRoomInfo(long roomNo, LocalDate checkInDate, LocalDate checkOutDate) {
 	
-		Optional<Room> roomInfo = roomRepo.findById(roomNo);
+		Optional<Room> newRoom = roomRepo.findById(roomNo);
 		
-		Room room = roomInfo.get();
+		Room room = newRoom.get();
 		RoomDTO roomDto = new RoomDTO();
 		
 		roomDto.setRoomNo(room.getRoomNo());
@@ -95,8 +95,8 @@ public class PaymentService {
 	// 결제 진행 페이지에서 예약자 정보 가져오기
 	public UserDTO findUserInfo(long userNo) {
 		
-		Optional<User> userInfo = userRepo.findById(userNo);
-		User user = userInfo.get();
+		Optional<User> newUser = userRepo.findById(userNo);
+		User user = newUser.get();
 		UserDTO userDto = new UserDTO();
 		
 		userDto.setUserNo(userNo);
@@ -150,5 +150,18 @@ public class PaymentService {
 		reservation.setPayment(savePay);
 		
 		resRepo.save(reservation);
+	}
+
+
+	// 결제 취소(status N으로 업데이트)
+	public void canclePayment(long payNo) {
+
+		Optional<Payment> newPayment = payRepo.findById(payNo);
+		Payment payment = newPayment.get();
+		
+		payment.setPayStatus("N");
+		payRepo.save(payment);
+		
+		
 	}
 }

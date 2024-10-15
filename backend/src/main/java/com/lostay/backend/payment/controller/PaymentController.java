@@ -29,7 +29,7 @@ public class PaymentController {
 	private PaymentService paySer;
 	
 
-	// 결제내역 확인 매핑
+	// 결제내역 확인
 	@GetMapping("/PaymentHistory")
 	public ResponseEntity<?> paymenthistory(){
 		
@@ -82,12 +82,21 @@ public class PaymentController {
 	   									  ,@RequestParam(defaultValue = "2024-11-22") 
 										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate){
 											
-		
+		// 결제 api 아직 안들어옴
 
+		
 		paySer.savePayment(userNo,roomNo,payType,payDay,payStatus,payPrice,payPoint,checkInDate,checkOutDate);
 		
 	}
 	
 	
 	// 결제 취소
+	@GetMapping("/PaymentCancle")
+	public void paymentcancle(@RequestParam(defaultValue = "2") long payNo) {
+		
+		// 결제 취소 api 아직 안들어옴
+		
+		paySer.canclePayment(payNo);
+		
+	}
 }
