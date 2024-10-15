@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,6 +22,7 @@ import com.lostay.backend.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
@@ -32,11 +34,11 @@ public class Payment {
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long payNo; // 결제넘버
 
-	    @ManyToOne(cascade = CascadeType.ALL)
+	    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	    @JoinColumn(name = "userNo", nullable = false)
 	    private User user; // 회원넘버
 	    
-	    @OneToOne(cascade = CascadeType.ALL)
+	    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	    @JoinColumn(name = "roomNo", nullable = false)
 	    private Room room; // 객실넘버
 
@@ -46,6 +48,7 @@ public class Payment {
 	    private int payPrice; // 결제가격
 	    private int payPoint; // 사용한포인트
 
-	    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL) // 예약 엔티티와의 관계 설정
+	    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // 예약 엔티티와의 관계 설정
+	    @ToString.Exclude
 	    private Reservation reservations; // 예약 목록
 }

@@ -21,7 +21,7 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cartNo;		// 찜넘버
 	 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "userNo", nullable = false) // 외래키 설
 	private User user;	// 회원넘버
 	

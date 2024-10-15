@@ -33,7 +33,8 @@ public class Hotel {
 	@Lob
 	private String hotelIntroduction;			// 호텔소개
 
-	@ManyToMany(mappedBy = "hotels") // Cart 엔티티와의 관계 설정
+	@ManyToMany(mappedBy = "hotels", fetch = FetchType.LAZY) // Cart 엔티티와의 관계 설정
+	@ToString.Exclude
     private Set<Cart> carts;           // 카트 목록
 	
 	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY) // Room 엔티티와의 관계 설정
