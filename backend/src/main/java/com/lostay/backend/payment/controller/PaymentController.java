@@ -1,6 +1,7 @@
 package com.lostay.backend.payment.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 
@@ -67,13 +68,21 @@ public class PaymentController {
 	
 	
 	
-//	// 결제하기
-//	@GetMapping("/PaymentInsert")
-//	public ResponseEntity<?> paymentinsert(@RequestParam()){
-//		
-//		
-//		
-//	}
+	// 결제하기
+	@GetMapping("/PaymentInsert")
+	public void paymentinsert(@RequestParam(defaultValue = "1") long userNo
+										  ,@RequestParam(defaultValue = "2") long roomNo
+										  ,@RequestParam(defaultValue = "kakao") String payType
+										  ,@RequestParam(defaultValue = "2024-10-20T12:00:00") LocalDateTime payDay
+										  ,@RequestParam(defaultValue = "Y") String payStatus
+										  ,@RequestParam(defaultValue = "200000") int payPrice
+										  ,@RequestParam(defaultValue = "400") int payPoint){
+											
+		
+
+		paySer.savePayment(userNo,roomNo,payType,payDay,payStatus,payPrice,payPoint);
+		
+	}
 	
 	
 }

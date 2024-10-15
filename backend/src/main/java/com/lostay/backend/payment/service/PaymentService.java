@@ -1,6 +1,7 @@
 package com.lostay.backend.payment.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -100,5 +101,31 @@ public class PaymentService {
 		
 		
 		return userDto;
+	}
+
+
+	public void savePayment(long userNo, long roomNo, String payType, LocalDateTime payDay, String payStatus,
+			int payPrice, int payPoint) {
+		
+		Optional<User> newUser = userRepo.findById(userNo);
+		User user = newUser.get();
+		
+		Optional<Room> newRoom = roomRepo.findById(roomNo);
+		Room room = newRoom.get();
+		
+		
+		Payment savePay = new Payment();
+		
+		savePay.setUser(user);
+		savePay.setRoom(room);
+		savePay.setPayType(payType);
+		savePay.setPayDay(payDay);
+		savePay.setPayPrice(payPrice);
+		savePay.setPayPrice(payPrice);
+		savePay.setPayPoint(payPoint);
+		
+		payRepo.save(savePay);
+		System.out.println("============================씨발 성공했다!!!!!!!!!!!");
+		
 	}
 }
