@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-export default function CompAdminBtn({children}, props) {
+export default function CompAdminBtn({children}) {
 
 
 
@@ -12,7 +12,7 @@ export default function CompAdminBtn({children}, props) {
 
   return (  //Customized Button
     <>
-        <button className='comp--admin--btn--container' onClick={props.click}>{children}</button>
+        <button className='comp--admin--btn--container'>{children}</button>
     </>
   )
 }

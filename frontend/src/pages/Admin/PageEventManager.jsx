@@ -23,14 +23,14 @@ export default function PageEventManager() {
     //     console.log('click_delete_event');
     // }
 
-    function openEventUpdater() {
-        console.log('click_open_eventInserter');
+    // function openEventUpdater() {
+    //     console.log('click_open_eventInserter');
 
-    }
+    // }
 
-    function deleteEvent() {
-        console.log('click_delete_event');
-    }
+    // function deleteEvent() {
+    //     console.log('click_delete_event');
+    // }
 
 
 
@@ -61,8 +61,8 @@ export default function PageEventManager() {
                                 <td>이벤트 제목1</td>
                                 <td>24.10.14. ~ 24.10.21.</td>
                                 <td className='btn_container'>
-                                    <CompAdminBtn click={openEventUpdater}>수정</CompAdminBtn>
-                                    <CompAdminBtn click={deleteEvent}>삭제</CompAdminBtn>
+                                    <CompAdminBtn >수정</CompAdminBtn>
+                                    {/* <CompAdminBtn click={deleteEvent}>삭제</CompAdminBtn> */}
                                 </td>
                             </tr>
                         </tbody>
