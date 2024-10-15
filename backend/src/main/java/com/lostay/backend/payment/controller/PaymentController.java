@@ -29,7 +29,7 @@ public class PaymentController {
 	private PaymentService paySer;
 	
 
-	// 결제내역 확인
+	// 결제내역(예약한 숙소 확인)
 	@GetMapping("/PaymentHistory")
 	public ResponseEntity<?> paymenthistory(){
 		
