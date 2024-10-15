@@ -25,11 +25,9 @@
     }
 
     .HotelGrid {
-        width: 700px;
+        width: 100%;
         height: 100%;
         background-color: white;
-        margin: auto;
-
     }
 
     .HotelRow {
@@ -51,7 +49,7 @@
     }
 
     .HotelInfo {
-        width: 330px;
+        width: 350px;
     }
 
     .HotelRank {
@@ -165,4 +163,10 @@
     .BtnF:hover{
         background-color: rgb(240, 240, 240);
     }
+
+    p, span, .PriceF{
+        font-weight: bold;
+        font-size: 17px;
+    }
+    
 }

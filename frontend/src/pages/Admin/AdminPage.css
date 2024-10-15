@@ -1,24 +1,13 @@
-.page--admin--home--container {
+.page--admin {
+    /* 관리자 페이지 공통 */
+    width: 100%;
+    position: absolute;
+    left: 0;
 
-    h1 {
-        color: red;
+    #section_container {
+        max-width: 100%;
+        padding-top: 12px;
     }
-}
-
-
-.page--event--manager--container {
-    /* 관리자 이벤트페이지 */
-
-    h1 {
-        color: blue;
-    }
-
-    
-    #btn_enroll {
-
-    }
-
-
 
     #table_header {
         text-align: center;
@@ -26,32 +15,49 @@
 
     #table_body {
         text-align: center;
-    }
 
-    .btn_container {
-        display: flex;
-        justify-content: space-evenly;
+        .btn_container {
+            display: flex;
+            justify-content: space-evenly;
+        }
     }
-
 
 
 }
+
+
+.page--admin--home--container {
+    /* 관리자 홈 페이지 */
+
+
+}
+
+
+.page--event--manager--container {
+    /* 관리자 이벤트페이지 */
+
+
+
+    #btn_enroll {/* '이벤트 등록' 버튼 */
+
+    }
+
+
+}
+
 
 .page--review--manager--container {
     /* 관리자 리뷰페이지 */
 
-    h1 {
-        color: green;
-    }
+
 
 }
+
 
 .page--user--manager--container {
     /* 관리자 사용자페이지 */
 
-    h1 {
-        color: red;
-    }
+
 
 
 }

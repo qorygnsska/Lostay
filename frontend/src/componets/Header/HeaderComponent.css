@@ -1,20 +1,15 @@
 .comp--header--admin--container {
-    /*HeaderAdmin 컴포넌트*/
-
-    /* margin: 0 !important;
-    padding: 0 !important; */
+    /*HeaderAdmin(관리자용) 컴포넌트*/
 
     #container_navbar {
-        /* margin: 0 !important;
-        padding: 0 !important; */
+        max-width: 100%;
     }
 
     #brand_navbar_admin {
         color: #fb6969;
     }
 
-
-    #btn_container {
+    #btn_container {    /*로그아웃 버튼 컨테이너*/
         align-self: center;
     }
 
@@ -27,10 +22,9 @@
 
 
 .comp--header--general--container {
-    /*HeaderGeneral 컴포넌트*/
+    /*HeaderGeneral(일반 사용자용) 컴포넌트*/
 
     p {
-
         color: blue;
     }
 }
