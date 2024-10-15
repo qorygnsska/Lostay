@@ -27,15 +27,22 @@ public class MainController {
 		log.info("mainPage실행");
 		return new ResponseEntity<>(mainService.hotels(),HttpStatus.OK);
 	}
-	
-	@PostMapping("/locationMain")
+	//국내 인기여행지 조회
+	@PostMapping("/locationMain") 
 	public ResponseEntity<?>locationMain(){
 		log.info("locationMaint실행");
 		return new ResponseEntity<>(mainService.locationFindAll(),HttpStatus.OK);
 	}
+	//이벤트 조회
 	@PostMapping("/eventMain")
 	public ResponseEntity<?>eventMain(){
 		log.info("locationMaint실행");
 		return new ResponseEntity<>(mainService.eventFindAll(),HttpStatus.OK);
 	}
-}
+	//특가 호텔 조회
+	@PostMapping("/discountHotelMain")
+	public ResponseEntity<?>discountHotelMain(){
+		log.info("discountHotelMain실행");
+		return new ResponseEntity<>(mainService.findTop10HtolesRating(),HttpStatus.OK);
+
+}}

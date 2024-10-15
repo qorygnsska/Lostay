@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.lostay.backend.event.dto.EventDTO;
@@ -59,6 +61,31 @@ public class MainService {
 			
 		}
 		return eventDTOList;
+	}
+
+	public Object findTop10HtolesRating() {
+		  PageRequest pageable = PageRequest.of(0, 10); // 첫 페이지에서 10개 항목 가져오기
+		    List<Object[]> results = hotelRepo.findTop10Hotels(pageable);
+		    List<HotelDTO> hotelDTOList=new ArrayList<HotelDTO>();
+		    double num=0.01;
+		    for (Object[] result : results) {
+		    	HotelDTO dto= new HotelDTO();
+		        dto.setHotelNo((Long) result[0]);
+		        dto.setHotelRating((String) result[1]);
+		        dto.setHotelName((String)result[2]);
+		        dto.setReviewRating((Double) result[3]);	        
+		        dto.setTotalReviewCount((Long) result[4]);
+		        dto.setRoomDiscount((Double) result[5]+ "%");
+		        dto.setRoomPrice((int) result[6]);
+		        int roomPrice = (int) result[6]; // 원래 가격
+		        double roomDiscount = (double) result[5]; // 할인율
+		        // 할인된 가격 계산
+		        int discountedPrice = (int) (roomPrice * (1 - (roomDiscount * num)));
+		        // DTO에 할인된 가격 설정
+		        dto.setRoomDcPrice(discountedPrice);
+		        hotelDTOList.add(dto);
+		        }
+		return hotelDTOList;
 	}
 
 }
