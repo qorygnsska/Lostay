@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import com.lostay.backend.payment.dto.PaymentDTO;
 import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.payment.repository.PaymentRepository;
+import com.lostay.backend.reservation.dto.ReservationDTO;
+import com.lostay.backend.reservation.entity.Reservation;
+import com.lostay.backend.reservation.repository.ReservationRepository;
 import com.lostay.backend.room.dto.RoomDTO;
 import com.lostay.backend.room.entity.Room;
 import com.lostay.backend.room.repository.RoomReopository;
@@ -30,6 +33,9 @@ public class PaymentService {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private ReservationRepository resRepo;
 	
 	public List<PaymentDTO> findAll(Long userNo){
 		
@@ -104,8 +110,9 @@ public class PaymentService {
 	}
 
 
+	// 결제 테이블 데이터 삽입, 유저 총 포인트 업데이트, 예약 테이블 데이터 삽입
 	public void savePayment(long userNo, long roomNo, String payType, LocalDateTime payDay, String payStatus,
-			int payPrice, int payPoint) {
+			int payPrice, int payPoint, LocalDate checkInDate, LocalDate checkOutDate) {
 		
 		Optional<User> newUser = userRepo.findById(userNo);
 		User user = newUser.get();
@@ -116,6 +123,8 @@ public class PaymentService {
 		user.setUserPoint(totalPoint);
 		userRepo.save(user);
 		
+		
+		// 객실에 관련된 정보 결제테이블에 외래키로 넣어주기
 		Optional<Room> newRoom = roomRepo.findById(roomNo);
 		Room room = newRoom.get();
 		
@@ -132,7 +141,14 @@ public class PaymentService {
 		savePay.setPayStatus(payStatus);
 		
 		payRepo.save(savePay);
-		System.out.println("============================씨발 성공했다!!!!!!!!!!!");
+	
+		// 결제 테이블에 들어온 정보 예약 테이블에 넣어주기
+		Reservation reservation = new Reservation();
 		
+		reservation.setCheckIn(checkInDate);
+		reservation.setCheckOut(checkOutDate);
+		reservation.setPayment(savePay);
+		
+		resRepo.save(reservation);
 	}
 }

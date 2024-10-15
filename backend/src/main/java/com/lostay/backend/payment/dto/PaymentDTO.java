@@ -1,5 +1,6 @@
 package com.lostay.backend.payment.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -26,8 +27,8 @@ public class PaymentDTO {
 	// 조인컬럼
 	private String hotelName;  // 호텔이름
 	private String hotelAddress;  // 호텔주고
-	private LocalDateTime checkIn;  // 체크인 날짜
-	private LocalDateTime checkOut;  // 체크아웃 날짜
+	private LocalDate checkIn;  // 체크인 날짜
+	private LocalDate checkOut;  // 체크아웃 날짜
 	private String userName;		// 유저명
 	private String userPhone;		// 유저폰번호
 

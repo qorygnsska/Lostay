@@ -43,11 +43,10 @@ public class PaymentController {
 	// 결제 진행 페이지 호텔-객실(투숙) 정보 <결제정보에서 상품금액에서도 사용>
 	@GetMapping("/HotelRoomInfo")
 	public ResponseEntity<?> hotelroominfo(@RequestParam(defaultValue = "1") long roomNo
-									
-									,@RequestParam(defaultValue = "2024-10-15") 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,
-    @RequestParam(defaultValue = "2024-10-20") 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate){
+										  ,@RequestParam(defaultValue = "2024-10-15") 
+    									   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate
+    									  ,@RequestParam(defaultValue = "2024-10-20") 
+										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate){
 			
 		
 		
@@ -68,22 +67,27 @@ public class PaymentController {
 	
 	
 	
-	// 결제하기
+	// 결제 시 결제 테이블 데이터 삽입
 	@GetMapping("/PaymentInsert")
 	public void paymentinsert(@RequestParam(defaultValue = "1") long userNo
-										  ,@RequestParam(defaultValue = "2") long roomNo
-										  ,@RequestParam(defaultValue = "kakao") String payType
+										  ,@RequestParam(defaultValue = "5") long roomNo
+										  ,@RequestParam(defaultValue = "Naver") String payType
 										  ,@RequestParam(defaultValue = "2024-10-20T15:00:00") // ISO 8601 형식
 										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime payDay
 										  ,@RequestParam(defaultValue = "Y") String payStatus
-										  ,@RequestParam(defaultValue = "200000") int payPrice
-										  ,@RequestParam(defaultValue = "400") int payPoint){
+										  ,@RequestParam(defaultValue = "100000") int payPrice
+										  ,@RequestParam(defaultValue = "10") int payPoint
+										  ,@RequestParam(defaultValue = "2024-11-21") 
+	   									   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate
+	   									  ,@RequestParam(defaultValue = "2024-11-22") 
+										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate){
 											
 		
 
-		paySer.savePayment(userNo,roomNo,payType,payDay,payStatus,payPrice,payPoint);
+		paySer.savePayment(userNo,roomNo,payType,payDay,payStatus,payPrice,payPoint,checkInDate,checkOutDate);
 		
 	}
 	
 	
+	// 결제 취소
 }

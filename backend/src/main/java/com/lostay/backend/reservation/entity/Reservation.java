@@ -1,5 +1,6 @@
 package com.lostay.backend.reservation.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ public class Reservation {
 	    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	    private Payment payment;
 
-	    private LocalDateTime checkIn; // 체크인날짜
-	    private LocalDateTime checkOut; // 체크아웃날짜
+	    private LocalDate checkIn; // 체크인날짜
+	    private LocalDate checkOut; // 체크아웃날짜
 	
 }
