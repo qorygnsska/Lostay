@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +28,7 @@ public class Point {
 	private Long pointNo;				// 포인트넘버
 	
 	@JoinColumn(name = "userNo", nullable = false)
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private User user;			// 회원넘버(포인트) 외래키
 	
 	private LocalDateTime pointDay;	// 포인트(적립,사용)날짜

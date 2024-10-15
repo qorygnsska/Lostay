@@ -4,6 +4,12 @@ import { CiSearch } from 'react-icons/ci'
 
 export default function CompAdminSearch() {
 
+  const handleSearch = () => {
+    
+    console.log('click_btn_search');
+    
+  }
+
 
   return (
     <>
@@ -15,7 +21,7 @@ export default function CompAdminSearch() {
               aria-label="Search"
               id="input_search"
             />
-            <Button id="btn_search" variant="outline-primary" size="sm"><CiSearch size="24" /></Button>
+            <Button id="btn_search" onClick={handleSearch} variant="outline-primary" size="sm"><CiSearch size="24" /></Button>
           </Form>
     </>
   )
