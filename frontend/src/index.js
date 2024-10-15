@@ -19,6 +19,7 @@ import PageUserManager from './pages/Admin/PageUserManager';      //사용자관
 import MyPage from './pages/MyPage/MyPage';                       // 마이 페이지
 import WishList from './pages/MyPage/Wish/WishList';              // 찜 목록 페이지
 import Profile from './pages/MyPage/Profile/Profile';             // 내 정보 관리 페이지
+import BookingHistory from './pages/MyPage/BookingHistory/BookingHistory';
 
 import RoomList from './pages/Hotel/RoomList';
 
@@ -40,8 +41,9 @@ const router = createBrowserRouter([
       { path: '/admin-user', element: <PageUserManager /> },
       { path: '/mypage', element: <MyPage /> },
       { path: '/wishlist', element: <WishList /> },
-      { path: '/Profile', element: <Profile /> },
       { path: '/roomList', element: <RoomList /> },
+      { path: '/profile', element: <Profile /> },
+      { path: '/bookingHistory', element: <BookingHistory /> },
 
       // {
       //   path: '/products/new',
