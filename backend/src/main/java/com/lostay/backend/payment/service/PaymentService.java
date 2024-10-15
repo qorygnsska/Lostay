@@ -110,6 +110,12 @@ public class PaymentService {
 		Optional<User> newUser = userRepo.findById(userNo);
 		User user = newUser.get();
 		
+		// 유저가 사용한 포인트 계산해서 업데이트
+		int point = user.getUserPoint();
+		int totalPoint = point - payPoint;
+		user.setUserPoint(totalPoint);
+		userRepo.save(user);
+		
 		Optional<Room> newRoom = roomRepo.findById(roomNo);
 		Room room = newRoom.get();
 		
