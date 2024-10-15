@@ -8,18 +8,21 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.lostay.backend.hotel.entity.Hotel;
 
-public interface HotelRepository extends JpaRepository<Hotel, Long> {
-
-	@Query("SELECT " + "h.hotelNo, " + "h.hotelRating, " + "h.hotelName, "
-			+ "ROUND(AVG(r.averageReviewRating), 1) AS overallAverageReviewRating, "
-			+ "SUM(r.reviewCount) AS totalReviewCount, " + "MAX(r.roomDiscount) AS roomDiscount, "
-			+ "MIN(r.roomPrice) AS minRoomPrice " + "FROM " + "(SELECT " + "h2.hotelNo, " + "h2.hotelName, "
-			+ "h2.hotelRating, " + "r2.roomNo, " + "r2.roomName, " + "r2.roomDiscount, " + "r2.roomPrice, "
-			+ "AVG(re.reviewRating) AS averageReviewRating, " + "COUNT(re.reviewNo) AS reviewCount " + "FROM Hotel h2 "
-			+ "JOIN Room r2 ON h2.hotelNo = r2.hotelNo " + "LEFT JOIN Review re ON r2.roomNo = re.roomNo "
-			+ "GROUP BY h2.hotelNo, h2.hotelName, r2.roomNo, r2.roomName, r2.roomDiscount, r2.roomPrice) r "
-			+ "GROUP BY h.hotelNo, h.hotelName, h.hotelRating "
-			+ "ORDER BY MAX(r.roomDiscount) DESC, overallAverageReviewRating DESC")
+public interface HotelRepository extends JpaRepository<Hotel, Long>{
+	@Query("SELECT " +
+		       "h.hotelNo, " +
+		       "h.hotelRating, " +
+		       "h.hotelName, " +
+		       "ROUND(AVG(re.reviewRating), 1) AS overallAverageReviewRating, " +
+		       "COUNT(re) AS totalReviewCount, " + // 리뷰 수를 세는 방법
+		       "MAX(r.roomDiscount) AS roomDiscount, " +
+		       "MIN(r.roomPrice) AS minRoomPrice, " +
+		       "h.hotelThumbnail " + // 콤마 추가
+		       "FROM Hotel h " +
+		       "JOIN h.rooms r " + // Room과의 관계를 통해 접근
+		       "LEFT JOIN r.reviews re " + // Review와의 관계를 통해 접근
+		       "GROUP BY h.hotelNo, h.hotelName, h.hotelRating, h.hotelThumbnail " + // GROUP BY에 hotelThumbnail 추가
+		       "ORDER BY roomDiscount DESC, overallAverageReviewRating DESC")
 	List<Object[]> findTop10Hotels(PageRequest pageable);
 
 }

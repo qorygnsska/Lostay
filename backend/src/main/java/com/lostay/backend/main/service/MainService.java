@@ -75,14 +75,15 @@ public class MainService {
 		        dto.setHotelName((String)result[2]);
 		        dto.setReviewRating((Double) result[3]);	        
 		        dto.setTotalReviewCount((Long) result[4]);
-		        dto.setRoomDiscount((Double) result[5]+ "%");
+		        dto.setRoomDiscount((int)result[5]);
 		        dto.setRoomPrice((int) result[6]);
 		        int roomPrice = (int) result[6]; // 원래 가격
-		        double roomDiscount = (double) result[5]; // 할인율
+		        int roomDiscount = (int) result[5]; // 할인율
 		        // 할인된 가격 계산
 		        int discountedPrice = (int) (roomPrice * (1 - (roomDiscount * num)));
 		        // DTO에 할인된 가격 설정
 		        dto.setRoomDcPrice(discountedPrice);
+		        dto.setHotelThumbnail((String) result[7]);
 		        hotelDTOList.add(dto);
 		        }
 		return hotelDTOList;
