@@ -1,10 +1,14 @@
 .comp--event--inserter--container {
     /* EventInserter 컴포넌트*/
 
-    p {
-        color: red;
-
+    #title_modal {
+        color: green;
     }
+
+    .form-label {
+        color: green;
+    }
+
 }
 
 .comp--event--unit--container {
