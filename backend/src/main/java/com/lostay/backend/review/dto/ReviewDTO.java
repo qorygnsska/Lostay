@@ -18,7 +18,7 @@ public class ReviewDTO {
 	private Long room_no;						// 객실넘버 외래키
 	private Long user_no;						// 회원넘버 외래키
 	
-	private int review_rating;					// 리뷰별점
+	private double review_rating;					// 리뷰별점
 	private String review_content;				// 리뷰내용
 	private String[] review_img;					// 리뷰이미지
 	private LocalDateTime review_create_At;		// 작성날짜
