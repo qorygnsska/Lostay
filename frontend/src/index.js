@@ -8,6 +8,7 @@ import Home from './pages/Home/Home'
 import Login from './pages/Login/Login';
 import LoginPopup from './pages/Login/LoginPopup';
 import HotelList from './pages/Hotel/HotelList';
+import RoomList from './pages/Hotel/RoomList';
 
 import PageEventList from './pages/Event/PageEventList'; //이벤트리스트 페이지
 import PageEventDetail from './pages/Event/PageEventDetail'; //이벤트상세 페이지
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
       { path: '/admin-user', element: <PageUserManager /> },
       { path: '/mypage', element: <MyPage /> },
       { path: '/wishlist', element: <WishList /> },
+      { path: '/roomList', element: <RoomList /> },
 
       // {
       //   path: '/products/new',
