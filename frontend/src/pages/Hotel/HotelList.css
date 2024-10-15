@@ -22,6 +22,45 @@
 
     .FilterIcon{
         color: rgb(88, 88, 88);
+        cursor: pointer;
+    }
+    .DropBox{
+        
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+    }
+    
+    #dropdown-basic-button{
+        width: 160px;
+        text-align: left;
+        background-color: rgb(235, 235, 235);
+        color: black;
+        font-weight: bold;
+        border: 1px solid rgb(235, 235, 235);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #dropdown-basic-button.show{
+        background-color: white;
+        border: 1px solid black;
+        color: black;
+    }
+
+    .dropdown-item.active{
+        color: rgb(0, 112, 240);
+        background-color: white;
+    }
+
+    .dropdown-item:hover{
+        background-color: rgb(235, 235, 235);
+    }
+
+    .dropdown-item.active:hover{
+        background-color: white;
     }
 
     .HotelGrid {
@@ -149,6 +188,23 @@
 
 .hotel--list--Filter{
 
+    .FilterHead{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .modal-title{
+        font-weight: bold;
+    }
+
+    .FilterReset{
+        cursor: pointer;
+    }
+
+    .RoomExclude{
+        margin-right: 10px;
+    }
+
     .BtnF {
         background-color: white;
         border-radius: 20px;
@@ -168,5 +224,7 @@
         font-weight: bold;
         font-size: 17px;
     }
+
+   
     
 }
