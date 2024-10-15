@@ -72,12 +72,12 @@ public class SecurityConfig {
 				.oauth2Login((oauth2) -> oauth2
 						.userInfoEndpoint(
 								(userInfoEndpointConfig) -> userInfoEndpointConfig.userService(customOAuth2UserService))
-						.successHandler(customSuccessHandler).failureHandler(customFailureHandler))
+						.successHandler(customSuccessHandler).failureHandler(customFailureHandler).loginPage("/login"))
 
 				
 				.authorizeHttpRequests((auth) -> 
 						auth.antMatchers("/", "/reissue", "/hotelList/*", "/event/*").permitAll()
-							.antMatchers("/mypage", "/whislist").hasAnyRole("USER")
+							.antMatchers("/mypage/*", "/whislist/*").hasAnyRole("USER")
 							.anyRequest().authenticated())
 
 				.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
