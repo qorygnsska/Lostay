@@ -3,12 +3,18 @@ import { FaStar } from "react-icons/fa6";
 
 export default function WishList({ hotel }) {
     return (
-        <div className='wishList--component--container'>
+        <div className='wishlist--component--container'>
             <a href='ex.com'>
-                <div className='wishList--wrap'>
-                    <img src={`eventList/${hotel.image}`} alt={`hotel`} />
+                <div className='wishlist--wrap'>
+                    <div className='wishlist--img'>
+                        <img src={`eventList/${hotel.image}`} alt={`hotel`} />
+                        <div className='wishlist--icon'>
+                            <img src={`eventList/icon_favorite_selected.png`} alt="찜" />
+                        </div>
+                    </div>
 
-                    <div className='wishList--box'>
+
+                    <div className='wishlist--box'>
                         <div className='hotel--info'>
                             <div>
                                 <span>{hotel.hotelRating}</span>
