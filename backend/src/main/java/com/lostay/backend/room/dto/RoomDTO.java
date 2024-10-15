@@ -1,5 +1,7 @@
 package com.lostay.backend.room.dto;
 
+import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -29,11 +31,17 @@ public class RoomDTO {
 	private int roomDiscount;					// 객실할인율
 	private String roomAmenities;				// 객실편의시설
 	private String roomIntroduction;			// 객실소개(정보)
-	private LocalDateTime roomCheckinTime;	// 객실체크인시간
-	private LocalDateTime roomCheckoutTime;	// 객실체크아웃시간
+	private Time roomCheckinTime;	// 객실체크인시간
+	private Time roomCheckoutTime;	// 객실체크아웃시간
 	
 	// 추가
+	private LocalDate roomCheckIn;	// 입실날짜
+	private LocalDate roomCheckOut; // 퇴실날짜
+	
+	// 외래키
 	@NonNull
 	private String hotelName;
+	private String hotelRating;   // 호텔성급
+	
 
 }

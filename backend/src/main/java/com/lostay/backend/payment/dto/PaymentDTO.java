@@ -30,5 +30,6 @@ public class PaymentDTO {
 	private LocalDateTime checkOut;  // 체크아웃 날짜
 	private String userName;		// 유저명
 	private String userPhone;		// 유저폰번호
+
 }
 
