@@ -27,5 +27,6 @@ public class Event {
 	private LocalDateTime eventEndAt;			// 마감날짜
 	@Lob
 	private String eventImg;					// 이벤트이미지
+	private String eventThumbnail;			   // 이벤트 썸네일
 	private String eventTitle;					// 이벤트제목
 }
