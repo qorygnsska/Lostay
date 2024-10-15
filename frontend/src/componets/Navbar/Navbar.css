@@ -10,7 +10,7 @@
     border-top: 1px solid var(--lightGrayColor);
 
     .navbar--wrap {
-        width: 300px;
+        width: 320px;
         margin: auto;
         display: flex;
         justify-content: space-between;
@@ -23,6 +23,7 @@
             .icon {
                 width: 25px;
                 height: 25px;
+
             }
 
             .home {

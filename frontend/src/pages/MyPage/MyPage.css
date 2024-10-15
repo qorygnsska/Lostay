@@ -46,8 +46,6 @@
                     padding: 2px 2px;
 
                     .info--horizontal--btn {
-                        text-decoration: none;
-                        color: black;
                         display: flex;
                         align-items: center;
                         margin: 2px;
@@ -109,5 +107,10 @@
 
 
         }
+    }
+
+    .link {
+        text-decoration: none;
+        color: black;
     }
 }

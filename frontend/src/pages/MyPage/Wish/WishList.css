@@ -6,5 +6,37 @@
         margin-top: 20px;
     }
 
+    .wishlist--blank {
+        margin-top: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
+        .icon {
+            width: 150px;
+            height: 150px;
+            color: var(--lightGrayColor);
+        }
+
+        .wishlist--blank--text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+
+            span:nth-child(1) {
+                font-size: 30px;
+                font-weight: bold;
+            }
+
+            span:nth-child(2) {
+                font-size: 25px;
+                color: var(--lightGrayColor);
+            }
+        }
+
+
+    }
 }
