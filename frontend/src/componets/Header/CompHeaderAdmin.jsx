@@ -7,14 +7,14 @@ export default function CompHeaderAdmin() {
     const location = useLocation();//url 정보 가져오기
 
     const selectedLink = location.pathname.toString();
-    console.log(`selectedNavItem: ${selectedLink}`);
+    //console.log(`selectedNavItem: ${selectedLink}`);
 
     //console.log(location.search);//url에서 parameter가져오기 cf.useParams()
     
     
     const handleLogout = (elem) => {    //#btn_logout 클릭 시 : 관리자 로그아웃
         
-        console.log(elem);
+        //console.log(elem);
         console.log('click_logout_admin');
         
     }
