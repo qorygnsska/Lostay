@@ -14,6 +14,7 @@ import '../src/componets/Header/HeaderComponent.css'
 import '../src/componets/Navbar/Navbar.css'
 import '../src/componets/Search/SearchComponent.css'
 import '../src/componets/MyPage/WishList/WishList.css'
+import '../src/componets/Hotel/HotelCarousel.css'
 
 
 
@@ -27,6 +28,7 @@ import '../src/pages/MyPage/MyPage.css'
 import '../src/pages/Hotel/HotelList.css';
 import '../src/pages/MyPage/Wish/WishList.css';
 import '../src/pages/MyPage/Profile/Profile.css';
+import '../src/pages/Hotel/RoomList.css';
 
 
 

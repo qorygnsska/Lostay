@@ -20,7 +20,7 @@ import MyPage from './pages/MyPage/MyPage';                       // 마이 페�
 import WishList from './pages/MyPage/Wish/WishList';              // 찜 목록 페이지
 import Profile from './pages/MyPage/Profile/Profile';             // 내 정보 관리 페이지
 
-
+import RoomList from './pages/Hotel/RoomList';
 
 const router = createBrowserRouter([
   {
@@ -41,6 +41,7 @@ const router = createBrowserRouter([
       { path: '/mypage', element: <MyPage /> },
       { path: '/wishlist', element: <WishList /> },
       { path: '/Profile', element: <Profile /> },
+      { path: '/roomList', element: <RoomList /> },
 
       // {
       //   path: '/products/new',
@@ -62,4 +63,3 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <RouterProvider router={router} />
 );
-
