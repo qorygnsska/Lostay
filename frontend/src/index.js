@@ -23,6 +23,9 @@ import BookingHistory from './pages/MyPage/BookingHistory/BookingHistory';  // �
 import RoomList from './pages/Hotel/RoomList';
 import HotelMap from './pages/Hotel/HotelMap';
 import Payment from './pages/MyPage/BookingHistory/Payment/Payment'         // 결제내역 페이지
+import MyReview from './pages/MyPage/MyReview/MyReview'
+import MyPoint from './pages/MyPage/MyPoint/MyPoint'
+
 
 const router = createBrowserRouter([
   {
@@ -47,6 +50,8 @@ const router = createBrowserRouter([
       { path: '/booking-history', element: <BookingHistory />, children: [] },
       { path: '/hotelMap', element: <HotelMap /> },
       { path: '/payment', element: <Payment /> },
+      { path: '/my-review', element: <MyReview /> },
+      { path: '/my-point', element: <MyPoint /> },
 
       // {
       //   path: '/products/new',

@@ -48,7 +48,7 @@ export default function MyPage() {
 
 
                     <div className='info--vertical'>
-                        <button className='info--btn'>
+                        <Link to="/my-point" className='info--btn link'>
                             <div>
 
                                 <span>포인트</span>
@@ -58,14 +58,14 @@ export default function MyPage() {
                                 <span className='point'>{myinfo.porint.toLocaleString()}</span>
                                 <FaChevronRight className='icon' />
                             </div>
-                        </button>
+                        </Link>
 
                     </div>
 
 
                     <div className='info--horizontal--box'>
                         <div className='info--horizontal'>
-                            <Link to="/reivew" className='info--horizontal--btn link'>
+                            <Link to="/my-review" className='info--horizontal--btn link'>
                                 <div>
                                     <BsChatText className='icon' />
                                 </div>
