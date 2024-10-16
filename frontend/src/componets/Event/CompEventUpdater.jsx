@@ -23,7 +23,7 @@ export default function CompEventUpdater(props) {
                         <Form.Group className="mb-3" controlId="input_title">
                             <Form.Label>이벤트 제목</Form.Label>
                             <Form.Control
-                                type="text"
+                                type="search"
                                 placeholder="이벤트 제목을 입력하세요."
                                 autoFocus
                             />

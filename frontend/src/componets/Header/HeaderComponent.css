@@ -23,6 +23,7 @@
 
 .comp--header--general--container {
     /*HeaderGeneral(일반 사용자용) 컴포넌트*/
+    
 
     #container_navbar_general {
         padding: 0;
@@ -36,9 +37,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 30px;
+            margin-top: 12px;   /**/
             margin-bottom: 20px;
             color: var(--logoColor);
+            cursor: pointer;    /**/
         }
 
 
