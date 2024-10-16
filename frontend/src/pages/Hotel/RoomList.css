@@ -107,5 +107,27 @@
      .LoTitle{
           font-weight: bold;
           font-size: 22px;
+          margin-bottom: 8px;
+     }
+
+     .LoContent{
+          color: gray;
+     }
+
+     #FindBtn{
+          padding: 1px;
+          margin-left: 10px;
+          font-size: 15px;
+          width: 70px;
+          height: 25px;
+          background-color: white;
+          color: gray;
+          border-color: gray;
+          margin-bottom: 5px;
+     }
+
+     #FindBtn:hover{
+          color: rgb(43, 110, 255);
+          border-color: rgb(43, 110, 255);
      }
 }
