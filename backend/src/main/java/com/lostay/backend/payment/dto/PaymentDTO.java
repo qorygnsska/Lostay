@@ -35,11 +35,15 @@ public class PaymentDTO {
 	private String userPhone;		// 유저폰번호
 	private int roomPrice;			// 객실가격
 	private long roomNo;			// 객실번호
+	private String roomName;		// 객실명
 	private Time roomCheckinTime;	// 객실체크인시간
 	private Time roomCheckoutTime;	// 객실체크아웃시간
-	private int period;         // 몇박인지 확인하는 dto
+	private int period;         // 몇박인지 확인하는
 	private String cancleAble;   // 예약 취소 가능한지 아닌지
 	private String reviewAble;    // 리뷰 가능한지 아닌지
+	private String roomThumbnail;	// 객실 썸네일 이미지
+	private String hotelThumbnail;  // 호텔 썸네일 이미지
+	
 	
 
 }

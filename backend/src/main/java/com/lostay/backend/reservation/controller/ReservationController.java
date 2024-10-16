@@ -46,5 +46,6 @@ public class ReservationController {
 	
 	
 	// 예약 취소는 Payment Controller에 있음
+
 		
 }
