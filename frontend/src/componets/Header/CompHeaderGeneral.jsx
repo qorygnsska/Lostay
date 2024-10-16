@@ -4,16 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 export default function CompHeaderGeneral(props) {
 
-    const [place, setPlace] = useState('제주도');
-
-    const [check_in, setCheck_in] = useState('10월 9일');
-    const [check_out, setCheck_outn] = useState('10월 10일');
-    const [period, setPeriod] = useState(check_in + ' - ' + check_out);
-    
-    const [member, setMember] = useState(2)
-
-
-
+ 
 
     //클릭이 일어난 location(path)
     const whereAmI = useLocation().pathname.toString();
@@ -41,7 +32,7 @@ export default function CompHeaderGeneral(props) {
                             type="text"
                             placeholder="Place"
                             readOnly
-                            value={place}
+                            value={props.place}
                             onClick={handleClick}   //클릭 시 실행할 함수
                         />
                         <Form.Control
@@ -49,7 +40,7 @@ export default function CompHeaderGeneral(props) {
                             type="text"
                             placeholder="Period"
                             readOnly
-                            value={period}
+                            value={props.check_in + ' - ' + props.check_out}
                             onClick={handleClick}
                         />
                         <Form.Control
@@ -57,7 +48,7 @@ export default function CompHeaderGeneral(props) {
                             type="text"
                             placeholder="Member"
                             readOnly
-                            value={member + '명'}
+                            value={props.member + '명'}
                             onClick={handleClick}
                         />
                     </Container>

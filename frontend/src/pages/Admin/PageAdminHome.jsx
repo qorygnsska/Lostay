@@ -6,6 +6,7 @@ import CompSearchBox from '../../componets/Search/CompSearchBox';
 
 export default function PageAdminHome() {
 
+
   const [time, setTime] = useState(new Date());
 
   setInterval(() => {
@@ -14,7 +15,6 @@ export default function PageAdminHome() {
   //   //setInterval(1st, 2nd)
   //   //args-1st: 실행할 함수, setTime()
   //   //args-2nd: 시간차, 1000ms
-
 
 
 
@@ -42,6 +42,12 @@ export default function PageAdminHome() {
 
 
   ////////////////////////////////////////
+  const place = '제주도';
+  const check_in = '10월 9일';
+  const check_out = '10월 11일';
+  const member = 2;
+  ////////////////////////////////////////
+
   // searchBox(Modal)이 열렸니?
   const [searchBoxShow, setSearchBoxShow] = useState(false);
 
@@ -72,9 +78,24 @@ export default function PageAdminHome() {
 
 
           {/* header w/ searchParam */}
-          <CompHeaderGeneral where={functionFromWhere} callParent={functionSearchPicker} />
+          <CompHeaderGeneral 
+            where={functionFromWhere}
+            callParent={functionSearchPicker}
+            place={place}
+            check_in={check_in}
+            check_out={check_out}
+            member={member}
+          />
+
           {/* searchBox(Modal) */}
-          <CompSearchBox show={searchBoxShow} onHide={() => {setSearchBoxShow(false)}} />
+          <CompSearchBox 
+            show={searchBoxShow} 
+            onHide={() => {setSearchBoxShow(false)}}
+            place={place}
+            check_in={check_in}
+            check_out={check_out}
+            member={member}
+          />
           
 
         </Container>

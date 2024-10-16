@@ -41,6 +41,17 @@
         position: relative;
 
 
+        #container_period {
+            /* align-items: center; */
+
+            #seperator_period {
+                margin-top: 6px;
+            }
+
+        }
+
+
+
         #container_btn_search {
             position: absolute;
             bottom: 20px;
@@ -58,11 +69,6 @@
 
 
     }
-
-
-
-
-
 
 
 
