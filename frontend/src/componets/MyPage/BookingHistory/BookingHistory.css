@@ -90,10 +90,6 @@
                     border: 1px solid var(--lightGrayColor);
                     border-radius: 10px;
                 }
-
-                .noActive {
-                    background-color: var(--lightGrayColor2);
-                }
             }
 
 
