@@ -21,6 +21,7 @@ import WishList from './pages/MyPage/Wish/WishList';              // 찜 목록 
 import Profile from './pages/MyPage/Profile/Profile';             // 내 정보 관리 페이지
 import BookingHistory from './pages/MyPage/BookingHistory/BookingHistory';
 import RoomList from './pages/Hotel/RoomList';
+import HotelMap from './pages/Hotel/HotelMap';
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
       { path: '/roomList', element: <RoomList /> },
       { path: '/profile', element: <Profile /> },
       { path: '/booking-history', element: <BookingHistory /> },
+      { path: '/hotelMap', element: <HotelMap /> },
 
       // {
       //   path: '/products/new',

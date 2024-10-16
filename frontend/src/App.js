@@ -16,6 +16,7 @@ import '../src/componets/Search/SearchComponent.css'
 import '../src/componets/MyPage/WishList/WishList.css'
 import '../src/componets/Hotel/HotelCarousel.css'
 import '../src/componets/MyPage/BookingHistory/BookingHistory.css'
+import '../src/componets/Map/KakaoMap.css'
 
 
 
@@ -31,6 +32,7 @@ import '../src/pages/MyPage/Wish/WishList.css';
 import '../src/pages/MyPage/Profile/Profile.css';
 import '../src/pages/Hotel/RoomList.css';
 import '../src/pages/MyPage/BookingHistory/BookingHistory.css'
+import '../src/pages/Hotel/HotelMap.css';
 
 
 

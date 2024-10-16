@@ -1,5 +1,4 @@
 import React from 'react'
-import './HotelMap.css'
 
 
 export default function HotelMap() {
