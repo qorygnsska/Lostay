@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import CompHeaderAdmin from '../../componets/Header/CompHeaderAdmin'
 import { Container } from 'react-bootstrap'
+import CompHeaderGeneral from '../../componets/Header/CompHeaderGeneral';
+import CompSearchBox from '../../componets/Search/CompSearchBox';
 
 export default function PageAdminHome() {
 
@@ -39,7 +41,23 @@ export default function PageAdminHome() {
 
 
 
+  ////////////////////////////////////////
+  // searchBox(Modal)이 열렸니?
+  const [searchBoxShow, setSearchBoxShow] = useState(false);
 
+  // 어디서 모달 불렀니?
+  const functionFromWhere = (fromWhere) => {
+    console.log('where are you?: ' + fromWhere);
+  }
+
+  // 어떤 input 눌렀니?
+  const functionSearchPicker = (fromMyChild) => {
+    console.log(fromMyChild + ' is picked');
+    setSearchBoxShow(true);
+  }
+  ////////////////////////////////////////
+
+  
 
 
   return (
@@ -52,6 +70,12 @@ export default function PageAdminHome() {
 
           <p>{clock.toLocaleString()}</p>
 
+
+          {/* header w/ searchParam */}
+          <CompHeaderGeneral where={functionFromWhere} callParent={functionSearchPicker} />
+          {/* searchBox(Modal) */}
+          <CompSearchBox show={searchBoxShow} onHide={() => {setSearchBoxShow(false)}} />
+          
 
         </Container>
       </div>

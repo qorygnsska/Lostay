@@ -1,21 +1,21 @@
 .comp--header--admin--container {
     /*HeaderAdmin(관리자용) 컴포넌트*/
 
-    #container_navbar {
+
+    #container_navbar_admin {
         max-width: 100%;
+
+
+        #brand_navbar_admin {
+            color: #fb6969;
+        }
+    
+
+        #btn_container {    /*로그아웃 버튼 컨테이너*/
+            align-self: center;
+        }
+
     }
-
-    #brand_navbar_admin {
-        color: #fb6969;
-    }
-
-    #btn_container {    /*로그아웃 버튼 컨테이너*/
-        align-self: center;
-    }
-
-
-
-
 
 
 }
@@ -24,7 +24,46 @@
 .comp--header--general--container {
     /*HeaderGeneral(일반 사용자용) 컴포넌트*/
 
-    p {
-        color: blue;
+    #container_navbar_general {
+        padding: 0;
+
+        display: flex;
+        flex-direction: column;
+
+
+        .logo {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            color: var(--logoColor);
+        }
+
+
+        #container_search_param {
+            background-color: #fb6969;
+
+            padding: 6px;
+            display: flex;
+            gap: 6px;
+
+
+            input {
+                border-radius: 0;
+                cursor: pointer;
+            }
+
+
+            #input_member {
+                width: 30%;
+            }
+
+        }   
+
     }
+
+
+
 }
