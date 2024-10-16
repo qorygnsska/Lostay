@@ -116,7 +116,7 @@ public class MainService {
 
 	public Object findByHotelAddressContaining(String hotelAdress) {
 		Pageable pageable = PageRequest.of(0, 6); // 0번째 페이지, 6개 항목		
-		  List<Object[]> results = hotelRepo.findByHotelAddressContaining("%" + hotelAdress + "%", pageable);
+		  List<Object[]> results = hotelRepo.findByHotelAddressContaining(hotelAdress, pageable);
 		    List<HotelDTO> tripHotelDTOList = new ArrayList<>();
 
 		    for (Object[] result : results) {

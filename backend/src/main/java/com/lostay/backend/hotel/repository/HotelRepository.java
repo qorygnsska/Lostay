@@ -66,6 +66,8 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
 		       "ORDER BY overallAverageReviewRating DESC")
 		List<Object[]> findByHotelAddressContaining(@Param("hotelAdress") String hotelAdress, Pageable pageable);
 
+
+		
 	
 //	@Query("SELECT " +
 //		       "h.hotelNo, " +
@@ -85,5 +87,9 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
 //		List<Object[]> findTop6HotelsByAddress(@Param("hotelAddress") String hotelAddress);
 //
 	
+	
+		
+		
+		
 
 }
