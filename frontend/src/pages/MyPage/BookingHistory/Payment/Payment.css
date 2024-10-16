@@ -1,0 +1,157 @@
+.payment--contaienr {
+
+    .payment--wrap {
+        background-color: var(--lightGrayColor4);
+        height: 120vh;
+        position: relative;
+
+        .booking--hotel--info {
+            position: absolute;
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            background-color: #fff;
+            padding: 50px 15px 20px;
+
+            img {
+                width: 120px;
+                height: 120px;
+                border-radius: 10px;
+            }
+
+            .hotel--info--box {
+                display: flex;
+                flex-direction: column;
+                padding-top: 5px;
+                gap: 5px;
+
+                .hotel--name {
+                    font-size: 17px;
+                    font-weight: bold;
+                }
+
+                .hotel--content {
+                    color: var(--lightGrayColor2);
+                    font-size: 15px;
+
+                    button {
+                        margin-left: 10px;
+                        color: var(--regularBlueColor);
+                        border: none;
+                        font-weight: bold;
+                        background-color: #fff;
+
+                        .icon {
+                            width: 15px;
+                            height: 15px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .booking--user--info {
+            position: absolute;
+            margin-top: 230px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px 15px;
+
+
+            .info--title {
+                font-size: 19px;
+                font-weight: bold;
+            }
+
+            .booking--user--info--box {
+                font-size: 14px;
+                display: flex;
+                gap: 30px;
+
+                .user--info--title {
+                    width: 70px;
+                    color: var(--lightGrayColor3);
+                }
+
+            }
+        }
+
+        .booking--payment--info {
+            position: absolute;
+            margin-top: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px 15px;
+
+            .info--title {
+                font-size: 19px;
+                font-weight: bold;
+            }
+
+            .payment--info--wrap {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                .payment--info--box {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .payment--info--title {
+
+                        color: var(--lightGrayColor3);
+                    }
+
+                    .payment--total--price {
+                        color: var(--redColor);
+                    }
+                }
+            }
+        }
+
+        .booking--cancle--info {
+
+            position: absolute;
+            margin-top: 760px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px 15px;
+
+
+            .info--title {
+                font-size: 19px;
+                font-weight: bold;
+            }
+
+            .payment--info--wrap {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                .payment--info--box {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .payment--info--title {
+
+                        color: var(--lightGrayColor3);
+                    }
+
+                    .payment--total--price {
+                        color: var(--redColor);
+                    }
+                }
+            }
+        }
+    }
+
+}

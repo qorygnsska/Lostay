@@ -33,7 +33,7 @@ import '../src/pages/MyPage/Profile/Profile.css';
 import '../src/pages/Hotel/RoomList.css';
 import '../src/pages/MyPage/BookingHistory/BookingHistory.css'
 import '../src/pages/Hotel/HotelMap.css';
-
+import '../src/pages/MyPage/BookingHistory/Payment/Payment.css'
 
 
 function App() {

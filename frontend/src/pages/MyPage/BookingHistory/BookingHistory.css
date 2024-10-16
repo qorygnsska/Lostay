@@ -24,7 +24,7 @@
         }
 
         .notify {
-            border: 1px solid black;
+            border: 1px solid var(--lightGrayColor);
             border-radius: 10px;
             height: 50px;
             padding: 5px 15px;
@@ -67,7 +67,45 @@
         .bookingList {
             display: flex;
             flex-direction: column;
+            gap: 60px;
+        }
+
+        .booking--none {
+            display: flex;
+            flex-direction: column;
             gap: 40px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 100px;
+
+            .booking--none--text {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                span:nth-child(1) {
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+            }
+
+
+
+            .home--btn {
+                border: 2px solid var(--logoColor);
+                color: var(--logoColor);
+                width: 160px;
+                height: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 10px;
+                text-decoration: none;
+                font-size: 18px;
+                font-weight: bold;
+
+            }
         }
     }
 

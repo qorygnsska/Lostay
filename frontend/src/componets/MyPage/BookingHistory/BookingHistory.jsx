@@ -1,8 +1,10 @@
 import React from 'react'
+import { BsNutFill } from 'react-icons/bs';
 import { FaChevronRight } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 export default function BookingHistory({ booking }) {
-    const state = ['예약 취소', '리뷰 작성', '리뷰 작성 완료']
+    const state = ['예약 취소', '리뷰 작성']
 
     return (
 
@@ -10,20 +12,24 @@ export default function BookingHistory({ booking }) {
             <div className='booking--info--wrap'>
                 <div className='booking--info--paydate'>
                     <span>{booking.payDay}</span>
-                    <a href='https://www.example.com'>
-                        {booking?.cancle ? (
+                    {booking?.cancle ? (
+                        <Link to='/payment' state={{ paymentType: 'cancle', payNo: booking.payNo, roomNo: booking.roomNo }}>
+
                             <div className='booking--payment cancle'>
                                 <span>취소내역</span>
                                 <FaChevronRight />
                             </div>
-                        ) :
+                        </Link>
+                    ) :
+                        <Link to='/payment' state={{ payNo: booking.payNo, roomNo: booking.roomNo }}>
                             <div className='booking--payment'>
                                 <span>결제내역</span>
                                 <FaChevronRight />
                             </div>
-                        }
+                        </Link>
+                    }
 
-                    </a>
+
                 </div>
 
                 <div className='booking--info--hotel'>
@@ -54,22 +60,24 @@ export default function BookingHistory({ booking }) {
                                 booking?.review ?
                                     (
                                         booking.review === 'Y' ?
-                                            <span>
-                                                <div className='booking--btn noActive' >
-                                                    {state[2]}
-                                                </div>
-                                            </span> :
                                             <a href='https://www.example.com'>
                                                 <div className='booking--btn' >
                                                     {state[1]}
                                                 </div>
-                                            </a>
+                                            </a> :
+                                            null
                                     ) :
-                                    <a href='https://www.example.com'>
-                                        <div className='booking--btn' >
-                                            {state[0]}
-                                        </div>
-                                    </a>
+
+                                    booking.roomCancle === 'Y' ?
+                                        (
+                                            <a href='https://www.example.com'>
+                                                <div className='booking--btn' >
+                                                    {state[0]}
+                                                </div>
+                                            </a>
+                                        ) :
+                                        null
+
 
                             }
 
