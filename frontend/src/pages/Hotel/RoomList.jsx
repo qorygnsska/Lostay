@@ -45,6 +45,10 @@ export default function RoomList() {
             content: '최고의 숙소!!!!'
         }
     ];
+
+    const handleFindButtonClick = () => {
+        window.location.href = '/HotelMap';
+    };
     
     return (
         <Container className='room--list'>
@@ -68,7 +72,7 @@ export default function RoomList() {
             <div className='HotelLocation'>
                 <div className='LoTitle'>위치/길찾기</div>
                 <span className='LoContent'>{HotelInfo.Location}</span>
-                <Button id='FindBtn'>길찾기<IoNavigate /></Button> 
+                <Button id='FindBtn' onClick={handleFindButtonClick}>길찾기<IoNavigate /></Button> 
                 
                 <KakaoMap Location={HotelInfo.Location} />
             </div>
