@@ -60,17 +60,20 @@ public class HotelController {
 							  ,@RequestParam(defaultValue="0") int minRoomPrice //객실 최소가격
 							  ,@RequestParam(defaultValue="1000000") int maxnRoomPrice//객실 최대가격
 							  ,@RequestParam()String roomDiscount//할인혜택
-							  ,@RequestParam("5성급")String[] hotelRating//등급
+							  ,@RequestParam(defaultValue="5성급")String[] hotelRating//등급
 		                      ,@RequestParam()String[] bedtype//베드타입
 		                      ,@RequestParam()String[] facilities1//공용시설
 		                      ,@RequestParam()String[] facilities2//객실 내 시설
 		                      ,@RequestParam()String[] facilities3//기타 시설
-		                      ,@RequestParam()int SoldOut //매진 숙소
-		                      ){
-							  					
-			return null;
-					
+		                      ,@RequestParam(defaultValue="1")int SoldOut //매진 숙소 매진 숙소 버튼을누르면 -1값 기본은 1값
+		                      ,@RequestParam(defaultValue="평점 높은 순") String sort)//정렬
+				{
+				
+				
 			
+			
+			
+				return null;			
 			
 		}
 	
