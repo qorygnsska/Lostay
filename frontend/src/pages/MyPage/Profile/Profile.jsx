@@ -6,7 +6,7 @@ import { FaChevronRight } from "react-icons/fa";
 
 export default function Profile() {
 
-    const data = { nickname: '루메이로05', email: 'dny091@naver.com', phone: '010-4715-5243' }
+    const data = { nickname: '루이지애나포토존05', email: 'dny091@naver.com', phone: '010-4715-5243' }
 
     const [nicknameEdit, setNicknameEidt] = useState(false);
     const nicknameInputRef = useRef(null);

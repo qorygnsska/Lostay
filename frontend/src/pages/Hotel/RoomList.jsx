@@ -1,14 +1,27 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
-
-import { GrNext } from "react-icons/gr";
+import { Button, Container } from 'react-bootstrap'
 
 import { IoIosHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
-import { FaStar } from "react-icons/fa";
+
+import { IoNavigate } from "react-icons/io5";
+
 import HotelCarousel from '../../componets/Hotel/HotelCarousel';
+import HotelReview from '../../componets/Hotel/HotelReview';
+import KakaoMap from '../../componets/Map/KakaoMap';
 
 export default function RoomList() {
+
+    const Location = "제주특별자치도 서귀포시 색달동 3039-3";
+
+    const HotelInfo = {
+        id: 1,
+        rank: "블랙·5성급·호텔",
+        name : "제주신라호텔",
+        starAvg : 4.8,
+        reviewCount : 518,
+        Location: "제주특별자치도 서귀포시 색달동 3039-3",
+    };
     
     const Reviews = [
         {
@@ -32,6 +45,10 @@ export default function RoomList() {
             content: '최고의 숙소!!!!'
         }
     ];
+
+    const handleFindButtonClick = () => {
+        window.location.href = '/HotelMap';
+    };
     
     return (
         <Container className='room--list'>
@@ -40,8 +57,8 @@ export default function RoomList() {
 
             <div className='HotelInfo'>
                 <div className='HotelRN'>
-                    <div className='HotelRank'>블랙·5성급·호텔</div>
-                    <div className='HotelName'>제주신라호텔</div>
+                    <div className='HotelRank'>{HotelInfo.rank}</div>
+                    <div className='HotelName'>{HotelInfo.name}</div>
                 </div>
 
                 <IoIosHeartEmpty className='HeartIcon'/>
@@ -49,42 +66,15 @@ export default function RoomList() {
 
             <div className='RowLine'></div>
 
-            <div className='ReviewBox'>
-                <div className='StarDiv'>
-                  <div className='Star'>
-                    <FaStar className='StarIcon' />
-                    <div className='StarNum'>9.6</div>
-                  </div>
-                  <span className='StarCount'>904명 평가</span>
-                  <GrNext />
-                </div>
-
-                <div className='ReviewWrap'>
-                    {Reviews.map((review) => (
-                        <div className='ContentBox'>
-                            <div className='ReviewSD'>
-                                <div className='ReviewStar'>
-                                    <FaStar className='ReviewIcon'/>
-                                    <span>{review.rank}</span>
-                                </div>
-
-                                <div className='ReviewDate'>
-                                    {review.date}
-                                </div>
-                            </div>
-
-                            <div className='ReviewContent'>
-                                {review.content}
-                            </div>
-
-                        </div>
-                    ))}
-                </div>
-            </div>
+            <HotelReview Reviews={Reviews} HotelInfo={HotelInfo} />
 
 
             <div className='HotelLocation'>
                 <div className='LoTitle'>위치/길찾기</div>
+                <span className='LoContent'>{HotelInfo.Location}</span>
+                <Button id='FindBtn' onClick={handleFindButtonClick}>길찾기<IoNavigate /></Button> 
+                
+                <KakaoMap Location={HotelInfo.Location} />
             </div>
 
         </Container>

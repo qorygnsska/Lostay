@@ -7,19 +7,23 @@
     #section_container {
         max-width: 100%;
         padding-top: 12px;
-    }
 
-    #table_header {
-        text-align: center;
-    }
 
-    #table_body {
-        text-align: center;
-
-        .btn_container {
-            display: flex;
-            justify-content: space-evenly;
+        #table_header {
+            text-align: center;
         }
+
+
+        #table_body {
+            text-align: center;
+
+            .btn_container {
+                display: flex;
+                justify-content: space-evenly;
+            }
+        }
+
+
     }
 
 
@@ -38,10 +42,10 @@
 
 
 
-    #btn_enroll {/* '이벤트 등록' 버튼 */
+    #btn_enroll {
+        /* '이벤트 등록' 버튼 */
 
     }
-
 
 }
 
@@ -56,7 +60,6 @@
 
 .page--user--manager--container {
     /* 관리자 사용자페이지 */
-
 
 
 
