@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
 import { Container, Form, Navbar } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom';
 
 export default function CompHeaderGeneral(props) {
 
  
-
     //클릭이 일어난 location(path)
     const whereAmI = useLocation().pathname.toString();
 

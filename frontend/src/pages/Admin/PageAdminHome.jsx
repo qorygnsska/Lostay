@@ -77,7 +77,7 @@ export default function PageAdminHome() {
           <p>{clock.toLocaleString()}</p>
 
 
-          {/* header w/ searchParam */}
+          {/* header w/ searchParams */}
           <CompHeaderGeneral 
             where={functionFromWhere}
             callParent={functionSearchPicker}
