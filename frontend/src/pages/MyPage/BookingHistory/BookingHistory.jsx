@@ -2,14 +2,36 @@ import React, { useState } from 'react'
 import BackNav from '../../../componets/BackNav/BackNav';
 import Navbar from '../../../componets/Navbar/Navbar';
 import { Dropdown, Nav } from 'react-bootstrap';
+import BookingHistoryCom from '../../../componets/MyPage/BookingHistory/BookingHistory'
+
 export default function BookingHistory() {
 
-    const dateList = ['최근 3개월', '최근 6개월', '최근 1년'];
+    const dateList = ['최근 3개월', '최근 6개월', '최근 12개월'];
     const tabList = ['예약한 숙소', '이용한 숙소', '취소한 숙소'];
 
     const [selectedDate, setSelectedDate] = useState(dateList[0]);
     const [activeTab, setActiveTab] = useState(0)
-    const [borderStyle] = useState({ left: 0, width: 0 }); // 바닥선 스타일
+    const [borderStyle] = useState({ left: 0, width: 0 });
+    const [bookingList, setBookingList] = useState([{
+        payNo: 1,
+        payDay: '2024-10-05 (토)',
+        hotelName: '이비스 엠버서더 부산 시티센터',
+        checkInDay: '2024-10-06 (일)',
+        checkOutDay: '2024-10-07 (월)',
+        checkInTime: '15:00',
+        checkOutTime: '11:00',
+        image: '2b9ba01a5cfcd32ac752258732a5a669.webp',
+    },
+    {
+        payNo: 2,
+        payDay: '2024-10-10 (월)',
+        hotelName: '페어필드 바이 메리어트 서울',
+        checkInDay: '2024-10-11 (화)',
+        checkOutDay: '2024-10-12 (수)',
+        checkInTime: '15:00',
+        checkOutTime: '11:00',
+        image: '61cd5eb540030.webp',
+    }]);
 
     const handleSelect = (eventKey) => {
         setSelectedDate(dateList[eventKey]);
@@ -17,6 +39,77 @@ export default function BookingHistory() {
 
     const handleSelectTab = (eventKey) => {
         setActiveTab(eventKey);
+        // bookingList 설정
+        if (eventKey === 0) {
+            setBookingList([{
+                payNo: 1,
+                payDay: '2024-10-05 (토)',
+                hotelName: '이비스 엠버서더 부산 시티센터',
+                checkInDay: '2024-10-06 (일)',
+                checkOutDay: '2024-10-07 (월)',
+                checkInTime: '15:00',
+                checkOutTime: '11:00',
+                image: '2b9ba01a5cfcd32ac752258732a5a669.webp',
+            },
+            {
+                payNo: 2,
+                payDay: '2024-10-10 (월)',
+                hotelName: '페어필드 바이 메리어트 서울',
+                checkInDay: '2024-10-11 (화)',
+                checkOutDay: '2024-10-12 (수)',
+                checkInTime: '15:00',
+                checkOutTime: '11:00',
+                image: '61cd5eb540030.webp',
+            }]);
+        } else if (eventKey === 1) {
+            setBookingList([{
+                payNo: 1,
+                payDay: '2024-10-05 (토)',
+                hotelName: '이비스 엠버서더 부산 시티센터',
+                checkInDay: '2024-10-06 (일)',
+                checkOutDay: '2024-10-07 (월)',
+                checkInTime: '15:00',
+                checkOutTime: '11:00',
+                image: '2b9ba01a5cfcd32ac752258732a5a669.webp',
+                review: 'Y'
+            },
+            {
+                payNo: 2,
+                payDay: '2024-10-10 (월)',
+                hotelName: '페어필드 바이 메리어트 서울',
+                checkInDay: '2024-10-11 (화)',
+                checkOutDay: '2024-10-12 (수)',
+                checkInTime: '15:00',
+                checkOutTime: '11:00',
+                image: '61cd5eb540030.webp',
+                review: 'N'
+            }]);
+        } else {
+            setBookingList([{
+                payNo: 1,
+                payDay: '2024-10-05 (토)',
+                hotelName: '이비스 엠버서더 부산 시티센터',
+                checkInDay: '2024-10-06 (일)',
+                checkOutDay: '2024-10-07 (월)',
+                checkInTime: '15:00',
+                checkOutTime: '11:00',
+                image: '2b9ba01a5cfcd32ac752258732a5a669.webp',
+                cancle: 'Y'
+            },
+            {
+                payNo: 2,
+                payDay: '2024-10-10 (월)',
+                hotelName: '페어필드 바이 메리어트 서울',
+                checkInDay: '2024-10-11 (화)',
+                checkOutDay: '2024-10-12 (수)',
+                checkInTime: '15:00',
+                checkOutTime: '11:00',
+                image: '61cd5eb540030.webp',
+                cancle: 'N'
+            }]);
+        }
+
+
     };
 
     return (
@@ -32,7 +125,7 @@ export default function BookingHistory() {
                             {selectedDate}
                         </Dropdown.Toggle>
 
-                        <Dropdown.Menu>
+                        <Dropdown.Menu className="dropdown--menu">
                             {dateList.map(
                                 (dateVal, idx) => (
 
@@ -74,8 +167,12 @@ export default function BookingHistory() {
 
 
 
-                <div>
-                    리스트
+                <div className='bookingList'>
+                    {
+                        bookingList.map((booking, idx) => (
+                            <BookingHistoryCom key={idx} booking={booking} />
+                        ))
+                    }
                 </div>
             </div>
 
