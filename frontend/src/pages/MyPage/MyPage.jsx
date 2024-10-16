@@ -35,7 +35,7 @@ export default function MyPage() {
                 <div className='mypage--info--wrap'>
 
                     <div className='info--vertical'>
-                        <button className='info--btn'>
+                        <Link to="/booking-history" className='info--btn link'>
                             <div>
                                 <span>예약내역</span>
                             </div>
@@ -43,7 +43,7 @@ export default function MyPage() {
                             <div>
                                 <FaChevronRight className='icon' />
                             </div>
-                        </button>
+                        </Link>
                     </div>
 
 
@@ -65,7 +65,7 @@ export default function MyPage() {
 
                     <div className='info--horizontal--box'>
                         <div className='info--horizontal'>
-                            <Link to="/reivew" className='info--horizontal--btn'>
+                            <Link to="/reivew" className='info--horizontal--btn link'>
                                 <div>
                                     <BsChatText className='icon' />
                                 </div>
@@ -78,7 +78,7 @@ export default function MyPage() {
 
                         <span className='separation '></span>
                         <div className='info--horizontal'>
-                            <Link to="/wishlist" className='info--horizontal--btn'>
+                            <Link to="/wishlist" className='info--horizontal--btn link'>
                                 <div>
                                     <FaRegHeart className='icon' />
                                 </div>
@@ -99,7 +99,7 @@ export default function MyPage() {
                 <div className='service--wrap'>
                     <h3>서비스관리</h3>
                     <div className='my--info-setting'>
-                        <button className='my--info--btn'>
+                        <Link to="/profile" className='my--info--btn link'>
                             <div>
                                 <span>내 정보 관리</span>
                             </div>
@@ -107,7 +107,7 @@ export default function MyPage() {
                             <div>
                                 <FaChevronRight className='icon' />
                             </div>
-                        </button>
+                        </Link>
 
                     </div>
 

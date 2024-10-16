@@ -1,14 +1,5 @@
-.comp--event--inserter--container {
-    /* EventInserter 컴포넌트*/
-
-    p {
-        color: red;
-
-    }
-}
-
 .comp--event--unit--container {
-    /* EventUnit 컴포넌트*/
+    /* EventUnit 컴포넌트 */
 
     p {
         color: green;
@@ -16,11 +7,31 @@
     }
 }
 
-.comp--event--updater--container {
-    /* EventUpdater 컴포넌트*/
+.comp--event--manager--modal {
+    /* EventManager 공통 */
 
-    p {
-        color: blue;
+}
 
+.comp--event--inserter--container {
+    /* EventInserter 컴포넌트(EventManager) */
+    #title_modal {
+        color: green;
     }
+
+    .form-label {
+        color: green;
+    }
+   
+
+}
+.comp--event--updater--container {
+    /* EventUpdater 컴포넌트(EventManager) */
+    #title_modal {
+        color: orange;
+    }
+
+    .form-label {
+        color: orange;
+    }
+
 }

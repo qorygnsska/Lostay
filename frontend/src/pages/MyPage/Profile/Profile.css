@@ -1,0 +1,114 @@
+.profile--container {
+
+    .profile--wrap {
+        background-color: var(--lightGrayColor4);
+        height: 100vh;
+        position: relative;
+
+        .profile--box {
+            position: absolute;
+            margin-top: 50px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px 15px;
+            font-size: 17px;
+
+            .profile--title {
+                font-size: 25px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid var(--lightGrayColor);
+            }
+
+
+
+            .profile {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+
+                .profile--child {
+                    display: flex;
+                    gap: 30px;
+
+                    .profile--child--title {
+                        flex: 1;
+                    }
+
+
+                    span {
+                        flex: 8;
+                    }
+
+                    .profile--edit {
+                        display: flex;
+                        flex: 8;
+                        padding-right: 10px;
+                        justify-content: space-between;
+                        align-items: center;
+                        gap: 40px;
+
+
+                        input {
+                            flex: 1;
+                            border: none;
+                            outline: none;
+                        }
+
+                        input:not([readonly]) {
+                            border-bottom: 1px solid black;
+                        }
+
+                    }
+
+                }
+
+            }
+
+            .nickname--edit--btn,
+            .phone--edit--btn {
+                border: 2px solid var(--logoColor);
+                font-weight: bold;
+                width: 50px;
+                border-radius: 10px;
+                height: 35px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-left: 107px;
+            }
+        }
+
+        .profile--delete {
+            position: absolute;
+            margin-top: 80px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px 15px;
+            font-size: 25px;
+
+
+            left: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-right: 25px;
+
+            p {
+                margin-bottom: 0;
+            }
+
+            .icon {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .focus {
+        cursor: pointer;
+    }
+}

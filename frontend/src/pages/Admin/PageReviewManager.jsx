@@ -12,15 +12,15 @@ export default function PageReviewManager() {
     //하위요소가 값을 넘겨주면 실행할 함수
     const functionForMyChild = (fromMyChild) => {
         //fromMyChild: 하위요소가 넘겨준 변수(text_search)의 매개변수
-        console.log('text_fromChild: ' + text_fromChild);   //previousState
+        //console.log('text_fromChild: ' + text_fromChild);   //previousState
         console.log('fromChild: ' + fromMyChild);
         setText_fromChild(fromMyChild);
     }
 
 
     function deleteReview() {   //하위요소 '삭제' 버튼에 상속해줄 함수
-        console.log('click_delete_review');
-        
+        alert('정말 삭제?');
+
     }
 
 

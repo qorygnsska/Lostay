@@ -2,11 +2,12 @@ import React from 'react'
 import BackNav from '../../../componets/BackNav/BackNav';
 import Navbar from '../../../componets/Navbar/Navbar';
 import WishListComponent from '../../../componets/MyPage/WishList/WishList';
+import { FaRegHeart } from "react-icons/fa";
 
 export default function WishList() {
 
-
-    const hotelList = [
+    const hotelList = []
+    const hotelList2 = [
         { image: '2e8d99db81c7bde9a4f9cb703b0d7e52.webp', hotelRating: '3등급', hotelName: '구월 호텔반월', reviewAvg: 4.9, reviewCnt: 122, oriPrice: 208000, discount: 8, discountPrice: 100000 },
         { image: '66fac140e8c113.870765961_1.png', hotelRating: '5등급', hotelName: '롯데 시티호텔 울산', reviewAvg: 4.7, reviewCnt: 3015, oriPrice: 72800, discount: 0, discountPrice: 100000 },
         { image: '66fac140e8c113.870765961_1.png', hotelRating: '3등급', hotelName: '스탠포드 호텔', reviewAvg: 4.6, reviewCnt: 303, oriPrice: 390000, discount: 0, discountPrice: 100000 },
@@ -19,11 +20,20 @@ export default function WishList() {
         <div className='wishlist--container'>
             <BackNav title={'찜'} />
 
-            <div className='wishlist--card'>
-                {hotelList.map((hotel, index) => (
-                    <WishListComponent key={index} hotel={hotel} />
-                ))}
-            </div>
+            {hotelList.length
+                ? <div className='wishlist--card'>
+                    {hotelList.map((hotel, index) => (
+                        <WishListComponent key={index} hotel={hotel} />
+                    ))}
+                </div>
+                : <div className='wishlist--blank'>
+                    <FaRegHeart className='icon' />
+                    <div className='wishlist--blank--text'>
+                        <span>찜한 숙소가 없습니다.</span>
+                        <span>마음에 드는 상품을 찜해주세요.</span>
+                    </div>
+                </div>
+            }
 
 
             <Navbar />

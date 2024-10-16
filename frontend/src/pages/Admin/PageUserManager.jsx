@@ -11,7 +11,7 @@ export default function PageUserManager() {
     //하위요소가 값을 넘겨주면 실행할 함수
     const functionForMyChild = (fromMyChild) => {
         //fromMyChild: 하위요소가 넘겨준 변수(text_search)의 매개변수
-        console.log('text_fromChild: ' + text_fromChild);   //previousState
+        //console.log('text_fromChild: ' + text_fromChild);   //previousState
         console.log('fromChild: ' + fromMyChild);
         setText_fromChild(fromMyChild);
     }
