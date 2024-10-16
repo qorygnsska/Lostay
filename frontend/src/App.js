@@ -15,6 +15,7 @@ import '../src/componets/Navbar/Navbar.css'
 import '../src/componets/Search/SearchComponent.css'
 import '../src/componets/MyPage/WishList/WishList.css'
 import '../src/componets/Hotel/HotelCarousel.css'
+import '../src/componets/MyPage/BookingHistory/BookingHistory.css'
 
 
 

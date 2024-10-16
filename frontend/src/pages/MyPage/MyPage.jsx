@@ -35,7 +35,7 @@ export default function MyPage() {
                 <div className='mypage--info--wrap'>
 
                     <div className='info--vertical'>
-                        <Link to="/bookingHistory" className='info--btn link'>
+                        <Link to="/booking-history" className='info--btn link'>
                             <div>
                                 <span>예약내역</span>
                             </div>
