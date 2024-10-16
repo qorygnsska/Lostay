@@ -47,7 +47,8 @@ public class Payment {
 	    private String payStatus; // 결제상태
 	    private int payPrice; // 결제가격
 	    private int payPoint; // 사용한포인트
-
+	    private LocalDateTime cancleDay;  // 결제 취소 날짜
+	    
 	    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // 예약 엔티티와의 관계 설정
 	    @ToString.Exclude
 	    private Reservation reservations; // 예약 목록

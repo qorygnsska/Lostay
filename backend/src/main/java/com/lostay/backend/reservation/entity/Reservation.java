@@ -38,7 +38,9 @@ public class Reservation {
 	    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	    private Payment payment;
 
-	    private LocalDate checkIn; // 체크인날짜
-	    private LocalDate checkOut; // 체크아웃날짜
+		private String resStatus;	// 예약 확인/취소 상태
+	    
+	    private LocalDateTime checkIn; // 체크인날짜
+	    private LocalDateTime checkOut; // 체크아웃날짜
 	
 }

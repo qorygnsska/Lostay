@@ -1,8 +1,9 @@
 package com.lostay.backend.payment.dto;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+import java.time.LocalTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,15 +23,24 @@ public class PaymentDTO {
 	private String payStatus;			// 결제상태
 	private int payPrice;				// 결제가격
 	private int payPoint;				// 사용한포인트
-	
+    private LocalDateTime cancleDay;  // 결제 취소 날짜   
 	
 	// 조인컬럼
+    private long hotelNo; 		// 호텔이름
 	private String hotelName;  // 호텔이름
 	private String hotelAddress;  // 호텔주고
-	private LocalDate checkIn;  // 체크인 날짜
-	private LocalDate checkOut;  // 체크아웃 날짜
+	private LocalDateTime checkIn;  // 체크인 날짜
+	private LocalDateTime checkOut;  // 체크아웃 날짜
 	private String userName;		// 유저명
 	private String userPhone;		// 유저폰번호
+	private int roomPrice;			// 객실가격
+	private long roomNo;			// 객실번호
+	private Time roomCheckinTime;	// 객실체크인시간
+	private Time roomCheckoutTime;	// 객실체크아웃시간
+	private int period;         // 몇박인지 확인하는 dto
+	private String cancleAble;   // 예약 취소 가능한지 아닌지
+	private String reviewAble;    // 리뷰 가능한지 아닌지
+	
 
 }
 

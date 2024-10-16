@@ -29,14 +29,12 @@ public class PaymentController {
 	private PaymentService paySer;
 	
 
-	// 결제내역(예약한 숙소 확인)
+	// 결제 내역
 	@GetMapping("/PaymentHistory")
-	public ResponseEntity<?> paymenthistory(){
+	public ResponseEntity<?> paymenthistory(@RequestParam(defaultValue = "3") long payNo){
+
 		
-		// 현재 세션 주인
-		Long userNo = 1L;
-		
-		return new ResponseEntity<>(paySer.findAll(userNo),HttpStatus.OK);
+		return new ResponseEntity<>(paySer.findPayHistory(payNo),HttpStatus.OK);
 	}
 	
 	
@@ -78,9 +76,9 @@ public class PaymentController {
 										  ,@RequestParam(defaultValue = "100000") int payPrice
 										  ,@RequestParam(defaultValue = "10") int payPoint
 										  ,@RequestParam(defaultValue = "2024-11-21") 
-	   									   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate
+	   									   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime checkInDate
 	   									  ,@RequestParam(defaultValue = "2024-11-22") 
-										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate){
+										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime checkOutDate){
 											
 		// 결제 api 아직 안들어옴
 
@@ -99,4 +97,6 @@ public class PaymentController {
 		paySer.canclePayment(payNo);
 		
 	}
+	
+
 }
