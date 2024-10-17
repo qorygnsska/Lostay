@@ -56,9 +56,14 @@ export default function PageAdminHome() {
     console.log('where are you?: ' + fromWhere);
   }
 
+  const [focus, setFocus] = useState('input_place');
+
   // 어떤 input 눌렀니?
   const functionSearchPicker = (fromMyChild) => {
-    console.log(fromMyChild + ' is picked');
+    console.log(fromMyChild + ' is picked at headerGeneral');
+    //선택 위치에 따라 focus 변경 -> 하위 모달에 focus 전달
+    setFocus(fromMyChild);
+
     setSearchBoxShow(true);
   }
   ////////////////////////////////////////
@@ -77,7 +82,7 @@ export default function PageAdminHome() {
           <p>{clock.toLocaleString()}</p>
 
 
-          {/* header w/ searchParam */}
+          {/* header w/ searchParams */}
           <CompHeaderGeneral 
             where={functionFromWhere}
             callParent={functionSearchPicker}
@@ -95,6 +100,7 @@ export default function PageAdminHome() {
             check_in={check_in}
             check_out={check_out}
             member={member}
+            focus={focus}
           />
           
 

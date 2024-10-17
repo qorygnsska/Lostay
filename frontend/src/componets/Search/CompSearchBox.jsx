@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Container, Form, Modal } from 'react-bootstrap'
 import { GoDash } from 'react-icons/go';
+import CompMemberPicker from './CompMemberPicker';
 
 export default function CompSearchBox(props) {
 
@@ -10,6 +11,23 @@ export default function CompSearchBox(props) {
     const [check_in, setCheck_in] = useState(props.check_in);
     const [check_out, setCheck_out] = useState(props.check_out);
     const [member, setMember] = useState(props.member);
+
+    const handleShow = () => {
+        //모달이 열릴 때마다 어디를 클릭해서 열리는지 확인하여 auto-focusing
+        console.log('focusing at modal: ' + props.focus);
+        
+    }
+
+
+
+    //#input_member 클릭 시, #input_member 숨기고 CompMemberPicker 보이기
+    //CompMemberPickerd에서 '변경' 버튼 클릭 시 반대로
+    const [memberPicker, setMemberPicker] = useState(false);
+    const handleMemberPicker = () => {
+        setMemberPicker(!memberPicker);
+    }
+
+
 
 
     const handleSearch = () => {    
@@ -22,7 +40,7 @@ export default function CompSearchBox(props) {
     return (
         <>
 
-            <Modal
+            <Modal onShow={handleShow}
                 className='comp--search--box-container'
                 {...props}
                 fullscreen={true}
@@ -36,11 +54,11 @@ export default function CompSearchBox(props) {
                         <Form.Control
                             id="input_place"
                             className='mb-3'
-                            type="text"
+                            type="search"
                             placeholder="지역 또는 호텔명을 입력하세요"
                             value={place}
                             onChange={(event) => setPlace(event.target.value)}
-                            autoFocus
+                            autoFocus={props.focus=="input_place"?true:false}
                         />
 
                         <div id="container_period" className='d-flex'>
@@ -51,6 +69,8 @@ export default function CompSearchBox(props) {
                             placeholder="체크인"
                             value={check_in}
                             onChange={(event) => setCheck_in(event.target.value)}
+                            autoFocus={props.focus=="input_period"?true:false}
+
                         />
                         <GoDash id="seperator_period" size="24"/>
                         <Form.Control
@@ -65,10 +85,20 @@ export default function CompSearchBox(props) {
 
                         <Form.Control
                             id="input_member"
+                            hidden={memberPicker?true:false}
                             type="text"
                             placeholder="인원"
                             value={member}
+                            readOnly
                             onChange={(event) => setMember(event.target.value)}
+                            autoFocus={props.focus=="input_member"?true:false}
+                            onClick={() => handleMemberPicker()}
+                        />
+                        <CompMemberPicker
+                            hidden={!memberPicker?true:false}
+                            member={member}
+                            callParent={(memberFromChild) => setMember(memberFromChild)}
+                            confirmMember={() => setMemberPicker(!memberPicker)}
                         />
                     </Form>
 

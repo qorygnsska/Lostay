@@ -19,56 +19,68 @@
 .comp--search--box-container {
     /*SearchBox 컴포넌트 */
 
-    #header_searchBox { /*모달 헤더*/
-        position: relative;
 
-        display: flex;
-        justify-content: center;
+    .modal-content {
+        max-width: 768px;
+        margin: auto;
 
-        #title_modal {
 
+        #header_searchBox {
+            /*모달 헤더*/
+            position: relative;
+
+            display: flex;
+            justify-content: center;
+
+            #title_modal {}
+
+            .btn-close {
+                position: absolute;
+                right: 20px;
+
+                margin: 0;
+            }
         }
 
-        .btn-close {
-            position: absolute;
-            right: 20px;
 
-            margin: 0;
-        }
-    }
-
-    #body_searchBox { /*모달 바디*/
-        position: relative;
+        #body_searchBox {
+            /*모달 바디*/
+            position: relative;
 
 
-        #container_period {
-            /* align-items: center; */
+            #container_period {
+                /* align-items: center; */
 
-            #seperator_period {
-                margin-top: 6px;
+                #seperator_period {
+                    margin-top: 6px;
+                }
+
             }
 
-        }
 
+            #container_btn_search {
+                position: absolute;
+                bottom: 20px;
+                left: 0;
 
-
-        #container_btn_search {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-
-            margin: 0;
-            padding: 16px;
-            max-width: 100%;
-            width: 100%;
-
-            #btn_search {   /*'검색' 버튼*/
+                margin: 0;
+                padding: 16px;
+                max-width: 100%;
                 width: 100%;
+
+                #btn_search {
+                    /*'검색' 버튼*/
+                    width: 100%;
+                }
             }
+
+
         }
 
-
     }
+
+
+
 
 
 
