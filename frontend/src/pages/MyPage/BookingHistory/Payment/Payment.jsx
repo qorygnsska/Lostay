@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import BackNav from '../../../../componets/BackNav/BackNav';
 import Navbar from '../../../../componets/Navbar/Navbar';
 import { PiCopyBold } from "react-icons/pi";
+import Toast from '../../../../componets/Toast/Toast';
 
 export default function Payment() {
     const location = useLocation();
     const paymentType = location.state?.paymentType;
     const payNo = location.state.payNo;
     const roomNo = location.state.roomNo;
+
+    const [toast, setToast] = useState(false);
 
 
     const payment = {
@@ -34,13 +37,14 @@ export default function Payment() {
     const handleCopyClipBoard = async (address) => {
         try {
             await navigator.clipboard.writeText(address);
+            setToast(true);
         } catch (e) {
             console.error("Failed to copy to clipboard", e);
         }
     };
 
     return (
-        <div className='payment--contaienr'>
+        <div className='payment--container'>
 
             <BackNav title={paymentType ? '취소 내역' : '결제 내역'} />
 
@@ -62,7 +66,7 @@ export default function Payment() {
                         </div>
 
                         <div className='hotel--content'>
-                            <sapn>{payment.checkInDate} ~ {payment.checkOutDate}</sapn>
+                            <span>{payment.checkInDate} ~ {payment.checkOutDate}</span>
                         </div>
                     </div>
                 </div>
@@ -212,7 +216,7 @@ export default function Payment() {
                         </div>) : null
                 }
             </div>
-
+            {toast && <Toast setToast={setToast} text="주소를 복사했습니다" />}
             <Navbar />
         </div>
     )

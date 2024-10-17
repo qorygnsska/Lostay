@@ -195,15 +195,3 @@
         margin-top: auto;
     }
 }
-
-@keyframes slideIn {
-    from {
-        transform: translateY(100%);
-        /* 아래에서 시작 */
-    }
-
-    to {
-        transform: translateY(0);
-        /* 제자리로 */
-    }
-}

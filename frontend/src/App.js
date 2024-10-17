@@ -21,6 +21,7 @@ import '../src/componets/MyPage/MyReview/MyReview.css'
 import '../src/componets/MyPage/MyPoint/MyPoint.css'
 import '../src/componets/MyPage/BookingHistory/ReviewModal.css'
 import '../src/componets/MyPage/BookingHistory/PreviewImg.css'
+import '../src/componets/Toast/Toast.css'
 
 
 
