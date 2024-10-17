@@ -30,6 +30,7 @@ export default function Payment() {
 
     }
 
+    // 주소 복사
     const handleCopyClipBoard = async (address) => {
         try {
             await navigator.clipboard.writeText(address);
@@ -43,6 +44,7 @@ export default function Payment() {
 
             <BackNav title={paymentType ? '취소 내역' : '결제 내역'} />
 
+            {/* 예약한 호텔 정보 */}
             <div className='payment--wrap'>
                 <div className='booking--hotel--info'>
                     <img src={`HotelList/${payment.image}`} alt='호텔 이미지' />
@@ -65,7 +67,7 @@ export default function Payment() {
                     </div>
                 </div>
 
-
+                {/* 예약자 정보 */}
                 <div className='booking--user--info'>
                     <div className='info--title'>
                         <span>예약자 정보</span>
@@ -91,7 +93,7 @@ export default function Payment() {
                     </div>
                 </div>
 
-
+                {/* 결제정보 */}
                 <div className='booking--payment--info'>
                     <div className='info--title'>
                         <span>결제 정보</span>
@@ -156,60 +158,59 @@ export default function Payment() {
                             </div>
                         </div>
                     </div>
-
                 </div>
 
-                {paymentType ?
-                    (<div className='booking--cancle--info'>
-                        <div className='info--title'>
-                            <span>취소 정보</span>
-                        </div>
-
-                        <div className='payment--info--wrap'>
-                            <div className='payment--info--box'>
-                                <div className='payment--info--title'>
-                                    <span>취소 일시</span>
-                                </div>
-
-                                <div>
-                                    <span>{payment.payDay}</span>
-                                </div>
+                {/* 취소 정보 */}
+                {
+                    paymentType ? (
+                        <div className='booking--cancle--info'>
+                            <div className='info--title'>
+                                <span>취소 정보</span>
                             </div>
-                        </div>
 
-                        <div className='payment--info--wrap'>
-                            <div className='payment--info--box'>
-                                <div className='payment--info--title'>
-                                    <span>환불 금액</span>
-                                </div>
+                            <div className='payment--info--wrap'>
+                                <div className='payment--info--box'>
+                                    <div className='payment--info--title'>
+                                        <span>취소 일시</span>
+                                    </div>
 
-                                <div>
-                                    <span>{payment.canclePrice.toLocaleString()}원</span>
+                                    <div>
+                                        <span>{payment.payDay}</span>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className='payment--info--box'>
-                                <span>환불 포인트</span>
-                                <span>+ {payment.cnaclePoint.toLocaleString()}P</span>
-                            </div>
-                        </div>
+                            <div className='payment--info--wrap'>
+                                <div className='payment--info--box'>
+                                    <div className='payment--info--title'>
+                                        <span>환불 금액</span>
+                                    </div>
 
-                        <div className='payment--info--wrap'>
-                            <div className='payment--info--box'>
-                                <div className='payment--info--title'>
-                                    <span>총 환불 금액</span>
+                                    <div>
+                                        <span>{payment.canclePrice.toLocaleString()}원</span>
+                                    </div>
                                 </div>
 
-                                <div className='payment--total--price'>
-                                    <span>{payment.payPrice.toLocaleString()}원</span>
-
+                                <div className='payment--info--box'>
+                                    <span>환불 포인트</span>
+                                    <span>+ {payment.cnaclePoint.toLocaleString()}P</span>
                                 </div>
                             </div>
-                        </div>
 
-                    </div>)
-                    : null}
+                            <div className='payment--info--wrap'>
+                                <div className='payment--info--box'>
+                                    <div className='payment--info--title'>
+                                        <span>총 환불 금액</span>
+                                    </div>
 
+                                    <div className='payment--total--price'>
+                                        <span>{payment.payPrice.toLocaleString()}원</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>) : null
+                }
             </div>
 
             <Navbar />

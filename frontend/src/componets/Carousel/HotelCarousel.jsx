@@ -5,34 +5,39 @@ import { FaStar } from "react-icons/fa6";
 
 export default function CardCarousel({ hotelList }) {
 
+    // 슬라이드 설정
     const sliderRef = useRef(null);
     const [currentSlide, setCurrentSlide] = useState(0);
     const slideShowCtn = 3
     const totalSlides = hotelList.length;
 
-
-
+    // 현재 슬라이드 위치 저장
     const handleBeforeChange = (current, next) => {
         setCurrentSlide(next);
     };
 
+    // 슬라이드 셋팅 값 설정
     const settings = {
         dots: false,
         infinite: false,
         slidesToShow: slideShowCtn,
         slidesToScroll: 1,
         arrows: false,
-        beforeChange: handleBeforeChange, // 슬라이드 변경 전 호출되는 핸들러 추가
+        beforeChange: handleBeforeChange,
     };
 
 
 
     return (
         <div className="hotel--carousle--container">
+
+            {/* 슬라이드 실행 */}
             <Slider ref={sliderRef} {...settings}>
                 {hotelList.map((hotel, index) => (
                     <div key={index} >
                         <a href="https://example.com">
+
+                            {/* 호텔 정보 */}
                             <img src={`eventList/${hotel.image}`} alt={`슬라이드 ${index + 1}`} className="carousel-image" />
                             <div className="hotel--info--wrap">
                                 <div className="hotel--info">
@@ -53,21 +58,21 @@ export default function CardCarousel({ hotelList }) {
                                     </div>
                                 </div>
 
-
+                                {/* 호텔 가격 */}
                                 <div className="hotel--price--wrap">
                                     {
-                                        hotel.discount !== 0
-                                            ? <><div className="hotel--discount--price--wrap">
-                                                <span>{hotel.discount}%</span>
-                                                <span>{hotel.oriPrice.toLocaleString()}원</span>
-                                            </div>
-                                                <strong>{hotel.discountPrice.toLocaleString()}원~</strong></>
-                                            : <strong>{hotel.oriPrice.toLocaleString()}원~</strong>
+                                        hotel.discount !== 0 ? ( // 호텔 세일일 때
+                                            <>
+                                                <div className="hotel--discount--price--wrap">
+                                                    <span>{hotel.discount}%</span>
+                                                    <span>{hotel.oriPrice.toLocaleString()}원</span>
+                                                </div>
+                                                <strong>{hotel.discountPrice.toLocaleString()}원~</strong>
+                                            </>) : ( // 호텔 세일 아닐 때
+                                            <strong>{hotel.oriPrice.toLocaleString()}원~</strong>)
                                     }
-
                                 </div>
                             </div>
-
                         </a>
                     </div>
                 ))}

@@ -28,6 +28,8 @@ export default function MetropolitanCarousel({ metropolitanList }) {
 
     return (
         <div className="metropolitan--carousel--container">
+
+            {/* 슬라이드 실행 */}
             <Slider ref={sliderRef} {...settings}>
                 {metropolitanList.map((metropolitan, index) => (
                     <div key={index}>
@@ -44,18 +46,20 @@ export default function MetropolitanCarousel({ metropolitanList }) {
                 ))}
             </Slider>
 
+            {/* 슬라이드 좌우 버튼 */}
             <div className="moveBtn">
-                {currentSlide > 0
-                    ? <button onClick={() => sliderRef.current.slickPrev()} className="arrow-button">
-                        <FaChevronLeft className="arrow" />
-                    </button>
-                    : <div></div>
+                {
+                    currentSlide > 0 ? (
+                        <button onClick={() => sliderRef.current.slickPrev()} className="arrow-button">
+                            <FaChevronLeft className="arrow" />
+                        </button>) : <div></div>
                 }
-                {currentSlide < totalSlides - slideShowCtn && ( // slidesToShow 수에 따라 조정
-                    <button onClick={() => sliderRef.current.slickNext()} className="arrow-button">
-                        <FaChevronRight className="arrow" />
-                    </button>
-                )}
+                {
+                    currentSlide < totalSlides - slideShowCtn && ( // slidesToShow 수에 따라 조정
+                        <button onClick={() => sliderRef.current.slickNext()} className="arrow-button">
+                            <FaChevronRight className="arrow" />
+                        </button>)
+                }
             </div>
 
         </div>

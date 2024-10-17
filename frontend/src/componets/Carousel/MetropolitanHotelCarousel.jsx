@@ -34,11 +34,13 @@ export default function MetropolitanHotelCarousel({ metropolitanHotelList }) {
 
     return (
         <div className="metropolitan--hotel--carousle--container">
+
+            {/* 광역시별 버튼 */}
             <ul className="metroplitan--name--list">
                 {metropolitanHotelList.map((metropolitan, index) => (
                     <li key={index}>
                         <button
-                            className={activeIndex === index ? 'active' : ''} // active 클래스 추가
+                            className={activeIndex === index ? 'active' : ''}
                             onClick={() => handleButtonClick(index)}
                         >
                             {metropolitan.metropolitan}
@@ -47,13 +49,15 @@ export default function MetropolitanHotelCarousel({ metropolitanHotelList }) {
                 ))}
             </ul>
 
+            {/* 슬라이드 실행 */}
             <Slider ref={sliderRef} {...settings}>
                 {metropolitanHotelList.map((metropolitanHotel, metropolitanHotelIndex) =>
                     <div key={metropolitanHotelIndex} className="hotel--list--wrap">
+
+                        {/* 호텔 정보 */}
                         {metropolitanHotel.hotelList.map((hotel, hotelIndex) => (
                             <a key={hotelIndex} href="ex.com">
                                 <div className="hotel--list--info">
-
                                     <img src={`eventList/${hotel.image}`} alt={`슬라이드`} className="carousel-image" />
                                     <div className="hotel--info--wrap">
                                         <div className="hotel--info">
@@ -71,40 +75,42 @@ export default function MetropolitanHotelCarousel({ metropolitanHotelList }) {
                                                 </div>
                                             </div>
                                         </div>
+
+                                        {/* 호텔 가격 */}
                                         <div className="hotel--price--wrap">
                                             {
-                                                hotel.discount !== 0
-                                                    ? <><div className="hotel--discount--price--wrap">
-                                                        <span>{hotel.discount}%</span>
-                                                        <span>{hotel.oriPrice.toLocaleString()}원</span>
-                                                    </div>
-                                                        <strong>{hotel.discountPrice.toLocaleString()}원~</strong></>
-                                                    : <strong>{hotel.oriPrice.toLocaleString()}원~</strong>
+                                                hotel.discount !== 0 ? ( // 호텔 세일일 때
+                                                    <>
+                                                        <div className="hotel--discount--price--wrap">
+                                                            <span>{hotel.discount}%</span>
+                                                            <span>{hotel.oriPrice.toLocaleString()}원</span>
+                                                        </div>
+                                                        <strong>{hotel.discountPrice.toLocaleString()}원~</strong>
+                                                    </>) : ( // 호텔 세일 아닐 때
+                                                    <strong>{hotel.oriPrice.toLocaleString()}원~</strong>)
                                             }
-
                                         </div>
                                     </div>
-
                                 </div>
-                            </a>
-
-                        ))}
+                            </a>))}
                     </div>
                 )}
             </Slider>
 
+            {/* 슬라이드 좌우 버튼 */}
             <div className="moveBtn">
-                {currentSlide > 0
-                    ? <button onClick={() => sliderRef.current.slickPrev()} className="arrow-button">
-                        <FaChevronLeft className="arrow" />
-                    </button>
-                    : <div></div>
+                {
+                    currentSlide > 0 ? (
+                        <button onClick={() => sliderRef.current.slickPrev()} className="arrow-button">
+                            <FaChevronLeft className="arrow" />
+                        </button>) : <div></div>
                 }
-                {currentSlide < totalSlides - slideShowCtn && ( // slidesToShow 수에 따라 조정
-                    <button onClick={() => sliderRef.current.slickNext()} className="arrow-button">
-                        <FaChevronRight className="arrow" />
-                    </button>
-                )}
+                {
+                    currentSlide < totalSlides - slideShowCtn && ( // slidesToShow 수에 따라 조정
+                        <button onClick={() => sliderRef.current.slickNext()} className="arrow-button">
+                            <FaChevronRight className="arrow" />
+                        </button>)
+                }
             </div>
         </div>
     );

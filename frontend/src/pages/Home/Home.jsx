@@ -133,19 +133,22 @@ export default function Home() {
                 </button>
             </div>
 
-
+            {/* 이벤트 리스트 */}
             <EventCarousel images={images} />
 
+            {/* 최근 HOT 호텔 리스트 */}
             <h2><span className='popular--hotel'>최근 HOT</span> 인기호텔</h2>
             <HotelCarousel hotelList={hotelList} />
 
+            {/* 국내 인기 여행 리스트 */}
             <h2>국내 인기 여행지</h2>
             <MetropolitanCarousel metropolitanList={metropolitanList} />
 
+            {/* 여행질별 숙소 리스트 */}
             <h2>여행지별 숙소</h2>
             <MetropolitanHotelCarousel metropolitanHotelList={metropolitanHotelList} />
 
-
+            {/* 특가 숙소 리스트 */}
             <h2><span className='sale--hotel'>What?!</span> 특가야 가자</h2>
             <HotelCarousel hotelList={hotelList} />
 
