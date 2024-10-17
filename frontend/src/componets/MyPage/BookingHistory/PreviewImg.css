@@ -2,6 +2,7 @@
     .preview--img--box {
         position: relative;
 
+
         img {
             width: 100px;
             height: 100px;
@@ -17,12 +18,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: rgba(211, 211, 211, 0.2);
+            background-color: rgba(211, 211, 211, 0.8);
+            cursor: pointer;
+            border-radius: 0px 10px 0px 0px;
 
             .icon {
                 width: 25px;
                 height: 25px;
-                color: #fff;
+                color: black;
             }
         }
     }

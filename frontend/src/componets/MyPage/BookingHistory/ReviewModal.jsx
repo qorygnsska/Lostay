@@ -122,19 +122,26 @@ export default function ReviewModal({ isOpen, onClose, hotelName, userNickname }
 
 
                     {/* 리뷰 이미지 추가 */}
-                    <label
-                        htmlFor='file-selector'
-                        className='file--selector--btn'
-                    >
-                        <input
-                            id="file-selector"
-                            type="file"
-                            className="hidden"
-                            accept="image/*"
-                            onChange={uploadFiles}
-                            multiple />
-                        <span>이미지 추가 (최대 10개)</span>
-                    </label>
+                    <div>
+                        <div className='image--max-count'>
+                            <span>* 최대 10개</span>
+                        </div>
+
+                        <label
+                            htmlFor='file-selector'
+                            className='file--selector--btn'
+                        >
+                            <input
+                                id="file-selector"
+                                type="file"
+                                className="hidden"
+                                accept="image/*"
+                                onChange={uploadFiles}
+                                multiple />
+                            <span>이미지 추가</span>
+                        </label>
+                    </div>
+
                 </div>
             </div>
 
