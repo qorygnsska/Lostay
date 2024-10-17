@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { IoSearchOutline } from "react-icons/io5";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -8,8 +8,10 @@ import MetropolitanCarousel from '../../componets/Carousel/MetropolitanCarousel'
 import MetropolitanHotelCarousel from '../../componets/Carousel/MetropolitanHotelCarousel';
 import Footer from '../../componets/Footer/Footer';
 import Navbar from '../../componets/Navbar/Navbar';
+import CompSearchBox from '../../componets/Search/CompSearchBox';
 
 export default function Home() {
+
 
     // useEffect(() => {
     //     const fetchData = async () => {
@@ -105,6 +107,18 @@ export default function Home() {
 
     ];
 
+
+
+    ////////////////////////////////////////JIP1017
+    const today = new Date(); //오늘 날짜
+    const check_in = new Date(today.setDate(today.getDate()+1));   //default: 내일 날짜
+    const check_out = new Date(today.setDate(today.getDate()+2));  //default: 모레 날짜
+
+    // searchBox(Modal)이 열렸니?
+    const [searchBoxShow, setSearchBoxShow] = useState(false);
+    ////////////////////////////////////////JIP1017
+
+
     return (
         <div className='home--container'>
             <div className='logo'>
@@ -112,7 +126,8 @@ export default function Home() {
             </div>
 
             <div className='search--btn--wrap'>
-                <button className='search--btn'>
+                <button className='search--btn' onClick={() => setSearchBoxShow(true)}>
+                {/* button onClick: JIP1017 */}
                     <IoSearchOutline />
                     <span>여행지나 숙소를 검색해보세요.</span>
                 </button>
@@ -141,6 +156,19 @@ export default function Home() {
             <div>
                 <Navbar />
             </div>
+
+            {/* searchBox(Modal) JIP1017 */}
+            <CompSearchBox
+                show={searchBoxShow}
+                onHide={() => { setSearchBoxShow(false) }}
+                place={''}
+                check_in={check_in}
+                check_out={check_out}
+                member={2}  //default
+                focus={'input_place'}
+            />
+
+
         </div>
     )
 }

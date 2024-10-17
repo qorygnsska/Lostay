@@ -43,8 +43,9 @@ export default function PageAdminHome() {
 
   ////////////////////////////////////////
   const place = '제주도';
-  const check_in = '10월 9일';
-  const check_out = '10월 11일';
+  const today = new Date(); //오늘 날짜
+  const check_in = new Date(today.setDate(today.getDate()+1));
+  const check_out = new Date(today.setDate(today.getDate()+2));
   const member = 2;
   ////////////////////////////////////////
 
@@ -56,14 +57,13 @@ export default function PageAdminHome() {
     console.log('where are you?: ' + fromWhere);
   }
 
+  // Header에서 어떤 input 눌렀니?
   const [focus, setFocus] = useState('input_place');
 
-  // 어떤 input 눌렀니?
   const functionSearchPicker = (fromMyChild) => {
     console.log(fromMyChild + ' is picked at headerGeneral');
     //선택 위치에 따라 focus 변경 -> 하위 모달에 focus 전달
     setFocus(fromMyChild);
-
     setSearchBoxShow(true);
   }
   ////////////////////////////////////////
