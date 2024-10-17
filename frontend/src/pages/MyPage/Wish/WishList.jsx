@@ -20,19 +20,25 @@ export default function WishList() {
         <div className='wishlist--container'>
             <BackNav title={'찜'} />
 
-            {hotelList.length
-                ? <div className='wishlist--card'>
-                    {hotelList.map((hotel, index) => (
-                        <WishListComponent key={index} hotel={hotel} />
-                    ))}
-                </div>
-                : <div className='wishlist--blank'>
-                    <FaRegHeart className='icon' />
-                    <div className='wishlist--blank--text'>
-                        <span>찜한 숙소가 없습니다.</span>
-                        <span>마음에 드는 상품을 찜해주세요.</span>
+            {hotelList2.length
+                ?   // 찜이 있을 떄
+                (
+                    <div className='wishlist--card'>
+                        {hotelList.map((hotel, index) => (
+                            <WishListComponent key={index} hotel={hotel} />
+                        ))}
                     </div>
-                </div>
+                )
+                :   // 찜이 없을 때
+                (
+                    <div className='wishlist--blank'>
+                        <FaRegHeart className='icon' />
+                        <div className='wishlist--blank--text'>
+                            <span>찜한 숙소가 없습니다.</span>
+                            <span>마음에 드는 상품을 찜해주세요.</span>
+                        </div>
+                    </div>
+                )
             }
 
 

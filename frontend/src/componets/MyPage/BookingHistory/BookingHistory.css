@@ -1,4 +1,5 @@
 .booking--history--component-container {
+
     .booking--info--wrap {
         display: flex;
         flex-direction: column;
@@ -92,11 +93,24 @@
                 }
             }
 
+            button {
+                width: 200px;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 1px solid var(--lightGrayColor);
+                background-color: #fff;
+                border-radius: 10px;
+            }
+
 
         }
 
     }
 
-
+    .review--modal--wrap {
+        position: absolute;
+    }
 
 }
