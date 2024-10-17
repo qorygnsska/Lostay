@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 export default function CompHeaderGeneral(props) {
 
- 
+
     //클릭이 일어난 location(path)
     const whereAmI = useLocation().pathname.toString();
 
@@ -53,8 +53,8 @@ export default function CompHeaderGeneral(props) {
                             onClick={handleClick}
                         />
                     </Container>
-                </Container>
 
+                </Container>
             </Navbar>
         </>
     )

@@ -7,17 +7,20 @@ import { MdOutlineCalendarMonth, MdOutlinePlace } from 'react-icons/md';
 export default function CompSearchBox(props) {
 
 
-
     const [place, setPlace] = useState(props.place);
     const [check_in, setCheck_in] = useState(props.check_in);
     const [check_out, setCheck_out] = useState(props.check_out);
     const [member, setMember] = useState(props.member);
 
-    const handleShow = () => {
+    const modalOnShow = () => {
         //모달이 열릴 때마다 어디를 클릭해서 열리는지 확인하여 auto-focusing
-        console.log('focusing at modal: ' + props.focus);
+        //console.log('focusing at modal: ' + props.focus);
 
     }
+
+
+    //CompCalendarPicker
+    
 
 
 
@@ -30,18 +33,17 @@ export default function CompSearchBox(props) {
 
 
 
-
     const handleSearch = () => {
         //'검색' 버튼 클릭!
         console.log('search: ' + place + '/' + check_in + '-' + check_out + '/' + member);
+        //쿼리 날리고 페이지 이동 to /hotelList
 
     }
 
 
     return (
         <>
-
-            <Modal onShow={handleShow}
+            <Modal onShow={modalOnShow}
                 className='comp--search--box-container'
                 {...props}
                 fullscreen={true}
@@ -65,7 +67,6 @@ export default function CompSearchBox(props) {
                             />
                         </InputGroup>
 
-
                         <div id="container_period" className='d-flex'>
                             <InputGroup className='mb-3'>
                                 <InputGroup.Text ><MdOutlineCalendarMonth size="24" /></InputGroup.Text>
@@ -78,7 +79,6 @@ export default function CompSearchBox(props) {
                                     autoFocus={props.focus == "input_period" ? true : false}
                                 />
                             </InputGroup>
-
 
                             <GoDash size="24" id="seperator_period" />
 
@@ -100,9 +100,9 @@ export default function CompSearchBox(props) {
                                 id="input_member"
                                 type="text"
                                 placeholder="인원"
-                                value={member}
+                                value={'인원 '+member+'명'}
                                 readOnly
-                                onChange={(event) => setMember(event.target.value)}
+                                // onChange={(event) => setMember(event.target.value)} 여기서는 값이 바뀔 일이 없네?(readOnly)
                                 autoFocus={props.focus == "input_member" ? true : false}
                                 onClick={() => handleMemberPicker()}
                             />
