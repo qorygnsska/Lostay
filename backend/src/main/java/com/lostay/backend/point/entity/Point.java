@@ -37,4 +37,7 @@ public class Point {
 	private LocalDateTime pointDay;	// 포인트(적립,사용)날짜
 	@Column(name="point_plus_minus")
 	private int pointPlusMinus;		// 포인트증감
+	@Column(name="point_Title")
+	private String pointTitle;// 증감 포인트 제목
+	
 }
