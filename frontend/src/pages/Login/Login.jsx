@@ -21,21 +21,21 @@ export default function Login() {
                 <BackHeader title='로그인' />
             </div>
 
-            <div className='loginWrap'>
-                <div className='logoWrap'>
+            <div className='login--wrap'>
+                <div className='logo'>
                     <h1>로고 들어와야함</h1>
                 </div>
 
 
-                <button onClick={() => onSocialLogin('naver')} className='loginBtn navarBtn'>
+                <button onClick={() => onSocialLogin('naver')} className='login--btn navar--btn'>
                     <img src='LoginIcon/ic-login-naver.svg' alt='icon' className='icon' />
                     <span>네이버로 시작하기</span>
                 </button>
-                <button onClick={() => onSocialLogin('kakao')} className='loginBtn kakaoBtn'>
+                <button onClick={() => onSocialLogin('kakao')} className='login--btn kakao--btn'>
                     <img src='LoginIcon/ic-login-kakao.svg' alt='icon' className='icon' />
                     <span>카카오로 시작하기</span>
                 </button>
-                <button onClick={() => onSocialLogin('google')} className='loginBtn googleBtn'>
+                <button onClick={() => onSocialLogin('google')} className='login--btn google--btn'>
                     <img src='LoginIcon/ic-login-google.svg' alt='icon' className='icon' />
                     <span>Google로 시작하기</span>
                 </button>

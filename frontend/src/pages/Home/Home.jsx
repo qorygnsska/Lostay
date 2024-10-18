@@ -111,8 +111,8 @@ export default function Home() {
 
     ////////////////////////////////////////JIP1017
     const today = new Date(); //오늘 날짜
-    const check_in = new Date(today.setDate(today.getDate()+1));   //오늘 + 1
-    const check_out = new Date(today.setDate(today.getDate()+1));  //오늘 + 1 + 1
+    const check_in = new Date(today.setDate(today.getDate() + 1));   //오늘 + 1
+    const check_out = new Date(today.setDate(today.getDate() + 1));  //오늘 + 1 + 1
 
     // searchBox(Modal)이 열렸니?
     const [searchBoxShow, setSearchBoxShow] = useState(false);
@@ -127,7 +127,7 @@ export default function Home() {
 
             <div className='search--btn--wrap'>
                 <button className='search--btn' onClick={() => setSearchBoxShow(true)}>
-                {/* button onClick: JIP1017 */}
+                    {/* button onClick: JIP1017 */}
                     <IoSearchOutline />
                     <span>여행지나 숙소를 검색해보세요.</span>
                 </button>
@@ -137,7 +137,7 @@ export default function Home() {
             <EventCarousel images={images} />
 
             {/* 최근 HOT 호텔 리스트 */}
-            <h2><span className='popular--hotel'>최근 HOT</span> 인기호텔</h2>
+            <h2><span className='hotel--popular'>최근 HOT</span> 인기호텔</h2>
             <HotelCarousel hotelList={hotelList} />
 
             {/* 국내 인기 여행 리스트 */}
@@ -149,7 +149,7 @@ export default function Home() {
             <MetropolitanHotelCarousel metropolitanHotelList={metropolitanHotelList} />
 
             {/* 특가 숙소 리스트 */}
-            <h2><span className='sale--hotel'>What?!</span> 특가야 가자</h2>
+            <h2><span className='hotel--sale'>What?!</span> 특가야 가자</h2>
             <HotelCarousel hotelList={hotelList} />
 
             <div>

@@ -171,7 +171,7 @@ export default function CompSearchBox(props) {
                             />
                         </InputGroup>
 
-                        <CompMemberPicker 
+                        <CompMemberPicker
                             hidden={!memberPicker ? true : false}
                             member={member}
                             callParent={(memberFromChild) => setMember(memberFromChild)}

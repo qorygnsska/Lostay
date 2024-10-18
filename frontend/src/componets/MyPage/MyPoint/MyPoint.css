@@ -1,0 +1,50 @@
+.mypoint--component--container {
+    .mypoint--wrap {
+
+        margin-bottom: 20px;
+        padding-left: 15px;
+        padding-right: 15px;
+
+        .point--day {
+            color: var(--lightGrayColor);
+            font-size: 14px;
+        }
+
+        .mypoint--use {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 20px;
+            margin-top: 5px;
+
+            .mypoint--title {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .plus {
+                color: var(--pointColor);
+                font-size: 25px;
+                font-weight: bold;
+            }
+
+            .minus {
+                color: var(--lightGrayColor);
+                font-size: 25px;
+                font-weight: bold;
+            }
+
+            .point--unit {
+                font-size: 17px;
+            }
+
+
+        }
+
+        .point--fulldate {
+            font-size: 14px;
+            color: var(--lightGrayColor);
+        }
+    }
+
+}
