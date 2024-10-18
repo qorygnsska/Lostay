@@ -1,7 +1,7 @@
 .navbar--container {
-    width: 768px;
     height: 55px;
     position: fixed;
+    width: 768px;
     bottom: 0;
     background-color: var(--navbarBackgroundColor);
     display: flex;
@@ -38,5 +38,13 @@
                 font-weight: bold;
             }
         }
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+    .navbar--container {
+        width: 100%;
+        /* 화면 크기에 맞게 조정 */
     }
 }
