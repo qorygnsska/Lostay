@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -32,15 +33,19 @@ public class Reservation {
 
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    @Column(name="reservation_no")
 	    private Long reservationNo; // 예약넘버
 
 	    @JoinColumn(name = "payNo", nullable = false) // 결제번호 외래키
 	    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	    private Payment payment;
 
+	    @Column(name="res_status")
 		private String resStatus;	// 예약 확인/취소 상태
 	    
+	    @Column(name="check_in")
 	    private LocalDateTime checkIn; // 체크인날짜
+	    @Column(name="check_out")
 	    private LocalDateTime checkOut; // 체크아웃날짜
 	
 }
