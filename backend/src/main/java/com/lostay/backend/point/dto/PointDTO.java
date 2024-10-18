@@ -21,7 +21,11 @@ public class PointDTO {
 	private int pointPlusMinus;		// 포인트증감
 	
 	
-	//추가
-	private String[]  points; // 포인트 전체 배열
-	private int userAllPoint;
+
 }
+
+
+
+
+
+

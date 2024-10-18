@@ -23,7 +23,7 @@ public class PointController {
 	@Autowired
 	private PointService pointService;
 	
-	@GetMapping("/pointList/{userNo}") 
+	@GetMapping("/pointList/{userNo}") //유저 포인트 내역 조회
 	public ResponseEntity<?>pointList(@PathVariable Long userNo){
 		log.info("pointList실행");
 		return new ResponseEntity<>(pointService.pointList(userNo),HttpStatus.OK);
