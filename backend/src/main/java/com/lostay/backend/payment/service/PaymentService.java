@@ -118,6 +118,9 @@ public class PaymentService {
 		user.setUserPoint(totalPoint);
 		userRepo.save(user);
 
+		// 포인트 테이블에 포인트 내역 추가해야 함
+		
+		
 		// 객실에 관련된 정보 결제테이블에 외래키로 넣어주기
 		Optional<Room> newRoom = roomRepo.findById(roomNo);
 		Room room = newRoom.get();
