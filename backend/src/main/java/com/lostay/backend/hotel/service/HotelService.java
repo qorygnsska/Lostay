@@ -1,62 +1,113 @@
 package com.lostay.backend.hotel.service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import com.lostay.backend.hotel.dto.HotelDTO;
-import com.lostay.backend.hotel.entity.Hotel;
-import com.lostay.backend.hotel.repository.HotelRepository;
 
 @Service
 public class HotelService {
 
-	  @PersistenceContext
-	    private EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-	  public List<Hotel> findByAmenitiesAndAddress(String[] amenities, String hotelAddress) {
-		  StringBuilder queryBuilder = new StringBuilder("SELECT h FROM Hotel h WHERE h.hotelAdress LIKE :hotelAddress");
-		    
-		    // 호텔 주소 파라미터 설정
-		    queryBuilder.append(" AND h.hotelAdress LIKE :hotelAddress");
+    public List<Object[]> findHotelsFilter(String[] hotelAmenities, String hotelAdress, int minRoomPrice,
+            int maxRoomPrice, String checkIn, String checkOut, String roomPeopleInfo, int soldOut,
+            String[] hotelRating, String sort) {
+        
+        String orderByColumn = "overallAverageReviewRating"; // 기본 정렬 기준
+        switch (sort) {
+            case "리뷰 많은순":
+                orderByColumn = "totalReviewCount";
+                break;
+            case "낮은 가격순":
+                orderByColumn = "minRoomPrice";
+                break;
+            case "높은 가격순":
+                orderByColumn = "priceForMaxDiscount";
+                break;
+        }
 
-		    // 어메니티가 있을 경우 조건 추가
-		    if (amenities.length > 0 && !amenities[0].isEmpty()) {
-		        for (int i = 0; i < amenities.length; i++) {
-		            queryBuilder.append(" AND FIND_IN_SET(:amenity" + i + ", h.hotelAmenities) > 0");
-		        }
-		    }
+        StringBuilder query = new StringBuilder(
+            "SELECT " +
+            "    h.hotelNo, " +
+            "    h.hotelRating, " +
+            "    h.hotelName, " +
+            "    AVG(re.reviewRating) AS overallAverageReviewRating, " +
+            "    COUNT(re.reviewNo) AS totalReviewCount, " +
+            "    MAX(r.roomDiscount) AS roomDiscount, " +
+            "    (SELECT MAX(r2.roomPrice) " +
+            "     FROM Room r2 " +
+            "     WHERE r2.hotel.hotelNo = h.hotelNo " +
+            "       AND r2.roomDiscount = (SELECT MAX(r3.roomDiscount) FROM Room r3 WHERE r3.hotel.hotelNo = h.hotelNo)) " +
+            "    ) AS priceForMaxDiscount, " +
+            "    h.hotelThumbnail, " +
+            "    COUNT(r.roomNo) AS roomCount " +
+            "FROM " +
+            "    Hotel h " +
+            "JOIN " +
+            "    Room r ON h.hotelNo = r.hotel.hotelNo " +
+            "LEFT JOIN " +
+            "    Review re ON r.roomNo = re.room.roomNo " +
+            "WHERE " +
+            "    h.hotelAdress LIKE :hotelAdress " +
+            "    AND r.roomPrice BETWEEN :minRoomPrice AND :maxRoomPrice " +
+            "    AND r.roomPeopleInfo LIKE :roomPeopleInfo " +
+            "    AND r.roomNo NOT IN ( " +
+            "        SELECT rs.room.roomNo " +
+            "        FROM Reservation rs " +
+            "        WHERE rs.payment IS NOT NULL " +
+            "          AND rs.checkIn < :checkOut " +
+            "          AND rs.checkOut > :checkIn " +
+            "    ) "
+        );
 
-		    String queryString = queryBuilder.toString();
-		    System.out.println("Generated Query: " + queryString);
+        // 호텔 등급 필터 추가
+        if (hotelRating != null && hotelRating.length > 0) {
+            query.append(" AND h.hotelRating IN (:hotelRating) ");
+        }
 
-		    TypedQuery<Hotel> query = entityManager.createQuery(queryString, Hotel.class);
-		    
-		    // 호텔 주소 파라미터 설정
-		    query.setParameter("hotelAddress", "%" + hotelAddress + "%");
+        // 어메니티 조건 추가 (AND 조건 사용)
+        if (hotelAmenities != null && hotelAmenities.length > 0) {
+            query.append(" AND ("); // 어메니티 조건 시작
+            for (int i = 0; i < hotelAmenities.length; i++) {
+                query.append(" h.hotelAmenities LIKE :amenity" + i);
+                if (i < hotelAmenities.length - 1) {
+                    query.append(" AND "); // 마지막이 아닐 때만 AND 추가
+                }
+            }
+            query.append(") "); // 조건 끝나면 괄호 닫기
+        }
 
-		    // 어메니티 파라미터 설정
-		    if (amenities.length > 0 && !amenities[0].isEmpty()) {
-		        for (int i = 0; i < amenities.length; i++) {
-		            query.setParameter("amenity" + i, amenities[i]);
-		        }
-		    }
+        query.append(
+            " GROUP BY " +
+            "    h.hotelNo, h.hotelName, h.hotelRating, h.hotelThumbnail " +
+            " ORDER BY " +
+            "    " + orderByColumn + " DESC"
+        );
 
-		    List<Hotel> resultList = query.getResultList();
-		    System.out.println("Number of results: " + resultList.size());
-		    for (Hotel hotel : resultList) {
-		        System.out.println("Hotel Name: " + hotel.getHotelName());
-		        System.out.println("Hotel Address: " + hotel.getHotelAdress());
-		    }
+        TypedQuery<Object[]> typedQuery = entityManager.createQuery(query.toString(), Object[].class);
+        typedQuery.setParameter("hotelAdress", "%" + hotelAdress + "%");
+        typedQuery.setParameter("minRoomPrice", minRoomPrice);
+        typedQuery.setParameter("maxRoomPrice", maxRoomPrice);
+        typedQuery.setParameter("roomPeopleInfo", "%" + roomPeopleInfo + "%");
+        typedQuery.setParameter("checkIn", checkIn);
+        typedQuery.setParameter("checkOut", checkOut);
 
-		    return resultList;
-	    }
+        // 호텔 등급 파라미터 설정
+        if (hotelRating != null && hotelRating.length > 0) {
+            typedQuery.setParameter("hotelRating", Arrays.asList(hotelRating));
+        }
+
+        // 어메니티 파라미터 설정
+        if (hotelAmenities != null && hotelAmenities.length > 0) {
+            for (int i = 0; i < hotelAmenities.length; i++) {
+                typedQuery.setParameter("amenity" + i, "%" + hotelAmenities[i] + "%");
+            }
+        }
+
+        return typedQuery.getResultList();
+    }
 }

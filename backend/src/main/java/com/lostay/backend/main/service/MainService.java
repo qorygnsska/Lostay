@@ -113,12 +113,12 @@ public class MainService {
 		        }
 		return hotHotelDTOList;
 	}
-
+	// 여행지별 숙소
 	public Object findByHotelAddressContaining(String hotelAdress) {
 		Pageable pageable = PageRequest.of(0, 6); // 0번째 페이지, 6개 항목		
 		  List<Object[]> results = hotelRepo.findByHotelAddressContaining(hotelAdress, pageable);
 		    List<HotelDTO> tripHotelDTOList = new ArrayList<>();
-
+		    double num=0.01;
 		    for (Object[] result : results) {
 		        HotelDTO dto = new HotelDTO();
 		        dto.setHotelNo((Long) result[0]);
@@ -128,6 +128,12 @@ public class MainService {
 		        dto.setTotalReviewCount((Long) result[4]);
 		        dto.setRoomDiscount((int) result[5]);
 		        dto.setRoomPrice((int) result[6]);
+		        int roomPrice = (int) result[6]; // 원래 가격
+		        int roomDiscount = (int) result[5]; // 할인율
+		        // 할인된 가격 계산
+		        int discountedPrice = (int) (roomPrice * (1 - (roomDiscount * num)));
+		        // DTO에 할인된 가격 설정
+		        dto.setRoomDcPrice(discountedPrice);
 		        dto.setHotelThumbnail((String) result[7]);
 		        tripHotelDTOList.add(dto);
 		    }
@@ -136,26 +142,6 @@ public class MainService {
 	
 	}
 
-//	// 여행지별 숙소
-//	public List<HotelDTO> findByHotelAddressContaining(String hotelAddress) {
-//		 //Pageable pageable = PageRequest.of(0, 6); // 첫 페이지에서 6개 항목 가져오기
-//		    List<Object[]> results = hotelRepo.findTop6HotelsByAddress(hotelAddress);
-//		    List<HotelDTO> tripHotelDTOList = new ArrayList<>();
-//
-//		    for (Object[] result : results) {
-//		        HotelDTO dto = new HotelDTO();
-//		        dto.setHotelNo((Long) result[0]);
-//		        dto.setHotelRating((String) result[1]);
-//		        dto.setHotelName((String) result[2]);
-//		        dto.setReviewRating((Double) result[3]);
-//		        dto.setTotalReviewCount((Long) result[4]);
-//		        dto.setRoomDiscount((int) result[5]);
-//		        dto.setRoomPrice((int) result[6]);
-//		        dto.setHotelThumbnail((String) result[7]);
-//		        tripHotelDTOList.add(dto);
-//		    }
-//
-//		    return tripHotelDTOList; // List<HotelDTO> 반환
-//	}
+
 
 }

@@ -28,7 +28,7 @@ public class HotelController {
 
 	@Autowired
 	private HotelService hotelService;
-	
+
 //	@GetMapping("/hotelList")
 //	public String hotelList() {
 //		
@@ -58,7 +58,7 @@ public class HotelController {
 //				
 //		return "sucess";
 //	}
-	
+
 	// 호텔 검색
 //		@GetMapping("/hotelList")
 //		public  ResponseEntity<?> hotelList(@RequestParam(defaultValue ="제주도") String hotelAdress     //지역
@@ -84,22 +84,34 @@ public class HotelController {
 //				return null;			
 //			
 //		}
-		
-		
+
 	@GetMapping("/testhotel")
 	public ResponseEntity<?> testhotel(
-	        @RequestParam(defaultValue = "수영장") String amenities,
-	        @RequestParam(defaultValue = "제주도") String hotelAddress) {
-	    
-	    // 어메니티 문자열을 배열로 변환
+			@RequestParam(defaultValue = "수영장") String amenities
+			, @RequestParam(defaultValue = "제주도") String hotelAdress
+			, @RequestParam(defaultValue = "2024-10-20") String checkIn // 체크인날짜
+			, @RequestParam(defaultValue = "2024-10-22") String checkOut // 체크아웃날짜
+			, @RequestParam(defaultValue = "기준2인") String roomPeopleInfo // 기준인원
+			, @RequestParam(defaultValue = "0") int minRoomPrice // 객실 최소가격
+			, @RequestParam(defaultValue = "1000000") int maxRoomPrice// 객실 최대가격
+			,@RequestParam(defaultValue="1")int soldOut //매진 숙소 매진 숙소 버튼을누르면 -1값 기본은 1값
+		    ,@RequestParam(defaultValue="")String roomDiscountState//할인혜택
+			,@RequestParam(defaultValue="5성급")String[] hotelRating//등급
+			,@RequestParam(defaultValue="평점 높은 순") String sort)//정렬
+			
+	{
+		  // 어메니티 문자열을 배열로 변환
 	    String[] hotelAmenities = amenities.split(",");
 
 	    log.info(Arrays.toString(hotelAmenities));
-	    log.info("Hotel Address: " + hotelAddress);
+	    log.info("호텔 주소: " + hotelAdress);
+	    log.info("등급: " + Arrays.toString(hotelRating));
 
 	    // 호텔 서비스 호출
-	    return new ResponseEntity<>(hotelService.findByAmenitiesAndAddress(hotelAmenities, hotelAddress), HttpStatus.OK);
+	    return new ResponseEntity<>(hotelService.findHotelsFilter(
+                hotelAmenities, hotelAdress, minRoomPrice, maxRoomPrice,
+                checkIn, checkOut, roomPeopleInfo, soldOut, hotelRating, sort),
+                HttpStatus.OK);
 	}
-	
-}
 
+}
