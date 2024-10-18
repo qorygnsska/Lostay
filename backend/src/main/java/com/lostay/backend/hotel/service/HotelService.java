@@ -17,76 +17,76 @@ public class HotelService {
             int maxRoomPrice, String checkIn, String checkOut, String roomPeopleInfo, int soldOut,
             String[] hotelRating, String sort) {
         
-        String orderByColumn = "overallAverageReviewRating"; // 기본 정렬 기준
+        String orderByColumn = "overall_average_review_rating"; // 기본 정렬 기준
+        // 정렬 기준 설정
         switch (sort) {
             case "리뷰 많은순":
-                orderByColumn = "totalReviewCount";
+                orderByColumn = "total_review_count";
                 break;
             case "낮은 가격순":
-                orderByColumn = "minRoomPrice";
+                orderByColumn = "price_for_max_discount"; // 가격으로 정렬
                 break;
             case "높은 가격순":
-                orderByColumn = "priceForMaxDiscount";
+                orderByColumn = "room_discount"; // 할인으로 정렬
                 break;
         }
 
         StringBuilder query = new StringBuilder(
             "SELECT " +
-            "    h.hotelNo, " +
-            "    h.hotelRating, " +
-            "    h.hotelName, " +
-            "    AVG(re.reviewRating) AS overallAverageReviewRating, " +
-            "    COUNT(re.reviewNo) AS totalReviewCount, " +
-            "    MAX(r.roomDiscount) AS roomDiscount, " +
-            "    (SELECT MAX(r2.roomPrice) " +
-            "     FROM Room r2 " +
-            "     WHERE r2.hotel.hotelNo = h.hotelNo " +
-            "       AND r2.roomDiscount = (SELECT MAX(r3.roomDiscount) FROM Room r3 WHERE r3.hotel.hotelNo = h.hotelNo)) " +
-            "    ) AS priceForMaxDiscount, " +
-            "    h.hotelThumbnail, " +
-            "    COUNT(r.roomNo) AS roomCount " +
+            "    h.hotel_no, " +
+            "    h.hotel_rating, " +
+            "    h.hotel_name, " +
+            "    h.hotel_amenities, " +
+            "    ROUND(AVG(re.review_rating), 1) AS overall_average_review_rating, " +
+            "    COUNT(re.review_no) AS total_review_count, " +
+            "    MAX(r.room_discount) AS room_discount, " +
+            "    (SELECT MAX(r2.room_price) " +
+            "     FROM room r2 " +
+            "     WHERE r2.room_discount = MAX(r.room_discount) " +
+            "       AND r2.hotel_no = h.hotel_no) AS price_for_max_discount, " +
+            "    h.hotel_thumbnail, " +
+            "    COUNT(r.room_no) AS room_count " +
             "FROM " +
-            "    Hotel h " +
+            "    hotel h " +
             "JOIN " +
-            "    Room r ON h.hotelNo = r.hotel.hotelNo " +
+            "    room r ON h.hotel_no = r.hotel_no " +
             "LEFT JOIN " +
-            "    Review re ON r.roomNo = re.room.roomNo " +
+            "    review re ON r.room_no = re.room_no " +
             "WHERE " +
-            "    h.hotelAdress LIKE :hotelAdress " +
-            "    AND r.roomPrice BETWEEN :minRoomPrice AND :maxRoomPrice " +
-            "    AND r.roomPeopleInfo LIKE :roomPeopleInfo " +
-            "    AND r.roomNo NOT IN ( " +
-            "        SELECT rs.room.roomNo " +
-            "        FROM Reservation rs " +
-            "        WHERE rs.payment IS NOT NULL " +
-            "          AND rs.checkIn < :checkOut " +
-            "          AND rs.checkOut > :checkIn " +
+            "    h.hotel_adress LIKE :hotelAdress " +
+            "    AND r.room_price BETWEEN :minRoomPrice AND :maxRoomPrice " +
+            "    AND r.room_people_info LIKE :roomPeopleInfo " +
+            "    AND h.hotel_rating IN (:hotelRating) " +
+            "    AND r.room_no NOT IN ( " +
+            "        SELECT p.room_no " +
+            "        FROM reservation rs " +
+            "        JOIN payment p ON p.pay_no = rs.pay_no " +
+            "        WHERE rs.check_in < :checkOut " +
+            "          AND rs.check_out > :checkIn " +
             "    ) "
         );
 
-        // 호텔 등급 필터 추가
-        if (hotelRating != null && hotelRating.length > 0) {
-            query.append(" AND h.hotelRating IN (:hotelRating) ");
-        }
-
-        // 어메니티 조건 추가 (AND 조건 사용)
+        // 어메니티 조건 추가
         if (hotelAmenities != null && hotelAmenities.length > 0) {
-            query.append(" AND ("); // 어메니티 조건 시작
+            query.append(" AND ("); // 조건 시작
             for (int i = 0; i < hotelAmenities.length; i++) {
-                query.append(" h.hotelAmenities LIKE :amenity" + i);
+                query.append(" FIND_IN_SET(:amenity" + i + ", h.hotel_amenities) > 0");
                 if (i < hotelAmenities.length - 1) {
-                    query.append(" AND "); // 마지막이 아닐 때만 AND 추가
+                    query.append(" AND "); // 마지막이 아닐 때 OR 추가
                 }
             }
-            query.append(") "); // 조건 끝나면 괄호 닫기
+            query.append(") "); // 조건 끝
         }
 
         query.append(
-            " GROUP BY " +
-            "    h.hotelNo, h.hotelName, h.hotelRating, h.hotelThumbnail " +
-            " ORDER BY " +
+            "GROUP BY " +
+            "    h.hotel_no, h.hotel_name, h.hotel_rating, h.hotel_thumbnail " +
+            "ORDER BY " +
             "    " + orderByColumn + " DESC"
         );
+
+        // 쿼리 출력
+        System.out.println("확인용 쿼리: " + query.toString());
 
         TypedQuery<Object[]> typedQuery = entityManager.createQuery(query.toString(), Object[].class);
         typedQuery.setParameter("hotelAdress", "%" + hotelAdress + "%");
@@ -104,7 +104,7 @@ public class HotelService {
         // 어메니티 파라미터 설정
         if (hotelAmenities != null && hotelAmenities.length > 0) {
             for (int i = 0; i < hotelAmenities.length; i++) {
-                typedQuery.setParameter("amenity" + i, "%" + hotelAmenities[i] + "%");
+                typedQuery.setParameter("amenity" + i, hotelAmenities[i]);
             }
         }
 

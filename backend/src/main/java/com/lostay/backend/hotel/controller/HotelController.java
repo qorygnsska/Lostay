@@ -87,7 +87,7 @@ public class HotelController {
 
 	@GetMapping("/testhotel")
 	public ResponseEntity<?> testhotel(
-			@RequestParam(defaultValue = "수영장") String amenities
+			@RequestParam(defaultValue = "피트니스,수영장") String amenities
 			, @RequestParam(defaultValue = "제주도") String hotelAdress
 			, @RequestParam(defaultValue = "2024-10-20") String checkIn // 체크인날짜
 			, @RequestParam(defaultValue = "2024-10-22") String checkOut // 체크아웃날짜
@@ -102,7 +102,7 @@ public class HotelController {
 	{
 		  // 어메니티 문자열을 배열로 변환
 	    String[] hotelAmenities = amenities.split(",");
-
+	    
 	    log.info(Arrays.toString(hotelAmenities));
 	    log.info("호텔 주소: " + hotelAdress);
 	    log.info("등급: " + Arrays.toString(hotelRating));
