@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserPointListDTO {
 	 private String pointDay; // 포인트 날짜
-	    private int pointPlusMinus; // 포인트 증감
+	 private String pointTitle;   
+	 private int pointPlusMinus; // 포인트 증감
 }

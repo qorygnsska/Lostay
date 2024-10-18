@@ -37,7 +37,7 @@ public class PointService {
 		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 		        String pointDayStr = pointDay.format(formatter); // ISO 8601 형식으로 포맷
 
-		        UserPointListDTO dto = new UserPointListDTO(pointDayStr, result.getPointPlusMinus());
+		        UserPointListDTO dto = new UserPointListDTO(pointDayStr,result.getPointTitle(), result.getPointPlusMinus());
 		        pointDTOList.add(dto);
 		    }
 		    UserPointListResponseDTO userPoints= new UserPointListResponseDTO(userPoint,pointDTOList);
