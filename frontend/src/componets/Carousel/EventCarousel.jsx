@@ -5,12 +5,13 @@ import { IoMdPause, IoMdPlay } from "react-icons/io";
 
 export default function Carousel({ images }) {
 
+    // 슬라이드 설정
     const sliderRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
-
     const totalSlides = images.length;
 
+    // 자동 플레이 버튼 설정
     const handlePlayPause = () => {
         if (isPlaying) {
             sliderRef.current.slickPause();
@@ -20,10 +21,12 @@ export default function Carousel({ images }) {
         setIsPlaying(!isPlaying);
     };
 
+    // 현재 슬라이드 위치 저장
     const handleBeforeChange = (current, next) => {
         setCurrentSlide(next);
     };
 
+    // 슬라이드 셋팅 값 설정
     const settings = {
         dots: false,
         infinite: true,
@@ -40,6 +43,8 @@ export default function Carousel({ images }) {
 
     return (
         <div className="event--carousel--container">
+
+            {/* 슬라이드 실행 */}
             <Slider ref={sliderRef} {...settings}>
                 {images.map((image, index) => (
                     <div key={index}>
@@ -50,15 +55,14 @@ export default function Carousel({ images }) {
                 ))}
             </Slider>
 
+            {/* 슬라이드 좌우 버튼 */}
             <div className="event--btn--wrap">
                 <div className="event--btn--box">
                     <button onClick={handlePlayPause}>
                         {isPlaying ? <IoMdPause /> : <IoMdPlay />}
                     </button>
 
-                    <span className="">
-
-                    </span>
+                    <span className=""></span>
 
                     <button onClick={() => sliderRef.current.slickPrev()}>
                         <FaChevronLeft />

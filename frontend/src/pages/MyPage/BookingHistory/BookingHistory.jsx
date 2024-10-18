@@ -4,6 +4,7 @@ import Navbar from '../../../componets/Navbar/Navbar';
 import { Dropdown, Nav } from 'react-bootstrap';
 import BookingHistoryCom from '../../../componets/MyPage/BookingHistory/BookingHistory'
 import { Link } from 'react-router-dom';
+import ReviewModal from '../../../componets/MyPage/BookingHistory/ReviewModal';
 
 
 export default function BookingHistory() {
@@ -15,6 +16,9 @@ export default function BookingHistory() {
     const [tabText, setTabText] = useState(tabList[0]);
     const [activeTab, setActiveTab] = useState(0)
     const [borderStyle] = useState({ left: 0, width: 0 });
+
+
+
     const [bookingList, setBookingList] = useState([
         {
             payNo: 1,
@@ -26,7 +30,8 @@ export default function BookingHistory() {
             checkInTime: '15:00',
             checkOutTime: '11:00',
             image: '2b9ba01a5cfcd32ac752258732a5a669.webp',
-            roomCancle: 'Y'
+            roomCancle: 'Y',
+            userNickname: '루이지애나포토존'
         },
         {
             payNo: 2,
@@ -38,7 +43,8 @@ export default function BookingHistory() {
             checkInTime: '15:00',
             checkOutTime: '11:00',
             image: '61cd5eb540030.webp',
-            roomCancle: 'N'
+            roomCancle: 'N',
+            userNickname: '루이지애나포토존'
         }
     ]);
 
@@ -61,7 +67,8 @@ export default function BookingHistory() {
                 checkInTime: '15:00',
                 checkOutTime: '11:00',
                 image: '2b9ba01a5cfcd32ac752258732a5a669.webp',
-                roomCancle: 'Y'
+                roomCancle: 'Y',
+                userNickname: '루이지애나포토존'
             },
             {
                 payNo: 2,
@@ -73,7 +80,8 @@ export default function BookingHistory() {
                 checkInTime: '15:00',
                 checkOutTime: '11:00',
                 image: '61cd5eb540030.webp',
-                roomCancle: 'N'
+                roomCancle: 'N',
+                userNickname: '루이지애나포토존'
             }]);
         } else if (eventKey === 1) {
             setBookingList([{
@@ -86,7 +94,8 @@ export default function BookingHistory() {
                 checkInTime: '15:00',
                 checkOutTime: '11:00',
                 image: '2b9ba01a5cfcd32ac752258732a5a669.webp',
-                review: 'Y'
+                review: 'Y',
+                userNickname: '루이지애나포토존'
             },
             {
                 payNo: 2,
@@ -98,7 +107,8 @@ export default function BookingHistory() {
                 checkInTime: '15:00',
                 checkOutTime: '11:00',
                 image: '61cd5eb540030.webp',
-                review: 'N'
+                review: 'N',
+                userNickname: '루이지애나포토존'
             }]);
         } else {
             setBookingList([{
@@ -111,7 +121,8 @@ export default function BookingHistory() {
                 checkInTime: '15:00',
                 checkOutTime: '11:00',
                 image: '2b9ba01a5cfcd32ac752258732a5a669.webp',
-                cancle: 'Y'
+                cancle: 'Y',
+                userNickname: '루이지애나포토존'
             },
             {
                 payNo: 2,
@@ -123,7 +134,8 @@ export default function BookingHistory() {
                 checkInTime: '15:00',
                 checkOutTime: '11:00',
                 image: '61cd5eb540030.webp',
-                cancle: 'N'
+                cancle: 'N',
+                userNickname: '루이지애나포토존'
             }]);
         }
 
@@ -137,6 +149,8 @@ export default function BookingHistory() {
             </div>
 
             <div className='booking--history--wrap'>
+
+                {/* 보여줄 개월 수 선택 */}
                 <div className='dropdown--box'>
                     <Dropdown onSelect={handleSelect} className='dropdown'>
                         <Dropdown.Toggle>
@@ -144,32 +158,34 @@ export default function BookingHistory() {
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu className="dropdown--menu">
-                            {dateList.map(
-                                (dateVal, idx) => (
+                            {
+                                dateList.map(
+                                    (dateVal, idx) => (
 
-                                    <Dropdown.Item eventKey={idx}>{dateVal}</Dropdown.Item>
+                                        <Dropdown.Item key={idx} eventKey={idx}>{dateVal}</Dropdown.Item>
 
-                                ),
-                            )}
+                                    ),
+                                )
+                            }
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
 
-
+                {/* 보여줄 예약 메뉴 선택 */}
                 <div className='tab--wrap'>
                     <Nav fill variant="tabs" defaultActiveKey="/home">
-                        {tabList.map((tabVal, idx) => (
-                            <Nav.Item>
-                                <Nav.Link
-                                    eventKey={idx}
-                                    active={activeTab === idx} // 선택된 탭에 active 속성 추가
-                                    onClick={() => handleSelectTab(idx)} // 클릭 시 상태 변경
-                                >
-                                    {tabVal}
-                                </Nav.Link>
-                            </Nav.Item>
-                        ),
-                        )}
+                        {
+                            tabList.map((tabVal, idx) => (
+                                <Nav.Item key={idx}>
+                                    <Nav.Link
+                                        eventKey={idx}
+                                        active={activeTab === idx}
+                                        onClick={() => handleSelectTab(idx)}
+                                    >
+                                        {tabVal}
+                                    </Nav.Link>
+                                </Nav.Item>))
+                        }
                         <div
                             className="border-slide"
                             style={{
@@ -180,39 +196,36 @@ export default function BookingHistory() {
                     </Nav>
                 </div>
 
-                {activeTab === 0 ? (<div className='notify'><span><strong>예약 취소 요청</strong>은 체크인 하루전까지 가능합니다.</span>  </div>)
-                    : activeTab === 1 ? (<div className='notify'><span><strong>리뷰 작성</strong>은 체크아웃 당일부터 일주일까지 작성 가능합니다.</span></div>)
-                        : null}
+                {/* 정보 알림 창 */}
+                {
+                    activeTab === 0 ? (
+                        <div className='notify'><span><strong>예약 취소 요청</strong>은 체크인 하루전까지 가능합니다.</span></div>) :
+                        activeTab === 1 ? (
+                            <div className='notify'><span><strong>리뷰 작성</strong>은 체크아웃 당일부터 일주일까지 작성 가능합니다.</span></div>) : null
+                }
 
                 {
-                    bookingList.length ? (
+                    bookingList.length ? ( // 예약된 상품이 있을 때
                         <div className='bookingList'>
                             {
                                 bookingList.map((booking, idx) => (
-                                    <BookingHistoryCom key={idx} booking={booking} />
-                                ))
+                                    <BookingHistoryCom key={idx} booking={booking} />))
                             }
-                        </div>
-                    )
-                        : (
-                            <div className='booking--none'>
-                                <div className='booking--none--text'>
-                                    <span>{selectedDate} 동안 {tabText}가 없습니다.</span>
-                                    <span>상품을 예약해보세요</span>
-                                </div>
-
-                                <Link to="/" className='home--btn'>홈으로 가기</Link>
+                        </div>) : ( // 예약된 상품이 없을 때
+                        <div className='booking--none'>
+                            <div className='booking--none--text'>
+                                <span>{selectedDate} 동안 {tabText}가 없습니다.</span>
+                                <span>상품을 예약해보세요</span>
                             </div>
-                        )
 
+                            <Link to="/" className='home--btn'>홈으로 가기</Link>
+                        </div>)
                 }
-
             </div>
 
             <div>
                 <Navbar />
             </div>
-
         </div>
     )
 }

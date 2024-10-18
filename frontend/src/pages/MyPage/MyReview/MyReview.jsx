@@ -29,15 +29,15 @@ export default function MyReview() {
                 <BackNav title='내 리뷰' />
             </div>
 
+            {/* 작성한 리뷰 개수 */}
             <div className='review--total'>
                 <span>작성한 리뷰 <span className='review--total--cnt'>{reviewList.totalReview}</span>개</span>
             </div>
 
-            {reviewList.totalReview > 0 ?
-                (reviewList.reviews.map((reviewData, idx) => (
-                    <MyReviewComponent reviewData={reviewData} key={idx} />
-                )))
-                : (
+
+            {
+                reviewList.totalReview > 0 ? (reviewList.reviews.map((reviewData, idx) => (// 리뷰가 있을 때
+                    <MyReviewComponent reviewData={reviewData} key={idx} />))) : ( // 리뷰가 없을 때
                     <div className='reviews'>
                         <div>
                             <BsChatText className='icon' />
@@ -48,8 +48,7 @@ export default function MyReview() {
                             <span>상품 이용 후 소중한 후기를 남겨주세요.</span>
                         </div>
 
-                    </div>
-                )
+                    </div>)
             }
 
             <div>

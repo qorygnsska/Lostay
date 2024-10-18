@@ -48,7 +48,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
 	List<Object[]> findTop10HotHotels(PageRequest pageable);
 
 	
-	
+	//여행지별 숙소
 	@Query("SELECT " +
 		       "h.hotelNo, " +
 		       "h.hotelRating, " +

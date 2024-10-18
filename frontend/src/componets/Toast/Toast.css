@@ -1,0 +1,21 @@
+.toast--container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    .toast--text {
+        position: fixed;
+        bottom: 70px;
+        width: 180px;
+        background-color: black;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        border-radius: 10px;
+        font-size: 16px;
+        animation: slideIn 0.3s ease-in-out;
+    }
+}

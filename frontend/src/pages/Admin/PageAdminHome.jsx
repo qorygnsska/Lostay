@@ -6,46 +6,12 @@ import CompSearchBox from '../../componets/Search/CompSearchBox';
 
 export default function PageAdminHome() {
 
-
-  const [time, setTime] = useState(new Date());
-
-  setInterval(() => {
-    setTime(new Date());
-  }, 1000);
-  //   //setInterval(1st, 2nd)
-  //   //args-1st: 실행할 함수, setTime()
-  //   //args-2nd: 시간차, 1000ms
-
-
-
-  const [clock, setClock] = useState(new Date());
-
-  useEffect(() => {
-
-    const tick = setInterval(() => {
-      setClock(new Date());
-    }, 1000);
-
-    return (() => clearInterval(tick))
-
-  }, []);
-
-  //useEffect(1st, 2nd)
-  //args-1st: function
-  // return : 클린업 함수
-
-  //args-2nd: dependency
-  // 생략: 리렌더링될 때마다 실행
-  // [] (빈배열): 처음 마운트될 때만 실행
-  // [val] : val이 update될 때 실행
-
-
-
   ////////////////////////////////////////
   const place = '제주도';
-  const check_in = '10월 9일';
-  const check_out = '10월 11일';
-  const member = 2;
+  const today = new Date(); //오늘 날짜
+  const check_in = new Date(today.setDate(today.getDate()+1));
+  const check_out = new Date(today.setDate(today.getDate()+2));
+  const member = 4;
   ////////////////////////////////////////
 
   // searchBox(Modal)이 열렸니?
@@ -56,28 +22,26 @@ export default function PageAdminHome() {
     console.log('where are you?: ' + fromWhere);
   }
 
-  // 어떤 input 눌렀니?
+  // Header에서 어떤 input 눌렀니?
+  const [focus, setFocus] = useState('input_place');
+
   const functionSearchPicker = (fromMyChild) => {
-    console.log(fromMyChild + ' is picked');
+    console.log(fromMyChild + ' is picked at headerGeneral');
+    //선택 위치에 따라 focus 변경 -> 하위 모달에 focus 전달
+    setFocus(fromMyChild);
     setSearchBoxShow(true);
   }
   ////////////////////////////////////////
 
   
-
-
   return (
     <>
       <div className='page--admin--home--container page--admin'>
         <CompHeaderAdmin />
 
         <Container id='section_container'>
-          <p>{time.toLocaleString()}</p>
 
-          <p>{clock.toLocaleString()}</p>
-
-
-          {/* header w/ searchParam */}
+          {/* header w/ searchParams */}
           <CompHeaderGeneral 
             where={functionFromWhere}
             callParent={functionSearchPicker}
@@ -95,8 +59,8 @@ export default function PageAdminHome() {
             check_in={check_in}
             check_out={check_out}
             member={member}
+            focus={focus}
           />
-          
 
         </Container>
       </div>

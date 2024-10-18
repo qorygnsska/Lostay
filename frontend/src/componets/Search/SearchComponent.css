@@ -10,66 +10,162 @@
 .comp--member--picker--container {
     /*MemberPicker 컴포넌트 */
 
-    p {
-        color: blue;
+    padding: 12px;
+
+    border-style: solid;
+    border-width: 2px;
+    border-color: silver;
+    border-radius: 10px;
+
+    font-size: 18px;
+    font-weight: bold;
+
+
+    h5 {
+        font-weight: bold;
+        margin-bottom: 12px;
+        padding: 0 12px;
     }
 
+
+    #subtitle_member {
+        color: black;
+        opacity: 0.7;
+    }
+
+
+    #notice_member {
+        font-size: 12px;
+        color: black;
+        opacity: 0.7;
+    }
+
+
+    #container_member_picker {
+        gap: 12px;
+
+
+        #howMany {
+            width: 24px;
+            text-align: center;
+            cursor: default;
+        }
+
+
+        .btn_member_pick {
+            width: 30px;
+            height: 30px;
+            padding-bottom: 6px;
+
+            opacity: 0.7;
+            background: transparent;
+            border-radius: 100%;
+            border-style: solid;
+            border-width: 1px;
+
+            /* all: unset; */
+        }
+
+
+        .btn_member_pick:active {
+
+            border-color: #fb6969;
+            /* border-width: 2px; */
+        }
+    }
+
+
+    #btn_member_confirm {
+        align-self: end;
+        border: none;
+        margin-right: 12px;
+    }
+
+
+    #btn_member_confirm:hover {
+        color: blue;
+        font-weight: bold;
+    }
 }
 
 .comp--search--box-container {
     /*SearchBox 컴포넌트 */
 
-    #header_searchBox { /*모달 헤더*/
-        position: relative;
 
-        display: flex;
-        justify-content: center;
-
-        #title_modal {
-
-        }
-
-        .btn-close {
-            position: absolute;
-            right: 20px;
-
-            margin: 0;
-        }
-    }
-
-    #body_searchBox { /*모달 바디*/
-        position: relative;
+    .modal-content {
+        max-width: 768px;
+        margin: auto;
 
 
-        #container_period {
-            /* align-items: center; */
+        #header_searchBox {
+            /*모달 헤더*/
+            position: relative;
+            display: flex;
+            justify-content: center;
 
-            #seperator_period {
-                margin-top: 6px;
+
+            #title_modal {
+                font-weight: bold;
             }
 
+
+            .btn-close {
+                position: absolute;
+                right: 20px;
+                margin: 0;
+            }
         }
 
 
+        #body_searchBox {
+            /*모달 바디*/
+            position: relative;
 
-        #container_btn_search {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
 
-            margin: 0;
-            padding: 16px;
-            max-width: 100%;
-            width: 100%;
+            .input-group-text {
+                border-right: none;
+            }
 
-            #btn_search {   /*'검색' 버튼*/
+
+            input {
+                height: 48px;
+                border-left: none;
+                cursor: pointer;
+            }
+
+
+            #input_place {
+                cursor: text;
+            }
+
+
+            #container_period {
+
+                #seperator_period {
+                    margin: 6px 12px;
+                }
+            }
+
+
+            #container_btn_search {
+                position: absolute;
+                bottom: 20px;
+                left: 0;
+
+                margin: 0;
+                padding: 16px;
+                max-width: 100%;
                 width: 100%;
+
+
+                #btn_search {
+                    /*'검색' 버튼*/
+                    width: 100%;
+                }
             }
+
         }
 
-
     }
-
-
 
 }
