@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -32,6 +33,7 @@ public class Payment {
 
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    @Column(name="pay_no")
 	    private Long payNo; // 결제넘버
 
 	    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -42,12 +44,19 @@ public class Payment {
 	    @JoinColumn(name = "roomNo", nullable = false)
 	    private Room room; // 객실넘버
 
+	    @Column(name="pay_type")
 	    private String payType; // 결제 수단
+	    @Column(name="pay_day")
 	    private LocalDateTime payDay; // 결제날짜
+	    @Column(name="pay_status")
 	    private String payStatus; // 결제상태
+	    @Column(name="pay_price")
 	    private int payPrice; // 결제가격
+	    @Column(name="pay_point")
 	    private int payPoint; // 사용한포인트
+	    @Column(name="cancle_day")
 	    private LocalDateTime cancleDay;  // 결제 취소 날짜
+	   
 	    
 	    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // 예약 엔티티와의 관계 설정
 	    @ToString.Exclude

@@ -2,6 +2,7 @@ package com.lostay.backend.location.entity;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,8 +23,10 @@ public class Location {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "location_no")
 	private Long locationNo;
-	
+	@Column(name = "location_name")
 	private String locationName;
+	@Column(name = "location_image")
 	private String locationImage;
 }

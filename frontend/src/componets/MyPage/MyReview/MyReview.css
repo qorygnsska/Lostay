@@ -1,0 +1,72 @@
+.myreview--component--container {
+
+    .myreview--wrap {
+        border-bottom: 1px solid var(--lightGrayColor);
+        margin: 30px 15px;
+        padding-bottom: 10px;
+
+        .myreview--info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+
+            .info--title {
+                font-size: 19px;
+                font-weight: bold;
+            }
+
+            .info--date {
+                color: var(--lightGrayColor2);
+                font-size: 17px;
+            }
+        }
+
+        .myreview--rating {
+            .icon--fill {
+                color: gold;
+            }
+
+            .icon--empty {
+                color: gray;
+            }
+        }
+
+        .myreview--content {
+            margin-top: 25px;
+            margin-bottom: 0;
+            font-size: 18px;
+        }
+
+        .myreview--image--wrap {
+            display: flex;
+            gap: 6px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 100%;
+            overflow: hidden;
+            overflow-x: auto;
+            padding-bottom: 5px;
+
+            .myreview--image {
+
+
+                img {
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 10px;
+                }
+            }
+        }
+
+        .myreview--image--wrap::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .myreview--image--wrap::-webkit-scrollbar-thumb {
+            background-color: hsla(0, 0%, 42%, 0.49);
+        }
+
+    }
+
+}

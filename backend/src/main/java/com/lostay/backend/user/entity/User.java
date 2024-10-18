@@ -31,33 +31,35 @@ public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="user_no")
 	private Long userNo;       // 회원넘버
 	
 
-	@Column(nullable = false)
+	@Column(nullable = false, name="user_name")
 	private String userName;		// 회원이름
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="user_nickname")
 	private String userNickname;	// 회원닉네임
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="user_email")
 	private String userEmail;		// 회원이메일
 	
+	@Column(name="user_phone")
 	private String userPhone;		// 전화번호
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="user_point")
 	private int userPoint;			// 회원포인트
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="user_role")
 	private String userRole;		// 역할
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="user_status")
 	private String userStatus;		// 탈퇴여부
 	
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false, updatable = false, name="user_create_at")
 	private String userCreateAt;	// 가입일자
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="user_token")
 	private String userToken;		// 소셜토큰
 	
 	

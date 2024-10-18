@@ -14,7 +14,7 @@ public class HotelDTO {
 	private String hotelName;				// 호텔명
 	private String hotelThumbnail;  		// 호텔썸네일
 	private String[] hotelImage;			// 호텔이미지
-	private String hotelAmenities;     		// 호텔서비스/시설
+	private String[] hotelAmenities;     		// 호텔서비스/시설
 	private String hotelRating;				// 호텔등급
 	private String hotelAdress;				// 호텔주소
 	private String hotelTouristAttraction;	// 호텔관광명소

@@ -1,5 +1,6 @@
 package com.lostay.backend.discount.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,8 +18,10 @@ public class Discount {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "dis_no")
 	private Long disNo;			// 할인넘버
-	
+	@Column(name = "dis_category")
 	private String disCategory;	// 결제유형
+	@Column(name = "dis_rate")
 	private double disRate;		// 할인율(pay에 관한 할인)
 }
