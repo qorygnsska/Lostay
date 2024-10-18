@@ -102,7 +102,7 @@ export default function ReviewModal({ isOpen, onClose, hotelName, userNickname }
                 </div>
 
                 <div className='review--write--wrap'>
-                    <div>
+                    <div className='review--write--box'>
                         <textarea className='review--write'
                             placeholder='소중한 후기를 남겨주세요'
                             value={textValue}
