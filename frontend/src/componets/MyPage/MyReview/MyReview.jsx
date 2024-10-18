@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FaStar } from "react-icons/fa6";
+import ImageModal from './ImageModal';
 
 export default function MyReview({ reviewData }) {
 
     const ratingArray = [1, 2, 3, 4, 5]
+    const [imageModalShow, setImageModalShow] = useState(false);
+    const [selImgIdx, setSeImgIdx] = useState(0); // 선택한 이미지 인덱스
+
+    const handleImageClick = (index) => {
+        setSeImgIdx(index); // 선택한 이미지의 인덱스를 저장
+        setImageModalShow(true); // 모달 열기
+    };
 
     return (
         <div className='myreview--component--container'>
@@ -36,13 +44,15 @@ export default function MyReview({ reviewData }) {
                         <div className='myreview--image--wrap'>
                             {
                                 reviewData.images.map((img, idx) => (
-                                    <div className='myreview--image' key={idx}>
+                                    <div className='myreview--image' key={idx} onClick={() => handleImageClick(idx)}>
                                         <img src={`eventList/${img}`} alt='리뷰 이미지' />
                                     </div>
                                 ))}
                         </div>) : null
                 }
             </div>
-        </div >
+
+            <ImageModal imageModalShow={imageModalShow} onClose={() => setImageModalShow(false)} images={reviewData.images} initialIndex={selImgIdx} />
+        </div>
     )
 }
