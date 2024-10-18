@@ -36,7 +36,7 @@ public class Reservation {
 	    @Column(name="reservation_no")
 	    private Long reservationNo; // 예약넘버
 
-	    @JoinColumn(name = "payNo", nullable = false) // 결제번호 외래키
+	    @JoinColumn(name = "pay_no", nullable = false) // 결제번호 외래키
 	    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	    private Payment payment;
 
