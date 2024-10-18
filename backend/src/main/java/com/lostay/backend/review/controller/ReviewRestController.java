@@ -18,7 +18,7 @@ public class ReviewRestController {
 	
 	// 리뷰 작성 페이지
 	@GetMapping("/WriteReviewPage")
-	public ResponseEntity<?> writereview(@RequestParam() long payNo) {
+	public ResponseEntity<?> writereview(@RequestParam(defaultValue = "1") long payNo) {
 	
 		return new ResponseEntity<>(revSer.findRoomUserInfo(payNo),HttpStatus.OK);
 	}
