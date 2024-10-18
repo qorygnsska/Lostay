@@ -19,5 +19,9 @@ public class PointDTO {
 	
 	private LocalDateTime pointDay;	// 포인트(적립,사용)날짜
 	private int pointPlusMinus;		// 포인트증감
-
+	
+	
+	//추가
+	private String[]  points; // 포인트 전체 배열
+	private int userAllPoint;
 }
