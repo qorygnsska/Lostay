@@ -111,8 +111,8 @@ export default function Home() {
 
     ////////////////////////////////////////JIP1017
     const today = new Date(); //오늘 날짜
-    const check_in = new Date(today.setDate(today.getDate()+1));   //default: 내일 날짜
-    const check_out = new Date(today.setDate(today.getDate()+2));  //default: 모레 날짜
+    const check_in = new Date(today.setDate(today.getDate()+1));   //오늘 + 1
+    const check_out = new Date(today.setDate(today.getDate()+1));  //오늘 + 1 + 1
 
     // searchBox(Modal)이 열렸니?
     const [searchBoxShow, setSearchBoxShow] = useState(false);

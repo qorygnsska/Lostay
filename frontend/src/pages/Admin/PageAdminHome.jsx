@@ -9,8 +9,8 @@ export default function PageAdminHome() {
   ////////////////////////////////////////
   const place = '제주도';
   const today = new Date(); //오늘 날짜
-  const check_in = new Date(today.setDate(today.getDate()+1));
-  const check_out = new Date(today.setDate(today.getDate()+2));
+  const check_in = new Date(today.setDate(today.getDate() + 1)); //오늘 + 1
+  const check_out = new Date(today.setDate(today.getDate() + 1)); //오늘 + 1 + 1
   const member = 4;
   ////////////////////////////////////////
 
@@ -33,7 +33,7 @@ export default function PageAdminHome() {
   }
   ////////////////////////////////////////
 
-  
+
   return (
     <>
       <div className='page--admin--home--container page--admin'>
@@ -42,7 +42,7 @@ export default function PageAdminHome() {
         <Container id='section_container'>
 
           {/* header w/ searchParams */}
-          <CompHeaderGeneral 
+          <CompHeaderGeneral
             where={functionFromWhere}
             callParent={functionSearchPicker}
             place={place}
@@ -52,9 +52,9 @@ export default function PageAdminHome() {
           />
 
           {/* searchBox(Modal) */}
-          <CompSearchBox 
-            show={searchBoxShow} 
-            onHide={() => {setSearchBoxShow(false)}}
+          <CompSearchBox
+            show={searchBoxShow}
+            onHide={() => { setSearchBoxShow(false) }}
             place={place}
             check_in={check_in}
             check_out={check_out}

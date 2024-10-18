@@ -24,7 +24,7 @@ export default function WishList() {
                 ?   // 찜이 있을 떄
                 (
                     <div className='wishlist--card'>
-                        {hotelList.map((hotel, index) => (
+                        {hotelList2.map((hotel, index) => (
                             <WishListComponent key={index} hotel={hotel} />
                         ))}
                     </div>
