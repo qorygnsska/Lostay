@@ -12,8 +12,6 @@ import KakaoMap from '../../componets/Map/KakaoMap';
 
 export default function RoomList() {
 
-    const Location = "제주특별자치도 서귀포시 색달동 3039-3";
-
     const HotelInfo = {
         id: 1,
         rank: "블랙·5성급·호텔",
@@ -47,7 +45,8 @@ export default function RoomList() {
     ];
 
     const handleFindButtonClick = () => {
-        window.location.href = '/HotelMap';
+        const encodedLocation = encodeURIComponent(HotelInfo.Location); // 주소를 URL 인코딩
+        window.location.href = `/HotelMap?location=${encodedLocation}`;
     };
     
     return (

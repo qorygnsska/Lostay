@@ -1,14 +1,41 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Container } from 'react-bootstrap'
+import { useLocation } from 'react-router-dom';
 
 const {kakao} = window;
 
 
 export default function HotelMap() {
 
+    const { search } = useLocation();
+    const location = new URLSearchParams(search).get('location'); // 쿼리 파라미터에서 location 값 가져오기
+
     const Location = '서초동 1330-3'; // 기본주소
 
     const geocoder = new kakao.maps.services.Geocoder();
+
+    // 마커
+    const [map, setMap] = useState(null);
+    const [roadPolylines, setRoadPolylines] = useState([]);
+    const [startMarker, setStartMarker] = useState(null);
+    const [endMarker, setEndMarker] = useState(null);
+
+    const [distance, setDistance] = useState(0); // 거리
+    const [duration, setDuration] = useState(0); // 소요시간
+    const [fare, setFare] = useState({toll: 0, taxi: 0}); // 통행료
+
+    const [isVisible, setIsVisible] = useState(false); // div 표시
+
+    // 폼에서 주소 받아오기
+    const startRef = useRef();
+    const endRef = useRef();
+        
+
+    // 통행료 포맷 함수
+    const formatCurrency = (amount) => {
+        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+    };
+
 
     // 기본주소 좌표로 바꾸기
     const getLatLngFromAddress = (address) => {
@@ -26,7 +53,11 @@ export default function HotelMap() {
     };
 
 
+    // 맵 띄우기
     useEffect(() => {
+        if (location) {
+            endRef.current.value = location; // 폼의 출발지에 자동으로 채우기
+        }
         const container = document.getElementById('KakaoMap');
 
         getLatLngFromAddress(Location)
@@ -35,7 +66,8 @@ export default function HotelMap() {
                     center: latLng,
                     level: 3,
                 };
-                const map = new kakao.maps.Map(container, options) // 지도 생성 및 객체 리턴
+                const newMap = new kakao.maps.Map(container, options) // 지도 생성 및 객체 리턴
+                setMap(newMap);
                 
             })
             .catch(error => {
@@ -44,8 +76,6 @@ export default function HotelMap() {
        
     }, []);
 
-    const startRef = useRef();
-    const endRef = useRef();
 
     // 길찾기 주소 좌표 구하기
     const getLatLngFromAddress2 = (address) => {
@@ -80,6 +110,86 @@ export default function HotelMap() {
     };
 
 
+    // 마커 찍기
+    const addMarker = (coords, title) => {
+        if (!map) return; // 지도가 없으면 종료
+
+        const markerPosition = new kakao.maps.LatLng(coords.latitude, coords.longitude);
+        const marker = new kakao.maps.Marker({
+            position: markerPosition,
+            title: title,
+        });
+        marker.setMap(map); // 마커를 지도에 추가
+        return marker;
+    };
+
+    // 마커지우기
+    const removeMarkers = () => {
+        if (startMarker) {
+            startMarker.setMap(null); // 출발지 마커 제거
+        }
+        if (endMarker) {
+            endMarker.setMap(null); // 목적지 마커 제거
+        }
+    };
+
+
+
+    // 색상 결정 함수
+    const getRoadColor = (trafficState) => {
+        switch (trafficState) {
+            case 0: // 교통상태 정보 없음
+                return 'rgb(211, 211, 211)';
+            case 1: // 교통 정체
+                return 'rgb(235, 75, 56)';
+            case 2: // 교통 지체
+                return 'rgb(232, 164, 57)';
+            case 3: // 교통 서행
+                return 'rgb(235, 208, 69)';
+            case 4: // 교통 원활
+                return 'rgb(101, 202, 67)';
+            case 6: // 교통사고(통행 불가)
+                return 'black';
+        }
+    }
+
+   // 도로 선 그리기
+    const drawRoads = (roads) => {
+        const newPolylines = roads.map(roadItem => {
+            // vertexes 배열에서 좌표를 추출
+            const path = [];
+            for (let i = 0; i < roadItem.vertexes.length; i += 2) {
+                const longitude = roadItem.vertexes[i];
+                const latitude = roadItem.vertexes[i + 1];
+                path.push(new kakao.maps.LatLng(latitude, longitude));
+            }
+            
+            const color = getRoadColor(roadItem.traffic_state);
+            const polyline = new kakao.maps.Polyline({
+                path: path,
+                strokeWeight: 10,
+                strokeColor: color,
+                strokeOpacity: 1,
+                strokeStyle: 'solid',
+            });
+            polyline.setMap(map); // 맵에 선 그리기
+            return polyline; // 선 객체를 배열에 저장
+        });
+        setRoadPolylines(newPolylines); // 새로운 선 객체 배열로 업데이트
+    };
+
+
+    // 도로 선 지우기
+    const clearRoads = () => {
+        roadPolylines.forEach(polyline => {
+            polyline.setMap(null); // 맵에서 선 제거
+        });
+        setRoadPolylines([]); // 선 객체 배열 초기화
+    };
+
+
+
+
     // 길찾기 시작
     const handleSubmit = async (event) => {
         event.preventDefault(); // 기본 제출 방지
@@ -87,28 +197,67 @@ export default function HotelMap() {
         const startAddress = startRef.current.value;
         const endAddress = endRef.current.value;
 
+        const div = document.getElementsByClassName('FindInfo');
+
         try {
             // 출발지와 도착지의 위도, 경도 구하기
             const startCoords = await getLatLngFromAddress2(startAddress);
             const endCoords = await getLatLngFromAddress2(endAddress);
 
-            console.log('출발지 위도:', startCoords.latitude);
-            console.log('출발지 경도:', startCoords.longitude);
-            console.log('도착지 위도:', endCoords.latitude);
-            console.log('도착지 경도:', endCoords.longitude);
-
             // 길찾기 API 호출
             const routeData = await getRoute(startCoords.longitude, startCoords.latitude, endCoords.longitude, endCoords.latitude);
             console.log('길찾기 데이터:', routeData);
+
+            // div css 변경
+            setIsVisible(true);
+
+            // 마커 지우고
+            removeMarkers();
+
+            // 마커 찍기
+            const newStartMarker = addMarker(startCoords, '출발지');
+            const newEndMarker = addMarker(endCoords, '목적지');
+
+            setStartMarker(newStartMarker);
+            setEndMarker(newEndMarker);
+
+            // 두 마커의 위치를 포함하는 경계 계산
+            const bounds = new kakao.maps.LatLngBounds();
+            bounds.extend(new kakao.maps.LatLng(startCoords.latitude, startCoords.longitude));
+            bounds.extend(new kakao.maps.LatLng(endCoords.latitude, endCoords.longitude));
+
+            // 지도의 중심을 경계에 맞추고 줌 레벨 조정
+            map.setBounds(bounds);
+
+            // 거리(미터) → 거리(킬로미터)
+            const distanceInKm = (routeData.routes[0].summary.distance / 1000).toFixed(2); // 소수점 둘째 자리까지
+            setDistance(distanceInKm);
+
+            // 소요시간(초) → 시간 및 분
+            const durationInSec = routeData.routes[0].summary.duration;
+            const hours = Math.floor(durationInSec / 3600);
+            const minutes = Math.floor((durationInSec % 3600) / 60);
+            const formattedDuration = `${hours}시간 ${minutes}분`;
+            setDuration(formattedDuration);
+
+            // 통행료
+            setFare(routeData.routes[0].summary.fare);
+
+            const road = (routeData.routes[0].sections[0].roads);
+
+            // 선 지우기
+            clearRoads();
+
+            // 선 그리기
+            drawRoads(road);
 
         } catch (error) {
             console.error(error);
         }
    
-        
-       
-        
     };
+
+   
 
     
     return (
@@ -131,7 +280,16 @@ export default function HotelMap() {
             </div>
 
             <div id='KakaoMap'>
-
+                <div className={`FindInfo ${isVisible ? '' : 'hidden'}`}>
+                    <div className='timeInfo'>
+                        <div id='time'>{duration}</div>
+                        <div id='km'>{distance}km</div>
+                    </div>
+                    <div className='fareInfo'>
+                        <div id='toll'>통행료 : 약 {formatCurrency(fare.toll)} |</div>
+                        <div id='taxi'>택시비 : 약 {formatCurrency(fare.taxi)}~</div>
+                    </div>
+                </div>
             </div>
         </Container>
 
