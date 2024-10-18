@@ -15,18 +15,12 @@ export default function HotelModal({props, show, handleClose}) {
 
   // 버튼
   const rankBtn = ['5성급', '4성급', '블랙', '리조트', '가족호텔'];
-  const bedBtn = ['싱글', '더블', '트윈', '온돌'];
   const publicBtn = [
     '사우나', '수영장', '레스토랑', '라운지', '피트니스',
     '골프장', '엘리베이터', '공용PC', '바베큐', '카페',
     '공용스파', '편의점', '노래방', '주방/식당', '세탁기',
     '건조기', '탈수기', '주차장', '취사가능', '공용샤워실',
     '온천', '스키장'
-  ];
-  const roomBtn = [
-    '객실스파', '미니바', '무선인터넷', '욕실용품', 'TV',
-    '에어컨', '냉장고', '샤워실', '욕조', '드라이기',
-    '다리미', '전기밥솥'
   ];
   const otherBtn = [
     '조식제공', '무료주차', '객실내취사', '반려견동반',
@@ -173,37 +167,9 @@ export default function HotelModal({props, show, handleClose}) {
               ))}
             </div>
 
-            <div className='BedF border-bottom pb-3 mb-3'>
-              <p>베드타입</p>
-              {bedBtn.map(name => (
-                <input type='button' value={name} key={name} name={name} className='BtnF' id={name}
-                  onClick={() => handleButtonClick(name)}
-                  style={{
-                    backgroundColor: activeButtons.includes(name) ? 'rgb(237, 247, 255)' : '',
-                    color: activeButtons.includes(name) ? 'rgb(0, 83, 192)' : '',
-                    border: activeButtons.includes(name) ? '1px solid rgb(167, 215, 255)' : ''
-                  }}
-                />
-              ))}
-            </div>
-
             <div className='PublicF border-bottom pb-3 mb-3'>
               <p>공용시설</p>
               {publicBtn.map(name => (
-                <input type='button' value={name} key={name} name={name} className='BtnF' id={name}
-                onClick={() => handleButtonClick(name)}
-                style={{
-                  backgroundColor: activeButtons.includes(name) ? 'rgb(237, 247, 255)' : '',
-                  color: activeButtons.includes(name) ? 'rgb(0, 83, 192)' : '',
-                  border: activeButtons.includes(name) ? '1px solid rgb(167, 215, 255)' : ''
-                }}
-              />
-              ))}
-            </div>
-
-            <div className='RoomF border-bottom pb-3 mb-3'>
-              <p>객실 내 시설</p>
-              {roomBtn.map(name => (
                 <input type='button' value={name} key={name} name={name} className='BtnF' id={name}
                 onClick={() => handleButtonClick(name)}
                 style={{

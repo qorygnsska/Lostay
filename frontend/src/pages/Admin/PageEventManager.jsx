@@ -40,7 +40,10 @@ export default function PageEventManager() {
     }
 
     function deleteEvent() {    //'삭제' 버튼에 상속해줄 함수
-        alert('정말 삭제?');
+        if(window.confirm('정말 삭제?')){
+            console.log('삭제 실행');
+            
+        }
     }
 
 

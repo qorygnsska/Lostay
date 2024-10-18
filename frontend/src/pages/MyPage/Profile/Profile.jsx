@@ -8,37 +8,48 @@ export default function Profile() {
 
     const data = { nickname: '루이지애나포토존05', email: 'dny091@naver.com', phone: '010-4715-5243' }
 
+    // 닉네임 수정
     const [nicknameEdit, setNicknameEidt] = useState(false);
+    const [nickname, setNickname] = useState(data.nickname);
     const nicknameInputRef = useRef(null);
 
-    const [phoneEdit, setPhoneEidt] = useState(false);
-    const phoneInputRef = useRef(null);
-
-    const [nickname, setNickname] = useState(data.nickname);
-    const [phone, setPhone] = useState(data.phone)
-
+    // 닉네임 수정 버튼
     const handleNicknameEdit = () => {
         setNicknameEidt(!nicknameEdit);
         setPhoneEidt(false);
         if (!nicknameEdit) {
-            nicknameInputRef.current.focus(); // input에 포커스 설정
+            nicknameInputRef.current.focus();
         }
     };
 
+    // 닉네임 수정된 값 저장
+    const handleNicknameChange = (e) => {
+        setNickname(e.target.value);
+    }
+
+
+    // 휴대폰번호 수정
+    const [phoneEdit, setPhoneEidt] = useState(false);
+    const [phone, setPhone] = useState(data.phone)
+    const phoneInputRef = useRef(null);
+
+    // 휴대폰번호 수정 버튼
     const handlePhoneEdit = () => {
         setPhoneEidt(!phoneEdit);
         setNicknameEidt(false);
         if (!phoneEdit) {
-            phoneInputRef.current.focus(); // input에 포커스 설정
+            phoneInputRef.current.focus();
         }
     };
 
-    const handleNicknameChange = (e) => {
-        setNickname(e.target.value);
+    // 휴대폰번호 수정된 값
+    const handlePhoneChange = (e) => {
+        const formattedPhone = formatPhoneNumber(e.target.value);
+        setPhone(formattedPhone);
     };
 
+    // 휴대폰 번호 포맷
     const formatPhoneNumber = (value) => {
-        // 하이픈 자동 추가 함수
         const cleaned = value.replace(/\D/g, ''); // 숫자가 아닌 문자 제거
         const match = cleaned.match(/(\d{3})(\d{3,4})(\d{4})/);
         if (match) {
@@ -47,10 +58,6 @@ export default function Profile() {
         return value; // 포맷팅할 수 없으면 원래 값 반환
     };
 
-    const handlePhoneChange = (e) => {
-        const formattedPhone = formatPhoneNumber(e.target.value);
-        setPhone(formattedPhone);
-    };
 
     return (
         <div className='profile--container'>

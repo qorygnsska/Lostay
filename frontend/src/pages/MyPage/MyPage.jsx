@@ -22,6 +22,7 @@ export default function MyPage() {
                 <BackNav title='MY 스테이' />
             </div>
             <div className='mypage--wrap'>
+                {/* 닉네임 */}
                 <div className='nickname'>
                     <div>
                         <span><strong>{myinfo.nickname}</strong>님</span>
@@ -34,6 +35,7 @@ export default function MyPage() {
 
                 <div className='mypage--info--wrap'>
 
+                    {/* 예약내역 링크*/}
                     <div className='info--vertical'>
                         <Link to="/booking-history" className='info--btn link'>
                             <div>
@@ -46,7 +48,7 @@ export default function MyPage() {
                         </Link>
                     </div>
 
-
+                    {/* 포인트내역 링크 */}
                     <div className='info--vertical'>
                         <Link to="/my-point" className='info--btn link'>
                             <div>
@@ -64,6 +66,7 @@ export default function MyPage() {
 
 
                     <div className='info--horizontal--box'>
+                        {/* 내 리뷰 링크 */}
                         <div className='info--horizontal'>
                             <Link to="/my-review" className='info--horizontal--btn link'>
                                 <div>
@@ -76,7 +79,10 @@ export default function MyPage() {
                             </Link>
                         </div>
 
+
                         <span className='separation '></span>
+
+                        {/* 찜목록 링크 */}
                         <div className='info--horizontal'>
                             <Link to="/wishlist" className='info--horizontal--btn link'>
                                 <div>
@@ -92,12 +98,16 @@ export default function MyPage() {
                     </div>
                 </div>
 
+                {/* 광고 */}
                 <div className='advertisement'>
                     <img src='eventList/66cde43a8253e3.35660731.png' alt='광고' />
                 </div>
 
+                {/* 서비스 관리 */}
                 <div className='service--wrap'>
                     <h3>서비스관리</h3>
+
+                    {/* 내 정보 관리 링크 */}
                     <div className='my--info-setting'>
                         <Link to="/profile" className='my--info--btn link'>
                             <div>
@@ -111,6 +121,7 @@ export default function MyPage() {
 
                     </div>
 
+                    {/* 로그 아웃 링크 */}
                     <div className='logout'>
                         <button className='logout--btn'>
                             <div>
@@ -125,6 +136,7 @@ export default function MyPage() {
                     </div>
                 </div>
 
+                {/* 광고 */}
                 <div className='advertisement'>
                     <img src='eventList/66ed4cda0aabf5.23349304.png' alt='광고' />
                 </div>

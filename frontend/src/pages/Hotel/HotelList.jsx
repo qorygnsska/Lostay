@@ -15,12 +15,13 @@ import CompSearchBox from '../../componets/Search/CompSearchBox';
 export default function HotelList(props) {
 
 
-  ////////////////////////////////////////JIP1016
+  ////////////////////////////////////////JIP1017
   const place = '제주도';
-  const check_in = '10월 8일';
-  const check_out = '10월 11일';
+  const today = new Date(); //오늘 날짜
+  const check_in = new Date(today.setDate(today.getDate()+1));
+  const check_out = new Date(today.setDate(today.getDate()+2));
   const member = 2;
-  ////////////////////////////////////////JIP1016
+  ////////////////////////////////////////JIP1017
 
   // searchBox(Modal)이 열렸니?
   const [searchBoxShow, setSearchBoxShow] = useState(false);
@@ -30,12 +31,16 @@ export default function HotelList(props) {
     console.log('where are you?: ' + fromWhere);
   }
 
-  // 어떤 input 눌렀니?
+  // Header에서 어떤 input 눌렀니?
+  const [focus, setFocus] = useState('input_place');
+
   const functionSearchPicker = (fromMyChild) => {
-    console.log(fromMyChild + ' is picked');
+    console.log(fromMyChild + ' is picked at headerGeneral');
+    //선택 위치에 따라 focus 변경 -> 하위 모달에 focus 전달
+    setFocus(fromMyChild);
     setSearchBoxShow(true);
   }
-  ////////////////////////////////////////JIP1016
+  ////////////////////////////////////////JIP1017
 
 
 
@@ -131,7 +136,7 @@ export default function HotelList(props) {
   return (
     <Container className='hotel--list'>
 
-      {/* header w/ searchParams JIP1016 */}
+      {/* header w/ searchParams JIP1017 */}
       <CompHeaderGeneral
         where={functionFromWhere}
         callParent={functionSearchPicker}
@@ -141,7 +146,7 @@ export default function HotelList(props) {
         member={member}
       />
 
-      {/* searchBox(Modal) JIP1016 */}
+      {/* searchBox(Modal) JIP1017 */}
       <CompSearchBox
         show={searchBoxShow}
         onHide={() => { setSearchBoxShow(false) }}
@@ -149,6 +154,7 @@ export default function HotelList(props) {
         check_in={check_in}
         check_out={check_out}
         member={member}
+        focus={focus}
       />
 
       <HotelFilter handleShow={handleShow} />

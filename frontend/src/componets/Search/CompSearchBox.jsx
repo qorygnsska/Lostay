@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Button, Container, Form, Modal } from 'react-bootstrap'
-import { GoDash } from 'react-icons/go';
+import { Button, Container, Form, InputGroup, Modal } from 'react-bootstrap'
+import { GoDash, GoPeople } from 'react-icons/go';
 import CompMemberPicker from './CompMemberPicker';
+import { MdOutlineCalendarMonth, MdOutlinePlace } from 'react-icons/md';
 
 export default function CompSearchBox(props) {
-
 
 
     const [place, setPlace] = useState(props.place);
@@ -12,11 +12,15 @@ export default function CompSearchBox(props) {
     const [check_out, setCheck_out] = useState(props.check_out);
     const [member, setMember] = useState(props.member);
 
-    const handleShow = () => {
+    const modalOnShow = () => {
         //모달이 열릴 때마다 어디를 클릭해서 열리는지 확인하여 auto-focusing
-        console.log('focusing at modal: ' + props.focus);
-        
+        //console.log('focusing at modal: ' + props.focus);
+
     }
+
+
+    //CompCalendarPicker
+    
 
 
 
@@ -29,18 +33,17 @@ export default function CompSearchBox(props) {
 
 
 
-
-    const handleSearch = () => {    
+    const handleSearch = () => {
         //'검색' 버튼 클릭!
-        console.log('search: '+place+'/'+check_in+'-'+check_out+'/'+member);
-        
+        console.log('search: ' + place + '/' + check_in + '-' + check_out + '/' + member);
+        //쿼리 날리고 페이지 이동 to /hotelList
+
     }
 
 
     return (
         <>
-
-            <Modal onShow={handleShow}
+            <Modal onShow={modalOnShow}
                 className='comp--search--box-container'
                 {...props}
                 fullscreen={true}
@@ -51,51 +54,62 @@ export default function CompSearchBox(props) {
 
                 <Modal.Body id="body_searchBox">
                     <Form>
-                        <Form.Control
-                            id="input_place"
-                            className='mb-3'
-                            type="search"
-                            placeholder="지역 또는 호텔명을 입력하세요"
-                            value={place}
-                            onChange={(event) => setPlace(event.target.value)}
-                            autoFocus={props.focus=="input_place"?true:false}
-                        />
+
+                        <InputGroup className='mb-3'>
+                            <InputGroup.Text ><MdOutlinePlace size="24" /></InputGroup.Text>
+                            <Form.Control
+                                id="input_place"
+                                type="search"
+                                placeholder="지역 또는 호텔명을 입력하세요"
+                                value={place}
+                                onChange={(event) => setPlace(event.target.value)}
+                                autoFocus={props.focus == "input_place" ? true : false}
+                            />
+                        </InputGroup>
 
                         <div id="container_period" className='d-flex'>
-                        <Form.Control
-                            id="input_check_in"
-                            className='mb-3'
-                            type="text"
-                            placeholder="체크인"
-                            value={check_in}
-                            onChange={(event) => setCheck_in(event.target.value)}
-                            autoFocus={props.focus=="input_period"?true:false}
+                            <InputGroup className='mb-3'>
+                                <InputGroup.Text ><MdOutlineCalendarMonth size="24" /></InputGroup.Text>
+                                <Form.Control
+                                    id="input_check_in"
+                                    type="date"
+                                    placeholder="체크인"
+                                    value={check_in}
+                                    onChange={(event) => setCheck_in(event.target.value)}
+                                    autoFocus={props.focus == "input_period" ? true : false}
+                                />
+                            </InputGroup>
 
-                        />
-                        <GoDash id="seperator_period" size="24"/>
-                        <Form.Control
-                            id="input_check_out"
-                            className='mb-3'
-                            type="text"
-                            placeholder="체크아웃"
-                            value={check_out}
-                            onChange={(event) => setCheck_out(event.target.value)}
-                        />
+                            <GoDash size="24" id="seperator_period" />
+
+                            <InputGroup className='mb-3'>
+                            <InputGroup.Text ><MdOutlineCalendarMonth size="24" /></InputGroup.Text>
+                            <Form.Control
+                                id="input_check_out"
+                                type="date"
+                                placeholder="체크아웃"
+                                value={check_out}
+                                onChange={(event) => setCheck_out(event.target.value)}
+                            />
+                            </InputGroup>
                         </div>
 
-                        <Form.Control
-                            id="input_member"
-                            hidden={memberPicker?true:false}
-                            type="text"
-                            placeholder="인원"
-                            value={member}
-                            readOnly
-                            onChange={(event) => setMember(event.target.value)}
-                            autoFocus={props.focus=="input_member"?true:false}
-                            onClick={() => handleMemberPicker()}
-                        />
+                        <InputGroup hidden={memberPicker ? true : false}>
+                            <InputGroup.Text ><GoPeople size="24" /></InputGroup.Text>
+                            <Form.Control
+                                id="input_member"
+                                type="text"
+                                placeholder="인원"
+                                value={'인원 '+member+'명'}
+                                readOnly
+                                // onChange={(event) => setMember(event.target.value)} 여기서는 값이 바뀔 일이 없네?(readOnly)
+                                autoFocus={props.focus == "input_member" ? true : false}
+                                onClick={() => handleMemberPicker()}
+                            />
+                        </InputGroup>
+
                         <CompMemberPicker
-                            hidden={!memberPicker?true:false}
+                            hidden={!memberPicker ? true : false}
                             member={member}
                             callParent={(memberFromChild) => setMember(memberFromChild)}
                             confirmMember={() => setMemberPicker(!memberPicker)}
