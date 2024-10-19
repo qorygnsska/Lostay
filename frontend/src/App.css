@@ -19,11 +19,15 @@
   --regularBlueColor: #0386ff;
   --ligthBuleColor: #e6eefa;
   --redColor: #FF0303;
-
+  --pointColor: #D20D5A;
 
 
 }
 
+body {
+  overflow-y: scroll;
+  /* 항상 수직 스크롤바 표시 */
+}
 
 .App-Container {
   max-width: 768px;
