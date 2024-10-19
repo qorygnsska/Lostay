@@ -7,18 +7,19 @@ import { Calendar } from 'primereact/calendar';
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 
 
-
 export default function CompSearchBox(props) {
+
+
+    // const props_check_in = new Date(props.check_in);
+    // props_check_in.setHours(0,0,0,0);
+    // const props_check_out = new Date(props.check_out);
+    // props_check_out.setHours(0,0,0,0);
 
     //requestParameter(검색한 주소, 날짜, 인원)를 기억할 변수
     const [place, setPlace] = useState(props.place);
     const [check_in, setCheck_in] = useState(props.check_in);
     const [check_out, setCheck_out] = useState(props.check_out);
     const [member, setMember] = useState(props.member);
-
-
-
-
 
     //////////////////////////////////////////////////////////for datePicker(Calendar)
     const today = new Date(); //오늘 날짜
@@ -34,12 +35,10 @@ export default function CompSearchBox(props) {
 
     //선택 가능한 최소 체크인 날짜(default: 오늘 또는 내일)
     const minDate_check_in = new Date(); //오늘 날짜
+    minDate_check_in.setHours(0, 0, 0, 0); //오늘 날짜의 시간, 분, 초, ms를 모두 0으로 설정
     if (minDate_check_in.getHours() > 17) {   //오늘 18:00 이후
         minDate_check_in.setDate(minDate_check_in.getDate() + 1);
     }
-
-
-
 
 
     //선택 가능한 최소 체크아웃 날짜(default: 체크인 다음 날==1박)
@@ -73,11 +72,9 @@ export default function CompSearchBox(props) {
                 );
             }
         }
-
         return date.day;
     }
     //////////////////////////////////////////////////////////dateTemplate(prop) : specific dates as a parameter to customizing style
-
 
 
     // Date() -> "yyyy/MM/dd" (날짜 형식 -> 텍스트 형식 변환 함수)
@@ -109,39 +106,43 @@ export default function CompSearchBox(props) {
 
     }
 
-    
-    //체크인 날짜를 새로 골랐다
+
+    //체크인 날짜를 선택했다
     const checkInHandler = (check_in_selected) => {
 
-        //체크아웃 최소(+1), 최대(+10)의 상태 변경
+        console.log('selected check IN: ' +  check_in_selected);
+        
+        //'Clear' 버튼을 클릭하면 왜 null이 들어오는지????
+        if (check_in_selected === null || check_in_selected === '') {
+            check_in_selected = minDate_check_in;
+        }
+
+        //체크아웃 최소(+1) 상태 변경
         const minDate_check_out_temp = new Date(check_in_selected)
         minDate_check_out_temp.setDate(check_in_selected.getDate() + 1)
         setMinDate_check_out(minDate_check_out_temp);
 
+        //체크아웃 최대(+10) 상태 변경
         const maxDate_check_out_temp = new Date(check_in_selected)
         maxDate_check_out_temp.setDate(check_in_selected.getDate() + 10)
         setMaxDate_check_out(maxDate_check_out_temp);
 
 
-
+        //체크인 날짜가 체크아웃날짜보다 뒤인 경우
         if (check_in_selected >= check_out) {
-            alert('되겠니?');
             setCheck_out(minDate_check_out_temp);
         }
 
-
         const marginLeft = new Date(check_out);
         marginLeft.setDate(check_out.getDate() - 10)
-
+        //체크인 날짜가 체크아웃날짜-10일 보다 작은 경우(10박을 넘길 경우)
         if (check_in_selected < marginLeft) {
-            alert('10박 넘어');
             setCheck_out(maxDate_check_out_temp);
         }
+
+        //결과적으로 체크인 날짜는 선택한 날짜로 지정
         setCheck_in(check_in_selected);
-
     }
-
-
 
 
 
@@ -214,32 +215,32 @@ export default function CompSearchBox(props) {
                             <Calendar id="calendar_check_in" className="calendar mb-3"
                                 showButtonBar
                                 hidden={!checkInPicker ? true : false}
-                                value={check_in}
-                                onClearButtonClick={() => checkInHandler(minDate_check_in)}
                                 //onSelect={() => setCheckInPicker(!checkInPicker)}
-                                onChange={(e) => checkInHandler(e.value)}
+                                value={check_in}
                                 minDate={minDate_check_in}
                                 maxDate={maxDate_check_in}
                                 dateTemplate={dateTemplateHandler}
+                                onChange={(e) => checkInHandler(e.value)}
+                                onTodayButtonClick={() => checkInHandler(minDate_check_in)}
+                                onClearButtonClick={() => checkInHandler(minDate_check_in)}
                                 inline
                             />
                             <Calendar id="calendar_check_out" className="calendar mb-3"
                                 showButtonBar
                                 hidden={!checkOutPicker ? true : false}
-                                value={check_out}
-                                onClearButtonClick={() => setCheck_out(minDate_check_out)}
                                 //onSelect={() => setCheckOutPicker(!checkOutPicker)}
-                                onChange={(e) => setCheck_out(e.value)}
+                                value={check_out}
                                 minDate={minDate_check_out}
                                 maxDate={maxDate_check_out}
                                 dateTemplate={dateTemplateHandler}
+                                onChange={(e) => setCheck_out(e.value)}
+                                onClearButtonClick={() => setCheck_out(minDate_check_out)}
                                 inline
                             />
                         </div>
 
-
-                        <InputGroup hidden={memberPicker ? true : false}>
-
+                        <InputGroup className={`${memberPicker ? "trans_hidden" : ""}`}>
+                        {/* hidden={memberPicker ? true : false} */}
                             <InputGroup.Text ><GoPeople size="24" /></InputGroup.Text>
                             <Form.Control
                                 id="input_member"
@@ -262,7 +263,7 @@ export default function CompSearchBox(props) {
                         />
                     </Form>
 
-                    <Container id="container_btn_search">
+                    <Container id="container_btn_search" className="mt-3">
                         <Button id="btn_search" variant="primary" onClick={handleSearch}>검색</Button>
                     </Container>
 

@@ -19,7 +19,7 @@ export default function CompMemberPicker(props) {
 
     return (
         <>
-            <div className={`comp--member--picker--container ${props.hidden ? "d-none" : ""}`}>
+            <div className={`comp--member--picker--container ${props.hidden ? "trans_hidden" : ""}`}>
                 <h5>인원을 설정해주세요.</h5>
                 <div className="container d-flex">
                     <div id="container_member_notice" className="container">

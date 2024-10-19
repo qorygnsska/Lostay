@@ -1,4 +1,5 @@
 .comp--search--box-container {
+
     /* SearchBox(모달) 컴포넌트 */
     .modal-content {
         max-width: 768px;
@@ -26,6 +27,7 @@
 
         #body_searchBox {
             /* 모달 바디 */
+            /* position: relative;  */
 
             .input-group-text {
                 border-right: none;
@@ -45,7 +47,8 @@
 
 
             #container_period_input {
-                #seperator_period { /* 구분자 */
+                #seperator_period {
+                    /* 구분자 */
                     margin: 12px;
                 }
             }
@@ -53,17 +56,20 @@
 
             #container_period_calendar {
 
-                .calendar { /* 달력 공통 */
+                .calendar {
+                    /* 달력 공통 */
                     width: 47.5%;
                     text-align: center;
 
-                    
-                    th:first-child, td:first-child { 
+
+                    th:first-child,
+                    td:first-child {
                         /* 첫째 th와 td : 일요일 */
                         color: red;
                     }
 
-                    th:last-child, td:last-child {
+                    th:last-child,
+                    td:last-child {
                         /* 막내 th와 td : 토요일 */
                         color: blue;
                     }
@@ -84,7 +90,7 @@
                         background-color: lightskyblue;
                         opacity: 0.7;
                     }
-                    
+
                     .period_selected:hover {
                         opacity: 0.9;
                     }
@@ -93,7 +99,8 @@
 
 
 
-                    .p-highlight {  /* selected Date */
+                    .p-highlight {
+                        /* selected Date */
                         background-color: lightskyblue;
                         opacity: 1 !important;
                         color: black !important;
@@ -104,38 +111,45 @@
                 }
 
 
-                #calendar_check_in { /* 체크인 달력 */
+                #calendar_check_in {
+                    /* 체크인 달력 */
                     float: left;
                 }
 
 
-                #calendar_check_out { /* 체크아웃 달력 */
+                #calendar_check_out {
+                    /* 체크아웃 달력 */
                     float: right;
                 }
             }
 
 
 
-            #container_btn_search { 
-                position: absolute;
+            #container_btn_search {
+                /* position: absolute;
                 bottom: 20px;
-                left: 0;
+                left: 0; */
 
                 margin: 0;
-                padding: 16px;
+                padding: 0;
                 max-width: 100%;
                 width: 100%;
 
 
-                #btn_search { /* '검색' 버튼 */
+                #btn_search {
+                    /* '검색' 버튼 */
                     width: 100%;
                 }
             }
 
         }
 
+        .trans_hidden {
+            display: none;
+            transition: all 0.5s ease;
+            /* 안먹네 ㅜㅜ */
+        }
     }
-
 }
 
 
@@ -152,7 +166,7 @@
 .comp--member--picker--container {
     /* MemberPicker 컴포넌트 */
 
-    clear: both; /* calendar의 float 속성 영향 제거 */
+    clear: both;/* calendar의 float 속성 영향 제거 */
     padding: 12px;
     border-style: solid;
     border-width: 2px;
