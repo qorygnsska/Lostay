@@ -145,8 +145,6 @@ export default function CompSearchBox(props) {
 
 
 
-
-
     //'검색' 버튼 클릭!
     const handleSearch = () => {
         console.log('search: ' + place + '/' + check_in + '-' + check_out + '/' + member);
