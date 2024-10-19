@@ -1,13 +1,12 @@
 .comp--search--box-container {
-    /*SearchBox 컴포넌트 */
+    /* SearchBox(모달) 컴포넌트 */
     .modal-content {
         max-width: 768px;
         margin: auto;
 
 
         #header_searchBox {
-            /*모달 헤더*/
-            /* position: relative; */
+            /* 모달 헤더 */
             display: flex;
             justify-content: center;
 
@@ -26,9 +25,7 @@
 
 
         #body_searchBox {
-            /*모달 바디*/
-            /* position: relative; */
-
+            /* 모달 바디 */
 
             .input-group-text {
                 border-right: none;
@@ -48,8 +45,7 @@
 
 
             #container_period_input {
-
-                #seperator_period {
+                #seperator_period { /* 구분자 */
                     margin: 12px;
                 }
             }
@@ -58,17 +54,17 @@
             #container_period_calendar {
 
                 .calendar { /* 달력 공통 */
-                    width: 50%;
+                    width: 47.5%;
                     text-align: center;
 
                     
                     th:first-child, td:first-child { 
-                        /* 첫째 th와 td */
+                        /* 첫째 th와 td : 일요일 */
                         color: red;
                     }
 
                     th:last-child, td:last-child {
-                        /* 막내 th와 td */
+                        /* 막내 th와 td : 토요일 */
                         color: blue;
                     }
 
@@ -79,9 +75,32 @@
                     }
 
 
-                    .p-highlight {
+                    /* style={{width:'40px', height:'40px', borderRadius:'6px', paddingTop:'0.5rem', background: 'lightblue' }} */
+                    .period_selected {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 6px;
+                        padding-top: 0.5rem;
                         background-color: lightskyblue;
+                        opacity: 0.7;
                     }
+                    
+                    .period_selected:hover {
+                        opacity: 0.9;
+                    }
+
+
+
+
+
+                    .p-highlight {  /* selected Date */
+                        background-color: lightskyblue;
+                        opacity: 1 !important;
+                        color: black !important;
+                        font-weight: bold !important;
+                    }
+
+
                 }
 
 
@@ -97,7 +116,7 @@
 
 
 
-            #container_btn_search {
+            #container_btn_search { 
                 position: absolute;
                 bottom: 20px;
                 left: 0;
@@ -108,8 +127,7 @@
                 width: 100%;
 
 
-                #btn_search {
-                    /*'검색' 버튼*/
+                #btn_search { /* '검색' 버튼 */
                     width: 100%;
                 }
             }
@@ -132,9 +150,9 @@
 
 
 .comp--member--picker--container {
-    /*MemberPicker 컴포넌트 */
+    /* MemberPicker 컴포넌트 */
 
-    clear: both; /* calendar의 float 속성 영향 clear */
+    clear: both; /* calendar의 float 속성 영향 제거 */
     padding: 12px;
     border-style: solid;
     border-width: 2px;
@@ -191,9 +209,8 @@
 
 
         .btn_member_pick:active {
-
             border-color: #fb6969;
-            /* border-width: 2px; */
+            /* border-width: 2px; 심하게 깜빡 */
         }
     }
 
@@ -202,11 +219,13 @@
         align-self: end;
         border: none;
         margin-right: 12px;
+        background-color: transparent;
+        color: cornflowerblue;
+        font-weight: bold;
     }
 
 
     #btn_member_confirm:hover {
         color: blue;
-        font-weight: bold;
     }
 }

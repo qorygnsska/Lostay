@@ -7,10 +7,16 @@ export default function CompHeaderGeneral(props) {
     //클릭이 일어난 location(path)
     const whereAmI = useLocation().pathname.toString();
 
-    const handleClick = (event) => {    //클릭이 일어난 input 태그
+    
+    // Date() -> "yyyy/MM/dd" (날짜 형식 -> 텍스트 형식 변환 함수)
+    const dateFormatter = (rawDate) => (rawDate.getFullYear().toString()+"/"+(rawDate.getMonth()+1).toString()+"/"+rawDate.getDate().toString());
+
+
+    //클릭이 일어난 input 태그
+    const handleClick = (event) => {    
 
         props.where(whereAmI);
-        props.callParent(event.target.id.toString())    //상위요소에 input 태그의 id 전달
+        props.callParent(event.target.id.toString())    //상위요소에 input 태그의 id 전달(포커스 주기 위해)
     }
     
 
@@ -40,7 +46,7 @@ export default function CompHeaderGeneral(props) {
                             type="text"
                             placeholder="Period"
                             readOnly
-                            value={props.check_in + ' - ' + props.check_out}
+                            value={dateFormatter(props.check_in) + ' - ' + dateFormatter(props.check_out)}
                             onClick={handleClick}
                         />
                         <Form.Control
