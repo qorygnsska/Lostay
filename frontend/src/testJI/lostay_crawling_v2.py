@@ -8,35 +8,31 @@ import re
 from PIL import Image
 import io
 
-Image.LOAD_TRUNCATED_IMAGES = True
-
-
+Image.MAX_IMAGE_PIXELS = None
 # 웹 사이트 고정 창 
 options = webdriver.ChromeOptions()
-#options.add_argument("headless")
-#options.add_argument("disable-gpu")
 # 너비랑 높이를 고정으로 설정 
 options.add_argument("window-size=1800,1000")
 
 driver = webdriver.Chrome(options=options)
 
 # 지역 폴더 생성
-location_folder = f'seoul'
+location_folder = f'busan'
 os.makedirs(location_folder, exist_ok=True)  # 지역 폴더 생성
 
 # 호텔 폴더 생성
 hotel_folder = os.path.join(location_folder, 'hotel')
 os.makedirs(hotel_folder, exist_ok=True)  # 호텔 폴더 생성
 
-page=6
-driver.get(f'https://www.yeogi.com/domestic-accommodations?sortType=RECOMMEND&keyword=%EC%84%9C%EC%9A%B8&page={page}&personal=1&checkIn=2024-11-19&checkOut=2024-11-20&reservationActive=STAY&category=2&freeForm=true')
+page=5
+driver.get(f'https://www.yeogi.com/domestic-accommodations?sortType=RECOMMEND&keyword=%EB%B6%80%EC%82%B0&page={page}&personal=1&checkIn=2024-11-26&checkOut=2024-11-27&reservationActive=STAY&category=2&freeForm=true')
 
 hotel_lest = driver.find_elements(By.CSS_SELECTOR, 'a.gc-thumbnail-type-seller-card')
 links = [ele.get_attribute('href') for ele in hotel_lest]
 
-num = (page-1)*20
+num = (page-1)*20 +1
 
-for hotel_id, link in enumerate(links[:1]):
+for hotel_id, link in enumerate(links):
 
     hotel_thumbnail = ''
     hotel_thumbnail_name=''
@@ -169,22 +165,13 @@ for hotel_id, link in enumerate(links[:1]):
             for place in get_hotel_touristPlace:
                 hotel_touristPlace.append(place.text)
         
-        # print('호텔명 : ',hotel_name)
-        # print('호텔 등급 : ', hotel_level)
-        # print('호텔소개 : ',hotel_info)
-        # print('호텔서비스 : ',hotel_service)
-        # print('호텔주소 : ',hotel_location)
-        # print('호텔관광명소 : ',hotel_touristPlace)
-        # print('호텔 썸네일 : ',hotel_thumbnail_name)
-        # print('호텔 이미지 : ',hhotel_images_name)
-
         # 호텔 데이터 삽입 쿼리 출력
         thumbnail_path = os.path.join(thumbnail_folder, hotel_thumbnail_name)
         thumbnail_path = thumbnail_path.replace('\\', '/')
         images_path = [os.path.join(images_folder, img_name).replace('\\', '/') for img_name in hhotel_images_name]
-        images_path_str = ', '.join(s for s in images_path)
-        hotel_service_str = ', '.join(s for s in hotel_service)
-        hotel_touristPlace_str = ', '.join(s for s in hotel_touristPlace)
+        images_path_str = ','.join(s for s in images_path)
+        hotel_service_str = ','.join(s for s in hotel_service)
+        hotel_touristPlace_str = ','.join(s for s in hotel_touristPlace)
 
 
         hotel_query = f'INSERT INTO HOTEL VALUES(DEFAULT, "{hotel_name}", "{thumbnail_path}", "{images_path_str}", "{hotel_service_str}", "{hotel_level}", "{hotel_location}", "{hotel_touristPlace_str}", "{hotel_info}");'
@@ -394,14 +381,6 @@ for hotel_id, link in enumerate(links[:1]):
                     room_info=[]
                     time.sleep(2)
 
-            # print('객실 이름 : ',room_title)
-            # print('객실 정보 : ',room_info)
-            # print('객실 인원수 : ',number_person)
-            # print('객실 편의시설 : ',room_service)
-            # print('객실 썸네일 : ',room_thumbnail)
-            # print('객실 이미지 : ',room_images)
-            # print('객실 가격 : ',room_price)
-            # print('객실 할인율 : ',room_discount)
 
             max_person = 0
             for info in room_info:
@@ -416,13 +395,10 @@ for hotel_id, link in enumerate(links[:1]):
             room_thumbnail_path = room_thumbnail_path.replace('\\', '/')
             room_images_path = [os.path.join(room_images_folder, room_img_name).replace('\\', '/') for room_img_name in room_images_name]
 
-            # print(f"INSERT INTO ROOM VALUES(DEFAULT,'{hotel_id+1}', '{room_title}', {max_person}, '{number_person}', {random.randint(1,5)}, '{room_thumbnail_path}', '{room_images_path}', "
-            #     f"{int(room_price.replace(',', ''))}, '{room_discount}', '{room_service}', '{room_info}', "
-            #     f"STR_TO_DATE('{checkin_time}', '%H:%i'), STR_TO_DATE('{checkout_time}', '%H:%i'));")
             
-            room_images_path_str = ', '.join(s for s in room_images_path)
-            room_service_str = ', '.join(s for s in room_service)
-            room_info_str = ', '.join(s for s in room_info)
+            room_images_path_str = ','.join(s for s in room_images_path)
+            room_service_str = ','.join(s for s in room_service)
+            room_info_str = ','.join(s for s in room_info)
             
             room_query = (
                         f'INSERT INTO ROOM VALUES('
@@ -446,14 +422,9 @@ for hotel_id, link in enumerate(links[:1]):
                 file.write(room_query + '\n')  # 쿼리와 줄 바꿈 추가
 
 
-
-            
-
-
     except Exception as e:
         print(f"에러 발생: {e}")
         driver.quit()
-
 
 
     time.sleep(2)
