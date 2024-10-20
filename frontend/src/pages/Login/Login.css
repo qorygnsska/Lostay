@@ -1,5 +1,4 @@
 .login--container {
-
     .login--wrap {
         display: flex;
         flex-direction: column;
@@ -31,8 +30,6 @@
                 margin-right: 10px;
             }
 
-
-
             span {
                 width: auto;
                 margin: 0;
@@ -59,10 +56,5 @@
             border: 1px, solid, var(--lightGrayColor);
             font-weight: bold;
         }
-
     }
-
-
-
-
 }

@@ -1,51 +1,51 @@
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 
-  font-family: 'Pretendard-Regular';
-  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-  font-style: normal;
+    font-family: "Pretendard-Regular";
+    src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
+    font-style: normal;
 }
 
 :root {
-  --logoColor: #fb6969;
-  --lightGrayColor: #a1a1a1;
-  --lightGrayColor2: #828282;
-  --lightGrayColor3: #6d6d6d;
-  --lightGrayColor4: #f5f5f5;
-  --footerBackgroundColor: #d2d2d2;
-  --navbarBackgroundColor: hsla(0, 0%, 100%, .9);
-  --regularBlueColor: #0386ff;
-  --ligthBuleColor: #e6eefa;
-  --redColor: #FF0303;
-  --pointColor: #D20D5A;
-
-
+    --logoColor: #fb6969;
+    --lightGrayColor: #a1a1a1;
+    --lightGrayColor2: #828282;
+    --lightGrayColor3: #6d6d6d;
+    --lightGrayColor4: #f5f5f5;
+    --footerBackgroundColor: #d2d2d2;
+    --navbarBackgroundColor: hsla(0, 0%, 100%, 0.9);
+    --regularBlueColor: #0386ff;
+    --ligthBuleColor: #e6eefa;
+    --redColor: #ff0303;
+    --pointColor: #d20d5a;
+    --saleIconColor: #d20d5a;
+    --selectedBackgbColor: #f2f6fc;
+    --agreeInfoColor: #cc4100;
+    --agreeBgColor: #fef8f2;
 }
 
 body {
-  overflow-y: scroll;
-  /* 항상 수직 스크롤바 표시 */
+    /* 항상 수직 스크롤바 표시 */
+    overflow-y: scroll;
 }
 
 .App-Container {
-  max-width: 768px;
-  margin: auto;
+    max-width: 768px;
+    margin: auto;
 }
 
 ul {
-  list-style: none;
+    list-style: none;
 }
 
 @keyframes slideIn {
-  from {
-    transform: translateY(100%);
-    /* 아래에서 시작 */
-  }
+    from {
+        transform: translateY(100%);
+    }
 
-  to {
-    transform: translateY(0);
-    /* 제자리로 */
-  }
+    to {
+        transform: translateY(0);
+    }
 }

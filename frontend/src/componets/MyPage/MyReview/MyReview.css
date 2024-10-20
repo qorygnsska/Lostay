@@ -50,6 +50,7 @@
 
             .myreview--image {
                 cursor: pointer;
+                padding-bottom: 10px;
 
                 img {
                     width: 100px;
@@ -60,7 +61,7 @@
         }
 
         .myreview--image--wrap::-webkit-scrollbar {
-            height: 6px;
+            height: 8px;
         }
 
         .myreview--image--wrap::-webkit-scrollbar-thumb {
@@ -104,6 +105,7 @@
             .thumbnail--box {
                 cursor: pointer;
                 margin-left: 10px;
+                padding-bottom: 10px;
 
                 .thumbnail-image {
                     height: 100px;
@@ -116,10 +118,23 @@
                     border: 3px solid var(--regularBlueColor);
                 }
             }
+        }
 
+        .thumbnail-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .thumbnail-container::-webkit-scrollbar-thumb {
+            background-color: hsla(0, 0%, 42%, 0.49);
         }
 
 
+    }
 
+    @media screen and (max-width: 768px) {
+        .modal-content{
+            width: 100%;
+
+        }
     }
 }
