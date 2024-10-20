@@ -1,3 +1,99 @@
 .hotel--map--container{
-    
+
+
+    .TopBox{
+        position: relative;
+        width: 100%;
+        height: 140px;
+        background-color: rgb(5, 122, 255);
+        
+        
+    }
+
+    .FormBox{
+        position: absolute;
+        left: 5%;
+        top: 10%;
+        width: 90%;
+    }
+
+    input::placeholder {
+        color: white;
+        
+    }
+
+    #start{
+        width: 100%;
+        height: 50px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        margin-bottom: 5px;
+        padding: 10px;
+        color: rgb(255, 255, 255);
+        background-color: rgb(129, 173, 255);
+    }
+
+    #end{
+        width: 100%;
+        height: 50px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        padding: 10px;
+        color: white;
+        background-color: rgb(129, 173, 255);
+    }
+
+
+    #KakaoMap{
+        position: relative;
+        width: 100%;
+        height: 810px;
+    }
+
+    .FindInfo{
+        position: absolute;
+        top: 85%;
+        left: 2.5%;
+        z-index: 10;
+        width: 95%;
+        height: 100px;
+        background-color: white;
+        border: 1px solid gray;
+        border-radius: 10px;
+        padding: 15px;
+    }
+
+    .FindInfo.hidden{
+        visibility: hidden;
+    }
+
+    .timeInfo{
+        display: flex;
+        align-items: end;
+    }
+
+    .fareInfo{
+        display: flex;
+    }
+
+    #time{
+        color: rgb(0, 143, 238);
+        font-size: 25px;
+    }
+
+    #km{
+        margin-left: 5px;
+    }
+
+    #toll{
+        color: gray;
+    }
+
+    #taxi{
+        color: gray;
+        margin-left: 4px;
+    }
+
 }

@@ -1,0 +1,213 @@
+.review--modal--container {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    max-width: 768px;
+    animation: slideIn 0.3s ease-in-out;
+    background-color: #fff;
+    z-index: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+
+    .cancle--modal {
+        display: flex;
+        align-items: center;
+        padding: 15px 15px;
+        justify-content: space-between;
+        min-width: 768px;
+        font-size: 23px;
+        font-weight: bold;
+        border-bottom: 1px solid black;
+
+        button {
+            background-color: #fff;
+            border: none;
+
+            .icon {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+    }
+
+    .booking--info {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        margin-top: 40px;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid var(--lightGrayColor);
+
+        .info--box {
+            display: flex;
+            font-size: 18px;
+
+            span:nth-child(1) {
+                color: var(--lightGrayColor);
+                flex: 1
+            }
+
+            span:nth-child(2) {
+                flex: 8;
+            }
+        }
+    }
+
+    .review--content--wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        padding: 15px 15px;
+        margin-top: 20px;
+        flex-grow: 1;
+
+        .review--rating--wrap {
+
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+
+            span {
+                font-size: 22px;
+                font-weight: bold;
+            }
+
+            .rating--btn {
+
+                display: flex;
+                gap: 10px;
+
+                .star--btn {
+
+                    border: none;
+                    background-color: #fff;
+
+
+                    .icon {
+                        width: 50px;
+                        height: 50px;
+                    }
+
+                    .filled {
+                        color: gold;
+                        /* 선택된 별 색상 */
+                    }
+
+                    .empty {
+                        color: gray;
+                        /* 기본 색상 */
+                    }
+                }
+
+
+            }
+
+
+        }
+
+        .review--write--wrap {
+
+            margin-top: 20px;
+
+            .review--write--box {
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .review--write {
+                    width: 80%;
+                    height: 200px;
+                    resize: none;
+                    padding: 10px;
+                    border-radius: 10px;
+                    border: 1px solid var(--lightGrayColor);
+                    outline: none;
+                }
+            }
+
+        }
+
+        .image--add--wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+
+            .preview--image--box {
+                display: flex;
+                gap: 10px;
+                height: 110px;
+                width: 80%;
+                margin: auto;
+                overflow: hidden;
+                overflow-x: auto;
+            }
+
+            .preview--image--box::-webkit-scrollbar {
+                height: 6px;
+            }
+
+            .preview--image--box::-webkit-scrollbar-thumb {
+                background-color: hsla(0, 0%, 42%, 0.49);
+            }
+
+            .image--max-count {
+                width: 80%;
+                margin: auto;
+                color: var(--redColor);
+            }
+
+            .file--selector--btn {
+                width: 80%;
+                margin: auto;
+                background-color: var(--regularBlueColor);
+                height: 50px;
+                border-radius: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #fff;
+                font-size: 18px;
+                cursor: pointer;
+
+                .hidden {
+                    display: none;
+                }
+            }
+        }
+
+
+    }
+
+    .review--write--btn {
+        min-height: 60px;
+        background-color: var(--logoColor);
+        color: #fff;
+        font-size: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        margin-top: auto;
+    }
+}
+
+.review--modal--container::-webkit-scrollbar {
+    display: none
+        /* Chrome , Safari , Opera */
+}
+
+@media screen and (max-width:768px) {
+
+    .review--modal--container,
+    .review--write--btn {
+        width: 100%;
+    }
+}

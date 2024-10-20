@@ -1,6 +1,5 @@
 .login--container {
-
-    .loginWrap {
+    .login--wrap {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -8,13 +7,13 @@
         gap: 30px;
         height: 80vh;
 
-        .logoWrap {
+        .logo {
             width: 100%;
             height: 30px;
             margin: 0;
         }
 
-        .loginBtn {
+        .login--btn {
             width: 440px;
             height: 45px;
             padding: 7.5px 16px;
@@ -31,38 +30,31 @@
                 margin-right: 10px;
             }
 
-
-
             span {
                 width: auto;
                 margin: 0;
             }
         }
 
-        .navarBtn {
+        .navar--btn {
             background-color: #00c73c;
             color: #fff;
             border: none;
             font-weight: bold;
         }
 
-        .kakaoBtn {
+        .kakao--btn {
             background-color: #fee500;
             color: #1a1a1a;
             border: none;
             font-weight: bold;
         }
 
-        .googleBtn {
+        .google--btn {
             background-color: #fff;
             color: #1a1a1a;
             border: 1px, solid, var(--lightGrayColor);
             font-weight: bold;
         }
-
     }
-
-
-
-
 }

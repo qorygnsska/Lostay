@@ -7,10 +7,42 @@ import 'bootstrap/dist/css/bootstrap.css'
 import HotelFilter from '../../componets/Hotel/HotelFilter';
 import HotelModal from '../../componets/Hotel/HotelModal';
 import HotelGrid from '../../componets/Hotel/HotelGrid';
+import CompHeaderGeneral from '../../componets/Header/CompHeaderGeneral';
+import CompSearchBox from '../../componets/Search/CompSearchBox';
 
 
 
 export default function HotelList(props) {
+
+
+  ////////////////////////////////////////JIP1017
+  const place = '제주도';
+  const today = new Date(); //오늘 날짜
+  const check_in = new Date(today.setDate(today.getDate()+1));
+  const check_out = new Date(today.setDate(today.getDate()+2));
+  const member = 2;
+  ////////////////////////////////////////JIP1017
+
+  // searchBox(Modal)이 열렸니?
+  const [searchBoxShow, setSearchBoxShow] = useState(false);
+
+  // 어디서 모달 불렀니?
+  const functionFromWhere = (fromWhere) => {
+    console.log('where are you?: ' + fromWhere);
+  }
+
+  // Header에서 어떤 input 눌렀니?
+  const [focus, setFocus] = useState('input_place');
+
+  const functionSearchPicker = (fromMyChild) => {
+    console.log(fromMyChild + ' is picked at headerGeneral');
+    //선택 위치에 따라 focus 변경 -> 하위 모달에 focus 전달
+    setFocus(fromMyChild);
+    setSearchBoxShow(true);
+  }
+  ////////////////////////////////////////JIP1017
+
+
 
   // const [hotels, setHotels] = useState([]);
 
@@ -99,16 +131,37 @@ export default function HotelList(props) {
   // 필터 클릭 시
   const handleShow = () => setShow(true);
 
-  
+
 
   return (
     <Container className='hotel--list'>
 
-      <HotelFilter handleShow={handleShow}/>
+      {/* header w/ searchParams JIP1017 */}
+      <CompHeaderGeneral
+        where={functionFromWhere}
+        callParent={functionSearchPicker}
+        place={place}
+        check_in={check_in}
+        check_out={check_out}
+        member={member}
+      />
 
-      <HotelModal props={props} show={show} handleClose={handleClose}/>
-      
-      <HotelGrid hotels={hotels}/>
+      {/* searchBox(Modal) JIP1017 */}
+      <CompSearchBox
+        show={searchBoxShow}
+        onHide={() => { setSearchBoxShow(false) }}
+        place={place}
+        check_in={check_in}
+        check_out={check_out}
+        member={member}
+        focus={focus}
+      />
+
+      <HotelFilter handleShow={handleShow} />
+
+      <HotelModal props={props} show={show} handleClose={handleClose} />
+
+      <HotelGrid hotels={hotels} />
       {/* 뷰포트 안에 들어오면 더 많은 데이터를 로드 */}
       <div ref={ref} style={{ height: '1px' }} />
     </Container>

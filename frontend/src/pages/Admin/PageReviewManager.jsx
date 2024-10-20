@@ -19,8 +19,10 @@ export default function PageReviewManager() {
 
 
     function deleteReview() {   //하위요소 '삭제' 버튼에 상속해줄 함수
-        alert('정말 삭제?');
-
+        if(window.confirm('정말 삭제?')){
+            console.log('삭제 실행');
+            
+        }
     }
 
 
@@ -32,7 +34,7 @@ export default function PageReviewManager() {
                 <Container id='section_container'>
 
                     <div className='d-flex justify-content-between mb-3'>
-                        <p>하위컴포넌트(검색창)가 준 값: {text_fromChild}</p>
+                        <p className='mb-2'>하위컴포넌트(검색창)가 준 값: {text_fromChild}</p>
                         {/* 하위요소를 생성하면서, 상위요소를 부르면 실행할 함수명을 지정 */}
                         <CompAdminSearch where={'admin-review'} callParent={functionForMyChild} />
                     </div>

@@ -1,5 +1,5 @@
 .booking--history--container {
-
+    position: relative;
     margin-bottom: 100px;
 
     .booking--history--wrap {
@@ -11,7 +11,7 @@
         .dropdown--box {
             align-self: self-end;
 
-            .dropdown>button {
+            .dropdown > button {
                 background-color: #fff;
                 border-color: var(--lightGrayColor);
                 color: black;
@@ -37,7 +37,6 @@
             position: relative;
 
             .nav-tabs {
-
                 font-size: 20px;
 
                 .nav-link {
@@ -90,8 +89,6 @@
                 }
             }
 
-
-
             .home--btn {
                 border: 2px solid var(--logoColor);
                 color: var(--logoColor);
@@ -104,10 +101,7 @@
                 text-decoration: none;
                 font-size: 18px;
                 font-weight: bold;
-
             }
         }
     }
-
-
 }

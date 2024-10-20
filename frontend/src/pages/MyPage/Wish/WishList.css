@@ -1,5 +1,4 @@
 .wishlist--container {
-
     margin-bottom: 50px;
 
     .wishlist--card {
@@ -36,7 +35,5 @@
                 color: var(--lightGrayColor);
             }
         }
-
-
     }
 }

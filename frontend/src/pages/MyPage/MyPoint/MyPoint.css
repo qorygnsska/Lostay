@@ -1,0 +1,66 @@
+.mypoint--container {
+    .mypoint--wrap {
+        .totalpoint {
+            margin-left: 15px;
+            margin-right: 15px;
+            margin-top: 50px;
+            padding: 15px;
+            border: 1px solid var(--lightGrayColor);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+
+            .title {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+
+                .icon {
+                    width: 22px;
+                    height: 22px;
+                }
+            }
+
+            .point {
+                font-size: 19px;
+                font-weight: bold;
+                color: var(--pointColor);
+                margin-left: 28px;
+
+                .point--unit {
+                    font-size: 15px;
+                    color: black;
+                }
+            }
+        }
+
+        .notify {
+            padding: 10px;
+            border-top: 1px solid var(--lightGrayColor);
+            border-bottom: 1px solid var(--lightGrayColor);
+            background-color: var(--lightGrayColor4);
+            margin-top: 30px;
+        }
+
+        .month {
+            margin-top: 30px;
+            border-bottom: 1px solid var(--lightGrayColor);
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 15px;
+            font-size: 25px;
+            margin-bottom: 20px;
+
+            .icon {
+                cursor: pointer;
+            }
+
+            .disabled {
+                pointer-events: none;
+                color: var(--lightGrayColor);
+            }
+        }
+    }
+}

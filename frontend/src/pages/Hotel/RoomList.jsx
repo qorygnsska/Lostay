@@ -12,8 +12,6 @@ import KakaoMap from '../../componets/Map/KakaoMap';
 
 export default function RoomList() {
 
-    const Location = "제주특별자치도 서귀포시 색달동 3039-3";
-
     const HotelInfo = {
         id: 1,
         rank: "블랙·5성급·호텔",
@@ -45,6 +43,11 @@ export default function RoomList() {
             content: '최고의 숙소!!!!'
         }
     ];
+
+    const handleFindButtonClick = () => {
+        const encodedLocation = encodeURIComponent(HotelInfo.Location); // 주소를 URL 인코딩
+        window.location.href = `/HotelMap?location=${encodedLocation}`;
+    };
     
     return (
         <Container className='room--list'>
@@ -68,7 +71,7 @@ export default function RoomList() {
             <div className='HotelLocation'>
                 <div className='LoTitle'>위치/길찾기</div>
                 <span className='LoContent'>{HotelInfo.Location}</span>
-                <Button id='FindBtn'>길찾기<IoNavigate /></Button> 
+                <Button id='FindBtn' onClick={handleFindButtonClick}>길찾기<IoNavigate /></Button> 
                 
                 <KakaoMap Location={HotelInfo.Location} />
             </div>

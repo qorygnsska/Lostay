@@ -12,7 +12,7 @@ export default function KakaoMap({Location}) {
                 if (status === kakao.maps.services.Status.OK) {
                     const latLng = new kakao.maps.LatLng(result[0].y, result[0].x);
                     resolve(latLng);
-                    console.log(latLng);
+                    
                 } else {
                     reject(new Error('주소를 찾을 수 없습니다.'));
                 }

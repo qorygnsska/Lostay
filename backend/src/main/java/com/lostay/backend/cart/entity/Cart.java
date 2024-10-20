@@ -19,6 +19,7 @@ public class Cart {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "cart_no")
 	private Long cartNo;		// 찜넘버
 	 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -3,6 +3,7 @@ package com.lostay.backend.review.entity;
 import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,6 +29,7 @@ public class Review {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="review_no")
 	private Long reviewNo;						// 리뷰넘버
 	
 	@JoinColumn(name = "roomNo", nullable = false)
@@ -38,9 +40,13 @@ public class Review {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private User user;						// 회원넘버 외래키
 	
+	@Column(name="review_rating")
 	private double reviewRating;					// 리뷰별점
+	@Column(name="review_content")
 	private String reviewContent;				// 리뷰내용
 	@Lob
+	@Column(name="review_img")
 	private String reviewImg;					// 리뷰이미지
+	@Column(name="review_create_at")
 	private LocalDateTime reviewCreateAt;		// 작성날짜
 }

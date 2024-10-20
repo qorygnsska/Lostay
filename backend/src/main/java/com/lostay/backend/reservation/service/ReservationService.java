@@ -48,6 +48,8 @@ public class ReservationService {
 				dto.setCheckIn(pay.getReservations().getCheckIn());
 				dto.setCheckOut(pay.getReservations().getCheckOut());
 				dto.setRoomNo(pay.getRoom().getRoomNo());
+				dto.setRoomThumbnail(pay.getRoom().getRoomThumbnail());
+				dto.setHotelThumbnail(pay.getRoom().getHotel().getHotelThumbnail());
 				dto.setRoomCheckinTime(pay.getRoom().getRoomCheckinTime());
 				dto.setRoomCheckoutTime(pay.getRoom().getRoomCheckoutTime());
 				
@@ -96,6 +98,8 @@ public class ReservationService {
 					dto.setCheckIn(pay.getReservations().getCheckIn());
 					dto.setCheckOut(pay.getReservations().getCheckOut());
 					dto.setRoomNo(pay.getRoom().getRoomNo());
+					dto.setRoomThumbnail(pay.getRoom().getRoomThumbnail());
+					dto.setHotelThumbnail(pay.getRoom().getHotel().getHotelThumbnail());
 					dto.setRoomCheckinTime(pay.getRoom().getRoomCheckinTime());
 					dto.setRoomCheckoutTime(pay.getRoom().getRoomCheckoutTime());
 					
@@ -140,6 +144,8 @@ public class ReservationService {
 				dto.setCheckIn(pay.getReservations().getCheckIn());
 				dto.setCheckOut(pay.getReservations().getCheckOut());
 				dto.setRoomNo(pay.getRoom().getRoomNo());
+				dto.setRoomThumbnail(pay.getRoom().getRoomThumbnail());
+				dto.setHotelThumbnail(pay.getRoom().getHotel().getHotelThumbnail());
 				dto.setRoomCheckinTime(pay.getRoom().getRoomCheckinTime());
 				dto.setRoomCheckoutTime(pay.getRoom().getRoomCheckoutTime());
 				

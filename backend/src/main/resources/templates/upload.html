@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<h2>File Upload</h2>
+<form method="post" 
+		  enctype="multipart/form-data" 
+		  action="/UploadReviewImg">
+		<input type="file" name="files" 
+			   multiple="multiple"/>
+			   
+		<input type="text"	name="text"/>   
+		
+			   
+	    <input type="submit" value="전송" />
+				
+	</form>
+
+
+</body>
+</html>
