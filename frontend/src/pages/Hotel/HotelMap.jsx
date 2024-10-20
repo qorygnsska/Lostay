@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Container } from 'react-bootstrap'
+import { Button, Container, FormControl, InputGroup, ListGroup, Modal } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom';
 
 const {kakao} = window;
@@ -25,6 +25,65 @@ export default function HotelMap() {
     const [fare, setFare] = useState({toll: 0, taxi: 0}); // 통행료
 
     const [isVisible, setIsVisible] = useState(false); // div 표시
+
+    // 모달
+    const [isStartModalOpen, setIsStartModalOpen] = useState(false);
+    const [isEndModalOpen, setIsEndModalOpen] = useState(false);
+    const [searchResults, setSearchResults] = useState([]); // 검색 결과 저장
+
+    // 모달 컴포넌트 생성 함수
+    const renderModal = (isOpen, closeModal, inputRef) => (
+        <Modal show={isOpen} onHide={closeModal}>
+            <Modal.Header closeButton>
+                <Modal.Title>주소 검색</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <InputGroup className="mb-3">
+                    <FormControl
+                        placeholder="키워드를 입력하세요."
+                        onChange={(e) => searchKeyword(e.target.value)}
+                    />
+                </InputGroup>
+                <ListGroup>
+                    {searchResults.map((result) => (
+                        <ListGroup.Item
+                            key={result.id}
+                            onClick={() => handleSelectAddress(result.address_name, inputRef, closeModal)}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            {result.place_name} - {result.address_name}
+                        </ListGroup.Item>
+                    ))}
+                </ListGroup>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={closeModal}>
+                    닫기
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    );
+
+    // 검색 API 호출 함수
+    const searchKeyword = async (keyword) => {
+        if (!keyword) return;
+
+        const places = new kakao.maps.services.Places(); // Kakao Places 인스턴스 생성
+        places.keywordSearch(keyword, (data, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+                setSearchResults(data); // 검색 결과 저장
+            } else {
+                setSearchResults([]); // 검색 실패 시 빈 배열로 초기화
+            }
+        });
+    };
+
+    // 주소 선택 시 input에 값 넣고 모달 닫기 및 폼 전송
+    const handleSelectAddress = async (address, inputRef, closeModal) => {
+        inputRef.current.value = address; 
+        closeModal(); 
+        await handleSubmit(new Event('submit')); 
+    };
 
     // 폼에서 주소 받아오기
     const startRef = useRef();
@@ -111,13 +170,12 @@ export default function HotelMap() {
 
 
     // 마커 찍기
-    const addMarker = (coords, title) => {
+    const addMarker = (coords) => {
         if (!map) return; // 지도가 없으면 종료
 
         const markerPosition = new kakao.maps.LatLng(coords.latitude, coords.longitude);
         const marker = new kakao.maps.Marker({
             position: markerPosition,
-            title: title,
         });
         marker.setMap(map); // 마커를 지도에 추가
         return marker;
@@ -197,8 +255,6 @@ export default function HotelMap() {
         const startAddress = startRef.current.value;
         const endAddress = endRef.current.value;
 
-        const div = document.getElementsByClassName('FindInfo');
-
         try {
             // 출발지와 도착지의 위도, 경도 구하기
             const startCoords = await getLatLngFromAddress2(startAddress);
@@ -215,8 +271,8 @@ export default function HotelMap() {
             removeMarkers();
 
             // 마커 찍기
-            const newStartMarker = addMarker(startCoords, '출발지');
-            const newEndMarker = addMarker(endCoords, '목적지');
+            const newStartMarker = addMarker(startCoords);
+            const newEndMarker = addMarker(endCoords);
 
             setStartMarker(newStartMarker);
             setEndMarker(newEndMarker);
@@ -268,10 +324,12 @@ export default function HotelMap() {
 
                     <form onSubmit={handleSubmit}>
                         <div>
-                            <input type='text' name='start' id='start' placeholder='출발지를 입력하세요.' ref={startRef} required/>
+                            <input type='text' name='start' id='start' placeholder='출발지를 입력하세요.' ref={startRef} onClick={() => setIsStartModalOpen(true)} readOnly required/>
+                            {renderModal(isStartModalOpen, () => setIsStartModalOpen(false), startRef)}
                         </div>
                         <div>
-                            <input type='text' name='end' id='end' placeholder='도착지를 입력하세요.' ref={endRef} required/>
+                            <input type='text' name='end' id='end' placeholder='도착지를 입력하세요.' ref={endRef} onClick={() => setIsEndModalOpen(true)} readOnly required/>
+                            {renderModal(isEndModalOpen, () => setIsEndModalOpen(false), endRef)}
                         </div>
                       
                         <input type='submit' value="길찾기" id='searchBtn' hidden/>
