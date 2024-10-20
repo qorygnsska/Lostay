@@ -1,0 +1,283 @@
+.re--container {
+    margin-bottom: 55px;
+
+    .re--wrap {
+        margin-top: 20px;
+        background-color: var(--lightGrayColor4);
+
+        .hotel--info {
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #fff;
+
+            .hotel--title {
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            img {
+                width: 100%;
+                border-radius: 10px;
+                height: 250px;
+            }
+
+            .hotel--info--box {
+                display: flex;
+                gap: 10px;
+                font-size: 14px;
+
+                span:nth-child(1) {
+                    color: var(--lightGrayColor);
+                    flex: 1;
+                }
+
+                span:nth-child(2) {
+                    flex: 8;
+                }
+            }
+        }
+
+        .profile--info {
+            margin-top: 20px;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #fff;
+
+            .profile--box {
+                display: flex;
+                gap: 10px;
+                font-size: 14px;
+
+                span:nth-child(1) {
+                    color: var(--lightGrayColor);
+                    flex: 1;
+                }
+
+                span:nth-child(2) {
+                    flex: 8;
+                }
+            }
+        }
+
+        .payType--wrap {
+            margin-top: 20px;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #fff;
+
+            .payType--title--box {
+                display: flex;
+                justify-content: space-between;
+                position: relative;
+                align-items: center;
+
+                .pay--sale--icon {
+                    width: 22px;
+                    height: 22px;
+                    cursor: pointer;
+                    color: var(--lightGrayColor3);
+                }
+
+                .sale--info {
+                    display: none;
+                    position: absolute;
+                    z-index: 1;
+                    right: 5%;
+                    width: 100px;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    font-size: 12px;
+                    background-color: var(--agreeBgColor);
+                    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+                    top: -30%;
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        left: 100%;
+                        top: 10px;
+                        border-width: 10px;
+                        border-style: solid;
+                        border-color: transparent transparent transparent var(--agreeBgColor);
+                        background-color: transparent;
+                    }
+                }
+
+                &:hover > .sale--info {
+                    display: block;
+                }
+            }
+
+            .payType--box {
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* 2열 설정 */
+                gap: 15px 10px;
+
+                .payType {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 8px 11px;
+                    border: 1px solid var(--lightGrayColor);
+                    position: relative;
+                    cursor: pointer;
+                    border-radius: 10px;
+                    height: 50px;
+                }
+
+                .payType.selected {
+                    background-color: var(--selectedBackgbColor);
+                    border-color: var(--regularBlueColor);
+                }
+
+                /* 첫 번째 요소는 두 열을 차지 */
+                .payType:first-of-type {
+                    grid-column: 1 / span 2;
+                }
+            }
+        }
+
+        .pay--info {
+            margin-top: 20px;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #fff;
+
+            .pay--box {
+                display: flex;
+                gap: 10px;
+                font-size: 14px;
+
+                .pay--discount--box {
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+                    .sale--info {
+                        font-size: 12px;
+                        color: var(--lightGrayColor);
+                    }
+                }
+
+                .user--point--box {
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 10px;
+
+                    #useAllPoints {
+                        display: none;
+                    }
+
+                    label {
+                        cursor: pointer;
+
+                        .icon {
+                            width: 18px;
+                            height: 18px;
+                            color: var(--lightGrayColor);
+                        }
+
+                        .icon.checked {
+                            color: var(--regularBlueColor);
+                        }
+                    }
+                }
+                .point--box {
+                    flex: 4;
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                .use--point--box {
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+
+                    input {
+                        width: 65px;
+                        border: 1px solid var(--lightGrayColor);
+                        border-radius: 5px;
+                        padding-left: 5px;
+                        outline: none;
+                    }
+                }
+            }
+
+            .pay--box > span:nth-child(1) {
+                color: var(--lightGrayColor);
+                flex: 1;
+            }
+
+            .pay--box > span:nth-child(2) {
+                flex: 8;
+                text-align: end;
+            }
+
+            .dash--line {
+                border: none;
+                border-bottom: 2px dashed var(--lightGrayColor);
+                margin: 5px 0;
+            }
+
+            .totalpay--box {
+                display: flex;
+                gap: 10px;
+                font-size: 14px;
+
+                span:nth-child(1) {
+                    flex: 2;
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+
+                span:nth-child(2) {
+                    flex: 8;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: var(--pointColor);
+                    text-align: end;
+                }
+            }
+        }
+
+        .agree--wrap {
+            margin-top: 20px;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #fff;
+
+            button {
+                margin-top: 20px;
+                background-color: var(--logoColor);
+                color: #fff;
+                font-size: 17px;
+                font-weight: bold;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                border-radius: 10px;
+                border: none;
+                margin-bottom: 50px;
+            }
+
+            button:disabled {
+                background-color: var(--lightGrayColor);
+            }
+        }
+
+        .section--title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    }
+}

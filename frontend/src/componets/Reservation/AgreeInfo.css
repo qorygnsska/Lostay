@@ -1,0 +1,33 @@
+.agreeinfo--container {
+    background-color: var(--agreeBgColor);
+    border-radius: 5px;
+    padding: 12px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .agreeinfo--box {
+        display: flex;
+        gap: 10px;
+        align-items: self-start;
+        font-size: 13px;
+        color: var(--agreeInfoColor);
+        font-weight: bold;
+
+        .icon {
+            color: var(--agreeInfoColor);
+            width: 13px;
+            height: 13px;
+            margin-top: 3px;
+        }
+
+        .agreeinfo {
+            display: flex;
+            flex-direction: column;
+            .info--content {
+                color: black;
+                font-weight: normal;
+            }
+        }
+    }
+}
