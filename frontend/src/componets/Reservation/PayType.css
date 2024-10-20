@@ -22,7 +22,7 @@
     &::after {
         content: "";
         position: absolute;
-        bottom: -53%; /* 상단에 위치 */
+        bottom: -40%; /* 상단에 위치 */
         left: 50%;
         margin-left: -5px; /* 가운데 정렬 */
         border-width: 5px;
