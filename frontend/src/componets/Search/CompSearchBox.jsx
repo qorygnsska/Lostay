@@ -147,7 +147,7 @@ export default function CompSearchBox(props) {
 
 
     //'검색' 버튼 클릭!
-    const handleSearch = () => {
+    const searchHandler = () => {
         console.log('search: ' + place + '/' + check_in + '-' + check_out + '/' + member);
         //쿼리 날리고 페이지 이동 to /hotelList
 
@@ -181,7 +181,7 @@ export default function CompSearchBox(props) {
                             />
                         </InputGroup>
 
-                        <div id="container_period_input" className='d-flex align-items-center mb-3'>
+                        <div id="container_period_input" className="d-flex align-items-center mb-3">
                             <InputGroup>
                                 <InputGroup.Text ><MdOutlineCalendarMonth size="24" /></InputGroup.Text>
                                 <Form.Control
@@ -213,6 +213,7 @@ export default function CompSearchBox(props) {
 
                         <div id="container_period_calendar">
                             <Calendar id="calendar_check_in" className="calendar mb-3"
+                                inline
                                 showButtonBar
                                 hidden={!checkInPicker ? true : false}
                                 //onSelect={() => setCheckInPicker(!checkInPicker)}
@@ -223,9 +224,9 @@ export default function CompSearchBox(props) {
                                 onChange={(e) => checkInHandler(e.value)}
                                 onTodayButtonClick={() => checkInHandler(minDate_check_in)}
                                 onClearButtonClick={() => checkInHandler(minDate_check_in)}
-                                inline
                             />
                             <Calendar id="calendar_check_out" className="calendar mb-3"
+                                inline
                                 showButtonBar
                                 hidden={!checkOutPicker ? true : false}
                                 //onSelect={() => setCheckOutPicker(!checkOutPicker)}
@@ -235,7 +236,6 @@ export default function CompSearchBox(props) {
                                 dateTemplate={dateTemplateHandler}
                                 onChange={(e) => setCheck_out(e.value)}
                                 onClearButtonClick={() => setCheck_out(minDate_check_out)}
-                                inline
                             />
                         </div>
 
@@ -264,7 +264,7 @@ export default function CompSearchBox(props) {
                     </Form>
 
                     <Container id="container_btn_search" className="mt-3">
-                        <Button id="btn_search" variant="primary" onClick={handleSearch}>검색</Button>
+                        <Button id="btn_search" variant="primary" onClick={searchHandler}>검색</Button>
                     </Container>
 
                 </Modal.Body>

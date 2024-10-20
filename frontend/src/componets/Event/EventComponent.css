@@ -13,6 +13,7 @@
 }
 
 .comp--event--inserter--container {
+
     /* EventInserter 컴포넌트(EventManager) */
     #title_modal {
         color: green;
@@ -21,10 +22,44 @@
     .form-label {
         color: green;
     }
-   
+
+
+
+
+    #container_period_picker {
+
+        #calendar {
+            width: 90%;
+
+            text-align: center;
+
+
+            th:first-child,
+            td:first-child {
+                /* 첫째 th와 td : 일요일 */
+                color: red;
+            }
+
+            th:last-child,
+            td:last-child {
+                /* 막내 th와 td : 토요일 */
+                color: blue;
+            }
+
+
+            .p-datepicker-title {
+                display: flex;
+                gap: 12px;
+            }
+
+        }
+
+    }
 
 }
+
 .comp--event--updater--container {
+
     /* EventUpdater 컴포넌트(EventManager) */
     #title_modal {
         color: orange;
