@@ -4,7 +4,6 @@ import { GoDash, GoPeople } from 'react-icons/go';
 import CompMemberPicker from './CompMemberPicker';
 import { MdOutlineCalendarMonth, MdOutlinePlace } from 'react-icons/md';
 import { Calendar } from 'primereact/calendar';
-import "primereact/resources/themes/lara-light-cyan/theme.css";
 
 
 export default function CompSearchBox(props) {
