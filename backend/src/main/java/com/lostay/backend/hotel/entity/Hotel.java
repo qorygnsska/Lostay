@@ -36,6 +36,7 @@ public class Hotel {
 	private String hotelRating;		// 호텔등급
 	@Column(name = "hotel_adress")
 	private String hotelAdress;		// 호텔주소
+	@Lob
 	@Column(name = "hotel_tourist_attraction")
 	private String hotelTouristAttraction;	// 호텔관광명소
 	@Lob
