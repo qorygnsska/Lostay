@@ -3,3 +3,12 @@
 # 프로퍼티스
 **/application.properties
 
+#이미지 폴더
+**/jejudo
+**/seoul
+**/gwangju
+**/busan
+**/daejeon
+**/daegu
+**/ulsan
+**/incheon

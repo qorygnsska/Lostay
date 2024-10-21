@@ -1,8 +1,8 @@
-.metropolitan--hotel--carousle--container {
+.location--hotel--carousle--container {
 
     position: relative;
 
-    .metroplitan--name--list {
+    .location--name--list {
         display: flex;
         gap: 5px;
         padding-left: 4px;
@@ -67,6 +67,19 @@
                         .hotel--info {
                             display: flex;
                             flex-direction: column;
+                            gap: 2px;
+
+
+                            .hotel--rating {
+                                font-size: 10px;
+                            }
+
+                            .hotel--name {
+                                font-size: 14px;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                            }
 
 
                             .review--wrap {
@@ -74,8 +87,31 @@
                                 align-items: center;
                                 gap: 5px;
 
-                                .star--Icon {
-                                    color: rgb(248, 183, 43);
+                                .review--icon--box {
+                                    display: flex;
+                                    align-items: center;
+                                    padding-left: 8px;
+                                    width: 40px;
+                                    height: 20px;
+                                    border-radius: 7px;
+                                    background-color: var(--starColor);
+                                    margin-right: 4px;
+
+                                    .star--Icon {
+                                        width: 11px;
+                                        height: 11px;
+                                        margin-right: 5px;
+                                    }
+
+                                    .review--avg {
+                                        padding-top: 2px;
+                                    }
+
+                                }
+
+                                .hotel--review--count {
+                                    color: var(--lightGrayColor);
+                                    padding-top: 2px;
                                 }
                             }
                         }
@@ -109,16 +145,17 @@
                                 span {
                                     color: var(--lightGrayColor2);
                                 }
-                            }
 
+                                .hotel--room--discount {
+                                    color: var(--saleIconColor);
+                                    font-weight: bold;
+                                    font-size: 12px;
+                                }
 
-                            .hotel--discount--price--wrap>span:nth-child(1) {
-                                font-size: 12px;
-                            }
-
-                            .hotel--discount--price--wrap>span:nth-child(2) {
-                                text-decoration: line-through;
-
+                                .hotel--room--price {
+                                    font-size: 13px;
+                                    text-decoration: line-through;
+                                }
                             }
                         }
                     }
@@ -127,42 +164,49 @@
         }
     }
 
-    .moveBtn {
+    .move--btn {
         position: absolute;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
         top: 50%;
-        opacity: 0;
+
+        button {
+            background: #fff;
+            border: 1px solid black;
+            cursor: pointer;
+            border-radius: 100%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+    }
+
+    .left--move--btn {
+
+        transform: translateX(-10px);
 
         .arrow {
             width: 15px;
             height: 15px;
+            padding-right: 2px;
         }
     }
 
-    .moveBtn button {
-        background: #fff;
-        border: 1px solid black;
-        cursor: pointer;
-        border-radius: 100%;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    .right--move--btn {
+        transform: translateX(10px);
+        right: 0;
 
-    .moveBtn button:nth-child(1) {
-        transform: translateX(-12px);
-    }
-
-    .moveBtn button:nth-child(2) {
-        transform: translateX(12px);
+        .arrow {
+            width: 15px;
+            height: 15px;
+            padding-left: 2px;
+        }
     }
 }
 
-.metropolitan--hotel--carousle--container:hover {
+.location--hotel--carousle--container:hover {
     .moveBtn {
         opacity: 1;
     }
@@ -171,7 +215,7 @@
 
 @media screen and (min-width: 767px) {
 
-    .metropolitan--hotel--carousle--container {
+    .location--hotel--carousle--container {
         .slick-slide {
             .hotel--list--wrap {
 

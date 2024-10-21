@@ -12,7 +12,8 @@
             height: 150px;
         }
 
-        a {
+
+        .link {
             color: black;
             text-decoration: none;
 
@@ -26,15 +27,47 @@
                 .hotel--info {
                     display: flex;
                     flex-direction: column;
+                    gap: 5px;
+
+                    .hotel--name {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
 
                     .review--wrap {
                         display: flex;
                         align-items: center;
                         gap: 5px;
 
-                        .star--Icon {
-                            color: rgb(248, 183, 43);
+
+                        .review--icon--box {
+                            display: flex;
+                            align-items: center;
+                            padding-left: 8px;
+                            width: 43px;
+                            height: 22px;
+                            border-radius: 7px;
+                            background-color: var(--starColor);
+                            margin-right: 4px;
+
+                            .star--Icon {
+                                width: 12px;
+                                height: 12px;
+                                margin-right: 5px;
+                            }
+
+                            .review--avg {
+                                padding-top: 2px;
+                            }
+
                         }
+
+                        .hotel--review--count {
+                            color: var(--lightGrayColor);
+                            padding-top: 2px;
+                        }
+
                     }
                 }
 
@@ -51,10 +84,6 @@
                     font-size: 13px;
                 }
 
-
-
-
-
                 .hotel--price--wrap {
                     display: flex;
                     justify-content: end;
@@ -69,19 +98,18 @@
                         span {
                             color: var(--lightGrayColor2);
                         }
+
+                        .hotel--room--discount {
+                            color: var(--saleIconColor);
+                            font-weight: bold;
+                            font-size: 13px;
+                        }
+
+                        .hotel--room--price {
+                            font-size: 14px;
+                            text-decoration: line-through;
+                        }
                     }
-
-
-                    .hotel--discount--price--wrap>span:nth-child(1) {
-                        font-size: 14px;
-                    }
-
-                    .hotel--discount--price--wrap>span:nth-child(2) {
-                        text-decoration: line-through;
-
-                    }
-
-
                 }
             }
         }
@@ -89,38 +117,44 @@
 
 
 
-    .moveBtn {
+    .move--btn {
         position: absolute;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
         top: 20%;
+
+        button {
+            background: #fff;
+            border: 1px solid black;
+            cursor: pointer;
+            border-radius: 100%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+    }
+
+    .left--move--btn {
+
+        transform: translateX(-10px);
 
         .arrow {
             width: 15px;
             height: 15px;
+            padding-right: 2px;
         }
     }
 
-    .moveBtn button {
-        background: #fff;
-        border: 1px solid black;
-        cursor: pointer;
-        border-radius: 100%;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .right--move--btn {
+        transform: translateX(10px);
+        right: 0;
+
+        .arrow {
+            width: 15px;
+            height: 15px;
+            padding-left: 2px;
+        }
     }
-
-    .moveBtn button:nth-child(1) {
-        transform: translateX(-12px);
-    }
-
-    .moveBtn button:nth-child(2) {
-        transform: translateX(12px);
-    }
-
-
 }

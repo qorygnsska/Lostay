@@ -51,10 +51,10 @@ public class MainController {
 
 	}
 	//여행지별 숙소
-    @GetMapping("/triphotlesMain/{hotelAdress}")
-    public ResponseEntity<?>triphotlesMain(@PathVariable String hotelAdress){
+    @PostMapping("/triphotlesMain")
+    public ResponseEntity<?>triphotlesMain(){
 		log.info("triphotlesMain실행");
-		return new ResponseEntity<>(mainService.findByHotelAddressContaining(hotelAdress),HttpStatus.OK);
+		return new ResponseEntity<>(mainService.findByHotelAddressContaining(),HttpStatus.OK);
 
 	}
     
