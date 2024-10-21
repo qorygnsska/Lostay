@@ -39,5 +39,7 @@ public class Point {
 	private int pointPlusMinus;		// 포인트증감
 	@Column(name="point_Title")
 	private String pointTitle;// 증감 포인트 제목
+	private int status;      // 적립인지 사용인지 판단하는 컬럼 
+							//  0이면 적립, 1이면 사용
 	
 }
