@@ -43,7 +43,8 @@ public class PaymentDTO {
 	private String reviewAble;    // 리뷰 가능한지 아닌지
 	private String roomThumbnail;	// 객실 썸네일 이미지
 	private String hotelThumbnail;  // 호텔 썸네일 이미지
-	
+	private int status;      // 적립인지 사용인지 판단하는 컬럼 
+							//  0이면 적립, 1이면 사용
 	
 
 }

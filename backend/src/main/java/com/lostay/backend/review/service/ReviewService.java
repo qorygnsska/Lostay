@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.lostay.backend.payment.dto.PaymentDTO;
 import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.payment.repository.PaymentRepository;
+import com.lostay.backend.point.entity.Point;
+import com.lostay.backend.point.repository.PointRepository;
 import com.lostay.backend.review.dto.ReviewDTO;
 import com.lostay.backend.review.entity.Review;
 import com.lostay.backend.review.repository.ReviewRepository;
@@ -33,6 +35,9 @@ public class ReviewService {
 	
 	@Autowired
 	private RoomReopository roomRepo;
+	
+	@Autowired
+	private PointRepository poRepo;
 	
 //	// 리뷰 작성하기 버튼 클릭
 //	public void saveMyReview(double reviewRating, String reviewContent, ArrayList<String> fileReadName, long payNo) {
@@ -63,7 +68,7 @@ public class ReviewService {
 		return dto;
 	}
 
-	// 작성한 리뷰 저장
+	// 작성한 리뷰 저장, 리뷰 작성 시 포인트 적립
 	public void saveMyReview(double reviewRating, String reviewContent, ArrayList<String> fileReadName, long payNo) {
 				
 		Optional<Payment> newPayment = payRepo.findById(payNo);
@@ -100,6 +105,24 @@ public class ReviewService {
 		review.setUser(user);
 		
 		revRepo.save(review);
+		
+		// 리뷰 작성 시 포인트 적립
+		Point newPoint = new Point();
+		newPoint.setUser(user);
+		newPoint.setPointDay(now);
+		newPoint.setPointPlusMinus(500);
+		newPoint.setPointTitle("리뷰 작성");
+		//  0이면 적립, 1이면 사용
+		newPoint.setStatus(0);
+		
+		poRepo.save(newPoint);
+		
+		// 유저 전체의 포인트 계산후 업데이트
+		int userPoint = user.getUserPoint();
+		int totalPoint = userPoint + 500;
+		user.setUserPoint(totalPoint);
+		userRepo.save(user);
+		
 		
 	}
 

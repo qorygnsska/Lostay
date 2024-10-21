@@ -1,5 +1,9 @@
 import React from 'react'
 
+import { Link } from 'react-router-dom';
+import { IoPersonOutline } from "react-icons/io5";
+import { FaRegClock } from "react-icons/fa";
+
 export default function (rooms) {
     return (
         <div className='room--grid--container'>

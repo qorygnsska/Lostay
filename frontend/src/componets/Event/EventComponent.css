@@ -1,6 +1,14 @@
 .comp--event--unit--container {
     /* EventUnit 컴포넌트 */
 
+    min-width: 366px;
+    min-height: 183px;
+
+    border-color: black;
+    border-style: dashed;
+    border-width: 1px;
+
+
     p {
         color: green;
 
@@ -10,25 +18,10 @@
 .comp--event--manager--modal {
     /* EventManager 공통 */
 
-}
-
-.comp--event--inserter--container {
-
-    /* EventInserter 컴포넌트(EventManager) */
-    #title_modal {
-        color: green;
-    }
-
-    .form-label {
-        color: green;
-    }
-
-
-
-
     #container_period_picker {
 
-        #calendar {
+        .calendar {
+            max-width: 466px;
             width: 90%;
 
             text-align: center;
@@ -54,6 +47,18 @@
 
         }
 
+    }
+}
+
+.comp--event--inserter--container {
+
+    /* EventInserter 컴포넌트(EventManager) */
+    #title_modal {
+        color: green;
+    }
+
+    .form-label {
+        color: green;
     }
 
 }
