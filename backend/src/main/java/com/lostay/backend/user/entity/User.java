@@ -11,6 +11,7 @@ import javax.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lostay.backend.cart.entity.Cart;
 import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.point.entity.Point;

@@ -1,5 +1,4 @@
 .payment--container {
-
     .payment--wrap {
         background-color: var(--lightGrayColor4);
         height: 120vh;
@@ -60,7 +59,6 @@
             background-color: #fff;
             padding: 20px 15px;
 
-
             .info--title {
                 font-size: 19px;
                 font-weight: bold;
@@ -75,7 +73,6 @@
                     width: 70px;
                     color: var(--lightGrayColor3);
                 }
-
             }
         }
 
@@ -104,7 +101,6 @@
                     justify-content: space-between;
 
                     .payment--info--title {
-
                         color: var(--lightGrayColor3);
                     }
 
@@ -116,7 +112,6 @@
         }
 
         .booking--cancle--info {
-
             position: absolute;
             margin-top: 760px;
             display: flex;
@@ -125,7 +120,6 @@
             width: 100%;
             background-color: #fff;
             padding: 20px 15px;
-
 
             .info--title {
                 font-size: 19px;
@@ -142,7 +136,6 @@
                     justify-content: space-between;
 
                     .payment--info--title {
-
                         color: var(--lightGrayColor3);
                     }
 
@@ -153,5 +146,4 @@
             }
         }
     }
-
 }
