@@ -12,6 +12,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lostay.backend.cart.entity.Cart;
 import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.point.entity.Point;
@@ -76,15 +77,18 @@ public class User {
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Cart 엔티티와의 관계 설정
     @ToString.Exclude
+    @JsonManagedReference // User에서 Cart 방향
     private Set<Cart> carts; // 카트 목록
     
 	
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
 	@ToString.Exclude
+	@JsonManagedReference // User에서 Review 방향
 	private Set<Review> reviews; // 리뷰 목록
 	
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
 	@ToString.Exclude
+	@JsonManagedReference // User에서 Payment 방향
 	private Set<Payment> payments; // 결제 목록
 	
 	@OneToOne(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
@@ -93,6 +97,7 @@ public class User {
 	
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
 	@ToString.Exclude
+	@JsonManagedReference // User에서 Point 방향
 	private Set<Point> points; // 포인트 목록
 }
 

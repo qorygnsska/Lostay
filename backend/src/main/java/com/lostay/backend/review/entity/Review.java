@@ -14,6 +14,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.lostay.backend.room.entity.Room;
 import com.lostay.backend.user.entity.User;
 
@@ -34,10 +35,12 @@ public class Review {
 	
 	@JoinColumn(name = "roomNo", nullable = false)
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonBackReference // Review에서 Room 방향
 	private Room room;						// 객실넘버 외래키
 	
 	@JoinColumn(name = "userNo", nullable = false)
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonBackReference // Review에서 User 방향
 	private User user;						// 회원넘버 외래키
 	
 	@Column(name="review_rating")

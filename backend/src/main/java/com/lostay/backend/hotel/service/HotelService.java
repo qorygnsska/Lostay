@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lostay.backend.hotel.dto.HotelDTO;
 
@@ -68,11 +69,11 @@ public class HotelService {
             "LEFT JOIN " +
                 "    Review re ON r.roomNo = re.room.roomNo " +
             "WHERE " +
-                "    h.hotelAdress LIKE :hotelsearch " +
+                "    (h.hotelAdress LIKE :hotelsearch " +
                 "    OR h.hotelName LIKE :hotelsearch " +
-                "    OR h.hotelIntroduction LIKE :hotelsearch " +
+                "    OR h.hotelIntroduction LIKE :hotelsearch) " +
                 "    AND r.roomPrice BETWEEN :minRoomPrice AND :maxRoomPrice " +
-                "    AND r.roomPeopleMax >=:roomPeopleInfo " +
+                "    AND r.roomPeopleMax >= :roomPeopleInfo " +
                 "    AND h.hotelRating IN (:hotelRating) " +
                 "    AND r.roomNo NOT IN ( " +
                 "        SELECT p.room.roomNo " +
@@ -83,12 +84,12 @@ public class HotelService {
                 "    ) " +
             "GROUP BY " +
                 "    h.hotelNo, h.hotelName, h.hotelRating, h.hotelThumbnail " +
-            "HAVING "
+            "HAVING COUNT(r.roomNo) > 0 " // 기본 조건 추가
         );
 
         // 어메니티 조건 추가
         if (hotelAmenities != null && hotelAmenities.length > 0) {
-            query.append(" (");
+            query.append(" AND (");
             for (int i = 0; i < hotelAmenities.length; i++) {
                 query.append(" FIND_IN_SET(:amenity" + i + ", h.hotelAmenities) > 0");
                 if (i < hotelAmenities.length - 1) {
@@ -99,27 +100,24 @@ public class HotelService {
         }
 
         // soldOut 조건 추가
-        if (soldOut == 1) {
-            query.append(" AND COUNT(r.roomNo) >=0 "); // 방이 하나 이상 있을 때 전부 보여주기
-        } else if (soldOut == 0) {
-            query.append(" AND COUNT(r.roomNo) > 0 "); // 매진된 숙소제외하고 리스트 보여주기
+        if (soldOut == 0) {
+            query.append(" AND COUNT(r.roomNo) > 0 "); // 매진된 숙소 제외
         }
 
-      //roomDiscountState 조건 추가
-       
+        // roomDiscountState 조건 추가
         if (roomDiscountState == 1) {
             query.append(" AND MAX(r.roomDiscount) > 1 "); // 할인율이 1보다 큰 경우
         } else if (roomDiscountState == 0) {
             query.append(" AND MAX(r.roomDiscount) >= 0 "); // 할인율이 0 이상인 경우
         }
-     
+
         query.append("ORDER BY " + orderByColumn + " " + orderDirection); // 정렬 방향 추가
 
         TypedQuery<Object[]> typedQuery = entityManager.createQuery(query.toString(), Object[].class);
         typedQuery.setParameter("hotelsearch", "%" + hotelsearch + "%");
         typedQuery.setParameter("minRoomPrice", minRoomPrice);
         typedQuery.setParameter("maxRoomPrice", maxRoomPrice);
-        typedQuery.setParameter("roomPeopleInfo",roomPeopleInfo);
+        typedQuery.setParameter("roomPeopleInfo", roomPeopleInfo);
         typedQuery.setParameter("checkIn", checkInDateTime);
         typedQuery.setParameter("checkOut", checkOutDateTime);
 

@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lostay.backend.cart.entity.Cart;
 import com.lostay.backend.room.entity.Room;
@@ -44,11 +45,12 @@ public class Hotel {
 
 	@ManyToMany(mappedBy = "hotels", fetch = FetchType.LAZY) // Cart 엔티티와의 관계 설정
 	@ToString.Exclude
+	@JsonBackReference // Cart에서 Hotel 방향
     private Set<Cart> carts;           // 카트 목록
 	
-	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY) // Room 엔티티와의 관계 설정
+	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY,cascade = CascadeType.ALL) // Room 엔티티와의 관계 설정
 	@ToString.Exclude
-	@JsonIgnore //직열화 문제 해결 (무한루프방지)
+	@JsonIgnore // Room에서 Hotel 방향
 	private Set<Room> rooms; // 룸 목록
 	
 }
