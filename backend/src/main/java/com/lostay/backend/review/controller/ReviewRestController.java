@@ -85,4 +85,22 @@ public class ReviewRestController {
 
        revSer.saveMyReview(reviewRating,reviewContent,fileReadName, payNo);
 	}
+	
+	
+	// 룸리스트에서 리뷰 전체 조회
+//	@GetMapping("/InquireRoom")
+//	public ResponseEntity<?> inquireroom(@RequestParam(defaultValue = "1") long hotelNo){
+//	
+//		
+//		return new ResponseEntity<>(revSer.findAllHotelReview(hotelNo),HttpStatus.OK);
+//	}
+//	
+	
+	// 객실상세에서 리뷰 조회
+	@GetMapping("/InquireRoomDetail")
+	public ResponseEntity<?> inquireroomdetail(){
+	
+		
+		return null;
+	}
 }

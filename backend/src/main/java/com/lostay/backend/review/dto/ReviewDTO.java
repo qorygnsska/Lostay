@@ -22,4 +22,6 @@ public class ReviewDTO {
 	private String review_content;				// 리뷰내용
 	private String[] review_img;					// 리뷰이미지
 	private LocalDateTime review_create_At;		// 작성날짜
+	
+	private String room_name;
 }
