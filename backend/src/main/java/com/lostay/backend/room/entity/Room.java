@@ -18,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lostay.backend.hotel.entity.Hotel;
 import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.reservation.entity.Reservation;
@@ -43,6 +45,7 @@ public class Room {
 	
 	@JoinColumn(name = "hotelNo", nullable = false)
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonBackReference // Room에서 Hotel 방향
 	private Hotel hotel;					// 호텔넘버 외래키
 	@Column(name="room_name")
 	private String roomName;					// 객실명
@@ -77,5 +80,6 @@ public class Room {
 	
 	@OneToMany(mappedBy = "room",cascade = CascadeType.ALL, fetch = FetchType.LAZY ) // room 엔티티와의 관계 설정
 	@ToString.Exclude  // 순환 참조 방지
+	@JsonIgnore // Review에서 Room 방향
 	private Set<Review> reviews; // 리뷰 목록
 }

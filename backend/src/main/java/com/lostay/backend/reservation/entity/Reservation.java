@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.lostay.backend.cart.entity.Cart;
 import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.room.entity.Room;
@@ -38,6 +39,7 @@ public class Reservation {
 
 	    @JoinColumn(name = "pay_no", nullable = false) // 결제번호 외래키
 	    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	    @JsonBackReference // Reservation에서 Payment 방향
 	    private Payment payment;
 
 	    @Column(name="res_status")

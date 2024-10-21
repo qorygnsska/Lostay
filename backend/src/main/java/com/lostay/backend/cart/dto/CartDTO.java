@@ -1,5 +1,7 @@
 package com.lostay.backend.cart.dto;
 
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CartDTO {
 
-	private Long cartNo;		// 찜넘버
-	 
-	private Long userNo;		// 회원넘버
-	private Long hotelNo; 		// 호텔넘버
+	private Long cartNo;
+	private Long userNo; // 사용자 번호
+	private Set<Long> hotelNos; // 호텔 번호 목록
 }
