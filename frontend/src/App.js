@@ -6,12 +6,13 @@ import "../src/componets/Admin/AdminComponent.css";
 import "../src/componets/BackNav/BackNav.css";
 import "../src/componets/Carousel/HotelCarousel.css";
 import "../src/componets/Carousel/EventCarousel.css";
-import "../src/componets/Carousel/MetropolitanCarousel.css";
-import "../src/componets/Carousel/MetropolitanHotelCarousel.css";
+import "../src/componets/Carousel/LocationCarousel.css";
+import "../src/componets/Carousel/LocationHotelCarousel.css";
 import "../src/componets/Event/EventComponent.css";
 import "../src/componets/Footer/Footer.css";
 import "../src/componets/Header/HeaderComponent.css";
 import "../src/componets/Navbar/Navbar.css";
+import "../src/componets/NavToTop/NavTop.css";
 import "../src/componets/Search/SearchComponent.css";
 import "../src/componets/MyPage/WishList/WishList.css";
 import "../src/componets/Hotel/HotelCarousel.css";
@@ -25,6 +26,8 @@ import "../src/componets/Toast/Toast.css";
 import "../src/componets/Reservation/PayType.css";
 import "../src/componets/Reservation/AgreeInfo.css";
 import "../src/componets/Reservation/AgreeChkInfo.css";
+import "../src/componets/Room/RoomGrid.css";
+
 
 // CustomCSS for pages
 import "../src/pages/Admin/AdminPage.css";

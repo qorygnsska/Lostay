@@ -17,15 +17,15 @@ options.add_argument("window-size=1800,1000")
 driver = webdriver.Chrome(options=options)
 
 # 지역 폴더 생성
-location_folder = f'busan'
+location_folder = f'gwangju'
 os.makedirs(location_folder, exist_ok=True)  # 지역 폴더 생성
 
 # 호텔 폴더 생성
 hotel_folder = os.path.join(location_folder, 'hotel')
 os.makedirs(hotel_folder, exist_ok=True)  # 호텔 폴더 생성
 
-page=5
-driver.get(f'https://www.yeogi.com/domestic-accommodations?sortType=RECOMMEND&keyword=%EB%B6%80%EC%82%B0&page={page}&personal=1&checkIn=2024-11-26&checkOut=2024-11-27&reservationActive=STAY&category=2&freeForm=true')
+page=3
+driver.get(f'https://www.yeogi.com/domestic-accommodations?sortType=RECOMMEND&keyword=%EA%B4%91%EC%A3%BC&page={page}&personal=1&checkIn=2024-11-27&checkOut=2024-11-28&reservationActive=STAY&category=2&freeForm=true')
 
 hotel_lest = driver.find_elements(By.CSS_SELECTOR, 'a.gc-thumbnail-type-seller-card')
 links = [ele.get_attribute('href') for ele in hotel_lest]

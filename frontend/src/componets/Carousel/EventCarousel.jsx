@@ -3,13 +3,13 @@ import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
 
-export default function Carousel({ images }) {
+export default function Carousel({ eventList }) {
 
     // 슬라이드 설정
     const sliderRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
-    const totalSlides = images.length;
+    const totalSlides = eventList.length;
 
     // 자동 플레이 버튼 설정
     const handlePlayPause = () => {
@@ -46,10 +46,10 @@ export default function Carousel({ images }) {
 
             {/* 슬라이드 실행 */}
             <Slider ref={sliderRef} {...settings}>
-                {images.map((image, index) => (
+                {eventList.map((data, index) => (
                     <div key={index}>
                         <a href="https://example.com">
-                            <img src={`eventList/${image}`} alt={`슬라이드 ${index + 1}`} />
+                            <img src={`eventList/${data.eventThumbnail}`} alt={`슬라이드 ${index + 1}`} />
                         </a>
                     </div>
                 ))}

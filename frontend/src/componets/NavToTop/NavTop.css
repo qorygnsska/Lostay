@@ -1,0 +1,19 @@
+.nav--top--container {
+    position: fixed;
+    bottom: 72px;
+    width: 744px;
+    display: flex;
+    justify-content: end;
+
+    #nav_to_top {
+        padding: 4px;
+        border-style: solid;
+        border-radius: 100%;
+        border-width: 1px;
+        border-color: gray;
+        background-color: transparent;
+        color: gray;
+
+    }
+
+}

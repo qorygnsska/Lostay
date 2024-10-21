@@ -6,9 +6,14 @@ import { IoMdHeart } from "react-icons/io";
 
 import { IoNavigate } from "react-icons/io5";
 
+import { IoPersonOutline } from "react-icons/io5";
+import { FaRegClock } from "react-icons/fa";
+
 import HotelCarousel from '../../componets/Hotel/HotelCarousel';
 import HotelReview from '../../componets/Hotel/HotelReview';
 import KakaoMap from '../../componets/Map/KakaoMap';
+import { Link } from 'react-router-dom';
+import RoomGrid from '../../componets/Room/RoomGrid';
 
 export default function RoomList() {
 
@@ -44,6 +49,25 @@ export default function RoomList() {
         }
     ];
 
+    const rooms = [
+        {
+            id: 1,
+            name: '산 전망 스탠다드 더블 룸',
+            thumbnail: '/HotelList/룸1.jpg',
+            p1: 2,
+            p2: 2,
+            checkIn: '15:00',
+            checkOut: '11:00',
+            realPrice: 786500,
+            discount: 49,
+            discountPrice: 399300,
+            roomCount: 3,
+        }
+    ];
+    
+
+
+
     const handleFindButtonClick = () => {
         const encodedLocation = encodeURIComponent(HotelInfo.Location); // 주소를 URL 인코딩
         window.location.href = `/HotelMap?location=${encodedLocation}`;
@@ -75,6 +99,10 @@ export default function RoomList() {
                 
                 <KakaoMap Location={HotelInfo.Location} />
             </div>
+
+            <div className='RLtitle'>객실선택</div>
+
+            <RoomGrid rooms={rooms}/>
 
         </Container>
     )

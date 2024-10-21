@@ -54,8 +54,8 @@ export default function HotelGrid({hotels}) {
                     <div className='HotelPrice'>
                         <div className='RealPrice'>{hotel.originalPrice}</div>
                         <div className='HotelDiscount'>
-                        <div className='Discount'>{hotel.discountRate}</div>
-                        <div className='DiscountPrice'>{hotel.discountedPrice}</div>
+                            <div className='Discount'>{hotel.discountRate}</div>
+                            <div className='DiscountPrice'>{hotel.discountedPrice}</div>
                         </div>
                     </div>
                     </div>

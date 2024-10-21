@@ -2,11 +2,14 @@ package com.lostay.backend.review.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lostay.backend.hotel.entity.Hotel;
+import com.lostay.backend.hotel.repository.HotelRepository;
 import com.lostay.backend.payment.dto.PaymentDTO;
 import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.payment.repository.PaymentRepository;
@@ -38,6 +41,9 @@ public class ReviewService {
 	
 	@Autowired
 	private PointRepository poRepo;
+	
+	@Autowired
+	private HotelRepository hotelRepo;
 	
 //	// 리뷰 작성하기 버튼 클릭
 //	public void saveMyReview(double reviewRating, String reviewContent, ArrayList<String> fileReadName, long payNo) {
@@ -125,5 +131,40 @@ public class ReviewService {
 		
 		
 	}
+
+//	// 룸리스트 페이지에서 해당 호텔 전체 리뷰 조회
+//	public List<ReviewDTO> findAllHotelReview(long hotelNo) {
+//		
+//		List<Review> ReviewList = revRepo.findHotelReview(hotelNo);
+//		List<ReviewDTO> dtoList = new ArrayList<ReviewDTO>();
+//		
+//		for(Review d : ReviewList) {
+//			ReviewDTO dto = new ReviewDTO();
+//			dto.setReview_content(d.getReviewContent());
+//			
+//			String[] str = d.getReviewImg().split(",");
+//			dto.setReview_img(str);
+//			dto.setReview_create_At(d.getReviewCreateAt());
+//			dto.setReview_rating(d.getReviewRating());
+//			dto.setRoom_no(d.getRoom().getRoomNo());
+//			dto.setUser_no(d.getUser().getUserNo());
+//			dto.setRoom_name(d.getRoom().getRoomName());
+//			
+//			dtoList.add(dto);
+//		}
+//		
+//		
+//		
+//		return dtoList; 
+//	}
+//	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

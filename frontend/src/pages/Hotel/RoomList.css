@@ -1,5 +1,6 @@
 .room--list {
      height: 10000px;
+
      .HotelInfo {
           margin-top: 30px;
           display: flex;
@@ -75,7 +76,7 @@
           justify-content: space-between;
      }
 
-     .ContentBox{
+     .ContentBox {
           width: 243px;
           height: 100px;
           overflow: hidden;
@@ -86,35 +87,37 @@
           cursor: pointer;
      }
 
-     .ReviewIcon{
+     .ReviewIcon {
           color: rgb(255, 224, 46);
           margin-bottom: 2px;
           margin-right: 2px;
      }
 
-     .ReviewSD{
+     .ReviewSD {
           display: flex;
           justify-content: space-between;
      }
 
-     .ReviewDate, .ReviewContent{
+     .ReviewDate,
+     .ReviewContent {
           color: rgb(71, 71, 71);
      }
 
-     .HotelLocation{
+     .HotelLocation {
           margin-top: 50px;
      }
-     .LoTitle{
+
+     .LoTitle {
           font-weight: bold;
           font-size: 22px;
           margin-bottom: 8px;
      }
 
-     .LoContent{
+     .LoContent {
           color: gray;
      }
 
-     #FindBtn{
+     #FindBtn {
           padding: 1px;
           margin-left: 10px;
           font-size: 15px;
@@ -126,8 +129,21 @@
           margin-bottom: 5px;
      }
 
-     #FindBtn:hover{
+     #FindBtn:hover {
           color: rgb(43, 110, 255);
           border-color: rgb(43, 110, 255);
      }
+
+
+
+     .RLtitle {
+          margin-top: 60px;
+          font-weight: bold;
+          font-size: 22px;
+          margin-bottom: 10px;
+     }
+
+     
+
+
 }
