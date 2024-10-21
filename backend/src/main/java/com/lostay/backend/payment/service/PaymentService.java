@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.lostay.backend.payment.dto.PaymentDTO;
 import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.payment.repository.PaymentRepository;
+import com.lostay.backend.point.entity.Point;
+import com.lostay.backend.point.repository.PointRepository;
 import com.lostay.backend.reservation.dto.ReservationDTO;
 import com.lostay.backend.reservation.entity.Reservation;
 import com.lostay.backend.reservation.repository.ReservationRepository;
@@ -36,6 +38,9 @@ public class PaymentService {
 
 	@Autowired
 	private ReservationRepository resRepo;
+	
+	@Autowired
+	private PointRepository poRepo;
 
 	// payNo로 결제/취소 내역 가져오기
 	public PaymentDTO findPayHistory(Long payNo) {
@@ -105,7 +110,7 @@ public class PaymentService {
 		return userDto;
 	}
 
-	// 결제 테이블 데이터 삽입, 유저 총 포인트 업데이트, 예약 테이블 데이터 삽입
+	// 결제 테이블 데이터 삽입, 유저 총 포인트 업데이트, 예약 테이블 데이터 삽입, 포인트 내역 테이블 데이터 삽입
 	public void savePayment(long userNo, long roomNo, String payType, LocalDateTime payDay, String payStatus,
 			int payPrice, int payPoint, LocalDateTime checkInDate, LocalDateTime checkOutDate) {
 
@@ -113,11 +118,23 @@ public class PaymentService {
 		User user = newUser.get();
 
 		// 유저가 사용한 포인트 계산해서 업데이트
-		int point = user.getUserPoint();
-		int totalPoint = point - payPoint;
+		int userPoint = user.getUserPoint();
+		int totalPoint = userPoint - payPoint;
 		user.setUserPoint(totalPoint);
 		userRepo.save(user);
-
+		
+		// 포인트 테이블에 포인트 내역 추가해야 함
+		LocalDateTime now = LocalDateTime.now();
+		Point newPoint = new Point();
+		newPoint.setUser(user);
+		newPoint.setPointDay(now);
+		newPoint.setPointPlusMinus(payPoint);
+		newPoint.setPointTitle("숙박 예약 사용");
+		//  0이면 적립, 1이면 사용
+		newPoint.setStatus(1);
+		poRepo.save(newPoint);
+		
+				
 		// 객실에 관련된 정보 결제테이블에 외래키로 넣어주기
 		Optional<Room> newRoom = roomRepo.findById(roomNo);
 		Room room = newRoom.get();
