@@ -11,9 +11,14 @@
 .page--event--list--container {
     /* 이벤트 리스트페이지 */
 
-    h1 {
-        color: blue;
-
+    #container_event_list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin-top: 12px;
+        margin-bottom: 60px;
+        padding: 12px;
+        gap: 12px;
     }
 
 }

@@ -12,6 +12,7 @@ import "../src/componets/Event/EventComponent.css";
 import "../src/componets/Footer/Footer.css";
 import "../src/componets/Header/HeaderComponent.css";
 import "../src/componets/Navbar/Navbar.css";
+import "../src/componets/NavToTop/NavTop.css";
 import "../src/componets/Search/SearchComponent.css";
 import "../src/componets/MyPage/WishList/WishList.css";
 import "../src/componets/Hotel/HotelCarousel.css";

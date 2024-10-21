@@ -1,6 +1,14 @@
 .comp--event--unit--container {
     /* EventUnit 컴포넌트 */
 
+    min-width: 366px;
+    min-height: 183px;
+
+    border-color: black;
+    border-style: dashed;
+    border-width: 1px;
+
+
     p {
         color: green;
 
