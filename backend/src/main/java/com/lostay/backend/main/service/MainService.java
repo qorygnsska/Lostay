@@ -52,7 +52,6 @@ public class MainService {
 			EventDTO dto = new EventDTO();
 			dto.setEventNo(e.getEventNo());
 			dto.setEventTitle(e.getEventTitle());
-			dto.setEventImg(e.getEventImg().split(","));
 			dto.setEventThumbnail(e.getEventThumbnail());
 			dto.setEventCreateAt(e.getEventCreateAt());
 			dto.setEventEndAt(e.getEventEndAt());
