@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { Calendar } from 'primereact/calendar';
 
-
 export default function CompEventInserter(props) {
 
 
@@ -15,7 +14,8 @@ export default function CompEventInserter(props) {
 
     const [title, setTitle] = useState('');
     const [period, setPeriod] = useState([start_at, end_at]);
-
+    const [thumbnail, setThumbnail] = useState('');
+    const [image, setImage] = useState('');
     
     
     const dateFormatter = (rawDate) => (rawDate.getFullYear().toString() + "/" + (rawDate.getMonth() + 1).toString() + "/" + rawDate.getDate().toString());
@@ -33,9 +33,24 @@ export default function CompEventInserter(props) {
     
     const [periodPicker, setPeriodPicker] = useState(false);
 
-    const insertHandler = () => {
-        console.log(title + '/' + period);
+    //'닫기' 버튼 클릭 시(onHide), 모든 값 초기화하고 모달 숨김
+    const dismissHandler = () => {
+        setTitle('');
+        setPeriod([start_at, end_at]);
+        setThumbnail('');
+        setImage('');
+        props.onHide();
+    }
 
+
+    //이벤트 등록 실행
+    const insertHandler = () => {
+
+        //쿼리 날릴 때 setter는 의미없음(reRendering에 필요할 뿐)
+        //setThumbnail(thumbnail.substring(thumbnail.lastIndexOf('\\')+1));
+        //setImage(image.substring(image.lastIndexOf('\\')+1))
+
+        console.log(title + '/' + period + '/' + thumbnail.substring(thumbnail.lastIndexOf('\\')+1) + '/' + image.substring(image.lastIndexOf('\\')+1));
     }
 
     return (
@@ -44,11 +59,13 @@ export default function CompEventInserter(props) {
                 {...props}
                 size="lg"
                 centered
-                backdrop="static"   // will not close when clicking outside modal
+                backdrop="static"   // will not close when clicking outside of the modal
+                onHide={dismissHandler}
             >
                 <Modal.Header closeButton>
+                    {/* closeButton 클릭 => onHide={dismissHandler} 실행 */}
                     <Modal.Title id="title_modal">
-                        이벤트 추가
+                        이벤트 등록
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -73,10 +90,9 @@ export default function CompEventInserter(props) {
                                 onClick={() => setPeriodPicker(!periodPicker)}
                             />
                         </Form.Group>
-
-                        <div id="container_period_picker" className="d-flex justify-content-center mb-3">
+                        <div id="container_period_picker" className="d-flex justify-content-center">
                             <Calendar 
-                                id="calendar"
+                                className="calendar mb-3"
                                 inline
                                 showButtonBar
                                 selectionMode="range"
@@ -86,16 +102,27 @@ export default function CompEventInserter(props) {
                                 hidden={!periodPicker ? true : false}
                             />
                         </div>
-
-                        <Form.Group className="mb-3" controlId="input_file">
-                            <Form.Label>이벤트 사진</Form.Label>
-                            <Form.Control type='file' size='sm' />
+                        <Form.Group className="mb-3" controlId="input_thumbnail">
+                            <Form.Label>이벤트 섬네일</Form.Label>
+                            <Form.Control
+                                type='file'
+                                size='sm'
+                                onChange={(e) => setThumbnail(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="input_image">
+                            <Form.Label>이벤트 이미지</Form.Label>
+                            <Form.Control
+                                type='file'
+                                size='sm'
+                                onChange={(e) => setImage(e.target.value)}
+                            />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button hidden onClick={props.onHide}>Close</Button>
-                    <Button onClick={insertHandler} variant="outline-success" >추가하기</Button>
+                    {/* <Button hidden onClick={dismissHandler}>Close</Button> */}
+                    <Button onClick={insertHandler} variant="outline-success" >등록하기</Button>
                 </Modal.Footer>
             </Modal>
         </>
