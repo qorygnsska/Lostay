@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lostay.backend.event.controller.EventController;
@@ -29,9 +30,14 @@ public class MypageController {
 	}
 	
 	//mypage 내가 작성한 리뷰 조회
-	@GetMapping("/mypage/{userNo}/{page}") 
-	public ResponseEntity<?>mypageReview(@PathVariable Long userNo,@PathVariable int page){
+	@GetMapping("/mypageReview/{userNo}") 
+	public ResponseEntity<?>mypageReview(@PathVariable Long userNo,@RequestParam(required = false) Integer page){
+		
 		log.info("mypageReview실행");
+		// page가 null인 경우 기본값을 0으로 설정 (예: 첫 페이지)
+	    if (page == null) {
+	        page = 0; // 기본값 설정
+	    }
 		return new ResponseEntity<>(mypageService.mypageReview(userNo,page),HttpStatus.OK);
 	}
 	

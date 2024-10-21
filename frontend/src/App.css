@@ -20,10 +20,11 @@
     --ligthBuleColor: #e6eefa;
     --redColor: #ff0303;
     --pointColor: #d20d5a;
-    --saleIconColor: #d20d5a;
+    --saleIconColor: #ff1b26;
     --selectedBackgbColor: #f2f6fc;
     --agreeInfoColor: #cc4100;
     --agreeBgColor: #fef8f2;
+    --starColor: #ffe02e;
 }
 
 body {

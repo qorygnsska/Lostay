@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 export default function CardCarousel({ hotelList }) {
 
@@ -33,27 +34,29 @@ export default function CardCarousel({ hotelList }) {
 
             {/* 슬라이드 실행 */}
             <Slider ref={sliderRef} {...settings}>
-                {hotelList.map((hotel, index) => (
-                    <div key={index} >
-                        <a href="https://example.com">
-
+                {hotelList.map((hotel) => (
+                    <div key={hotel.hotelNo} >
+                        <Link to="/hotelList" className="link">
                             {/* 호텔 정보 */}
-                            <img src={`eventList/${hotel.image}`} alt={`슬라이드 ${index + 1}`} className="carousel-image" />
+                            <img src={`${hotel.hotelThumbnail}`} alt={`슬라이드 ${hotel.hotelNo + 1}`} className="carousel-image" />
                             <div className="hotel--info--wrap">
                                 <div className="hotel--info">
                                     <div>
-                                        <span>{hotel.hotelRating}</span>
+                                        <span>{hotel.hotelRating ? `${hotel.hotelRating} · 호텔 ` : '호텔'}</span>
                                     </div>
 
-                                    <div>
+                                    <div className="hotel--name">
                                         <span>{hotel.hotelName}</span>
                                     </div>
 
                                     <div>
                                         <div className="review--wrap">
-                                            <FaStar className='star--Icon' />
-                                            <span><strong>{hotel.reviewAvg}</strong></span>
-                                            <span>({hotel.reviewCnt})</span>
+                                            <div className="review--icon--box">
+                                                <FaStar className='star--Icon' />
+                                                <span className="review--avg"><strong>{hotel.reviewAvg ? hotel.reviewAvg : 0}</strong></span>
+                                            </div>
+
+                                            <span className="hotel--review--count">{hotel.totalReviewCount}명 평가</span>
                                         </div>
                                     </div>
                                 </div>
@@ -64,27 +67,31 @@ export default function CardCarousel({ hotelList }) {
                                         hotel.discount !== 0 ? ( // 호텔 세일일 때
                                             <>
                                                 <div className="hotel--discount--price--wrap">
-                                                    <span>{hotel.discount}%</span>
-                                                    <span>{hotel.oriPrice.toLocaleString()}원</span>
+                                                    <span className="hotel--room--discount">{hotel.roomDiscount}%</span>
+                                                    <span className="hotel--room--price">{hotel.roomPrice.toLocaleString()}원</span>
                                                 </div>
-                                                <strong>{hotel.discountPrice.toLocaleString()}원~</strong>
+                                                <strong>{hotel.roomDcPrice.toLocaleString()}원~</strong>
                                             </>) : ( // 호텔 세일 아닐 때
-                                            <strong>{hotel.oriPrice.toLocaleString()}원~</strong>)
+                                            <strong>{hotel.roomPrice.toLocaleString()}원~</strong>)
                                     }
                                 </div>
                             </div>
-                        </a>
+                        </Link>
                     </div>
-                ))}
+                ))
+                }
             </Slider >
 
-            <div className="moveBtn">
+            {/* 슬라이드 좌우 버튼 */}
+            < div className="left--move--btn move--btn" >
                 {currentSlide > 0
                     ? <button onClick={() => sliderRef.current.slickPrev()} className="arrow-button">
                         <FaChevronLeft className="arrow" />
                     </button>
                     : <div></div>
                 }
+            </div >
+            <div className="right--move--btn move--btn">
                 {currentSlide < totalSlides - slideShowCtn && ( // slidesToShow 수에 따라 조정
                     <button onClick={() => sliderRef.current.slickNext()} className="arrow-button">
                         <FaChevronRight className="arrow" />

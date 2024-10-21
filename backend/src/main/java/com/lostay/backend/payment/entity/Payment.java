@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.lostay.backend.reservation.entity.Reservation;
 import com.lostay.backend.room.entity.Room;
 import com.lostay.backend.user.entity.User;
@@ -38,6 +39,7 @@ public class Payment {
 
 	    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	    @JoinColumn(name = "user_no", nullable = false)
+	    @JsonBackReference // Payment에서 User 방향
 	    private User user; // 회원넘버
 	    
 	    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -60,5 +62,6 @@ public class Payment {
 	    
 	    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // 예약 엔티티와의 관계 설정
 	    @ToString.Exclude
+	    @JsonBackReference // Reservation에서 Payment 방향
 	    private Reservation reservations; // 예약 목록
 }

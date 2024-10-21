@@ -3,16 +3,19 @@
 
     min-width: 366px;
     min-height: 183px;
-
     border-color: black;
     border-style: dashed;
     border-width: 1px;
 
 
-    p {
+    h3 {
         color: green;
-
     }
+
+    p {
+        color: blue;
+    }
+
 }
 
 .comp--event--manager--modal {

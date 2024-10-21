@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.lostay.backend.user.entity.User;
 
 import lombok.AllArgsConstructor;
@@ -31,6 +32,7 @@ public class Point {
 	
 	@JoinColumn(name = "userNo", nullable = false)
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonBackReference // Point에서 User 방향
 	private User user;			// 회원넘버(포인트) 외래키
 	
 	@Column(name="point_day")
