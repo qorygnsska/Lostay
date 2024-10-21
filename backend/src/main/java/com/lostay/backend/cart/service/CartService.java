@@ -22,32 +22,31 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CartService {
 
-    @Autowired
-    private CartRepository cartRepo;
-    
-    @Autowired
-    private HotelRepository hotelRepo;
-    
-    @Autowired
-    private UserRepository userRepo;
+	@Autowired
+	private CartRepository cartRepo;
 
-    @Transactional
-    public Cart cartsave(Long userNo, Long hotelNo) {
-    
-    	  // 사용자와 호텔 엔티티를 가져옵니다.
-        User user = userRepo.findById(userNo)
-                                  .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        Hotel hotel = hotelRepo.findById(hotelNo)
-                                     .orElseThrow(() -> new RuntimeException("호텔을 찾을 수 없습니다."));
+	@Autowired
+	private HotelRepository hotelRepo;
 
-        // 새 카트 인스턴스를 생성합니다.
-        Cart cart = new Cart();
-        cart.setUser(user);
-        cart.getHotels().add(hotel); // 카트에 호텔을 추가합니다.
+	@Autowired
+	private UserRepository userRepo;
 
-        // 카트를 저장합니다 (CascadeType.ALL 덕분에 관계도 자동으로 처리됩니다).
-        return cartRepo.save(cart);
-    
-    
-    }
+	@Transactional
+	public void cartsave(Long userNo, Long hotelNo) {
+		  // 사용자 찾기
+	    User user = userRepo.findById(userNo).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+	    
+	    // 호텔 찾기
+	    Hotel hotel = hotelRepo.findById(hotelNo).orElseThrow(() -> new RuntimeException("호텔을 찾을 수 없습니다."));  
+	    
+	    // 새로운 Cart 생성
+	    Cart cart = new Cart();
+	    cart.setUser(user); // 사용자 설정
+
+	    // 호텔을 카트에 추가
+	    cart.getHotels().add(hotel); // 카트에 호텔을 추가합니다.
+	    
+	    // 카트 저장
+	    cartRepo.save(cart);
+	}
 }

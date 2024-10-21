@@ -25,8 +25,7 @@ public class CartController {
 	private CartService cartService;
 	
 	 @PostMapping("/cartsave")
-	    public ResponseEntity<?> cartsave(@RequestParam("userNo") Long userNo,
-	                                       @RequestParam("hotelNo") Long hotelNo) {
-	        return new ResponseEntity<>(cartService.cartsave(userNo, hotelNo), HttpStatus.OK);
-	    }
+	 public void createCart(@RequestParam Long userId, @RequestParam Long hotelId) {
+	        cartService.cartsave(userId, hotelId);
+}
 }
