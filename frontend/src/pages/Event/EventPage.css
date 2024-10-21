@@ -1,10 +1,24 @@
 .page--event--detail--container {
     /* 이벤트 상세페이지 */
 
-    h1 {
+    #container_event_detail {
+        margin-top: 12px;
+        padding: 12px;
 
-        color: red;
+        border-color: black;
+        border-style: dashed;
+        border-width: 1px;
+
+
+
+        h1 {
+            color: red;
+        }
+
+
     }
+
+
 
 }
 
@@ -19,6 +33,10 @@
         margin-bottom: 60px;
         padding: 12px;
         gap: 12px;
+
+        .link_to_event_detail {
+            text-decoration: none;
+        }
     }
 
 }
