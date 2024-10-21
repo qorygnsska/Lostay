@@ -1,5 +1,7 @@
 package com.lostay.backend.hotel.entity;
 
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -52,6 +54,21 @@ public class Hotel {
 	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY,cascade = CascadeType.ALL) // Room 엔티티와의 관계 설정
 	@ToString.Exclude
 	@JsonIgnore // Room에서 Hotel 방향
-	private Set<Room> rooms; // 룸 목록
+	private Set<Room> rooms = new HashSet<>(); // 룸 목록
 	
+	
+	// equals와 hashCode 메소드 추가
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hotel hotel = (Hotel) o;
+        return Objects.equals(hotelNo, hotel.hotelNo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(hotelNo);
+    }
+	 
 }
