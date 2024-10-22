@@ -44,8 +44,7 @@ public interface RoomReopository extends JpaRepository<Room, Long>{
 		       "AND h.hotelNo = :hotelNo")
 	List<Object[]> findHotelRoom(@Param("hotelNo") Long hotelNo
 								,@Param("checkInDate") LocalDateTime checkInDate
-								,@Param("checkOutDate") LocalDateTime checkOutDate 
-            );
+								,@Param("checkOutDate") LocalDateTime checkOutDate);
 
 	
 	

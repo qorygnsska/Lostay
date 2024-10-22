@@ -64,7 +64,7 @@ public class RoomService {
 			
 		}
 		
-		return null;
+		return dtos;
 	}
 	
 }
