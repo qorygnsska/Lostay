@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lostay.backend.hotel.entity.Hotel;
 import com.lostay.backend.hotel.repository.HotelRepository;
@@ -26,6 +27,7 @@ import com.lostay.backend.user.entity.User;
 import com.lostay.backend.user.repository.UserRepository;
 
 @Service
+@Transactional
 public class ReviewService {
 
 	

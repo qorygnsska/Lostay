@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lostay.backend.cart.repository.CartRepository;
 import com.lostay.backend.event.entity.Event;
@@ -26,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@Transactional
 public class MypageService {
 
 	@Autowired
@@ -83,5 +85,33 @@ public class MypageService {
 		    
 
 	}
+	//mypage 유정 정보수정(nickname)
+	public void userUpdateNicName(Long userNo, String nickname) {
+		 log.info("MypageService userUpdateNicName 실행");
+		 Optional<User> userEntityOptional = userRepo.findById(userNo);	      
+		  User userEntity = userEntityOptional.orElseThrow(() -> new RuntimeException("User not found"));
+
+		    // 닉네임 업데이트
+		    userEntity.setUserNickname(nickname);
+
+		    // 업데이트된 엔티티 저장
+		    userRepo.save(userEntity);
+		 
+	}
+
+	public void userUpdatePhone(Long userNo, String phone) {
+		 log.info("MypageService userUpdatePhone 실행");
+		 Optional<User> userEntityOptional = userRepo.findById(userNo);	      
+		  User userEntity = userEntityOptional.orElseThrow(() -> new RuntimeException("User not found"));
+
+		    // 닉네임 업데이트
+		    userEntity.setUserPhone(phone);
+
+		    // 업데이트된 엔티티 저장
+		    userRepo.save(userEntity);
+		 
+	}
+
+
 
 }

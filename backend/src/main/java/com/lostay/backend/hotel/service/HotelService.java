@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lostay.backend.hotel.dto.HotelDTO;
 
 @Service
+@Transactional
 public class HotelService {
 
     @PersistenceContext

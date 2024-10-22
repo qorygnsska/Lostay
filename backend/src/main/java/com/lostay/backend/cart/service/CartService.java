@@ -3,9 +3,13 @@ package com.lostay.backend.cart.service;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@Transactional
 public class CartService {
 
 	@Autowired
@@ -33,7 +38,14 @@ public class CartService {
 	@Autowired
 	private UserRepository userRepo;
 
-	@Transactional
+	 @PersistenceContext
+	    private EntityManager entityManager;
+	
+
+	    @Autowired
+	    private SessionFactory sessionFactory;
+	 
+
 	public void cartsave(Long userNo, Long hotelNo) {
 		  // 사용자 찾기
 	    User user = userRepo.findById(userNo).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
@@ -53,16 +65,15 @@ public class CartService {
 	}
 
 	//내가 선택한 호텔찜 삭제
-	@Transactional
+
 	public void deleteById(Long cartNo) {
 		log.info("CartService deleteById 실행");
-		 // 카트가 존재하는지 확인
-        if (cartRepo.existsById(cartNo)) {
-            // 카트를 삭제 (이때 연관된 관계도 함께 삭제됨)
-        	cartRepo.deleteById(cartNo);
-        } else {
-            throw new RuntimeException("카트를 찾을 수 없습니다: " + cartNo);
-        }
-		
+		  // 카트 조회: 존재하지 않으면 예외 발생
+        Cart cart = cartRepo.findById(cartNo)
+            .orElseThrow(() -> new EntityNotFoundException("Cart not found"));
+
+        // Cart 삭제
+        cartRepo.delete(cart); // 해당 카트만 삭제
+
 	}
 }

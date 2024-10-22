@@ -18,11 +18,12 @@ import com.lostay.backend.point.entity.Point;
 import com.lostay.backend.point.repository.PointRepository;
 
 @Service
+@Transactional
 public class PointService {
 
 	@Autowired
 	private PointRepository pointRepo;
-	 @Transactional
+	
 	public UserPointListResponseDTO pointList(Long userNo) {
 		 List<Point> results = pointRepo.findByUserNoWithPoints(userNo);
 		    List<UserPointListDTO> pointDTOList = new ArrayList<>();
