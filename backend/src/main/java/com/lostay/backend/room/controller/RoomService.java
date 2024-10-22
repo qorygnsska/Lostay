@@ -27,7 +27,7 @@ public class RoomService {
 	// 호텔에 대한 객실 리스트 조회(호텔과 객실 정보)
 	public List<RoomDTO> findHotelRoomAll(long hotelNo, LocalDateTime checkInDate, LocalDateTime checkOutDate) {
 
-		List<Object[]> newRoom = roomRepo.findHotelRoom(hotelNo, checkInDate, checkOutDate);
+		List<Object[]> newRoom = roomRepo.findHotelRoomList(hotelNo, checkInDate, checkOutDate);
 		List<RoomDTO> dtos = new ArrayList<RoomDTO>();
 		int reviewCount = revRepo.findHotelReviewCount(hotelNo);
 		double ReviewAvg = revRepo.findHotelReviewAvg(hotelNo);

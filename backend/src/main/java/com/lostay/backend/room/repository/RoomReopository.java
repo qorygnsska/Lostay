@@ -42,7 +42,7 @@ public interface RoomReopository extends JpaRepository<Room, Long>{
 		       "AND rs.checkIn <= :checkInDate " +
 		       "AND rs.checkOut >= :checkOutDate) " +
 		       "AND h.hotelNo = :hotelNo")
-	List<Object[]> findHotelRoom(@Param("hotelNo") Long hotelNo
+	List<Object[]> findHotelRoomList(@Param("hotelNo") Long hotelNo
 								,@Param("checkInDate") LocalDateTime checkInDate
 								,@Param("checkOutDate") LocalDateTime checkOutDate);
 
