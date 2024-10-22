@@ -87,14 +87,23 @@ public class ReviewRestController {
 	}
 	
 	
-	// 룸리스트에서 리뷰 전체 조회
-//	@GetMapping("/InquireRoom")
-//	public ResponseEntity<?> inquireroom(@RequestParam(defaultValue = "1") long hotelNo){
-//	
-//		
-//		return new ResponseEntity<>(revSer.findAllHotelReview(hotelNo),HttpStatus.OK);
-//	}
-//	
+	// 룸리스트에서 리뷰 전체 조회할 때
+	@GetMapping("/InquireRoom")
+	public ResponseEntity<?> inquireroom(@RequestParam(defaultValue = "1") long hotelNo){
+	
+		
+		return new ResponseEntity<>(revSer.findAllHotelReview(hotelNo),HttpStatus.OK);
+	}
+	
+	
+	// 룸리스트에서 리뷰 상위 3개 조회
+	@GetMapping("/InquireRoom3")
+	public ResponseEntity<?> inquireroom3(@RequestParam(defaultValue = "1") long hotelNo){
+	
+		
+		return new ResponseEntity<>(revSer.findHotelReview3(hotelNo),HttpStatus.OK);
+	}
+	
 	
 	// 객실상세에서 리뷰 조회
 	@GetMapping("/InquireRoomDetail")

@@ -2,6 +2,7 @@ package com.lostay.backend.review.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,13 +21,35 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	           "WHERE u.userNo = :userNo")
 	    Page<ReviewpageDTO> findTop10ReviewPage(@Param("userNo") Long userNo, Pageable pageable);
 
-
-
-	@Query("select rv from Review rv "
+	
+	// 객실리스트 전체 리뷰 조회
+	@Query("select rv.reviewContent, rv.reviewImg, rv.reviewCreateAt, rv.reviewRating"
+			+ ", r.roomNo, u.userNo, r.roomName, rv.reviewNo from Review rv "
 			+ "Join rv.room r  "
 			+ "Join r.hotel h "
+			+ "Join rv.user u "
 			+ "Where h.hotelNo = :hotelNo")
-	List<Review> findHotelReview(@Param("hotelNo")long hotelNo);
+	List<Object[]> findHotelReview(@Param("hotelNo")long hotelNo);
+
+	
+	// 객실리스트 최근 3개 리뷰 조회
+	@Query("select rv.reviewContent, rv.reviewCreateAt, rv.reviewRating "
+			+ ", r.roomNo, u.userNo, r.roomName, rv.reviewNo from Review rv "
+			+ "Join rv.room r "
+			+ "Join r.hotel h "
+			+ "Join rv.user u "
+			+ "Where h.hotelNo = :hotelNo "
+			+ "ORDER BY rv.reviewCreateAt DESC ")	
+	List<Object[]> findHotelReview3(@Param("hotelNo")long hotelNo,Pageable pageable);
+
+
+	// hotel의 전체 리뷰 별점 평균
+	@Query("select AVG(rv.reviewRating) from Review rv "
+			+ "Join rv.room r "
+			+ "Join r.hotel h "
+			+ "Join rv.user u "
+			+ "Where h.hotelNo = :hotelNo")
+	double findHotelReviewAvg(@Param("hotelNo")long hotelNo);
 
 
 }
