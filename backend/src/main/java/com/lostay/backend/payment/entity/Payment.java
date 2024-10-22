@@ -1,6 +1,7 @@
 package com.lostay.backend.payment.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -37,12 +38,12 @@ public class Payment {
 	    @Column(name="pay_no")
 	    private Long payNo; // 결제넘버
 
-	    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	    @JoinColumn(name = "user_no", nullable = false)
 	    @JsonBackReference // Payment에서 User 방향
 	    private User user; // 회원넘버
 	    
-	    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	    @JoinColumn(name = "room_no", nullable = false)
 	    private Room room; // 객실넘버
 
@@ -65,6 +66,19 @@ public class Payment {
 	    @JsonBackReference // Reservation에서 Payment 방향
 	    private Reservation reservations; // 예약 목록
 	    
-	    
+
+	    // equals 및 hashCode 메소드 추가
+	    @Override
+	    public boolean equals(Object o) {
+	        if (this == o) return true;
+	        if (o == null || getClass() != o.getClass()) return false;
+	        Payment payment = (Payment) o;
+	        return payNo != null && payNo.equals(payment.payNo);
+	    }
+
+	    @Override
+	    public int hashCode() {
+	        return Objects.hash(payNo);
+	    }
 	    
 }

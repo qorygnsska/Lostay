@@ -56,13 +56,13 @@ public class CartService {
 	@Transactional
 	public void deleteById(Long cartNo) {
 		log.info("CartService deleteById 실행");
-		 Cart cart = cartRepo.findById(cartNo)
-			        .orElseThrow(() -> new EntityNotFoundException("Cart not found with id " + cartNo));
-			    
-			    // Cart 엔티티의 호텔을 정리 (필요시)
-			    cart.getHotels().clear(); // 카트에 포함된 호텔을 지운다 (옵션)
-		
-			    cartRepo.delete(cart); // 카트를 삭제
+		 // 카트가 존재하는지 확인
+        if (cartRepo.existsById(cartNo)) {
+            // 카트를 삭제 (이때 연관된 관계도 함께 삭제됨)
+        	cartRepo.deleteById(cartNo);
+        } else {
+            throw new RuntimeException("카트를 찾을 수 없습니다: " + cartNo);
+        }
 		
 	}
 }

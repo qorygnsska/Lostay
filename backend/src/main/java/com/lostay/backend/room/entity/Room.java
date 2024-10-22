@@ -2,6 +2,7 @@ package com.lostay.backend.room.entity;
 
 import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -44,7 +45,7 @@ public class Room {
 	private Long roomNo;   					// 객실넘버	
 	
 	@JoinColumn(name = "hotelNo", nullable = false)
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonBackReference // Room에서 Hotel 방향
 	private Hotel hotel;					// 호텔넘버 외래키
 	@Column(name="room_name")
@@ -83,5 +84,18 @@ public class Room {
 	@JsonIgnore // Review에서 Room 방향
 	private Set<Review> reviews; // 리뷰 목록
 	
+	// equals 및 hashCode 메소드 추가
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return roomNo != null && roomNo.equals(room.roomNo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roomNo);
+    }
 	
 }
