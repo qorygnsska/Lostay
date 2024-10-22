@@ -67,7 +67,7 @@ const router = createBrowserRouter([
 
       // 정일
       { path: '/event-list', element: <PageEventList /> },
-      { path: '/event-detail', element: <PageEventDetail /> },
+      { path: '/event-detail/:no', element: <PageEventDetail /> },
       { path: '/admin-home', element: <PageAdminHome /> },
       { path: '/admin-event', element: <PageEventManager /> },
       { path: '/admin-review', element: <PageReviewManager /> },
