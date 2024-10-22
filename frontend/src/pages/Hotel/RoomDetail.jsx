@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import Footer from '../../componets/Footer/Footer';
 
 import { IoCheckmark } from "react-icons/io5";
+import HotelReview from '../../componets/Hotel/HotelReview';
 
 
 export default function RoomDetail() {
@@ -26,7 +27,8 @@ export default function RoomDetail() {
         info: ['2인 기준 최대 3인 (유료)', '인원 추가시 비용이 발생되며 현장에서 결제 바랍니다.', '싱글침대 2개', '객실+욕실 / 12.1평'],
         service: ['TV', '냉장고', '전기주전자', '찻잔', '티백', '물컵', '전화기', '금고', '슬리퍼', '욕실용품', '드라이기'],
         images: ['/HotelList/룸1.jpg', '/HotelList/룸2.jpg'],
-        reviewcount: 58,
+        reviewCount: 58,
+        starAvg: 4.5,
     };
 
     const Reviews = [
@@ -81,9 +83,12 @@ export default function RoomDetail() {
 
                 <div className='CanTitle'>취소 및 환불 규정</div>
                 <div className='CancelContent'>입실 전날까지 전액 환불 가능하며, 입실 당일 취소는 불가능합니다.</div>
-
-
             </div>
+
+            <div className='RowLine'></div>
+
+            <div className='ReTitle'>후기</div>
+            <HotelReview HotelInfo={RoomInfo} Reviews={Reviews}/>
 
 
             <Footer />

@@ -29,6 +29,7 @@ import "../src/componets/Reservation/AgreeChkInfo.css";
 import "../src/componets/Room/RoomGrid.css";
 import "../src/componets/Hotel/HotelIntroduce.css";
 import "../src/componets/Hotel/HotelService.css";
+import "../src/componets/Hotel/HotelReview.css";
 
 
 // CustomCSS for pages

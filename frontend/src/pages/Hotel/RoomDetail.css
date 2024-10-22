@@ -74,7 +74,22 @@
         font-size: 14px;
     }
 
-    /* .abc{
+
+    .ReTitle{
+        font-weight: bold;
+        font-size: 22px;
+    }
+
+    
+
+
+}
+
+
+
+
+
+/* .abc{
         margin-top: 50px;
     }
 
@@ -105,6 +120,3 @@
         font-weight: bold;
         margin-left: 3px;
    } */
-
-
-}
