@@ -9,9 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.lostay.backend.cart.repository.CartRepository;
 import com.lostay.backend.event.entity.Event;
 import com.lostay.backend.hotel.dto.HotelDTO;
 import com.lostay.backend.mypage.dto.MypageDTO;
+import com.lostay.backend.mypage.dto.MypageCartListDTO;
 import com.lostay.backend.mypage.dto.ReviewpageDTO;
 import com.lostay.backend.review.entity.Review;
 import com.lostay.backend.review.repository.ReviewRepository;
@@ -30,6 +32,9 @@ public class MypageService {
 	private UserRepository userRepo;
 	@Autowired
 	private ReviewRepository reopo;
+	
+	@Autowired
+	private CartRepository cartRepo;
 	
 	//mypage화면 조회
 	public Object myPageInfo(Long userNo) {
@@ -59,6 +64,24 @@ public class MypageService {
 	        dto.setPagesize(reviewPage.getTotalPages()); // 총 페이지 수 설정
 	    }
 	    return reviewpageDTOList; 
+	}
+
+	//내가 선택한 찜 목록 조회
+	public Object mypageCartList(Long userNo, int page) {
+	    log.info("MypageService mypageCartList 실행");
+
+	    PageRequest pageable = PageRequest.of(page, 10); // 페이지 요청
+	    Page<MypageCartListDTO> cartPage = cartRepo.findTop10CartPage(userNo, pageable);
+
+	    List<MypageCartListDTO> cartpageDTOList = cartPage.getContent();
+
+	    // 총 요소 수 및 페이지 수 설정
+	    for (MypageCartListDTO dto : cartpageDTOList) {
+	        dto.setPagesize(cartPage.getTotalPages()); // 총 페이지 수 설정
+	    }
+	    return cartpageDTOList;
+		    
+
 	}
 
 }

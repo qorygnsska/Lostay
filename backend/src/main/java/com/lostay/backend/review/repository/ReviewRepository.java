@@ -1,11 +1,13 @@
 package com.lostay.backend.review.repository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.lostay.backend.mypage.dto.MypageCartListDTO;
 import com.lostay.backend.mypage.dto.ReviewpageDTO;
 import com.lostay.backend.review.entity.Review;
 
@@ -27,6 +29,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 			+ "Join r.hotel h "
 			+ "Where h.hotelNo = :hotelNo")
 	List<Review> findHotelReview(@Param("hotelNo")long hotelNo);
+
+
+
 
 
 }

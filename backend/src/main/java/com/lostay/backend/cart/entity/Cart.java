@@ -33,7 +33,7 @@ public class Cart {
 	private User user; // 회원넘버
 
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "cartHotel", // 중간 테이블 이름
+	@JoinTable(name = "cart_hotel", // 중간 테이블 이름
 			joinColumns = @JoinColumn(name = "cartNo"), // Cart의 외래키
 			inverseJoinColumns = @JoinColumn(name = "hotelNo") // Hotel의 외래키
 	) // 외래키 설
