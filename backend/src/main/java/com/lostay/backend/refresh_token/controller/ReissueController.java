@@ -31,6 +31,7 @@ public class ReissueController {
 	private final UserRepository userRepo;
 	private Long refreshTkExpired = 24 * 60 * 60 * 60L; // 1일
 	private Long accessTkExpired = 60 * 60 * 60L; // 1시간
+	//30 * 60 * 60L; 30분
 
 	public ReissueController(JWTUtil jwtUtil, RefreshTokenRepository refreshTkRepo, UserRepository userRepo) {
 
@@ -41,12 +42,11 @@ public class ReissueController {
 
 	@PostMapping("/reissue")
 	public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
-		
 
 		// 쿠키에서 리프레쉬토큰 가져오기
 		String refresh = null;
 		Cookie[] cookies = request.getCookies();
-
+	
 		if (cookies == null) {
 			return new ResponseEntity<>("No cookies found", HttpStatus.BAD_REQUEST);
 		}
@@ -98,7 +98,57 @@ public class ReissueController {
 		response.setHeader("Access-Control-Expose-Headers", "access");
 		response.setHeader("access", newAccess);
 		response.addCookie(createCookie("refresh", newRefresh));
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PostMapping("/newAccess")
+	public ResponseEntity<?> newAccess(HttpServletRequest request, HttpServletResponse response) {
 
+		// 쿠키에서 리프레쉬토큰 가져오기
+		String refresh = null;
+		Cookie[] cookies = request.getCookies();
+	
+		if (cookies == null) {
+			return new ResponseEntity<>("No cookies found", HttpStatus.BAD_REQUEST);
+		}
+
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals("refresh")) {
+
+				refresh = cookie.getValue();
+			}
+		}
+
+		// 토큰 존재여부 확인
+		if (refresh == null) {
+			return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
+		}
+
+		// 토큰 만료여부 확인
+		try {
+			jwtUtil.isExpired(refresh);
+		} catch (ExpiredJwtException e) {
+			return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
+		}
+
+		// 토큰이 refresh인지 확인 (발급시 페이로드에 명시)
+		String category = jwtUtil.getCategory(refresh);
+		if (!category.equals("refresh")) {
+			return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
+		}
+
+		String username = jwtUtil.getUsername(refresh);
+		String role = jwtUtil.getRole(refresh);
+		Long userNo = jwtUtil.getUserNo(refresh);
+
+		// 새로 발급할 토큰 생성
+		String newAccess = jwtUtil.createJwt("access", username, role, userNo, accessTkExpired);
+		
+		// 응답 설정
+		response.setHeader("Access-Control-Expose-Headers", "access");
+		response.setHeader("access", newAccess);
+		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

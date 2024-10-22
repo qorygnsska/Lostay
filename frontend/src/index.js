@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import store from './store/store';
+import { Provider } from 'react-redux'
 
 
 // 효준
@@ -52,10 +54,10 @@ const router = createBrowserRouter([
       { path: '/mypage', element: <MyPage /> },
       { path: '/wishlist', element: <WishList /> },
       { path: '/profile', element: <Profile /> },
-      { path: '/booking-history', element: <BookingHistory />},
+      { path: '/booking-history', element: <BookingHistory /> },
       { path: '/my-point', element: <MyPoint /> },
       { path: '/my-review', element: <MyReview /> },
-      { path: '/reservation', element: <Reservation />},
+      { path: '/reservation', element: <Reservation /> },
 
 
       // 교훈
@@ -79,5 +81,7 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <RouterProvider router={router} />
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
 );

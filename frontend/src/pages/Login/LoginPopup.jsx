@@ -17,7 +17,7 @@ export default function LoginPopup() {
     const axiosAccessToken = async () => {
         try {
             const response = await axios.post(
-                "http://localhost:9090/reissue",
+                "http://localhost:9090/newAccess",
                 {},
                 {
                     withCredentials: true,
@@ -31,9 +31,12 @@ export default function LoginPopup() {
                 const accessToken = response.headers["access"];
 
                 if (window.opener) {
-                    //window.opener.localStorage.setItem('accessToken', accessToken); // 토큰 저장하기
-                    window.opener.location.href = "/";
-                    window.opener = null;
+
+                    // 부모에게 토큰 정보 넘기기
+                    window.opener.postMessage({
+                        type: 'LOGIN_SUCCESS',
+                        payload: { accessToken }
+                    }, window.opener.location.origin);
                 }
 
                 window.close();

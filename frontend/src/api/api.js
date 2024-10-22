@@ -1,49 +1,66 @@
-// import axios from "axios";
-// import { getCookie, setCookie } from "../hook/cookies"
+import axios from 'axios';
+import store, { login, logout } from '../store/store'; // Redux 스토어 import
+//토큰이 필요한 api요청을 보내는 axios인스턴스
 
-// export const instance = axios.create({
-//     baseURL: "http://localhost:9080",
-//     headers: {
-//         'Content-Type': 'application/json',
-//         withCredentials: true,
-//     },
-// });
-// instance.interceptors.request.use((config) => {
-//     if (!config.headers) return config;
-//     const accessToken = getCookie("accessToken");
+export const privateApi = axios.create({
+    baseURL: 'http://localhost:9090',
+});
 
-//     if (accessToken) {
-//         config.headers["Authorization"] = `${accessToken}`;
-//     }
-//     return config;
-// });
+// 요청 인터셉터 설정
+privateApi.interceptors.request.use((config) => {
+    const state = store.getState();
+    const accessToken = state.auth.accessToken; // Redux에서 accessToken 가져오기
 
-// instance.interceptors.response.use(
-//     (res) => {
-//         return res;
-//     },
-//     async (error) => {
-//         if (error.config && error.response && error.response.status === 401) {
-//             if (error.config._retry) {
-//                 return Promise.reject(error); // 이미 재시도한 경우
-//             }
-//             error.config._retry = true;
+    if (accessToken) {
+        config.headers['access'] = `${accessToken}`;
+    }
 
-//             const refreshToken = getCookie("refreshToken");
-//             return axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
-//                 refreshToken: refreshToken,
-//             }).then(async (res) => {
-//                 if (res.status === 200 && res.data.accessToken) {
-//                     setCookie("Authorization", res.data.accessToken, {
-//                         path: '/',
-//                         secure: true,
-//                         sameSite: 'Strict',
-//                     });
-//                     error.config.headers["Authorization"] = `${res.data.accessToken}`;
-//                     return instance(error.config); // 원래 요청 재시도
-//                 }
-//             });
-//         }
-//         return Promise.reject(error);
-//     }
-// );
+    return config;
+}, (error) => {
+    return Promise.reject(error);
+});
+
+
+let isRequestInProgress = false
+//refresh token api
+privateApi.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    async (error) => {
+
+        if (error.config && error.response.data.message === 'expired' && error.response.status === 401) {
+            //     const refreshToken = getCookie('refresh'); // 쿠키에서 refresh token 가져오기
+            //   console.log('refreshToken - ', refreshToken)
+            // console.log('리프레쉬 요청함')
+            // refresh token 요청
+
+            try {
+                const res = await axios.post(
+                    "http://localhost:9090/reissue",
+                    {},
+                    {
+                        withCredentials: true,
+                    }
+                );
+
+                if (res.status === 200) {
+                    // Redux에 새로운 access token 저장
+                    const newAccessToken = res.headers['access'];
+                    store.dispatch(login({ authState: true, accessToken: newAccessToken }));
+
+                    console.log(newAccessToken)
+                    // 원래 요청을 새로운 access token으로 재시도
+
+                    error.config.headers['access'] = `${newAccessToken}`;
+                    return privateApi(error.config);
+                }
+            } catch (err) {
+                // refresh token 요청 실패 시 로그아웃
+                store.dispatch(logout());
+            }
+        }
+
+        return Promise.reject(error);
+    }
+);

@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BackNav from "../../componets/BackNav/BackNav";
 import Navbar from "../../componets/Navbar/Navbar";
 import { BsChatText } from "react-icons/bs";
 import { FaRegHeart, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { privateApi } from '../../api/api'
+import axios from "axios";
 
 export default function MyPage() {
     const myinfo = {
@@ -11,6 +13,21 @@ export default function MyPage() {
         nickname: "루이지애나포토존05",
         porint: 1000,
     };
+
+    const getDatas = async () => {
+        try {
+            const response = await privateApi.get('/mypage'); // API 요청
+            console.log(response.data)
+            return response.data;
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        getDatas();
+    });
 
     return (
         <div className="mypage--container">
