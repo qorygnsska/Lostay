@@ -17,21 +17,23 @@ export default function Home() {
     const [hotelList, setHotelList] = useState([]);
     const [locationList, setLocationList] = useState([]);
     const [locationHotelList, setLocationHotelList] = useState([]);
+    const [DCHotelList, setDCHotelList] = useState([]);
 
     const getData = async () => {
         try {
-            const [eventResp, hotelResp, locationResp, locationHotelResp] = await Promise.all([
+            const [eventResp, hotelResp, locationResp, locationHotelResp, DCHotelResp] = await Promise.all([
                 axios.post('http://localhost:9090/eventMain'),
                 axios.post('http://localhost:9090/hotHotlesMain'),
                 axios.post('http://localhost:9090/locationMain'),
-                axios.post('http://localhost:9090/triphotlesMain')
+                axios.post('http://localhost:9090/triphotlesMain'),
+                axios.post('http://localhost:9090/discountHotelMain')
             ]);
 
             setEventList(eventResp.data);
             setHotelList(hotelResp.data);
             setLocationList(locationResp.data);
-            setLocationHotelList(locationHotelResp.data)
-            console.log(locationHotelResp.data)
+            setLocationHotelList(locationHotelResp.data);
+            setDCHotelList(DCHotelResp.data)
 
         } catch (error) {
             console.error(error);
@@ -89,7 +91,7 @@ export default function Home() {
             <h2>
                 <span className="hotel--sale">What?!</span> 특가야 가자
             </h2>
-            <HotelCarousel hotelList={hotelList} />
+            <HotelCarousel hotelList={DCHotelList} />
 
             <Footer />
 
