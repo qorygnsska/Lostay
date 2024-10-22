@@ -1,6 +1,7 @@
 package com.lostay.backend.cart.entity;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -32,7 +33,7 @@ public class Cart {
 	@JsonManagedReference // Cart에서 User 방향
 	private User user; // 회원넘버
 
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY) // 변경: CascadeType 조정
 	@JoinTable(name = "cart_hotel", // 중간 테이블 이름
 			joinColumns = @JoinColumn(name = "cartNo"), // Cart의 외래키
 			inverseJoinColumns = @JoinColumn(name = "hotelNo") // Hotel의 외래키
@@ -41,6 +42,17 @@ public class Cart {
 	@JsonBackReference // Hotel에서 Cart 방향
 	private Set<Hotel> hotels = new HashSet<>(); // 호텔넘버 초기화
 	
-	
+	 // Cart 삭제 시 관련된 호텔의 카트 목록에서 제거
+    public void removeHotels() {
+        for (Hotel hotel : hotels) {
+            hotel.getCarts().remove(this); // Hotel의 카트 목록에서 제거
+        }
+        hotels.clear(); // 카트에서 호텔 목록을 비움
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(cartNo); // cartNo로만 해시코드 계산
+    }
 	
 }

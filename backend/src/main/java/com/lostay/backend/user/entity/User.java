@@ -88,23 +88,21 @@ public class User {
 	@JsonManagedReference // User에서 Review 방향
 	private Set<Review> reviews; // 리뷰 목록
 	
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
-	@ToString.Exclude
-	@JsonManagedReference // User에서 Payment 방향
-	private Set<Payment> payments; // 결제 목록
+    // Payment와의 관계는 삭제 시 영향을 받지 않도록 설정
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY) // Payment 엔티티와의 관계 설정
+    @ToString.Exclude
+    @JsonManagedReference // User에서 Payment 방향
+    private Set<Payment> payments = new HashSet<>(); // 결제 목록
 	
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
 	@ToString.Exclude
 	@JsonManagedReference // User에서 Point 방향
 	private Set<Point> points; // 포인트 목록
 	
-	@Override
-	public boolean equals(Object o) {
-	    if (this == o) return true;
-	    if (o == null || getClass() != o.getClass()) return false;
-	    User user = (User) o;
-	    return Objects.equals(userNo, user.userNo); // userNo로 비교
-	}
+	 @Override
+	    public int hashCode() {
+	        return Objects.hash(userNo); // userNo로만 해시코드 계산
+	    }
 	
 }
 

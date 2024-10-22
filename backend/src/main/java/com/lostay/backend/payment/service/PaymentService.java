@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lostay.backend.payment.dto.PaymentDTO;
 import com.lostay.backend.payment.entity.Payment;
@@ -25,6 +26,7 @@ import com.lostay.backend.user.entity.User;
 import com.lostay.backend.user.repository.UserRepository;
 
 @Service
+@Transactional
 public class PaymentService {
 
 	@Autowired

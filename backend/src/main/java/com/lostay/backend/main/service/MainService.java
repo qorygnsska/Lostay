@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lostay.backend.event.dto.EventDTO;
 import com.lostay.backend.event.entity.Event;
@@ -22,6 +23,7 @@ import com.lostay.backend.location.entity.Location;
 import com.lostay.backend.location.repository.LocationRepository;
 
 @Service
+@Transactional
 public class MainService {
 
 	@Autowired
