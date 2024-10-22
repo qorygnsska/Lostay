@@ -36,9 +36,9 @@ public class JWTFilter extends OncePerRequestFilter {
     	
     	
     	String accessToken = request.getHeader("access");
+    	System.out.println("accessToken 값 : "+ accessToken);
 
     	if (accessToken == null) {
-
     	    filterChain.doFilter(request, response);
 
     	    return;
@@ -48,11 +48,11 @@ public class JWTFilter extends OncePerRequestFilter {
     	try {
     	    jwtUtil.isExpired(accessToken);
     	} catch (ExpiredJwtException e) {
-
+    		System.out.println("access 톤큰 만료다잉");
     	    //response body
+    	    response.setContentType("application/json");
     	    PrintWriter writer = response.getWriter();
-    	    writer.print("expired");
-
+    	    writer.print("{\"message\": \"expired\"}");
     	    //response status code
     	    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     	    return;
@@ -62,10 +62,11 @@ public class JWTFilter extends OncePerRequestFilter {
     	String category = jwtUtil.getCategory(accessToken);
 
     	if (!category.equals("access")) {
-
     	    //response body
+    	    response.setContentType("application/json");
     	    PrintWriter writer = response.getWriter();
-    	    writer.print("invalid access token");
+    	    writer.print("{\"message\": \"invalid access token\"}");
+
 
     	    //response status code
     	    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -86,7 +87,7 @@ public class JWTFilter extends OncePerRequestFilter {
     	Authentication authToken = new UsernamePasswordAuthenticationToken(CustomOAuth2User, null, CustomOAuth2User.getAuthorities());
     	SecurityContextHolder.getContext().setAuthentication(authToken);
 
-    	
+
     	filterChain.doFilter(request, response);
     }
     

@@ -4,54 +4,55 @@ import store, { login, logout } from '../store/store'; // Redux 스토어 import
 
 export const privateApi = axios.create({
     baseURL: 'http://localhost:9090',
-    headers: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-    },
 });
 
 // 요청 인터셉터 설정
 privateApi.interceptors.request.use((config) => {
-    console.log('요청 갑니데이')
     const state = store.getState();
     const accessToken = state.auth.accessToken; // Redux에서 accessToken 가져오기
 
     if (accessToken) {
-        config.headers['Authorization'] = `Bearer ${accessToken}`;
+        config.headers['access'] = `${accessToken}`;
     }
 
     return config;
 }, (error) => {
-    console.log('요청 에러떳다잉')
     return Promise.reject(error);
 });
 
+
+let isRequestInProgress = false
 //refresh token api
 privateApi.interceptors.response.use(
     (response) => {
         return response;
     },
     async (error) => {
-        console.log('리프레쉬 토큰 에러가 됫다넹')
+
         if (error.config && error.response.data.message === 'expired' && error.response.status === 401) {
-            //const refreshToken = getCookie('refreshToken'); // 쿠키에서 refresh token 가져오기
-            console.log('리프레쉬 요청함')
+            //     const refreshToken = getCookie('refresh'); // 쿠키에서 refresh token 가져오기
+            //   console.log('refreshToken - ', refreshToken)
+            // console.log('리프레쉬 요청함')
             // refresh token 요청
+
             try {
-                const res = await axios.get('http://localhost:9090/reissue', {
-                    headers: {
-                        //RefreshToken: refreshToken,
-                        'Content-Type': 'application/json',
+                const res = await axios.post(
+                    "http://localhost:9090/reissue",
+                    {},
+                    {
                         withCredentials: true,
                     }
-                });
+                );
 
                 if (res.status === 200) {
                     // Redux에 새로운 access token 저장
                     const newAccessToken = res.headers['access'];
                     store.dispatch(login({ authState: true, accessToken: newAccessToken }));
 
+                    console.log(newAccessToken)
                     // 원래 요청을 새로운 access token으로 재시도
-                    error.config.headers['Authorization'] = `Bearer ${res.data.accessToken}`;
+
+                    error.config.headers['access'] = `${newAccessToken}`;
                     return privateApi(error.config);
                 }
             } catch (err) {
@@ -63,10 +64,3 @@ privateApi.interceptors.response.use(
         return Promise.reject(error);
     }
 );
-
-// 쿠키에서 특정 이름의 값을 가져오는 함수
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}

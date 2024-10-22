@@ -14,7 +14,7 @@ export default function MyPage() {
         porint: 1000,
     };
 
-    const getData = async () => {
+    const getDatas = async () => {
         try {
             const response = await privateApi.get('/mypage'); // API 요청
             console.log(response.data)
@@ -26,8 +26,8 @@ export default function MyPage() {
     };
 
     useEffect(() => {
-        getData();
-    }, []);
+        getDatas();
+    });
 
     return (
         <div className="mypage--container">
