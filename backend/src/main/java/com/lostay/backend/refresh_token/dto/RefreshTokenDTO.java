@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Refresh_TokenDTO {
+public class RefreshTokenDTO {
 
 	private Long rtNo;		// 토큰넘버
 	

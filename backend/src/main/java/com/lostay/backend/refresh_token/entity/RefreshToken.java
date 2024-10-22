@@ -1,7 +1,6 @@
 package com.lostay.backend.refresh_token.entity;
 
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,12 +15,13 @@ import com.lostay.backend.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Refresh_Token {
+public class RefreshToken {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +29,13 @@ public class Refresh_Token {
 	private Long rtNo;		// 토큰넘버
 	
 	@JoinColumn(name = "userNo" , nullable = false)
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
+	@ToString.Exclude
 	private User user;	// 회원넘버 외래키
 	
 	@Column(name="rt_token")
-	private int rtToken;	// 리프레쉬토큰
+	private String rtToken;	// 리프레쉬토큰
+	
+	@Column(name="rt_expiration")
+	private String rtExpiration;
 }

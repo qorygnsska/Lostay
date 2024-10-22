@@ -67,7 +67,7 @@ public class SecurityConfig {
 
 				// JWTFilter 추가
 				.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
-
+				
 				// oauth2
 				.oauth2Login((oauth2) -> oauth2
 						.userInfoEndpoint(
