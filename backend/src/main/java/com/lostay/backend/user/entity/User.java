@@ -77,11 +77,7 @@ public class User {
     }
 	 
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Cart 엔티티와의 관계 설정
-    @ToString.Exclude
-    @JsonManagedReference // User에서 Cart 방향   
-    private Set<Cart> cartsnew= new HashSet<>(); // 카트 목록
-    
+
 	
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
 	@ToString.Exclude

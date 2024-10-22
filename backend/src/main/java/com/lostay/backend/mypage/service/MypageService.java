@@ -85,5 +85,33 @@ public class MypageService {
 		    
 
 	}
+	//mypage 유정 정보수정(nickname)
+	public void userUpdateNicName(Long userNo, String nickname) {
+		 log.info("MypageService userUpdateNicName 실행");
+		 Optional<User> userEntityOptional = userRepo.findById(userNo);	      
+		  User userEntity = userEntityOptional.orElseThrow(() -> new RuntimeException("User not found"));
+
+		    // 닉네임 업데이트
+		    userEntity.setUserNickname(nickname);
+
+		    // 업데이트된 엔티티 저장
+		    userRepo.save(userEntity);
+		 
+	}
+
+	public void userUpdatePhone(Long userNo, String phone) {
+		 log.info("MypageService userUpdatePhone 실행");
+		 Optional<User> userEntityOptional = userRepo.findById(userNo);	      
+		  User userEntity = userEntityOptional.orElseThrow(() -> new RuntimeException("User not found"));
+
+		    // 닉네임 업데이트
+		    userEntity.setUserPhone(phone);
+
+		    // 업데이트된 엔티티 저장
+		    userRepo.save(userEntity);
+		 
+	}
+
+
 
 }

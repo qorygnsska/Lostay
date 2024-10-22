@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,6 +55,19 @@ public class MypageController {
 		return new ResponseEntity<>(mypageService.mypageCartList(userNo,page),HttpStatus.OK);
 
 	}
+	
+	//mypage 유저 정보 닉네임 수정
+	@PostMapping("/mypageUserInfo/{userNo}/nickname/{nickname}")
+	 public void mypageUserInfoNickName(@PathVariable Long userNo,@PathVariable("nickname") String nickname) {
+		 System.out.println("MypageController mypageUserInfoNickName실행");
+		 mypageService.userUpdateNicName(userNo,nickname);
+} 
+	
+	@PostMapping("/mypageUserInfo/{userNo}/phone/{phone}")
+	 public void mypageUserInfoPhone(@PathVariable Long userNo,@PathVariable("phone") String phone) {
+		 System.out.println("MypageController mypageUserInfoPhone실행");
+		 mypageService.userUpdatePhone(userNo,phone);
+} 
 	
 	
 	

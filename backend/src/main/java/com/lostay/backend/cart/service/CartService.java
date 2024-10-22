@@ -71,14 +71,9 @@ public class CartService {
 		  // 카트 조회: 존재하지 않으면 예외 발생
         Cart cart = cartRepo.findById(cartNo)
             .orElseThrow(() -> new EntityNotFoundException("Cart not found"));
-        
-        // Cart에서 호텔 제거 (관계 정리)
-        cart.removeHotels(); // 호텔 목록에서 Cart 제거
 
         // Cart 삭제
         cartRepo.delete(cart); // 해당 카트만 삭제
 
-        // 현재 세션의 캐시 비우기
-        entityManager.clear(); // 캐시를 비워서 stale data 방지
 	}
 }
