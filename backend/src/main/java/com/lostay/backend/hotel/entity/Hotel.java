@@ -57,18 +57,31 @@ public class Hotel {
 	private Set<Room> rooms = new HashSet<>(); // 룸 목록
 	
 	
-	// equals와 hashCode 메소드 추가
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Hotel hotel = (Hotel) o;
-        return Objects.equals(hotelNo, hotel.hotelNo);
-    }
+//	// equals와 hashCode 메소드 추가
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Hotel hotel = (Hotel) o;
+//        return Objects.equals(hotelNo, hotel.hotelNo);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(hotelNo);
+//    }
+	 @Override
+	    public boolean equals(Object o) {
+	        if (this == o) return true;
+	        if (o == null || getClass() != o.getClass()) return false;
+	        Hotel hotel = (Hotel) o;
+	        return hotelNo != null && hotelNo.equals(hotel.hotelNo);
+	    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(hotelNo);
-    }
-	 
+	    @Override
+	    public int hashCode() {
+	        return Objects.hash(hotelNo); // hotelNo를 사용
+	    }
+	
+	
 }
