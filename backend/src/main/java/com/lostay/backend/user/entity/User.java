@@ -2,7 +2,8 @@ package com.lostay.backend.user.entity;
 
 
 import java.time.LocalDateTime;
-
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.point.entity.Point;
 import com.lostay.backend.refresh_token.entity.RefreshToken;
 import com.lostay.backend.review.entity.Review;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -77,8 +79,8 @@ public class User {
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Cart 엔티티와의 관계 설정
     @ToString.Exclude
-    @JsonManagedReference // User에서 Cart 방향
-    private Set<Cart> carts; // 카트 목록
+    @JsonManagedReference // User에서 Cart 방향   
+    private Set<Cart> cartsnew= new HashSet<>(); // 카트 목록
     
 	
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
@@ -95,6 +97,15 @@ public class User {
 	@ToString.Exclude
 	@JsonManagedReference // User에서 Point 방향
 	private Set<Point> points; // 포인트 목록
+	
+	@Override
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (o == null || getClass() != o.getClass()) return false;
+	    User user = (User) o;
+	    return Objects.equals(userNo, user.userNo); // userNo로 비교
+	}
+	
 }
 
 

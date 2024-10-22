@@ -23,9 +23,17 @@ public class CartController {
    
 	@Autowired
 	private CartService cartService;
-	
+	//내가 선택한 찜 호텔 저장
 	 @PostMapping("/cartsave")
 	 public void createCart(@RequestParam Long userId, @RequestParam Long hotelId) {
 	        cartService.cartsave(userId, hotelId);
 }
+	 
+		//내가 선택한 찜 호텔 삭제
+	 @PostMapping("/cartdelete")
+	 public void cartdelete(@RequestParam Long cartNo) {
+		 System.out.println("CartController cartdelete실행");
+	        cartService.deleteById(cartNo);
+} 
+	 
 }
