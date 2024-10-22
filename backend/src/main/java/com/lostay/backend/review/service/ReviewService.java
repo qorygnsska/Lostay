@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.lostay.backend.hotel.entity.Hotel;
@@ -132,32 +134,65 @@ public class ReviewService {
 		
 	}
 
-//	// 룸리스트 페이지에서 해당 호텔 전체 리뷰 조회
-//	public List<ReviewDTO> findAllHotelReview(long hotelNo) {
-//		
-//		List<Review> ReviewList = revRepo.findHotelReview(hotelNo);
-//		List<ReviewDTO> dtoList = new ArrayList<ReviewDTO>();
-//		
-//		for(Review d : ReviewList) {
-//			ReviewDTO dto = new ReviewDTO();
-//			dto.setReview_content(d.getReviewContent());
-//			
-//			String[] str = d.getReviewImg().split(",");
-//			dto.setReview_img(str);
-//			dto.setReview_create_At(d.getReviewCreateAt());
-//			dto.setReview_rating(d.getReviewRating());
-//			dto.setRoom_no(d.getRoom().getRoomNo());
-//			dto.setUser_no(d.getUser().getUserNo());
-//			dto.setRoom_name(d.getRoom().getRoomName());
-//			
-//			dtoList.add(dto);
-//		}
-//		
-//		
-//		
-//		return dtoList; 
-//	}
-//	
+	// 룸리스트 페이지에서 해당 호텔 전체 리뷰 조회
+	public List<ReviewDTO> findAllHotelReview(long hotelNo) {
+		
+		List<Object[]> ReviewList = revRepo.findHotelReview(hotelNo);
+		List<ReviewDTO> dtoList = new ArrayList<ReviewDTO>();
+		
+		for(Object[] d : ReviewList) {
+			ReviewDTO dto = new ReviewDTO();
+			dto.setReviewContent((String)d[0]);
+			
+			String[] str = d[1].toString().split(",");
+			dto.setReviewImg(str);
+			dto.setReviewCreateAt((LocalDateTime)d[2]);
+			dto.setReviewRating((double)d[3]);
+			dto.setRoomNo((long)d[4]);
+			dto.setUserNo((long)d[5]);
+			dto.setRoomName((String)d[6]);
+			dto.setReviewNo((long)d[7]);
+			
+			dtoList.add(dto);
+		}
+		
+		
+		
+		return dtoList; 
+	}
+
+	
+	// 객실리스트에서 최신 리뷰 3개
+	public List<ReviewDTO> findHotelReview3(long hotelNo) {
+
+		
+		Pageable pageable = PageRequest.of(0, 3); // 첫 번째 페이지, 3개 항목
+		
+		List<Object[]> ReviewList = revRepo.findHotelReview3(hotelNo,pageable);
+		List<ReviewDTO> dtoList = new ArrayList<ReviewDTO>();
+		
+		double reviewAvg = revRepo.findHotelReviewAvg(hotelNo);
+		
+		for(Object[] d : ReviewList) {
+			ReviewDTO dto = new ReviewDTO();
+			dto.setReviewContent((String)d[0]);
+			
+			dto.setReviewCreateAt((LocalDateTime)d[1]);
+			dto.setReviewRating((double)d[2]);
+			dto.setRoomNo((long)d[3]);
+			dto.setUserNo((long)d[4]);
+			dto.setRoomName((String)d[5]);
+			dto.setReviewNo((long)d[6]);
+			dto.setReviewAvg(reviewAvg);
+						
+			dtoList.add(dto);
+		}
+		
+		
+		return dtoList;
+	}
+
+
 	
 	
 	
