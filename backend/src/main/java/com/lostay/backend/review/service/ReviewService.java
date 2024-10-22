@@ -172,6 +172,7 @@ public class ReviewService {
 		List<ReviewDTO> dtoList = new ArrayList<ReviewDTO>();
 		
 		double reviewAvg = revRepo.findHotelReviewAvg(hotelNo);
+		int reviewCount = revRepo.findHotelReviewCount(hotelNo);
 		
 		for(Object[] d : ReviewList) {
 			ReviewDTO dto = new ReviewDTO();
@@ -184,6 +185,7 @@ public class ReviewService {
 			dto.setRoomName((String)d[5]);
 			dto.setReviewNo((long)d[6]);
 			dto.setReviewAvg(reviewAvg);
+			dto.setReviewCount(reviewCount);
 						
 			dtoList.add(dto);
 		}

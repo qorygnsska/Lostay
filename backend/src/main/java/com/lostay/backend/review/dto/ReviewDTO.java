@@ -25,4 +25,5 @@ public class ReviewDTO {
 	
 	private String roomName;					// 객실명
 	private double reviewAvg;					// 별점 평균
+	private int reviewCount;					// 리뷰 전체 개수
 }
