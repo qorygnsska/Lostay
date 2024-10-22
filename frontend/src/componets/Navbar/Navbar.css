@@ -20,11 +20,6 @@
             text-decoration: none;
             color: black;
 
-            .icon {
-                width: 25px;
-                height: 25px;
-
-            }
 
             .home {
                 border-radius: 10px;
@@ -37,6 +32,12 @@
                 background-color: var(--logoColor);
                 font-weight: bold;
             }
+        }
+
+        .icon {
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
         }
     }
 

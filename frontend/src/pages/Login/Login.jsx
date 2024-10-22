@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Login.css";
 import BackHeader from "../../componets/BackNav/BackNav";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/store";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+
+    const dispatch = useDispatch();
+    let navigate = useNavigate();
+
+    useEffect(() => {
+        const handleLoginMessage = (event) => {
+            if (event.data.type === 'LOGIN_SUCCESS') {
+                const { accessToken } = event.data.payload;
+
+                // Redux에 액세스 토큰 저장
+                dispatch(login({ authState: true, accessToken: accessToken }));
+                navigate('/');
+            }
+        };
+
+        // 메시지 이벤트 리스너 등록
+        window.addEventListener('message', handleLoginMessage);
+
+        // 컴포넌트 언마운트 시 이벤트 리스너 제거
+        return () => {
+            window.removeEventListener('message', handleLoginMessage);
+        };
+    }, [dispatch]);
+
     const onSocialLogin = (social) => {
         const popupUrl = `http://localhost:9090/oauth2/authorization/${social}`;
         const width = 600;
@@ -15,6 +42,7 @@ export default function Login() {
             `${social}Login`,
             `width=${width},height=${height},top=${top},left=${left}`
         );
+
     };
 
     return (
