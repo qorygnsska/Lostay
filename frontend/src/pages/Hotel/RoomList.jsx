@@ -32,6 +32,7 @@ export default function RoomList() {
         location: "제주특별자치도 서귀포시 색달동 3039-3",
         introduce: "세계 자연문화유산인 제주의 아름다운 풍광을 담은 리조트로써 그 명성을 쌓아가고 있는 제주신라호텔은 1980년 개관부터 지금까지 품격과 문화가 있는 휴식지로서 수많은 굵직한 국제행사를 성공적으로 치러온 최고의 리조트입니다 이국적인 분위기와 최고의 시설을 선보이며 고객에게 먼저 다가가는 리조트에 특화된 서비스로 호텔에 다녀간 세계의 국가수반을 비롯 많은 VIP들에게 크나큰 찬사를 받아 왔습니다",
         services: ['피트니스', '수영장', '미니바', '사우나', '무선인터넷', '욕실용품', '레스토랑', '금연', 'TV', '에어컨', '프린터사용', '라운지', '짐보관가능', '샤워실', '욕조', '무료주차', '카페', '공용스파', '다리미', '카드결제', '주차장', '엘리베이터'],
+        images: ['/HotelList/호텔1.jpg'],
     };
 
     
@@ -271,7 +272,7 @@ export default function RoomList() {
     return (
         <Container className='room--list'>
             
-            <HotelCarousel />
+            <HotelCarousel images={HotelInfo.images}/>
 
             <div className='HotelInfo'>
                 <div className='HotelRN'>

@@ -1,0 +1,110 @@
+.room--detail--container {
+
+    .NameBox {
+        margin-top: 30px;
+    }
+
+    .RoomName {
+        font-size: 25px;
+        font-weight: bold;
+        margin-bottom: 13px;
+    }
+
+    .HotelName {
+        font-size: 15px;
+        text-decoration: none;
+        color: black;
+    }
+
+
+    .RowLine {
+        border: 1px solid rgb(219, 219, 219);
+        opacity: 50%;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .InfoBox {
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 10px;
+        padding: 15px;
+    }
+
+    .InfoTitle {
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .CheckInfo, .InfoContent{
+        color: rgb(121, 121, 121);
+        font-size: 14px;
+    }
+
+
+    .SerTitle {
+        margin-top: 30px;
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+    .SerDiv{
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .SerContent{
+        flex: 0 0 25%;
+        color: rgb(121, 121, 121);
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+    
+
+
+    .CanTitle {
+        margin-top: 10px;
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .CancelContent{
+        color: red;
+        font-size: 14px;
+    }
+
+    /* .abc{
+        margin-top: 50px;
+    }
+
+
+    .RealPrice {
+        color: rgb(156, 156, 156);
+        font-weight: bold;
+        font-size: 15px;
+        text-decoration: line-through;
+        text-align: right;
+   }
+
+
+   .RoomDiscount {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+   }
+
+   .Discount {
+        font-size: 15px;
+        font-weight: bold;
+        color: rgb(255, 27, 38);
+   }
+
+   .DiscountPrice {
+        font-size: 18px;
+        font-weight: bold;
+        margin-left: 3px;
+   } */
+
+
+}
