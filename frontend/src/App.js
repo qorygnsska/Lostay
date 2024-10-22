@@ -27,6 +27,8 @@ import "../src/componets/Reservation/PayType.css";
 import "../src/componets/Reservation/AgreeInfo.css";
 import "../src/componets/Reservation/AgreeChkInfo.css";
 import "../src/componets/Room/RoomGrid.css";
+import "../src/componets/Hotel/HotelIntroduce.css";
+import "../src/componets/Hotel/HotelService.css";
 
 
 // CustomCSS for pages
@@ -46,6 +48,7 @@ import "../src/pages/MyPage/BookingHistory/Payment/Payment.css";
 import "../src/pages/MyPage/MyReview/MyReview.css";
 import "../src/pages/MyPage/MyPoint/MyPoint.css";
 import "../src/pages/Reservation/Reservation.css";
+import "../src/pages/Hotel/RoomDetail.css";
 
 function App() {
     return (

@@ -1,0 +1,13 @@
+.hotel--service--container{
+    
+    .HotelServices{
+        display: flex;
+        flex-wrap: wrap;
+   }
+
+   .HotelService{
+        flex: 0 0 25%;
+        color: rgb(121, 121, 121);
+        margin-bottom: 20px;
+   }
+}

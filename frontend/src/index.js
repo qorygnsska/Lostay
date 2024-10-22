@@ -26,6 +26,7 @@ import Reservation from './pages/Reservation/Reservation'                   // �
 import HotelList from './pages/Hotel/HotelList';                            // 호텔 리스트 페이지
 import RoomList from './pages/Hotel/RoomList';                              // 객실 리스트 페이지
 import HotelMap from './pages/Hotel/HotelMap';                              // 지도 페이지
+import RoomDetail from './pages/Hotel/RoomDetail';                              // 객실 상세 페이지
 
 
 // 정일
@@ -61,6 +62,7 @@ const router = createBrowserRouter([
       { path: '/hotelList', element: <HotelList /> },
       { path: '/roomList', element: <RoomList /> },
       { path: '/hotelMap', element: <HotelMap /> },
+      { path: '/roomDetail', element: <RoomDetail /> },
 
 
       // 정일

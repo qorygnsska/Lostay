@@ -1,0 +1,16 @@
+.hotel--introduce--container {
+
+    .Double1,
+    .Double2 {
+        color: rgb(206, 206, 206);
+        font-size: 25px;
+    }
+
+    .Double2 {
+        text-align: right;
+    }
+
+    .IntroContent {
+        color: rgb(121, 121, 121);
+    }
+}

@@ -1,99 +1,120 @@
-.room--grid--container{
+.room--grid--container {
 
 
-    .RoomRow {
-        display: flex;
-        height: 230px;
-        padding: 15px;
-        border-radius: 10px;
-        background-color: rgb(242, 245, 255);
-        margin-bottom: 20px;
+     .RoomRow {
+          display: flex;
+          height: 230px;
+          padding: 15px;
+          border-radius: 10px;
+          background-color: rgb(242, 245, 255);
+          margin-bottom: 20px;
 
-   }
+     }
 
-   .RoomImg {
-        width: 200px;
-        height: 200px;
-        border-radius: 10px;
-        margin-right: 20px;
-   }
+     .RoomImg {
+          width: 200px;
+          height: 200px;
+          border-radius: 10px;
+          margin-right: 20px;
+     }
 
-   .RoomInfo {
-        display: flex;
-        justify-content: space-between;
-        background-color: white;
-        border-radius: 10px;
-        width: 495px;
-        height: 200px;
-        padding: 20px;
-        margin-bottom: 10px;
-   }
-
-
-   .InfoBox{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;     
-   }
-
-   .RoomName {
-        font-weight: bold;
-        font-size: 18px;
-        margin-bottom: 10px;
-        color: black;
-   }
-
-   .PTBox{
-        color: rgb(156, 156, 156);
-        font-size: 13px;
-        margin-top: 60px;
-   }
-
-   .RoomPrice{
-        text-align: right;
-        margin-top: 65px;
-   }
-
-   .RealPrice {
-        color: rgb(156, 156, 156);
-        font-weight: bold;
-        font-size: 12px;
-        text-decoration: line-through;
-   }
+     .RoomInfo {
+          display: flex;
+          justify-content: space-between;
+          background-color: white;
+          border-radius: 10px;
+          width: 495px;
+          height: 200px;
+          padding: 20px;
+          margin-bottom: 10px;
+     }
 
 
-   .RoomDiscount {
-        display: flex;
-        align-items: center;
-        justify-content: right;
-   }
+     .InfoBox {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+     }
 
-   .Discount {
-        font-size: 12px;
-        font-weight: bold;
-        color: rgb(255, 27, 38);
-   }
+     .RoomName {
+          font-weight: bold;
+          font-size: 18px;
+          margin-bottom: 10px;
+          color: black;
+     }
 
-   .DiscountPrice {
-        font-size: 15px;
-        font-weight: bold;
-        margin-left: 3px;
-   }
+     .PTBox {
+          color: rgb(156, 156, 156);
+          font-size: 13px;
+          margin-top: 60px;
+     }
 
-   .RoomCount{
-        font-size: 12px;
-        color: orange;
-   }
+     .RoomPrice {
+          text-align: right;
+          margin-top: 65px;
+     }
 
-   .RoomBtn{
-      margin-top: 10px;
-   }
+     .RealPrice {
+          color: rgb(156, 156, 156);
+          font-weight: bold;
+          font-size: 12px;
+          text-decoration: line-through;
+     }
 
-   .rBtn{
-        padding: 7px;
-        color: white;
-        text-decoration: none;
-        background-color: #fb6969;
-        border-radius: 10px;
-   }
+
+     .RoomDiscount {
+          display: flex;
+          align-items: center;
+          justify-content: right;
+     }
+
+     .Discount {
+          font-size: 12px;
+          font-weight: bold;
+          color: rgb(255, 27, 38);
+     }
+
+     .DiscountPrice {
+          font-size: 15px;
+          font-weight: bold;
+          margin-left: 3px;
+     }
+
+     .sDiscount {
+          font-size: 12px;
+          font-weight: bold;
+          color: rgb(156, 156, 156);
+     }
+
+     .sDiscountPrice {
+          font-size: 15px;
+          font-weight: bold;
+          margin-left: 3px;
+          color: rgb(156, 156, 156);
+     }
+
+     .RoomCount {
+          font-size: 12px;
+          color: orange;
+     }
+
+     .RoomBtn {
+          margin-top: 10px;
+     }
+
+     .rBtn {
+          padding: 7px;
+          color: white;
+          text-decoration: none;
+          background-color: #fb6969;
+          border-radius: 10px;
+     }
+
+     .srBtn {
+          padding: 6px;
+          border-radius: 10px;
+          background-color: rgb(187, 187, 187);
+          color: white;
+          border: none;
+     }
 }

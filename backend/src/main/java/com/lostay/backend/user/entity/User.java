@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lostay.backend.cart.entity.Cart;
 import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.point.entity.Point;
-import com.lostay.backend.refresh_token.entity.Refresh_Token;
+import com.lostay.backend.refresh_token.entity.RefreshToken;
 import com.lostay.backend.review.entity.Review;
 
 
@@ -92,10 +92,6 @@ public class User {
 	@ToString.Exclude
 	@JsonManagedReference // User에서 Payment 방향
 	private Set<Payment> payments; // 결제 목록
-	
-	@OneToOne(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
-	@ToString.Exclude
-	private Refresh_Token refresh_tokens; // 리프레쉬 토큰 목록
 	
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
 	@ToString.Exclude
