@@ -17,31 +17,31 @@ import com.lostay.backend.room.repository.RoomReopository;
 @Controller	
 public class RoomController {
 
-	@Autowired
-	private RoomReopository rr;
-	
-	@GetMapping("/roomhotelJoin")
-	public String roomhotelJoin() {
-	
-	Long hotelNo = 1L;
-		
-	List<Room> rooms = rr.findByHotel_HotelNo(hotelNo);
-	List<RoomDTO> RoomList = new ArrayList<RoomDTO>();
-	System.out.println("여기에 hotel = 1 인 객실 출력");
-	for(Room s : rooms) {
-		RoomDTO dto = new RoomDTO();
-		dto.setHotelName(s.getHotel().getHotelName());
-		dto.setRoomNo(s.getRoomNo());
-		dto.setRoomName(s.getRoomName());
-		
-		RoomList.add(dto);
-		
-	}
-	
-	for(RoomDTO d : RoomList) {
-		System.out.println(d);
-	}
-		
-		return "<h1>suceess</h1>";
-	}
+//	@Autowired
+//	private RoomReopository rr;
+//	
+//	@GetMapping("/roomhotelJoin")
+//	public String roomhotelJoin() {
+//	
+//	Long hotelNo = 1L;
+//		
+//	List<Room> rooms = rr.findByHotel_HotelNo(hotelNo);
+//	List<RoomDTO> RoomList = new ArrayList<RoomDTO>();
+//	System.out.println("여기에 hotel = 1 인 객실 출력");
+//	for(Room s : rooms) {
+//		RoomDTO dto = new RoomDTO();
+//		dto.setHotelName(s.getHotel().getHotelName());
+//		dto.setRoomNo(s.getRoomNo());
+//		dto.setRoomName(s.getRoomName());
+//		
+//		RoomList.add(dto);
+//		
+//	}
+//	
+//	for(RoomDTO d : RoomList) {
+//		System.out.println(d);
+//	}
+//		
+//		return "<h1>suceess</h1>";
+//	}
 }

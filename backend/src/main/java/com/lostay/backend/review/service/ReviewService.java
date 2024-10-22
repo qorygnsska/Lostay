@@ -194,6 +194,7 @@ public class ReviewService {
 		return dtoList;
 	}
 
+	// 객실에 대한 리뷰 전체 조회
 	public List<ReviewDTO> findRoomReviewAll(long roomNo) {
 		
 		List<Review> newReview = revRepo.findByRoom_RoomNo(roomNo);
