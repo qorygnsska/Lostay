@@ -25,7 +25,7 @@ export default function Home() {
                 axios.post('http://localhost:9090/eventMain'),
                 axios.post('http://localhost:9090/hotHotlesMain'),
                 axios.post('http://localhost:9090/locationMain'),
-                axios.post('http://localhost:9090/triphotlesMain'),
+                axios.post('http://localhost:9090/triphotelsMain'),
                 axios.post('http://localhost:9090/discountHotelMain')
             ]);
 
@@ -35,6 +35,7 @@ export default function Home() {
             setLocationHotelList(locationHotelResp.data);
             setDCHotelList(DCHotelResp.data)
 
+            console.log(eventResp.data);
         } catch (error) {
             console.error(error);
         }

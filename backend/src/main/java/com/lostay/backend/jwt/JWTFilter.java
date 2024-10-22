@@ -51,7 +51,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
     	    //response body
     	    PrintWriter writer = response.getWriter();
-    	    writer.print("access token expired");
+    	    writer.print("expired");
 
     	    //response status code
     	    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

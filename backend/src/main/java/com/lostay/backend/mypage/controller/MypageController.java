@@ -42,19 +42,6 @@ public class MypageController {
 	}
 	
 	
-	//mypage 내가 선택한 찜목록 조회
-	@GetMapping("/mypageCartList/{userNo}")
-	public ResponseEntity<?>mypageCartList(@PathVariable Long userNo,@RequestParam(required = false) Integer page){
-		log.info("mypageCartList실행");
-		
-		// page가 null인 경우 기본값을 0으로 설정 (예: 첫 페이지)
-	    if (page == null) {
-	        page = 0; // 기본값 설정
-	    }
-		return new ResponseEntity<>(mypageService.mypageCartList(userNo,page),HttpStatus.OK);
-
-	}
-	
 	
 	
 }

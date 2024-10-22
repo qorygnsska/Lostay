@@ -44,7 +44,7 @@ public class MainController {
 
 	}
 	//인기 호텔 조회
-	@PostMapping("/hotHotlesMain")
+	@PostMapping("/hotHotelsMain")
 	public ResponseEntity<?>hotHotlesMain(){
 		log.info("hotHotlesMain실행");
 		return new ResponseEntity<>(mainService.findTop10HtolesRating(),HttpStatus.OK);

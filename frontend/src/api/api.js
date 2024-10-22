@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { login, logout, store } from '../store/store'; // Redux 스토어 import
+import store, { login, logout } from '../store/store'; // Redux 스토어 import
 //토큰이 필요한 api요청을 보내는 axios인스턴스
 
 export const privateApi = axios.create({
@@ -11,6 +11,7 @@ export const privateApi = axios.create({
 
 // 요청 인터셉터 설정
 privateApi.interceptors.request.use((config) => {
+    console.log('요청 갑니데이')
     const state = store.getState();
     const accessToken = state.auth.accessToken; // Redux에서 accessToken 가져오기
 
@@ -20,6 +21,7 @@ privateApi.interceptors.request.use((config) => {
 
     return config;
 }, (error) => {
+    console.log('요청 에러떳다잉')
     return Promise.reject(error);
 });
 
@@ -29,6 +31,7 @@ privateApi.interceptors.response.use(
         return response;
     },
     async (error) => {
+        console.log('리프레쉬 토큰 에러가 됫다넹')
         if (error.config && error.response.data.message === 'expired' && error.response.status === 401) {
             //const refreshToken = getCookie('refreshToken'); // 쿠키에서 refresh token 가져오기
             console.log('리프레쉬 요청함')
