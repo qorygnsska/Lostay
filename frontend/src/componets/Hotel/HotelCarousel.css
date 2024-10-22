@@ -1,4 +1,6 @@
 .hotel--carousel--container{
+    width: 744px;
+    height: 480px;
 
     .carousel-control-prev-icon, .carousel-control-next-icon{
         width: 50px;
@@ -6,5 +8,10 @@
         background-color: rgb(77, 77, 77);
         opacity: 70%;
         border-radius: 10%;
+    }
+
+    .HotelImg{
+        width: 744px;
+        height: 480px;
     }
 }

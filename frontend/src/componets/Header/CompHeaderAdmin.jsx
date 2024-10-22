@@ -8,8 +8,8 @@ export default function CompHeaderAdmin() {
     //const selectedLink = location.pathname.toString();
     //console.log(`selectedNavItem: ${selectedLink}`);
 
-    //console.log(location.search);//url에서 parameter가져오기 cf.useParams()
-
+    //console.log(location.search);//url에서 parameter가져오기
+    // cf. useParams() : page event detail에 있음
 
 
     const [time, setTime] = useState(new Date());
