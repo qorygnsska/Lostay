@@ -16,10 +16,10 @@ export default function CompEventInserter(props) {
     const [period, setPeriod] = useState([start_at, end_at]);
     const [thumbnail, setThumbnail] = useState('');
     const [image, setImage] = useState('');
-    
-    
+
+
     const dateFormatter = (rawDate) => (rawDate.getFullYear().toString() + "/" + (rawDate.getMonth() + 1).toString() + "/" + rawDate.getDate().toString());
-    
+
     const periodFormatter = (period_selected) => {
         if (period_selected == null || period_selected == '') {
             return null;
@@ -29,8 +29,8 @@ export default function CompEventInserter(props) {
             return dateFormatter(period[0]) + ' - ' + dateFormatter(period[1]);
         }
     }
-    
-    
+
+
     const [periodPicker, setPeriodPicker] = useState(false);
 
     //'닫기' 버튼 클릭 시(onHide), 모든 값 초기화하고 모달 숨김
@@ -44,13 +44,34 @@ export default function CompEventInserter(props) {
 
 
     //이벤트 등록 실행
-    const insertHandler = () => {
+    const insertHandler = async () => { // *****async function
 
+        console.log(title + '/' + period + '/' + thumbnail.substring(thumbnail.lastIndexOf('\\') + 1) + '/' + image.substring(image.lastIndexOf('\\') + 1));
         //쿼리 날릴 때 setter는 의미없음(reRendering에 필요할 뿐)
         //setThumbnail(thumbnail.substring(thumbnail.lastIndexOf('\\')+1));
         //setImage(image.substring(image.lastIndexOf('\\')+1))
 
-        console.log(title + '/' + period + '/' + thumbnail.substring(thumbnail.lastIndexOf('\\')+1) + '/' + image.substring(image.lastIndexOf('\\')+1));
+        const eventDTO = { title: title, start_at: start_at, thumbnail: thumbnail };//object type
+
+        try {
+
+            // async function & await fetch : 'synchronous' request-response pair
+            const response = await fetch('http://localhost:9090/eeeeeeeee', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(eventDTO)
+            });
+
+            if(response.ok) {
+                alert('이벤트를 정상적으로 등록했습니다.');
+                dismissHandler();
+            }
+
+        }catch(error) {
+            alert('서버와 통신이 원활하지 않습니다.');
+            console.log(error);
+        }
+
     }
 
     return (
@@ -91,7 +112,7 @@ export default function CompEventInserter(props) {
                             />
                         </Form.Group>
                         <div id="container_period_picker" className="d-flex justify-content-center">
-                            <Calendar 
+                            <Calendar
                                 className="calendar mb-3"
                                 inline
                                 showButtonBar

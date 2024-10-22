@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CompEventInserter from '../../componets/Event/CompEventInserter'
 import CompEventUpdater from '../../componets/Event/CompEventUpdater'
 import CompHeaderAdmin from '../../componets/Header/CompHeaderAdmin'
 import { Button, Container, Table } from 'react-bootstrap'
 import CompAdminBtn from '../../componets/Admin/CompAdminBtn'
 import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
-
+import { useNavigate } from 'react-router-dom'
 
 
 export default function PageEventManager() {
@@ -40,11 +40,42 @@ export default function PageEventManager() {
     }
 
     function deleteEvent() {    //'삭제' 버튼에 상속해줄 함수
-        if(window.confirm('정말 삭제?')){
+        if (window.confirm('정말 삭제?')) {
             console.log('삭제 실행');
-            
         }
     }
+
+
+
+    const navigate = useNavigate();
+
+    //db에서 받아올 eventList(array)
+    const [eventList, setEventList] = useState([]); //초기값은 []: empty array
+
+    //Server에 db-event 요청
+    const getEventList = () => {
+        fetch('http://localhost:9090/evnetList')    // fetch() : (default) request 'GET', 'async'
+            .then(response => {
+                console.log(response.ok);
+                response.json();
+            })  // response가 오면 json 변환
+            .then(data => {
+                console.log(data);
+                //결과물로 setEventList 
+                setEventList(data);
+            })
+            .catch(error => {
+                alert('이벤트 정보를 불러올 수 없습니다.');
+                console.log(error);
+
+                //window.location.href = "/"; //refreshing window
+                navigate('/admin-home'); //retaining window
+            })
+    }
+
+    useEffect(() => {
+        getEventList();
+    }, []); 
 
 
 

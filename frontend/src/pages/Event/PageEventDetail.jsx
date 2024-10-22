@@ -4,13 +4,15 @@ import { useParams } from 'react-router-dom';
 
 export default function PageEventDetail() {
 
-    const { no } = useParams();
-    //no: event_no로  이벤트 정보 쿼리 요청
-
     const [event, setEvent] = useState();//초기값 null
 
+    // no(event_no): url 파라미터에서 가져와서
+    const { no } = useParams();
+
+    // function getEvent() {}
     const getEvent = () => {
 
+        //request 'GET'
         fetch(`http://localhost:9090/eventDetail/${no}`)
             .then(response => response.json())
             .then(data => {
@@ -19,20 +21,19 @@ export default function PageEventDetail() {
             }).catch(error => {
                 alert('이벤트 페이지를 불러올 수 없습니다.');
                 console.log(error);
-
+                window.location.href = "/event-list"; //refreshing window
             })
 
     }
-
 
     //1st args getEventList() : getEvent 메서드에 effect 사용
     //2nd args [no] : no가 바뀔 때마다 re-rendering
     useEffect(() => {
         getEvent();
-    }, [no]);
+    }, [event]);    //no???
 
 
-
+    // event 초기값이 null이라 서버에서 응답이 올때까지 nullPointerException 방지
     if (!event) {
         return <p>DataNotArrived</p>
     } else {
@@ -41,12 +42,10 @@ export default function PageEventDetail() {
                 <div className='page--event--detail--container'>
 
                     {/* BackNav title에 이벤트 title 넣어주기 */}
-                    <BackNav title="네이버페이 할인 이벤트" />
+                    <BackNav title={event.eventTitle} />
 
                     <div id="container_event_detail">
-
-                        <h1>PageEventDetail eventNo: {no}</h1>
-                        <p>{event.eventTitle}</p>
+                        <h1>PageEventDetail eventNo: {event.eventNo}</h1>
                         <img src={event.eventImg} alt={event.eventTitle}></img>
                     </div>
 
