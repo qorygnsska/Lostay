@@ -82,4 +82,6 @@ public class Room {
 	@ToString.Exclude  // 순환 참조 방지
 	@JsonIgnore // Review에서 Room 방향
 	private Set<Review> reviews; // 리뷰 목록
+	
+	
 }

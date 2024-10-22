@@ -27,7 +27,7 @@ public class Cart {
 	@Column(name = "cart_no")
 	private Long cartNo; // 찜넘버
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "userNo", nullable = false) // 외래키 설정
 	@JsonManagedReference // Cart에서 User 방향
 	private User user; // 회원넘버
@@ -40,5 +40,7 @@ public class Cart {
 	// private Set<Hotel> hotels; // 호텔넘버
 	@JsonBackReference // Hotel에서 Cart 방향
 	private Set<Hotel> hotels = new HashSet<>(); // 호텔넘버 초기화
+	
+	
 	
 }

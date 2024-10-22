@@ -64,4 +64,7 @@ public class Payment {
 	    @ToString.Exclude
 	    @JsonBackReference // Reservation에서 Payment 방향
 	    private Reservation reservations; // 예약 목록
+	    
+	    
+	    
 }

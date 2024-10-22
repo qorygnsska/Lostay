@@ -3,6 +3,8 @@ package com.lostay.backend.cart.service;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,5 +50,19 @@ public class CartService {
 	    
 	    // 카트 저장
 	    cartRepo.save(cart);
+	}
+
+	//내가 선택한 호텔찜 삭제
+	@Transactional
+	public void deleteById(Long cartNo) {
+		log.info("CartService deleteById 실행");
+		 Cart cart = cartRepo.findById(cartNo)
+			        .orElseThrow(() -> new EntityNotFoundException("Cart not found with id " + cartNo));
+			    
+			    // Cart 엔티티의 호텔을 정리 (필요시)
+			    cart.getHotels().clear(); // 카트에 포함된 호텔을 지운다 (옵션)
+		
+			    cartRepo.delete(cart); // 카트를 삭제
+		
 	}
 }
