@@ -194,6 +194,31 @@ public class ReviewService {
 		return dtoList;
 	}
 
+	public List<ReviewDTO> findRoomReviewAll(long roomNo) {
+		
+		List<Review> newReview = revRepo.findByRoom_RoomNo(roomNo);
+		
+		List<ReviewDTO> dtos = new ArrayList<ReviewDTO>();
+		
+		for(Review r : newReview)	{
+			ReviewDTO dto = new ReviewDTO();
+			dto.setReviewNo(r.getReviewNo());
+			dto.setRoomNo(r.getRoom().getRoomNo());
+			dto.setUserNo(r.getUser().getUserNo());
+			dto.setUserNickname(r.getUser().getUserNickname());
+			dto.setReviewRating(r.getReviewRating());
+			dto.setReviewCreateAt(r.getReviewCreateAt());
+			String[] str = r.getReviewImg().split(",");
+			dto.setReviewImg(str);
+			dto.setRoomName(r.getRoom().getRoomName());
+			dto.setReviewContent(r.getReviewContent());
+			
+			dtos.add(dto);
+		}
+		
+		return dtos;
+	}
+
 
 	
 	

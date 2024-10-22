@@ -88,7 +88,7 @@ public class ReviewRestController {
 	
 	
 	// 룸리스트에서 리뷰 전체 조회할 때
-	@GetMapping("/InquireRoom")
+	@GetMapping("/InquireRoomAll")
 	public ResponseEntity<?> inquireroom(@RequestParam(defaultValue = "1") long hotelNo){
 	
 		
@@ -105,11 +105,11 @@ public class ReviewRestController {
 	}
 	
 	
-	// 객실상세에서 리뷰 조회
-	@GetMapping("/InquireRoomDetail")
-	public ResponseEntity<?> inquireroomdetail(){
+	// 객실상세에서 리뷰 전체 조회
+	@GetMapping("/InquireRoomDetailAll")
+	public ResponseEntity<?> inquireroomdetail(@RequestParam(defaultValue = "1") long roomNo){
 	
 		
-		return null;
+		return new ResponseEntity<>(revSer.findRoomReviewAll(roomNo),HttpStatus.OK);
 	}
 }
