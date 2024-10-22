@@ -20,15 +20,31 @@ export default function ({rooms}) {
                                 </div>
                             </div>
                             <div className='RoomPrice'>
-                                <div className='RealPrice'>{rooms.realPrice.toLocaleString()}원</div>
-                                <div className='RoomDiscount'>
-                                    <div className='Discount'>{rooms.discount}%</div>
-                                    <div className='DiscountPrice'>{rooms.discountPrice.toLocaleString()}원</div>
-                                </div>
-                                <div className='RoomCount'>남은 객실 {rooms.roomCount}개</div>
-                                <div className='RoomBtn'>
-                                    <Link to='/예약' className='rBtn'>예약하기</Link>
-                                </div>
+                                {rooms.roomCount > 0 ? (
+                                    <>
+                                        <div className='RealPrice'>{rooms.realPrice.toLocaleString()}원</div>
+                                        <div className='RoomDiscount'>
+                                            <div className='Discount'>{rooms.discount}%</div>
+                                            <div className='DiscountPrice'>{rooms.discountPrice.toLocaleString()}원</div>
+                                        </div>
+                                        <div className='RoomCount'>남은 객실 {rooms.roomCount}개</div>
+                                        <div className='RoomBtn'>
+                                            <Link to='/예약' className='rBtn'>예약하기</Link>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className='RealPrice'>{rooms.realPrice.toLocaleString()}원</div>
+                                        <div className='RoomDiscount'>
+                                            <div className='sDiscount'>{rooms.discount}%</div>
+                                            <div className='sDiscountPrice'>{rooms.discountPrice.toLocaleString()}원</div>
+                                        </div>
+                                        <div className='RoomBtn'>
+                                            <button disabled className='srBtn'>예약마감</button>
+                                        </div>
+                                    </>
+                                )}
+                                
                             </div>
                         </div>
                     </div>
