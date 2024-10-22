@@ -43,7 +43,7 @@ public class Payment {
 	    @JsonBackReference // Payment에서 User 방향
 	    private User user; // 회원넘버
 	    
-	    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	    @JoinColumn(name = "room_no", nullable = false)
 	    private Room room; // 객실넘버
 
