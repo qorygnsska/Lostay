@@ -32,7 +32,7 @@ public class EventController {
 	}
 	
 	//이벤트 상세 보기
-	@GetMapping("/eventDetail/{eventNo}") //유저 포인트 내역 조회xxxx
+	@GetMapping("/eventDetail/{eventNo}") //이벤트 상세 정보
 	public ResponseEntity<?>eventDetail(@PathVariable Long eventNo){
 		log.info("eventController eventDetail실행");//로그 수정 1023 JIP
 		return new ResponseEntity<>(eventService.findByEventId(eventNo),HttpStatus.OK);

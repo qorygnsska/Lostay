@@ -17,7 +17,7 @@ public class EventDTO {
 	
 	private LocalDateTime eventCreateAt;		// 시작날짜
 	private LocalDateTime eventEndAt;			// 마감날짜
-	private String[] eventImg;					// 이벤트이미지
+	private String eventImg;					// 이벤트이미지
 	private String eventTitle;					// 이벤트제목
 	private String eventThumbnail; 				// 이벤트썸네일
 }

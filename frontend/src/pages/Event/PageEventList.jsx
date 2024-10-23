@@ -10,7 +10,6 @@ export default function PageEventList() {
 
     //const navigate = useNavigate();
 
-
     //db에서 받아올 eventList(array)
     const [eventList, setEventList] = useState([]); //초기값은 []: empty array
 
