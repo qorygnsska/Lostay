@@ -128,7 +128,4 @@ public class HotelController {
                 checkIn, checkOut, roomPeopleInfo, soldOut,roomDiscountState, hotelRating, sort),
                 HttpStatus.OK);
 	}
-	
-	
-
 }
