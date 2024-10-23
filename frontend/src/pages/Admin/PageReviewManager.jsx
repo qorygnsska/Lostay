@@ -43,8 +43,11 @@ export default function PageReviewManager() {
                         <thead id="table_header">
                             <tr>
                                 <th>#</th>
-                                <th>리뷰 내용</th>
                                 <th>작성자</th>
+                                {/* <td>호텔</td>
+                                <td>방</td>
+                                <td>점수</td> */}
+                                <th>리뷰 내용</th>
                                 <th>작성일</th>
                                 <th>관리</th>
                             </tr>
@@ -52,8 +55,8 @@ export default function PageReviewManager() {
                         <tbody id="table_body">
                             <tr>
                                 <td>1</td>
-                                <td>이벤트 내용</td>
                                 <td>작성자1</td>
+                                <td>이벤트 내용</td>
                                 <td>24.10.15.</td>
                                 <td className='btn_container'>
                                     <CompAdminBtn click={deleteReview}>삭제</CompAdminBtn>

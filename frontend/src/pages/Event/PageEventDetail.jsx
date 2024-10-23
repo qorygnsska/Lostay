@@ -19,8 +19,7 @@ export default function PageEventDetail() {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                setEvent(data[0]);//왜 배열타입으로 넘어오지 하난데??
-                console.log(data[0].eventImg[0]);
+                setEvent(data);
                 
             }).catch(error => {
                 alert('이벤트 페이지를 불러올 수 없습니다.');
@@ -49,7 +48,8 @@ export default function PageEventDetail() {
                     <BackNav title={event.eventTitle} />
 
                     <div id="container_event_detail">
-                        <img src={event.eventImg[0]} alt={event.eventTitle}></img>
+                        {/* url에서 localhost:3000/event-detail/ 까지 기본으로 들어감 */}
+                        <img src={'../'+event.eventImg} alt={event.eventTitle} />
                     </div>
 
                 </div>
