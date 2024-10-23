@@ -30,6 +30,7 @@ import "../src/componets/Room/RoomGrid.css";
 import "../src/componets/Hotel/HotelIntroduce.css";
 import "../src/componets/Hotel/HotelService.css";
 import "../src/componets/Hotel/HotelReview.css";
+import "../src/componets/RoomNav/RoomNav.css";
 
 
 // CustomCSS for pages
@@ -50,6 +51,7 @@ import "../src/pages/MyPage/MyReview/MyReview.css";
 import "../src/pages/MyPage/MyPoint/MyPoint.css";
 import "../src/pages/Reservation/Reservation.css";
 import "../src/pages/Hotel/RoomDetail.css";
+import "../src/pages/Hotel/HotelReviews.css";
 
 function App() {
     return (
