@@ -35,8 +35,9 @@ export default function PageEventManager() {
     const [updaterShow, setUpdaterShow] = useState(false);
 
 
-    function openEventUpdater() {   //'수정' 버튼에 상속해줄 함수
+    const  openEventUpdater = () => {   //'수정' 버튼에 상속해줄 함수
         setUpdaterShow(true);
+
     }
 
     function deleteEvent() {    //'삭제' 버튼에 상속해줄 함수
@@ -54,28 +55,25 @@ export default function PageEventManager() {
 
     //Server에 db-event 요청
     const getEventList = () => {
-        fetch('http://localhost:9090/evnetList')    // fetch() : (default) request 'GET', 'async'
-            .then(response => {
-                console.log(response.ok);
-                response.json();
-            })  // response가 오면 json 변환
+        fetch('http://localhost:9090/eventList')    // fetch() : (default) request 'GET', 'async'
+            .then(response => response.json())  // response가 오면 json 변환
             .then(data => {
                 console.log(data);
                 //결과물로 setEventList 
                 setEventList(data);
             })
             .catch(error => {
-                alert('이벤트 정보를 불러올 수 없습니다.');
+                //alert('이벤트 정보를 불러올 수 없습니다.');
                 console.log(error);
 
                 //window.location.href = "/"; //refreshing window
-                navigate('/admin-home'); //retaining window
+                //navigate('/admin-home'); //retaining window
             })
     }
 
     useEffect(() => {
         getEventList();
-    }, []); 
+    }, []);
 
 
 
@@ -86,22 +84,22 @@ export default function PageEventManager() {
 
                 <Container id='section_container'>
 
-                    <div className='d-flex justify-content-between mb-3'>
+                    <div className="d-flex justify-content-between mb-3">
                         <Button id="btn_enroll" onClick={openEventInserter} variant="outline-success" size="sm" >이벤트 등록</Button>
                         <CompAdminSearch where={'admin-event'} callParent={functionForMyChild} />
                     </div>
 
-                    <Table striped bordered hover id='table_entire_event'>
+                    <Table striped bordered hover id="table_entire_event">
                         <thead id="table_header">
                             <tr>
-                                <th>#</th>
-                                <th>이벤트 제목</th>
-                                <th>이벤트 기간</th>
-                                <th>관리</th>
+                                <th className="event_no">#</th>
+                                <th className="event_title">이벤트 제목</th>
+                                <th className="event_period">이벤트 기간</th>
+                                <th className="btn_container">관리</th>
                             </tr>
                         </thead>
                         <tbody id="table_body">
-                            <tr>
+                            {/* <tr>
                                 <td>1</td>
                                 <td>이벤트 제목1</td>
                                 <td>24.10.14. ~ 24.10.21.</td>
@@ -109,7 +107,21 @@ export default function PageEventManager() {
                                     <CompAdminBtn click={openEventUpdater}>수정</CompAdminBtn>
                                     <CompAdminBtn click={deleteEvent}>삭제</CompAdminBtn>
                                 </td>
-                            </tr>
+                            </tr> */}
+                            {eventList.map(function (event, index) {
+                                return (
+                                    <tr key={index}>
+                                        <td className="event_no">{event.eventNo}</td>
+                                        <td className="event_title">{event.eventTitle}</td>
+                                        <td className="event_period">{event.eventCreateAt} ~ {event.eventEndAt}</td>
+                                        <td className="btn_container">
+                                            <CompAdminBtn whoAreYou={'update_event'} no={event.eventNo} click={openEventUpdater} >수정</CompAdminBtn>
+                                            <CompAdminBtn whoAreYou={'delete_event'} no={event.eventNo} click={deleteEvent} >삭제</CompAdminBtn>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+
                         </tbody>
                     </Table>
                     <CompEventInserter show={inserterShow} onHide={() => setInserterShow(false)} />
