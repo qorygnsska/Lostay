@@ -65,11 +65,22 @@ public class MypageController {
 		System.out.println("MypageController mypageUserInfoNickName실행");
 		mypageService.userUpdateNicName(userNo, nickname);
 	}
-
+	//mypage 유저 정보 전화번호 수정
 	@PostMapping("/mypageUserInfo/{userNo}/phone/{phone}")
 	public void mypageUserInfoPhone(@PathVariable Long userNo, @PathVariable("phone") String phone) {
 		System.out.println("MypageController mypageUserInfoPhone실행");
 		mypageService.userUpdatePhone(userNo, phone);
 	}
+	
+	//mypage 유저 정보수정화면 출력(값넘어오는거 확인함)
+	@GetMapping("/mypageEdit")
+	public ResponseEntity<?> mypageEdit(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+		log.info("mypageEdit실행");
 
+		Long userNo = customOAuth2User.getUserNo();
+
+		return new ResponseEntity<>(mypageService.myPageInfoEdit(userNo), HttpStatus.OK);
+	}
+	
+	
 }

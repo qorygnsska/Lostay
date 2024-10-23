@@ -1,29 +1,21 @@
 package com.lostay.backend.hotel.controller;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lostay.backend.hotel.dto.HotelDTO;
-import com.lostay.backend.hotel.entity.Hotel;
-import com.lostay.backend.hotel.repository.HotelRepository;
+
 import com.lostay.backend.hotel.service.HotelService;
-import com.lostay.backend.point.dto.PointDTO;
-import com.lostay.backend.point.entity.Point;
-import com.lostay.backend.point.repository.PointRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -95,7 +87,7 @@ public class HotelController {
 	@GetMapping("/testhotel")
 	public ResponseEntity<?> testhotel(
 			@RequestParam(required = false) String amenities
-			, @RequestParam(defaultValue = "제주") String hotelsearch
+			, @RequestParam(defaultValue = "서울") String hotelsearch
 			, @RequestParam(defaultValue = "2024-10-20") String checkIn // 체크인날짜
 			, @RequestParam(defaultValue = "2024-10-22") String checkOut // 체크아웃날짜
 			, @RequestParam(defaultValue = "2") int roomPeopleInfo // 기준인원
@@ -103,13 +95,16 @@ public class HotelController {
 			, @RequestParam(defaultValue="1000000") Integer maxRoomPrice// 객실 최대가격
 			,@RequestParam(defaultValue="1")int soldOut //매진 숙소 매진 숙소 버튼을누르면 0값 기본은 1값
 		    ,@RequestParam(defaultValue="0")int roomDiscountState//할인혜택
-			,@RequestParam(defaultValue="5성급")String[] hotelRating//등급
+			,@RequestParam(required = false)String[] hotelRating//등급
 			,@RequestParam(required = false) String sort)//정렬
 			
 	{
 		   // 어메니티 문자열을 배열로 변환
 	    String[] hotelAmenities = (amenities != null) ? amenities.split(",") : new String[0];
 
+	    if(hotelsearch.equals("제주도")) {
+	    	hotelsearch="제주";
+	    }
 	    
 	    log.info(Arrays.toString(hotelAmenities));
 	    log.info("호텔 주소: " + hotelsearch);
@@ -128,7 +123,4 @@ public class HotelController {
                 checkIn, checkOut, roomPeopleInfo, soldOut,roomDiscountState, hotelRating, sort),
                 HttpStatus.OK);
 	}
-	
-	
-
 }
