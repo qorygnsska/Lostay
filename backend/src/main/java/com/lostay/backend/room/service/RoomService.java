@@ -4,8 +4,10 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,10 +28,12 @@ public class RoomService {
 
 	
 	// 호텔에 대한 객실 리스트 조회(호텔과 객실 정보)
-	public List<RoomDTO> findHotelRoomList(long hotelNo, LocalDateTime checkInDate, LocalDateTime checkOutDate) {
+	public List<RoomDTO> findHotelRoomList(long hotelNo, LocalDateTime checkInDate, LocalDateTime checkOutDate, int peopleMax) {
 
 		LocalDateTime in = checkInDate.toLocalDate().atTime(15,0);
 		LocalDateTime out = checkOutDate.toLocalDate().atTime(11,0);
+		
+		Period period = Period.between(checkInDate.toLocalDate(), checkOutDate.toLocalDate());
 		
 		List<Object[]> newRoom = roomRepo.findHotelRoomList(hotelNo, in, out);
 		List<RoomDTO> dtos = new ArrayList<RoomDTO>();
@@ -61,19 +65,42 @@ public class RoomService {
 			d.setRoomDiscount((int)r[17]);
 			int roomPrice = (int)r[16];
 			int roomDiscount = (int)r[17];
-			int discountPrice = (int)(roomPrice * (1- roomDiscount));
+			int discountPrice = (int)roomPrice - roomPrice * roomDiscount/100;
 			d.setDiscountPrice(discountPrice);
 			d.setRoomCheckinTime((LocalTime)r[18]);
 			d.setRoomCheckoutTime((LocalTime)r[19]);
 			d.setAvailableRooms((long)r[20]);
-			d.setReviewCount(reviewCount);
+			d.setTotalReviewCount(reviewCount);
 			d.setReviewAvg(ReviewAvg);
+			d.setPeriod(period.getDays());
+			d.setCheckInDay(checkInDate.toLocalDate());
+			d.setCheckOutDay(checkOutDate.toLocalDate());
+			
+			
 			
 			dtos.add(d);
 			
 		}
 		
 		return dtos;
+	}
+
+
+	
+	//  해당 객실에 대한 정보 조회
+	public RoomDTO findRoomInfo(long roomNo) {
+		
+		Optional<Room> newRoom = roomRepo.findById(roomNo);
+		Room room = newRoom.get();
+		
+		RoomDTO dto = new RoomDTO();
+		
+		dto.setRoomNo(room.getRoomNo());
+		dto.setRoomName(room.getRoomName());
+
+		
+		
+		return null;
 	}
 	
 }

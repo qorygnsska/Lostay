@@ -44,7 +44,7 @@ public class RoomDTO {
 	private String hotelName;
 	private String hotelRating;   // 호텔성급
 	private double reviewAvg;	// 별점 평균
-	private int reviewCount;	// 리뷰 총 개수
+	private int totalReviewCount;	// 리뷰 총 개수
 	private String hotelThumbnail;  // 호텔썸네일
 	private String[] hotelImg;      // 호텔이미지
 	private String[] hotelAmenities;   // 호텔서비스/시설
@@ -54,6 +54,8 @@ public class RoomDTO {
 	private long availableRooms;            // 남은 방 개수
 	private int discountPrice;              // 할인된 금액
 	
-	
-
+	// 검색창에 적혀있는 칼럼들
+	private LocalDate checkInDay;         // 체크인 날짜 
+	private LocalDate checkOutDay;		  // 체크아웃 날짜
+	private int period;					 // 몇박인지
 }
