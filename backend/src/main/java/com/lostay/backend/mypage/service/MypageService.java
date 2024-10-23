@@ -14,6 +14,7 @@ import com.lostay.backend.cart.repository.CartRepository;
 import com.lostay.backend.event.entity.Event;
 import com.lostay.backend.hotel.dto.HotelDTO;
 import com.lostay.backend.mypage.dto.MypageDTO;
+import com.lostay.backend.mypage.dto.MypageEditInfoDTO;
 import com.lostay.backend.mypage.dto.MypageCartListDTO;
 import com.lostay.backend.mypage.dto.ReviewpageDTO;
 import com.lostay.backend.review.entity.Review;
@@ -98,7 +99,7 @@ public class MypageService {
 		    userRepo.save(userEntity);
 		 
 	}
-
+	//mypage 유저 정보수정(phone)
 	public void userUpdatePhone(Long userNo, String phone) {
 		 log.info("MypageService userUpdatePhone 실행");
 		 Optional<User> userEntityOptional = userRepo.findById(userNo);	      
@@ -111,6 +112,20 @@ public class MypageService {
 		    userRepo.save(userEntity);
 		 
 	}
+	//mypage 유저 정보수정화면 출력
+	public Object myPageInfoEdit(Long userNo) {
+		Optional<User> userEntity= userRepo.findById(userNo);
+		MypageEditInfoDTO userdto= new MypageEditInfoDTO();
+		userdto.setUserNo(userEntity.get().getUserNo());
+		userdto.setUserNickname(userEntity.get().getUserNickname());
+		userdto.setUserEmail(userEntity.get().getUserEmail());
+		userdto.setUserPhone(userEntity.get().getUserPhone());
+		
+		return userdto;
+		
+	}
+	
+	
 
 
 

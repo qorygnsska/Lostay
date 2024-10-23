@@ -87,7 +87,7 @@ public class HotelController {
 	@GetMapping("/testhotel")
 	public ResponseEntity<?> testhotel(
 			@RequestParam(required = false) String amenities
-			, @RequestParam(defaultValue = "제주") String hotelsearch
+			, @RequestParam(defaultValue = "서울") String hotelsearch
 			, @RequestParam(defaultValue = "2024-10-20") String checkIn // 체크인날짜
 			, @RequestParam(defaultValue = "2024-10-22") String checkOut // 체크아웃날짜
 			, @RequestParam(defaultValue = "2") int roomPeopleInfo // 기준인원
