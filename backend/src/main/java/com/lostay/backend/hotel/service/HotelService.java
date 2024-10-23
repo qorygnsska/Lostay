@@ -32,21 +32,29 @@ public class HotelService {
         LocalDate checkOutDate = LocalDate.parse(checkOut, formatter);
         LocalDateTime checkInDateTime = checkInDate.atStartOfDay(); 
         LocalDateTime checkOutDateTime = checkOutDate.atStartOfDay(); 
+        
+        String orderByColumn ="";
+        
         String orderDirection = "DESC"; // 기본 정렬 방향
-        String orderByColumn = "overallAverageReviewRating"; // 기본 정렬 기준
-        switch (sort) {
-            case "리뷰 많은순":
-                orderByColumn = "totalReviewCount";
-                break;
-            case "낮은 가격순":
-                orderByColumn = "priceForMaxDiscount";
-                orderDirection = "ASC"; // 가격이 낮은 순으로 정렬
-                break;
-            case "높은 가격순":
-                orderByColumn = "priceForMaxDiscount";
-                orderDirection = "DESC"; // 가격이 높은 순으로 정렬
-                break;
-        }
+        if(sort==null) {
+        	
+         orderByColumn = "overallAverageReviewRating"; // 기본 정렬 기준
+        }else {   switch (sort) {
+        case "리뷰 많은순":
+            orderByColumn = "totalReviewCount";
+            break;
+        case "낮은 가격순":
+            orderByColumn = "priceForMaxDiscount";
+            orderDirection = "ASC"; // 가격이 낮은 순으로 정렬
+            break;
+        case "높은 가격순":
+            orderByColumn = "priceForMaxDiscount";
+            orderDirection = "DESC"; // 가격이 높은 순으로 정렬
+            break;
+    }}
+       
+        
+     
 
         StringBuilder query = new StringBuilder(
             "SELECT " +

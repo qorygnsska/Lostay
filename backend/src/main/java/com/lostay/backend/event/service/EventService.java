@@ -26,15 +26,15 @@ public class EventService {
 	public Object findByEventId(Long eventNo) {
 		log.info("eventService findByEventId() 실행");
 		Optional<Event> eventEntity=eventRepo.findById(eventNo);
-		List<EventDTO>eventDTOList= new ArrayList<EventDTO>();
+		
 			EventDTO dto = new EventDTO();
 			dto.setEventNo(eventEntity.get().getEventNo());
 			dto.setEventTitle(eventEntity.get().getEventTitle());
 			dto.setEventImg(eventEntity.get().getEventImg().split(","));
 			dto.setEventCreateAt(eventEntity.get().getEventCreateAt());
 			dto.setEventEndAt(eventEntity.get().getEventEndAt());
-			eventDTOList.add(dto);
-		return eventDTOList;
+			
+		return dto;
 	}
 
 	
