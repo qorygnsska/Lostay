@@ -24,17 +24,17 @@ public class EventController {
 	private MainService mainService;
 	
 	//이벤트 전체 보기
-	@GetMapping("/evnetList")
-	 public ResponseEntity<?>evnetList(){
-		log.info("eventController evnetList실행");
+	@GetMapping("/eventList")
+	 public ResponseEntity<?>eventList(){
+		log.info("eventController eventList실행");//오타 수정 1023 JIP
 		return new ResponseEntity<>(mainService.eventFindAll(),HttpStatus.OK);
 
 	}
 	
 	//이벤트 상세 보기
-	@GetMapping("/eventDetail/{eventNo}") //유저 포인트 내역 조회
+	@GetMapping("/eventDetail/{eventNo}") //유저 포인트 내역 조회xxxx
 	public ResponseEntity<?>eventDetail(@PathVariable Long eventNo){
-		log.info("pointList실행");
+		log.info("eventController eventDetail실행");//로그 수정 1023 JIP
 		return new ResponseEntity<>(eventService.findByEventId(eventNo),HttpStatus.OK);
 	}
 	

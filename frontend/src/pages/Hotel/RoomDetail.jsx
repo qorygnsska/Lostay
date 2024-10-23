@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
+import { Button, Container } from 'react-bootstrap'
 
 import HotelCarousel from '../../componets/Hotel/HotelCarousel';
 
@@ -9,6 +9,10 @@ import Footer from '../../componets/Footer/Footer';
 
 import { IoCheckmark } from "react-icons/io5";
 import HotelReview from '../../componets/Hotel/HotelReview';
+
+import { IoNavigate } from "react-icons/io5";
+import KakaoMap from '../../componets/Map/KakaoMap';
+import RoomNav from '../../componets/RoomNav/RoomNav';
 
 
 export default function RoomDetail() {
@@ -29,6 +33,9 @@ export default function RoomDetail() {
         images: ['/HotelList/룸1.jpg', '/HotelList/룸2.jpg'],
         reviewCount: 58,
         starAvg: 4.5,
+        location: "제주특별자치도 서귀포시 색달동 3039-3",
+        InDate:'10월 9일',
+        OutDate:'10월 10일',
     };
 
     const Reviews = [
@@ -53,6 +60,12 @@ export default function RoomDetail() {
             content: '최고의 숙소!!!!'
         }
     ];
+
+
+    const handleFindButtonClick = () => {
+        const encodedLocation = encodeURIComponent(RoomInfo.location); // 주소를 URL 인코딩
+        window.location.href = `/HotelMap?location=${encodedLocation}`;
+    };
 
     return (
 
@@ -85,12 +98,18 @@ export default function RoomDetail() {
                 <div className='CancelContent'>입실 전날까지 전액 환불 가능하며, 입실 당일 취소는 불가능합니다.</div>
             </div>
 
-            <div className='RowLine'></div>
 
-            <div className='ReTitle'>후기</div>
+            <div className='ReTitle'>객실 리뷰</div>
             <HotelReview HotelInfo={RoomInfo} Reviews={Reviews}/>
 
 
+            <div className='LoTitle'>위치/길찾기</div>
+            <span className='LoContent'>{RoomInfo.location}</span>
+            <Button id='FindBtn' onClick={handleFindButtonClick}>길찾기<IoNavigate /></Button> 
+                
+            <KakaoMap Location={RoomInfo.location} />
+
+            <RoomNav info={RoomInfo}/>
             <Footer />
         </Container>
 

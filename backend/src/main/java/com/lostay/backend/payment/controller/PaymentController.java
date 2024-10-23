@@ -75,10 +75,10 @@ public class PaymentController {
 										  ,@RequestParam(defaultValue = "Y") String payStatus
 										  ,@RequestParam(defaultValue = "100000") int payPrice
 										  ,@RequestParam(defaultValue = "10") int payPoint
-										  ,@RequestParam(defaultValue = "2024-11-21") 
-	   									   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime checkInDate
-	   									  ,@RequestParam(defaultValue = "2024-11-22") 
-										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime checkOutDate){
+										  ,@RequestParam(defaultValue = "2024-11-21T15:00:00") 
+	   									   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkInDate
+	   									  ,@RequestParam(defaultValue = "2024-11-22T11:00:00") 
+										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkOutDate){
 											
 		// 결제 api 아직 안들어옴
 
