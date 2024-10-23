@@ -18,7 +18,7 @@ import com.lostay.backend.mypage.dto.MypageCartListDTO;
 import com.lostay.backend.mypage.dto.ReviewpageDTO;
 import com.lostay.backend.review.entity.Review;
 import com.lostay.backend.review.repository.ReviewRepository;
-import com.lostay.backend.room.repository.RoomReopository;
+import com.lostay.backend.room.repository.RoomRepository;
 import com.lostay.backend.user.dto.UserDTO;
 import com.lostay.backend.user.entity.User;
 import com.lostay.backend.user.repository.UserRepository;

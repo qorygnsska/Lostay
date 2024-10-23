@@ -10,6 +10,8 @@ import LocationHotelCarousel from "../../componets/Carousel/LocationHotelCarouse
 import Footer from "../../componets/Footer/Footer";
 import Navbar from "../../componets/Navbar/Navbar";
 import CompSearchBox from "../../componets/Search/CompSearchBox";
+import { Link } from "react-router-dom";
+import { FaChevronRight } from "react-icons/fa6";
 
 export default function Home() {
 
@@ -72,6 +74,10 @@ export default function Home() {
             </div>
 
             {/* 이벤트 리스트 */}
+            <div className="eventList--wrap">
+                <h2>이벤트</h2>
+                <Link to="/event-list" className="eventList">자세히 보기<FaChevronRight className="icon" /></Link>
+            </div>
             <EventCarousel eventList={eventList} />
 
             {/* 최근 HOT 호텔 리스트 */}

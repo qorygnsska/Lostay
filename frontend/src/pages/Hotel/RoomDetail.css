@@ -1,5 +1,7 @@
 .room--detail--container {
 
+    position: relative;
+
     .NameBox {
         margin-top: 30px;
     }
@@ -28,6 +30,7 @@
         border: 1px solid rgb(204, 204, 204);
         border-radius: 10px;
         padding: 15px;
+        margin-bottom: 50px;
     }
 
     .InfoTitle {
@@ -36,7 +39,8 @@
         margin-bottom: 5px;
     }
 
-    .CheckInfo, .InfoContent{
+    .CheckInfo,
+    .InfoContent {
         color: rgb(121, 121, 121);
         font-size: 14px;
     }
@@ -48,18 +52,19 @@
         font-size: 18px;
         margin-bottom: 5px;
     }
-    .SerDiv{
+
+    .SerDiv {
         display: flex;
         flex-wrap: wrap;
     }
 
-    .SerContent{
+    .SerContent {
         flex: 0 0 25%;
         color: rgb(121, 121, 121);
         margin-bottom: 20px;
         font-size: 14px;
     }
-    
+
 
 
     .CanTitle {
@@ -69,18 +74,51 @@
         margin-bottom: 5px;
     }
 
-    .CancelContent{
+    .CancelContent {
         color: red;
         font-size: 14px;
     }
 
 
-    .ReTitle{
+    .ReTitle {
         font-weight: bold;
         font-size: 22px;
+        margin-bottom: 8px;
     }
 
-    
+
+
+
+
+    .LoTitle {
+        margin-top: 50px;
+        font-weight: bold;
+        font-size: 22px;
+        margin-bottom: 8px;
+    }
+
+    .LoContent {
+        color: gray;
+    }
+
+    #FindBtn {
+        padding: 1px;
+        margin-left: 10px;
+        font-size: 15px;
+        width: 70px;
+        height: 25px;
+        background-color: white;
+        color: gray;
+        border-color: gray;
+        margin-bottom: 5px;
+    }
+
+    #FindBtn:hover {
+        color: rgb(43, 110, 255);
+        border-color: rgb(43, 110, 255);
+    }
+
+
 
 
 }

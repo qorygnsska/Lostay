@@ -16,7 +16,7 @@ export default function PageEventList() {
 
     //Server에 db-event 요청
     const getEventList = () => {
-        fetch('http://localhost:9090/evnetList')    // fetch() : (default) request 'GET', 'async'
+        fetch('http://localhost:9090/eventList')    // fetch() : (default) request 'GET', 'async'
             .then(response => response.json())  // response가 오면 json 변환
             .then(data => {
                 console.log(data);
@@ -26,7 +26,6 @@ export default function PageEventList() {
             .catch(error => {
                 alert('이벤트 페이지를 불러올 수 없습니다.');
                 console.log(error);
-
                 window.location.href = "/"; //refreshing window
                 //navigate('/'); //retaining window
             })

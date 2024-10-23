@@ -61,6 +61,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 				+ "Where h.hotelNo = :hotelNo")
 		int findHotelReviewCount(@Param("hotelNo")long hotelNo);
 
+
 		// 객실에 대한 리뷰 조회
 		List<Review> findByRoom_RoomNo(long roomNo);
 	

@@ -30,6 +30,34 @@
         }
     }
 
+    .eventList--wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 60px;
+        margin-bottom: 20px;
+        padding-left: 7px;
+
+        h2 {
+            margin: 0;
+        }
+
+        .eventList {
+            text-decoration: none;
+            color: var(--regularBlueColor);
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+
+            .icon {
+                color: var(--regularBlueColor);
+                width: 16px;
+                height: 16px;
+            }
+        }
+    }
+
     h2 {
         font-weight: bold;
         margin-top: 60px;
