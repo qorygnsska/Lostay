@@ -4,7 +4,9 @@ import { useParams } from 'react-router-dom';
 
 export default function PageEventDetail() {
 
+
     const [event, setEvent] = useState();//초기값 null
+    //{eventNo: "", eventCreateAt: "", eventEndAt: "",  eventImg:  "",  eventThumbnail:  "", eventTitle: ""}
 
     // no(event_no): url 파라미터에서 가져와서
     const { no } = useParams();
@@ -17,7 +19,9 @@ export default function PageEventDetail() {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                setEvent(data);
+                setEvent(data[0]);//왜 배열타입으로 넘어오지 하난데??
+                console.log(data[0].eventImg[0]);
+                
             }).catch(error => {
                 alert('이벤트 페이지를 불러올 수 없습니다.');
                 console.log(error);
@@ -30,7 +34,7 @@ export default function PageEventDetail() {
     //2nd args [no] : no가 바뀔 때마다 re-rendering
     useEffect(() => {
         getEvent();
-    }, [event]);    //no???
+    }, [no]);    
 
 
     // event 초기값이 null이라 서버에서 응답이 올때까지 nullPointerException 방지
@@ -45,8 +49,7 @@ export default function PageEventDetail() {
                     <BackNav title={event.eventTitle} />
 
                     <div id="container_event_detail">
-                        <h1>PageEventDetail eventNo: {event.eventNo}</h1>
-                        <img src={event.eventImg} alt={event.eventTitle}></img>
+                        <img src={event.eventImg[0]} alt={event.eventTitle}></img>
                     </div>
 
                 </div>
