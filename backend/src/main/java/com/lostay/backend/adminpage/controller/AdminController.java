@@ -7,14 +7,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.lostay.backend.adminpage.service.AdminService;
 import com.lostay.backend.hotel.controller.HotelController;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
+@RestController
 @Slf4j
 @CrossOrigin
 public class AdminController {
@@ -48,6 +50,14 @@ public class AdminController {
 		return new ResponseEntity<>(adminService.adminUserSearch(userName,page),HttpStatus.OK);
 	}
 	
+	// 유저가 작성한 리뷰 삭제
+	@GetMapping("/adminUserReviewDel")
+	public void adminUserReviewDel(@RequestParam Long reviewNo) {
+		 System.out.println("AdminController adminUserReviewDel실행");
+		 adminService.deleteById(reviewNo);
+	} 
 	
 	
 }
+
+

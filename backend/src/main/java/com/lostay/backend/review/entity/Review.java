@@ -34,12 +34,12 @@ public class Review {
 	private Long reviewNo;						// 리뷰넘버
 	
 	@JoinColumn(name = "roomNo", nullable = false)
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
 	@JsonBackReference // Review에서 Room 방향
 	private Room room;						// 객실넘버 외래키
 	
 	@JoinColumn(name = "userNo", nullable = false)
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
 	@JsonBackReference // Review에서 User 방향
 	private User user;						// 회원넘버 외래키
 	
