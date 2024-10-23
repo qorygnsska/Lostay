@@ -29,16 +29,7 @@ public class MypageController {
 	public ResponseEntity<?> mypage(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
 		log.info("mypage실행");
 
-//		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		    
-//	    // 2. Authentication 객체에서 Principal(현재 사용자 정보) 가져오기
-//	    CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-//	    
-//	    // 3. userNo 가져오기
-//	    Long userNo = customOAuth2User.getNo();
-
-		Long userNo = customOAuth2User.getNo();
-		System.out.println("UserNo = " + userNo);
+		Long userNo = customOAuth2User.getUserNo();
 
 		return new ResponseEntity<>(mypageService.myPageInfo(userNo), HttpStatus.OK);
 	}

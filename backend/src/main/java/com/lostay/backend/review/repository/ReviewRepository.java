@@ -53,6 +53,20 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 			+ "Where h.hotelNo = :hotelNo")
 	double findHotelReviewAvg(@Param("hotelNo")long hotelNo);
 
+	
+	// hotel의 전체 리뷰 개수
+	@Query("select COUNT(rv) from Review rv "
+			+ "Join rv.room r "
+			+ "Join r.hotel h "
+			+ "Join rv.user u "
+			+ "Where h.hotelNo = :hotelNo")
+	int findHotelReviewCount(@Param("hotelNo")long hotelNo);
+
+	// 객실에 대한 리뷰 조회
+	List<Review> findByRoom_RoomNo(long roomNo);
+
+
+
 
 
 

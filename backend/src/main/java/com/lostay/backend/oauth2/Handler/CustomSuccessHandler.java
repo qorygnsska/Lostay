@@ -52,7 +52,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
         String username = customOAuth2User.getName();
-        Long userNo = customOAuth2User.getNo();
+        Long userNo = customOAuth2User.getUserNo();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();

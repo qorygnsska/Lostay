@@ -22,7 +22,7 @@ import com.lostay.backend.review.dto.ReviewDTO;
 import com.lostay.backend.review.entity.Review;
 import com.lostay.backend.review.repository.ReviewRepository;
 import com.lostay.backend.room.entity.Room;
-import com.lostay.backend.room.repository.RoomReopository;
+import com.lostay.backend.room.repository.RoomRepository;
 import com.lostay.backend.user.entity.User;
 import com.lostay.backend.user.repository.UserRepository;
 
@@ -41,7 +41,7 @@ public class ReviewService {
 	private UserRepository userRepo;
 	
 	@Autowired
-	private RoomReopository roomRepo;
+	private RoomRepository roomRepo;
 	
 	@Autowired
 	private PointRepository poRepo;
@@ -174,6 +174,7 @@ public class ReviewService {
 		List<ReviewDTO> dtoList = new ArrayList<ReviewDTO>();
 		
 		double reviewAvg = revRepo.findHotelReviewAvg(hotelNo);
+		int reviewCount = revRepo.findHotelReviewCount(hotelNo);
 		
 		for(Object[] d : ReviewList) {
 			ReviewDTO dto = new ReviewDTO();
@@ -186,12 +187,39 @@ public class ReviewService {
 			dto.setRoomName((String)d[5]);
 			dto.setReviewNo((long)d[6]);
 			dto.setReviewAvg(reviewAvg);
+			dto.setReviewCount(reviewCount);
 						
 			dtoList.add(dto);
 		}
 		
 		
 		return dtoList;
+	}
+
+	// 객실에 대한 리뷰 전체 조회
+	public List<ReviewDTO> findRoomReviewAll(long roomNo) {
+		
+		List<Review> newReview = revRepo.findByRoom_RoomNo(roomNo);
+		
+		List<ReviewDTO> dtos = new ArrayList<ReviewDTO>();
+		
+		for(Review r : newReview)	{
+			ReviewDTO dto = new ReviewDTO();
+			dto.setReviewNo(r.getReviewNo());
+			dto.setRoomNo(r.getRoom().getRoomNo());
+			dto.setUserNo(r.getUser().getUserNo());
+			dto.setUserNickname(r.getUser().getUserNickname());
+			dto.setReviewRating(r.getReviewRating());
+			dto.setReviewCreateAt(r.getReviewCreateAt());
+			String[] str = r.getReviewImg().split(",");
+			dto.setReviewImg(str);
+			dto.setRoomName(r.getRoom().getRoomName());
+			dto.setReviewContent(r.getReviewContent());
+			
+			dtos.add(dto);
+		}
+		
+		return dtos;
 	}
 
 
