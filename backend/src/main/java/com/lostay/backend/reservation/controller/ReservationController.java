@@ -3,11 +3,13 @@ package com.lostay.backend.reservation.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lostay.backend.oauth2.service.CustomOAuth2User;
 import com.lostay.backend.reservation.service.ReservationService;
 
 @RestController
@@ -19,10 +21,11 @@ public class ReservationController {
 	
 	// 예약 내역에서 예약한 숙소
 	@GetMapping("/BookHistory")
-	public ResponseEntity<?> bookhistory(@RequestParam(defaultValue = "1")long userNo
-										,@RequestParam(defaultValue = "Y")String payStatus){
+	public ResponseEntity<?> bookhistory(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
 		
-		return new ResponseEntity<>(resSer.findBookHistory(userNo,payStatus),HttpStatus.OK);
+		Long userNo = customOAuth2User.getUserNo();
+		
+		return new ResponseEntity<>(resSer.findBookHistory(userNo),HttpStatus.OK);
 	}
 	
 	

@@ -59,7 +59,7 @@ export default function Home() {
     return (
         <div className="home--container">
             <div className="logo">
-                <h1>로스테이</h1>
+                <img src="Logo/logo.png" />
             </div>
 
             <div className="search--btn--wrap">

@@ -28,7 +28,9 @@ public class ReservationService {
 	private PaymentRepository payRepo;
 	
 	// 예약 내역에서 예약한 숙소
-	public List<PaymentDTO> findBookHistory(long userNo, String payStatus) {
+	public List<PaymentDTO> findBookHistory(long userNo) {
+		
+		String payStatus = "Y";
 		
 		List<Payment> payList = payRepo.findByUser_UserNoAndPayStatus(userNo,payStatus);
 		
