@@ -35,7 +35,7 @@ export default function LocationCarousel({ locationList }) {
                     <div key={data.locationNo}>
                         <a href="https://example.com">
                             <div className="image--box">
-                                <img src={`eventList/${data.locationImage}`} alt={`슬라이드 ${data.locationNo + 1}`} />
+                                <img src={`Location/${data.locationImage}`} alt={`슬라이드 ${data.locationNo + 1}`} />
                                 <div className="overlay">
                                     <span className="text">{data.locationName}</span>
                                 </div>

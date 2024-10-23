@@ -25,7 +25,7 @@ export default function Home() {
         try {
             const [eventResp, hotelResp, locationResp, locationHotelResp, DCHotelResp] = await Promise.all([
                 axios.post('http://localhost:9090/eventMain'),
-                axios.post('http://localhost:9090/hotHotlesMain'),
+                axios.post('http://localhost:9090/hotHotelsMain'),
                 axios.post('http://localhost:9090/locationMain'),
                 axios.post('http://localhost:9090/triphotelsMain'),
                 axios.post('http://localhost:9090/discountHotelMain')
@@ -36,7 +36,7 @@ export default function Home() {
             setLocationList(locationResp.data);
             setLocationHotelList(locationHotelResp.data);
             setDCHotelList(DCHotelResp.data)
-
+            console.log(locationList);
             console.log(eventResp.data);
         } catch (error) {
             console.error(error);
@@ -59,7 +59,7 @@ export default function Home() {
     return (
         <div className="home--container">
             <div className="logo">
-                <h1>로스테이</h1>
+                <img src="Logo/logo.png" />
             </div>
 
             <div className="search--btn--wrap">

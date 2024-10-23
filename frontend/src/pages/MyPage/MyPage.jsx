@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import BackNav from "../../componets/BackNav/BackNav";
 import Navbar from "../../componets/Navbar/Navbar";
 import { BsChatText } from "react-icons/bs";
@@ -8,16 +8,14 @@ import { privateApi } from '../../api/api'
 import axios from "axios";
 
 export default function MyPage() {
-    const myinfo = {
-        id: 1,
-        nickname: "루이지애나포토존05",
-        porint: 1000,
-    };
+
+    const [profile, setProfile] = useState(null);
 
     const getDatas = async () => {
         try {
             const response = await privateApi.get('/mypage'); // API 요청
             console.log(response.data)
+            setProfile(response.data)
             return response.data;
 
         } catch (error) {
@@ -27,7 +25,7 @@ export default function MyPage() {
 
     useEffect(() => {
         getDatas();
-    });
+    }, []);
 
     return (
         <div className="mypage--container">
@@ -37,7 +35,7 @@ export default function MyPage() {
                 <div className="nickname">
                     <div>
                         <span>
-                            <strong>{myinfo.nickname}</strong>님
+                            <strong>{profile?.userNickname}</strong>님
                         </span>
                     </div>
 
@@ -69,7 +67,7 @@ export default function MyPage() {
 
                             <div>
                                 <span className="point">
-                                    {myinfo.porint.toLocaleString()}
+                                    {profile?.userPoint.toLocaleString()}
                                 </span>
                                 <FaChevronRight className="icon" />
                             </div>

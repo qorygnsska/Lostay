@@ -20,6 +20,7 @@ private Long reservationNo;		// 예약넘버
 	private Long pay_no;				// 결제넘버 외래키
 	private LocalDateTime checkIn;		// 체크인날짜
 	private LocalDateTime checkOut;	// 체크아웃날짜
-	private String resStatus;		// 예약 확인/취소
+	private String resStatus;		// 예약 취소함(N)
+	private String resReviewStatus;	// 리뷰 작성함(Y)
 	
 }

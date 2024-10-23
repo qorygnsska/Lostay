@@ -23,17 +23,15 @@ public class EventService {
 	private EventRepository eventRepo;
 	
 
-	public Object findByEventId(Long eventNo) {
+	public EventDTO findByEventId(Long eventNo) {
 		log.info("eventService findByEventId() 실행");
 		Optional<Event> eventEntity=eventRepo.findById(eventNo);
-		
 			EventDTO dto = new EventDTO();
 			dto.setEventNo(eventEntity.get().getEventNo());
 			dto.setEventTitle(eventEntity.get().getEventTitle());
-			dto.setEventImg(eventEntity.get().getEventImg().split(","));
+			dto.setEventImg(eventEntity.get().getEventImg());
 			dto.setEventCreateAt(eventEntity.get().getEventCreateAt());
 			dto.setEventEndAt(eventEntity.get().getEventEndAt());
-			
 		return dto;
 	}
 

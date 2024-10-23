@@ -6,8 +6,13 @@
         align-items: center;
         justify-content: center;
         margin-top: 30px;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
         color: var(--logoColor);
+
+        img {
+            width: 200px;
+            height: 60px;
+        }
     }
 
     .search--btn--wrap {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import BackNav from "../../componets/BackNav/BackNav";
 import { useParams } from 'react-router-dom';
 
+
 export default function PageEventDetail() {
 
 
@@ -19,8 +20,7 @@ export default function PageEventDetail() {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                setEvent(data[0]);//왜 배열타입으로 넘어오지 하난데??
-                console.log(data[0].eventImg[0]);
+                setEvent(data);
                 
             }).catch(error => {
                 alert('이벤트 페이지를 불러올 수 없습니다.');
@@ -30,8 +30,8 @@ export default function PageEventDetail() {
 
     }
 
-    //1st args getEventList() : getEvent 메서드에 effect 사용
-    //2nd args [no] : no가 바뀔 때마다 re-rendering
+    //1st arg getEventList() : getEvent 메서드에 effect 사용
+    //2nd arg [no] : no가 바뀔 때마다 re-rendering
     useEffect(() => {
         getEvent();
     }, [no]);    
@@ -39,7 +39,7 @@ export default function PageEventDetail() {
 
     // event 초기값이 null이라 서버에서 응답이 올때까지 nullPointerException 방지
     if (!event) {
-        return <p>DataNotArrived</p>
+        return <p>ServiceDenied</p>
     } else {
         return (
             <>
@@ -49,7 +49,8 @@ export default function PageEventDetail() {
                     <BackNav title={event.eventTitle} />
 
                     <div id="container_event_detail">
-                        <img src={event.eventImg[0]} alt={event.eventTitle}></img>
+                        {/* url에서 localhost:3000/event-detail/ 까지 기본으로 들어감 */}
+                        <img src={'../'+event.eventImg} alt={event.eventTitle} />
                     </div>
 
                 </div>

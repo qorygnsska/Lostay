@@ -8,8 +8,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export default function PageEventList() {
 
+    
     //const navigate = useNavigate();
-
 
     //db에서 받아올 eventList(array)
     const [eventList, setEventList] = useState([]); //초기값은 []: empty array
@@ -38,8 +38,8 @@ export default function PageEventList() {
     // method(REST): 'POST', 'PUT', 'DELETE', default 'GET'
 
 
-    //1st args getEventList() : getEventList 메서드에 effect 사용
-    //2nd args [] : 처음 마운트될 때만 실행,,,,
+    //1st arg getEventList() : getEventList 메서드에 effect 사용
+    //2nd arg [] : 처음 마운트될 때만 실행,,,,
     useEffect(() => {
         getEventList();
     }, []); 

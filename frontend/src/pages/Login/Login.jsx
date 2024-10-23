@@ -51,7 +51,12 @@ export default function Login() {
 
             <div className="login--wrap">
                 <div className="logo">
-                    <h1>로고 들어와야함</h1>
+                    <img src="Logo/logo.png" />
+                </div>
+
+                <div className="login--title">
+                    <span className="strikethrough"></span>
+                    <span className="title">로그인/회원가입</span>
                 </div>
 
                 <button
