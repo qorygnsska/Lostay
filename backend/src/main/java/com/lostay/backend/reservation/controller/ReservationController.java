@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +19,8 @@ public class ReservationController {
 	
 	
 	// 예약 내역에서 예약한 숙소
-	@GetMapping("/BookHistory")
-	public ResponseEntity<?> bookhistory(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
+	@GetMapping("/BookHistory/{showmonth}")
+	public ResponseEntity<?> bookhistory(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @RequestParam int showMonth){
 		
 		Long userNo = customOAuth2User.getUserNo();
 		
