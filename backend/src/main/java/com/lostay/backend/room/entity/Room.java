@@ -1,8 +1,7 @@
 package com.lostay.backend.room.entity;
 
-import java.sql.Time;
-import java.time.LocalDateTime;
 import java.util.Objects;
+import java.time.LocalTime;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -23,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lostay.backend.hotel.entity.Hotel;
 import com.lostay.backend.payment.entity.Payment;
-import com.lostay.backend.reservation.entity.Reservation;
 import com.lostay.backend.review.entity.Review;
 
 import lombok.AllArgsConstructor;
@@ -71,9 +68,9 @@ public class Room {
 	@Column(name="room_introduction")
 	private String roomIntroduction;			// 객실소개(정보)
 	@Column(name="room_checkin_time")
-	private Time roomCheckinTime;	// 객실체크인시간
+	private LocalTime roomCheckinTime;	// 객실체크인시간
 	@Column(name="room_checkout_time")
-	private Time roomCheckoutTime;	// 객실체크아웃시간
+	private LocalTime roomCheckoutTime;	// 객실체크아웃시간
 	
 	@OneToOne(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
 	@ToString.Exclude  // 순환 참조 방지
