@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.lostay.backend.adminpage.dto.AdminReviewDTO;
 import com.lostay.backend.mypage.dto.MypageCartListDTO;
 import com.lostay.backend.mypage.dto.ReviewpageDTO;
 import com.lostay.backend.review.entity.Review;
@@ -53,22 +54,35 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 			+ "Where h.hotelNo = :hotelNo")
 	double findHotelReviewAvg(@Param("hotelNo")long hotelNo);
 
-	
 	// hotel의 전체 리뷰 개수
-	@Query("select COUNT(rv) from Review rv "
-			+ "Join rv.room r "
-			+ "Join r.hotel h "
-			+ "Join rv.user u "
-			+ "Where h.hotelNo = :hotelNo")
-	int findHotelReviewCount(@Param("hotelNo")long hotelNo);
-
-	// 객실에 대한 리뷰 조회
-	List<Review> findByRoom_RoomNo(long roomNo);
+		@Query("select COUNT(rv) from Review rv "
+				+ "Join rv.room r "
+				+ "Join r.hotel h "
+				+ "Join rv.user u "
+				+ "Where h.hotelNo = :hotelNo")
+		int findHotelReviewCount(@Param("hotelNo")long hotelNo);
 
 
+		// 객실에 대한 리뷰 조회
+		List<Review> findByRoom_RoomNo(long roomNo);
+	
+	//관리자 페이지 유저 리뷰 조회(작성자 조건검색)
+	 @Query("SELECT new com.lostay.backend.adminpage.dto.AdminReviewDTO(r.reviewNo , rm.roomName, r.reviewRating, r.reviewContent, u.userName,r.reviewCreateAt) " +
+	           "FROM Review r " +
+	           "JOIN r.user u " +
+	           "JOIN r.room rm " +
+	           "WHERE u.userName = :userName")
+	Page<AdminReviewDTO> adminReviewPageSearch(@Param("userName") String userName, PageRequest pageable);
+
+	//관리자 페이지 유저 리뷰 조회
+	 @Query("SELECT r.reviewNo , rm.roomName, r.reviewRating, r.reviewContent, u.userName,r.reviewCreateAt " +
+	           "FROM Review r " +
+	           "JOIN r.user u " +
+	           "JOIN r.room rm " )
+	Page<Object[]> adminReview(PageRequest pageable);
 
 
-
+	
 
 
 }
