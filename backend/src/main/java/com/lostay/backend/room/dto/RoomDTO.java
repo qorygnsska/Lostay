@@ -52,6 +52,7 @@ public class RoomDTO {
 	private String hotelAdress;  		// 호텔 주소
 	private String hotelTouristAttraction;	// 호텔관광명소
 	private long availableRooms;            // 남은 방 개수
+	private int discountPrice;              // 할인된 금액
 	
 	
 
