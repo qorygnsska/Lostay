@@ -15,25 +15,29 @@ import lombok.NoArgsConstructor;
 public class AdminReviewDTO {
 
 	private Long reviewNo; // 리뷰넘버
+	private String userName; // 작성자 이름
+	private String hotelName;//호텔이름
 	private String roomName; // 객실명
 	private double reviewRating; // 평점
 	private String reviewContent; // 리뷰내용
-	private String userName; // 작성자 이름
 	private LocalDateTime reviewCreateAt; // 작성날짜
 	private int pagesize; // 총 페이지 수
 	
 	
-	public AdminReviewDTO(Long reviewNo, String roomName, double reviewRating, String reviewContent, String userName,
-			LocalDateTime reviewCreateAt) {
+	public AdminReviewDTO(Long reviewNo, String userName, String hotelName, String roomName, double reviewRating,
+			String reviewContent, LocalDateTime reviewCreateAt) {
 		super();
 		this.reviewNo = reviewNo;
+		this.userName = userName;
+		this.hotelName = hotelName;
 		this.roomName = roomName;
 		this.reviewRating = reviewRating;
 		this.reviewContent = reviewContent;
-		this.userName = userName;
 		this.reviewCreateAt = reviewCreateAt;
 	}
-
+	
+	
+	
 
 
 	
