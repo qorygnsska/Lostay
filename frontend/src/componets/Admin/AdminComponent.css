@@ -1,6 +1,9 @@
 .comp--admin--btn--container {
     /* AdminBtn 컴포넌트 */
     border: none;
+    background-color: transparent;
+    font-weight: bold;
+    padding: 0 12px;
 }
 
 .comp--admin--btn--container:hover {

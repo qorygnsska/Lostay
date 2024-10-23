@@ -49,8 +49,13 @@ export default function CompEventUpdater(props) {
         //쿼리 날릴 때 setter는 의미없음(reRendering에 필요할 뿐)
         //setThumbnail(thumbnail.substring(thumbnail.lastIndexOf('\\')+1));
         //setImage(image.substring(image.lastIndexOf('\\')+1))
+        if (window.confirm('정말 수정?')) {
 
-        console.log(title + '/' + period + '/' + thumbnail.substring(thumbnail.lastIndexOf('\\')+1) + '/' + image.substring(image.lastIndexOf('\\')+1));
+            console.log("수정: " + title + '/' + period + '/' + thumbnail.substring(thumbnail.lastIndexOf('\\')+1) + '/' + image.substring(image.lastIndexOf('\\')+1));
+
+        }
+
+
     }
 
     return (
