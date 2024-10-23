@@ -21,7 +21,7 @@ import com.lostay.backend.review.dto.ReviewDTO;
 import com.lostay.backend.review.entity.Review;
 import com.lostay.backend.review.repository.ReviewRepository;
 import com.lostay.backend.room.entity.Room;
-import com.lostay.backend.room.repository.RoomReopository;
+import com.lostay.backend.room.repository.RoomRepository;
 import com.lostay.backend.user.entity.User;
 import com.lostay.backend.user.repository.UserRepository;
 
@@ -39,7 +39,7 @@ public class ReviewService {
 	private UserRepository userRepo;
 	
 	@Autowired
-	private RoomReopository roomRepo;
+	private RoomRepository roomRepo;
 	
 	@Autowired
 	private PointRepository poRepo;

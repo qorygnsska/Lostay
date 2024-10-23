@@ -112,4 +112,7 @@ public class ReviewRestController {
 		
 		return new ResponseEntity<>(revSer.findRoomReviewAll(roomNo),HttpStatus.OK);
 	}
+	
+	
+	// 유저별 리뷰 조회
 }

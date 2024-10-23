@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lostay.backend.room.service.RoomService;
+
 @RestController
 public class RoomRestController {
 
@@ -20,15 +22,15 @@ public class RoomRestController {
 	
 	
 	// 해당 호텔의 객실 전부 조회 / 호텔 정보도 가져오기
-	@GetMapping("/HotelRoomAll")
-	public ResponseEntity<?> hotelroomall(@RequestParam(defaultValue = "1") long hotelNo
-										 ,@RequestParam(defaultValue = "2024-10-20") 
-										  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime checkInDate
-										 ,@RequestParam(defaultValue = "2024-10-22") 
-	   									  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime checkOutDate){
+	@GetMapping("/HotelRoomList")
+	public ResponseEntity<?> hotelroomlist(@RequestParam(defaultValue = "1") long hotelNo
+										 ,@RequestParam(defaultValue = "2024-10-20T15:00:00") 
+										  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkInDate
+										 ,@RequestParam(defaultValue = "2024-10-22T11:00:00") 
+	   									  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkOutDate){
 		
 		
-		return new ResponseEntity<>(roomSer.findHotelRoomAll(hotelNo,checkInDate,checkOutDate),HttpStatus.OK);
+		return new ResponseEntity<>(roomSer.findHotelRoomList(hotelNo,checkInDate,checkOutDate),HttpStatus.OK);
 	}
 	
 

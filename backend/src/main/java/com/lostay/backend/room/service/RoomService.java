@@ -1,8 +1,9 @@
-package com.lostay.backend.room.controller;
+package com.lostay.backend.room.service;
 
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,22 +13,25 @@ import org.springframework.stereotype.Service;
 import com.lostay.backend.review.repository.ReviewRepository;
 import com.lostay.backend.room.dto.RoomDTO;
 import com.lostay.backend.room.entity.Room;
-import com.lostay.backend.room.repository.RoomReopository;
+import com.lostay.backend.room.repository.RoomRepository;
 
 @Service
 public class RoomService {
 
 	@Autowired
-	private RoomReopository roomRepo;
+	private RoomRepository roomRepo;
 	
 	@Autowired
 	private ReviewRepository revRepo;
 
 	
 	// 호텔에 대한 객실 리스트 조회(호텔과 객실 정보)
-	public List<RoomDTO> findHotelRoomAll(long hotelNo, LocalDateTime checkInDate, LocalDateTime checkOutDate) {
+	public List<RoomDTO> findHotelRoomList(long hotelNo, LocalDateTime checkInDate, LocalDateTime checkOutDate) {
 
-		List<Object[]> newRoom = roomRepo.findHotelRoomList(hotelNo, checkInDate, checkOutDate);
+		LocalDateTime in = checkInDate.toLocalDate().atTime(15,0);
+		LocalDateTime out = checkOutDate.toLocalDate().atTime(11,0);
+		
+		List<Object[]> newRoom = roomRepo.findHotelRoomList(hotelNo, in, out);
 		List<RoomDTO> dtos = new ArrayList<RoomDTO>();
 		int reviewCount = revRepo.findHotelReviewCount(hotelNo);
 		double ReviewAvg = revRepo.findHotelReviewAvg(hotelNo);
@@ -42,7 +46,7 @@ public class RoomService {
 			d.setHotelRating((String)r[4]);
 			String[] str1 = r[5].toString().split(",");
 			d.setHotelAmenities(str1);
-			d.setHotelAddress((String)r[6]);
+			d.setHotelAdress((String)r[6]);
 			d.setHotelTouristAttraction((String)r[7]);
 			d.setHotelIntroduction((String)r[8]);
 			d.setRoomNo((long)r[9]);
@@ -54,9 +58,10 @@ public class RoomService {
 			String[] str2 = r[15].toString().split(",");
 			d.setRoomImg(str2);
 			d.setRoomPrice((int)r[16]);
-			d.setRoomCheckinTime((Time)r[17]);
-			d.setRoomCheckoutTime((Time)r[18]);
-			d.setAvailableRooms((int)r[19]);
+			d.setRoomDiscount((int)r[17]);
+			d.setRoomCheckinTime((LocalTime)r[18]);
+			d.setRoomCheckoutTime((LocalTime)r[19]);
+			d.setAvailableRooms((long)r[20]);
 			d.setReviewCount(reviewCount);
 			d.setReviewAvg(ReviewAvg);
 			

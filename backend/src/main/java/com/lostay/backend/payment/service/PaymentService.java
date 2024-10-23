@@ -19,7 +19,7 @@ import com.lostay.backend.reservation.entity.Reservation;
 import com.lostay.backend.reservation.repository.ReservationRepository;
 import com.lostay.backend.room.dto.RoomDTO;
 import com.lostay.backend.room.entity.Room;
-import com.lostay.backend.room.repository.RoomReopository;
+import com.lostay.backend.room.repository.RoomRepository;
 import com.lostay.backend.user.dto.UserDTO;
 import com.lostay.backend.user.entity.User;
 import com.lostay.backend.user.repository.UserRepository;
@@ -31,7 +31,7 @@ public class PaymentService {
 	private PaymentRepository payRepo;
 
 	@Autowired
-	private RoomReopository roomRepo;
+	private RoomRepository roomRepo;
 
 	@Autowired
 	private UserRepository userRepo;
@@ -154,9 +154,12 @@ public class PaymentService {
 
 		// 결제 테이블에 들어온 정보 예약 테이블에 넣어주기
 		Reservation reservation = new Reservation();
-
-		reservation.setCheckIn(checkInDate);
-		reservation.setCheckOut(checkOutDate);
+		
+		LocalDateTime in = checkInDate.toLocalDate().atTime(15,0);
+		LocalDateTime out = checkOutDate.toLocalDate().atTime(11,0);
+		
+		reservation.setCheckIn(in);
+		reservation.setCheckOut(out);
 		reservation.setPayment(savePay);
 
 		resRepo.save(reservation);

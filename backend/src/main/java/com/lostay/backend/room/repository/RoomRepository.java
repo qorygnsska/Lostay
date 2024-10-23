@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.lostay.backend.room.entity.Room;
 
 @Repository
-public interface RoomReopository extends JpaRepository<Room, Long>{
+public interface RoomRepository extends JpaRepository<Room, Long>{
 
 	
 //	@Query("SELECT r FROM Room r JOIN r.hotel h WHERE h.hotelNo = :hotel_no")
@@ -31,20 +31,20 @@ public interface RoomReopository extends JpaRepository<Room, Long>{
 			   "r.roomCheckinTime, r.roomCheckoutTime, " +
 		       "(r.roomCount - (SELECT COUNT(rs) FROM Reservation rs " +
 		       "JOIN rs.payment p " +
-		       "WHERE p.roomNo = r.roomNo " +
-		       "AND rs.checkIn <= :checkInDate " +
-		       "AND rs.checkOut >= :checkOutDate)) AS availableRooms " +
+		       "WHERE p.room.roomNo = r.roomNo " +
+		       "AND rs.checkIn >= :checkInDate " +
+		       "AND rs.checkOut <= :checkOutDate)) AS availableRooms " +
 		       "FROM Room r " +
 		       "JOIN r.hotel h " +
 		       "WHERE r.roomCount <> (SELECT COUNT(rs) FROM Reservation rs " +
 		       "JOIN rs.payment p " +
-		       "WHERE p.roomNo = r.roomNo " +
-		       "AND rs.checkIn <= :checkInDate " +
-		       "AND rs.checkOut >= :checkOutDate) " +
+		       "WHERE p.room.roomNo = r.roomNo " +
+		       "AND rs.checkIn >= :checkInDate " +
+		       "AND rs.checkOut <= :checkOutDate) " +
 		       "AND h.hotelNo = :hotelNo")
 	List<Object[]> findHotelRoomList(@Param("hotelNo") Long hotelNo
-								,@Param("checkInDate") LocalDateTime checkInDate
-								,@Param("checkOutDate") LocalDateTime checkOutDate);
+								,@Param("checkInDate") LocalDateTime in
+								,@Param("checkOutDate") LocalDateTime out);
 
 	
 	

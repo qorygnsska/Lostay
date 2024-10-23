@@ -12,7 +12,7 @@ import com.lostay.backend.hotel.dto.HotelDTO;
 import com.lostay.backend.hotel.entity.Hotel;
 import com.lostay.backend.room.dto.RoomDTO;
 import com.lostay.backend.room.entity.Room;
-import com.lostay.backend.room.repository.RoomReopository;
+import com.lostay.backend.room.repository.RoomRepository;
 
 @Controller	
 public class RoomController {
