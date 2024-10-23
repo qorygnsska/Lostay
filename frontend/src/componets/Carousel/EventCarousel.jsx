@@ -49,7 +49,7 @@ export default function Carousel({ eventList }) {
                 {eventList.map((data, index) => (
                     <div key={index}>
                         <a href="https://example.com">
-                            <img src={`eventList/${data.eventThumbnail}`} alt={`슬라이드 ${index + 1}`} />
+                            <img src={`${data.eventThumbnail}`} alt={`슬라이드 ${index + 1}`} />
                         </a>
                     </div>
                 ))}

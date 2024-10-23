@@ -51,7 +51,7 @@ public class MainController {
 
 	}
 	//여행지별 숙소
-    @PostMapping("/triphotlesMain")
+    @PostMapping("/triphotelsMain")
     public ResponseEntity<?>triphotlesMain(){
 		log.info("triphotlesMain실행");
 		return new ResponseEntity<>(mainService.findByHotelAddressContaining(),HttpStatus.OK);
