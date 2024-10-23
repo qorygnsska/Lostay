@@ -59,6 +59,10 @@ public class RoomService {
 			d.setRoomImg(str2);
 			d.setRoomPrice((int)r[16]);
 			d.setRoomDiscount((int)r[17]);
+			int roomPrice = (int)r[16];
+			int roomDiscount = (int)r[17];
+			int discountPrice = (int)(roomPrice * (1- roomDiscount));
+			d.setDiscountPrice(discountPrice);
 			d.setRoomCheckinTime((LocalTime)r[18]);
 			d.setRoomCheckoutTime((LocalTime)r[19]);
 			d.setAvailableRooms((long)r[20]);

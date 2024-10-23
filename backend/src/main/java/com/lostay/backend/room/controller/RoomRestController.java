@@ -34,5 +34,7 @@ public class RoomRestController {
 	}
 	
 
+	// 해당 객실에 대한 정보 조회
+	
 	
 }
