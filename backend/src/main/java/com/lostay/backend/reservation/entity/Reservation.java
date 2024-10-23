@@ -27,7 +27,10 @@ public class Reservation {
     private Payment payment;
 
     @Column(name = "res_status")
-    private String resStatus; // 예약 확인/취소 상태
+    private String resStatus; // 예약 확인/취소 상태(N)
+    
+    @Column(name="res_review_status")
+    private String resReviewStatus; // 리뷰 작성했다(Y)
 
     @Column(name = "check_in")
     private LocalDateTime checkIn; // 체크인 날짜
