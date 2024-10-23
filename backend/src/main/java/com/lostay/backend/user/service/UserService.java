@@ -13,7 +13,7 @@ public class UserService {
         
         if (authentication != null && authentication.getPrincipal() instanceof CustomOAuth2User) {
             CustomOAuth2User customUser = (CustomOAuth2User) authentication.getPrincipal();
-            return customUser.getNo(); // userNo 반환
+            return customUser.getUserNo(); // userNo 반환
         }
         
         return null; // 인증되지 않은 경우
