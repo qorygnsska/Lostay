@@ -10,6 +10,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.lostay.backend.hotel.entity.Hotel;
+import com.lostay.backend.review.dto.HotelInfoDTO;
+import com.lostay.backend.review.dto.HotelRoomsDTO;
+import com.lostay.backend.review.dto.ReviewsDTO;
+
 
 public interface HotelRepository extends JpaRepository<Hotel, Long>{
 	//특가 호텔 top10조회
@@ -65,6 +69,29 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
 		       "GROUP BY h.hotelNo, h.hotelRating, h.hotelName, h.hotelThumbnail " +
 		       "ORDER BY overallAverageReviewRating DESC")
 		List<Object[]> findByHotelAddressContaining(@Param("hotelAdress") String hotelAdress, Pageable pageable);
+
+
+    //호텔 정보 가져오기 (홍정훈)
+		 @Query("SELECT new com.lostay.backend.review.dto.HotelInfoDTO(" +
+		           "h.hotelNo, h.hotelName, " +
+		           "ROUND(AVG(r.reviewRating), 1), " +
+		           "COUNT(r.reviewNo)) " +
+		           "FROM Hotel h " +
+		           "JOIN h.rooms rm " +
+		           "LEFT JOIN rm.reviews r " +
+		           "WHERE h.hotelNo = :hotelNo " +
+		           "GROUP BY h.hotelNo, h.hotelName")
+		HotelInfoDTO hoteInfo(@Param("hotelNo")Long hotelNo);
+
+	//호텔의 객실정보 가져오기(홍정훈)
+		 @Query("SELECT new com.lostay.backend.review.dto.HotelRoomsDTO(r.roomNo, r.roomName) " +
+			       "FROM Hotel h " +
+			       "JOIN h.rooms r " +
+			       "WHERE h.hotelNo = :hotelNo")
+		List<HotelRoomsDTO> findRoomNames(@Param("hotelNo")Long hotelNo);
+
+
+		
 
 
 		

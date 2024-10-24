@@ -123,4 +123,12 @@ public class ReviewRestController {
 		return new ResponseEntity<>(revSer.findRoomReview3(roomNo),HttpStatus.OK);
 	}
 	
+	//리뷰보기(홍정훈)
+	@GetMapping("/HotelReviews")
+	public ResponseEntity<?>HotelReviews(@RequestParam()Long hotelNo,@RequestParam(required = false)Long roomNo,@RequestParam(required = false)String sort){
+	System.out.println("ReviewRestController HotelReviews실행");
+	return new ResponseEntity<>(revSer.findHotelReviews(hotelNo,roomNo,sort),HttpStatus.OK);
+	
+	}
+	
 }
