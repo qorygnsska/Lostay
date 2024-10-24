@@ -11,6 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservationHistoryDTO {
+	
+	// 사용자
+	private String userNickname;		// 사용자 닉네임
+	
 	// 예약
 	private Long reservationNo; 		// 예약 넘버
 	private String resReviewStatus; 	// 리뷰 작성 여부

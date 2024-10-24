@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { IoClose } from "react-icons/io5";
 import { FaStar } from "react-icons/fa6";
 import PreviewImg from './PreviewImg';
-export default function ReviewModal({ isOpen, onClose, hotelName, userNickname }) {
+export default function ReviewModal({ isOpen, onClose, hotelName, userNickname, updateReview }) {
 
 
     const startArray = [1, 2, 3, 4, 5]
-    const [rating, setRating] = useState(startArray[0]);
+    const [reviewRating, setReviewRating] = useState(0);
     const [hovered, setHovered] = useState(0);
-    const [textValue, setTextValue] = useState("");
+    const [reviewContent, setReviewContent] = useState("");
 
     // 업로드용 이미지
     const [uploadImg, setUploadImg] = useState([])
@@ -39,17 +39,23 @@ export default function ReviewModal({ isOpen, onClose, hotelName, userNickname }
             };
             fileRead.readAsDataURL(file);
         });
+
+        console.log(uploadImg)
     }
 
     // 파일 삭제 시 함수
     const handleDeleteImage = (idx) => {
         setPreviewImg(previewImg.filter((_, index) => index !== idx));
+
+        // 업로드할 이미지에서도 삭제
+        setUploadImg(uploadImg.filter((_, index) => index !== idx));
     };
 
     // 후기 텍스트 함수
     const handleSetValue = (e) => {
-        setTextValue(e.target.value);
+        setReviewContent(e.target.value);
     };
+
 
     // 리뷰 쓰기 버튼 클릭 시 모달창 보이도록 설정
     if (!isOpen) return null;
@@ -92,9 +98,9 @@ export default function ReviewModal({ isOpen, onClose, hotelName, userNickname }
                                 <button key={starNum} className='star--btn'
                                     onMouseEnter={() => setHovered(starNum)}
                                     onMouseLeave={() => setHovered(0)}
-                                    onClick={() => setRating(starNum)}
+                                    onClick={() => setReviewRating(starNum)}
                                 >
-                                    <FaStar className={`icon ${starNum <= (hovered || rating) ? 'filled' : 'empty'}`} />
+                                    <FaStar className={`icon ${starNum <= (hovered || reviewRating) ? 'filled' : 'empty'}`} />
                                 </button>
                             ))
                         }
@@ -105,7 +111,7 @@ export default function ReviewModal({ isOpen, onClose, hotelName, userNickname }
                     <div className='review--write--box'>
                         <textarea className='review--write'
                             placeholder='소중한 후기를 남겨주세요'
-                            value={textValue}
+                            value={reviewContent}
                             onChange={(e) => handleSetValue(e)}
                         />
                     </div>
@@ -146,7 +152,7 @@ export default function ReviewModal({ isOpen, onClose, hotelName, userNickname }
             </div>
 
 
-            <div className='review--write--btn'>
+            <div className='review--write--btn' onClick={() => updateReview(uploadImg, reviewRating, reviewContent)}>
                 <span>작성하기</span>
             </div>
         </div>

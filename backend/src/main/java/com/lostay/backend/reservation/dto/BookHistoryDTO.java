@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BookHistoryDTO {
 		
+	// 사용자
+	private String userNickname;		// 사용자 닉네임
+	
 	// 예약
 	private Long reservationNo; 		// 예약 넘버
     
@@ -19,8 +22,8 @@ public class BookHistoryDTO {
 	// 객실
     private Long roomNo;				// 객실넘버	
     private String roomName;           	// 객실명
-    private String roomCheckinTime; 	// 객실 체크인 시간
-    private String roomCheckoutTime; 	// 객실 체크아웃 시간
+    private String roomCheckInTime; 	// 객실 체크인 시간
+    private String roomCheckOutTime; 	// 객실 체크아웃 시간
    					
 	// 호텔
     private Long hotelNo;              	// 호텔 넘버

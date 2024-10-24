@@ -146,12 +146,13 @@ public class ReservationService {
 	// 셋팅
 	private void bookHistorySet(List<BookHistoryDTO> bookHistoryList, BookHistoryDTO bookHistoryDTO, ReservationHistoryDTO dto) {
 		
+		bookHistoryDTO.setUserNickname(dto.getUserNickname());
 		bookHistoryDTO.setReservationNo(dto.getReservationNo());
 		bookHistoryDTO.setPayNo(dto.getPayNo());
 		bookHistoryDTO.setRoomNo(dto.getRoomNo());
 		bookHistoryDTO.setRoomName(dto.getRoomName());
-		bookHistoryDTO.setRoomCheckinTime(dto.getRoomCheckInTime().toString().substring(0, 5));
-		bookHistoryDTO.setRoomCheckoutTime(dto.getRoomCheckOutTime().toString().substring(0, 5));
+		bookHistoryDTO.setRoomCheckInTime(dto.getRoomCheckInTime().toString().substring(0, 5));
+		bookHistoryDTO.setRoomCheckOutTime(dto.getRoomCheckOutTime().toString().substring(0, 5));
 		bookHistoryDTO.setHotelNo(dto.getHotelNo());
 		bookHistoryDTO.setHotelName(dto.getHotelName());
 		bookHistoryDTO.setHotelThumbnail(dto.getHotelThumbnail());
