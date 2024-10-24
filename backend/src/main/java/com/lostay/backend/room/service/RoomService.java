@@ -88,7 +88,7 @@ public class RoomService {
 
 	
 	//  해당 객실에 대한 정보 조회
-	public RoomDTO findRoomInfo(long roomNo) {
+	public RoomDTO findRoomInfo(long roomNo,LocalDateTime checkInDate, LocalDateTime checkOutDate, int peopleMax) {
 		
 		Optional<Room> newRoom = roomRepo.findById(roomNo);
 		Room room = newRoom.get();
@@ -97,10 +97,26 @@ public class RoomService {
 		
 		dto.setRoomNo(room.getRoomNo());
 		dto.setRoomName(room.getRoomName());
-
+		dto.setHotelNo(room.getHotel().getHotelNo());
+		dto.setHotelName(room.getHotel().getHotelName());
+		String[] str = room.getRoomAmenities().split(",");
+		dto.setRoomAmenities(str);
+		String[] str1 = room.getRoomIntroduction().split(",");
+		dto.setRoomIntroduction(str1);
+		dto.setRoomPrice(room.getRoomPrice());
+		dto.setRoomDiscount(room.getRoomDiscount());
+		int roomPrice = room.getRoomPrice();
+		int roomDiscount = room.getRoomDiscount();
+		int discountPrice = (int)roomPrice - roomPrice * roomDiscount/100;
+		dto.setDiscountPrice(discountPrice);
+		dto.setCheckInDay(checkInDate.toLocalDate());
+		dto.setCheckOutDay(checkOutDate.toLocalDate());
+		dto.setSearchPeople(peopleMax);
+		String[] str2 = room.getRoomImg().split(",");
+		dto.setRoomImg(str2);
 		
 		
-		return null;
+		return dto;
 	}
 	
 }

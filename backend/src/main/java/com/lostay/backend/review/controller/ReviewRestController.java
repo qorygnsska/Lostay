@@ -114,5 +114,11 @@ public class ReviewRestController {
 	}
 	
 	
-	// 유저별 리뷰 조회
+	// 객실별 리뷰 상위 3개 조회
+	@GetMapping("/RoomDetail3")
+	public ResponseEntity<?> roomdetail3(@RequestParam(defaultValue = "1")long roomNo){
+	
+		return new ResponseEntity<>(revSer.findRoomReview3(roomNo),HttpStatus.OK);
+	}
+	
 }

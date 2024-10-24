@@ -37,10 +37,15 @@ public class RoomRestController {
 
 	// 해당 객실에 대한 정보 조회
 	@GetMapping("/RoomDetail")
-	public ResponseEntity<?> roomdetail(@RequestParam(defaultValue = "1") long roomNo){
+	public ResponseEntity<?> roomdetail(@RequestParam(defaultValue = "1") long roomNo
+			,@RequestParam(defaultValue = "2024-10-20T15:00:00") 
+	  		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkInDate
+	  	   ,@RequestParam(defaultValue = "2024-10-22T11:00:00") 
+		    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkOutDate
+		   ,@RequestParam(defaultValue = "3") int peopleMax){
+		  
 		
-		
-		return new ResponseEntity<>(roomSer.findRoomInfo(roomNo),HttpStatus.OK);
+		return new ResponseEntity<>(roomSer.findRoomInfo(roomNo,checkInDate,checkOutDate,peopleMax),HttpStatus.OK);
 	}
 	
 	

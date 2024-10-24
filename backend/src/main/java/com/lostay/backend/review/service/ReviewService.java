@@ -174,7 +174,7 @@ public class ReviewService {
 		List<ReviewDTO> dtoList = new ArrayList<ReviewDTO>();
 		
 		double reviewAvg = revRepo.findHotelReviewAvg(hotelNo);
-		int reviewCount = revRepo.findHotelReviewCount(hotelNo);
+		long reviewCount = revRepo.findHotelReviewCount(hotelNo);
 		
 		for(Object[] d : ReviewList) {
 			ReviewDTO dto = new ReviewDTO();
@@ -218,6 +218,38 @@ public class ReviewService {
 			
 			dtos.add(dto);
 		}
+		
+		return dtos;
+	}
+
+	// 객실에 대한 리뷰 상위 3개
+	public List<ReviewDTO> findRoomReview3(long roomNo) {
+		
+		Pageable pageable = PageRequest.of(0, 3); // 첫 번째 페이지, 3개 항목
+		List<Object[]> newReview = revRepo.findRoomReview3(roomNo,pageable);
+		
+		List<ReviewDTO> dtos = new ArrayList<ReviewDTO>();
+		
+		double reviewAvg = revRepo.findRoomReviewAvg(roomNo);
+		long reviewCount = revRepo.findRoomReviewCount(roomNo);
+		
+		for(Object[] d : newReview) {
+			ReviewDTO dto = new ReviewDTO();
+			dto.setReviewContent((String)d[0]);
+			
+			dto.setReviewCreateAt((LocalDateTime)d[1]);
+			dto.setReviewRating((double)d[2]);
+			dto.setRoomNo((long)d[3]);
+			dto.setUserNo((long)d[4]);
+			dto.setRoomName((String)d[5]);
+			dto.setReviewNo((long)d[6]);
+			dto.setReviewAvg(reviewAvg);
+			dto.setReviewCount(reviewCount);
+			
+			dtos.add(dto);
+		}
+		
+		
 		
 		return dtos;
 	}
