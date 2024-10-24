@@ -17,11 +17,12 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 	// 결제 취소 시 reservation 테이블에서 payNo외래키 통해서 데이터 찾기
 	Optional<Reservation> findByPayment_PayNo(long payNo);
 
+	// 체크인 안한 숙소
 	@Query("SELECT new com.lostay.backend.reservation.dto.ReservationHistoryDTO(" +
 	           "res.reservationNo, res.resReviewStatus, res.checkIn, res.checkOut, " +
-	           "p.payNo, r.roomNo, r.roomName, " +
+	           "p.payNo, p.payDay, r.roomNo, r.roomName, " +
 	           "r.roomCheckinTime, r.roomCheckoutTime, " +
-	           "h.hotelNo, h.hotelThumbnail) " +
+	           "h.hotelNo, h.hotelName, h.hotelThumbnail) " +
 	           "FROM Reservation res " +
 	           "JOIN res.payment p " +
 	           "JOIN p.user u " +
@@ -33,12 +34,12 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 			   "ORDER BY res.checkIn ASC " )
 	List<ReservationHistoryDTO> findBookHistory(@Param("userNo") Long userNo, @Param("resStatus") String resStatus);
 
-	
+	// 이용 완료한 숙소
 	@Query("SELECT new com.lostay.backend.reservation.dto.ReservationHistoryDTO(" +
 	           "res.reservationNo, res.resReviewStatus, res.checkIn, res.checkOut, " +
-	           "p.payNo, r.roomNo, r.roomName, " +
+	           "p.payNo, p.payDay, r.roomNo, r.roomName, " +
 	           "r.roomCheckinTime, r.roomCheckoutTime, " +
-	           "h.hotelNo, h.hotelThumbnail) " +
+	           "h.hotelNo, h.hotelName, h.hotelThumbnail) " +
 	           "FROM Reservation res " +
 	           "JOIN res.payment p " +
 	           "JOIN p.user u " +
@@ -50,5 +51,21 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 	           "AND res.checkIn < CURRENT_TIMESTAMP " +
 	           "ORDER BY res.checkIn DESC " )
 	List<ReservationHistoryDTO> findBookedHistory(@Param("userNo") Long userNo, @Param("resStatus") String resStatus, @Param("startDateTime") LocalDateTime startDateTime);
+
+	// 예약 취소한 숙소
+	@Query("SELECT new com.lostay.backend.reservation.dto.ReservationHistoryDTO(" +
+	           "res.reservationNo, res.resReviewStatus, res.checkIn, res.checkOut, " +
+	           "p.payNo, p.payDay, r.roomNo, r.roomName, " +
+	           "r.roomCheckinTime, r.roomCheckoutTime, " +
+	           "h.hotelNo, h.hotelName, h.hotelThumbnail) " +
+	           "FROM Reservation res " +
+	           "JOIN res.payment p " +
+	           "JOIN p.user u " +
+	           "JOIN p.room r " +
+	           "JOIN r.hotel h " +
+	           "WHERE u.userNo = :userNo " +
+	           "AND res.resStatus = :resStatus " +
+	           "ORDER BY res.checkIn DESC " )
+	List<ReservationHistoryDTO> findBookCancleHistory(@Param("userNo") Long userNo, @Param("resStatus") String resStatus);
 
 }

@@ -21,7 +21,6 @@ privateApi.interceptors.request.use((config) => {
 });
 
 
-let isRequestInProgress = false
 //refresh token api
 privateApi.interceptors.response.use(
     (response) => {
@@ -30,10 +29,6 @@ privateApi.interceptors.response.use(
     async (error) => {
 
         if (error.config && error.response.data.message === 'expired' && error.response.status === 401) {
-            //     const refreshToken = getCookie('refresh'); // 쿠키에서 refresh token 가져오기
-            //   console.log('refreshToken - ', refreshToken)
-            // console.log('리프레쉬 요청함')
-            // refresh token 요청
 
             try {
                 const res = await axios.post(
