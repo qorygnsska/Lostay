@@ -23,7 +23,7 @@ public class RoomRestController {
 	
 	// 해당 호텔의 객실 전부 조회 / 호텔 정보도 가져오기 / 기준인원
 	@GetMapping("/HotelRoomList")
-	public ResponseEntity<?> hotelroomlist(@RequestParam(defaultValue = "1") long hotelNo
+	public ResponseEntity<?> hotelroomlist(@RequestParam(defaultValue = "1") Long hotelNo
 										 ,@RequestParam(defaultValue = "2024-10-20T15:00:00") 
 										  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkInDate
 										 ,@RequestParam(defaultValue = "2024-10-22T11:00:00") 
@@ -37,7 +37,7 @@ public class RoomRestController {
 
 	// 해당 객실에 대한 정보 조회
 	@GetMapping("/RoomDetail")
-	public ResponseEntity<?> roomdetail(@RequestParam(defaultValue = "1") long roomNo
+	public ResponseEntity<?> roomdetail(@RequestParam(defaultValue = "1") Long roomNo
 			,@RequestParam(defaultValue = "2024-10-20T15:00:00") 
 	  		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkInDate
 	  	   ,@RequestParam(defaultValue = "2024-10-22T11:00:00") 

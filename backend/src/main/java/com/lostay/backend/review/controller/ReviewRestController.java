@@ -29,21 +29,13 @@ public class ReviewRestController {
 	
 	@Autowired
     private ServletContext context;
-
-	
-//	// 리뷰 작성 페이지
-//	@GetMapping("/WriteReviewPage")
-//	public ResponseEntity<?> writereview(@RequestParam(defaultValue = "1") long payNo) {
-//	
-//		return new ResponseEntity<>(revSer.findRoomUserInfo(payNo),HttpStatus.OK);
-//	}	
 	
     // 작성한 내용, 별점, 이미지 디비에 저장
 	@PostMapping("/UploadReviewImg")
 	public void uploadreviewimg(MultipartHttpServletRequest files
 							   ,@RequestParam(defaultValue = "3.0") double reviewRating
 							   ,@RequestParam(value = "text")String reviewContent
-							   ,@RequestParam(defaultValue = "1") long payNo) {
+							   ,@RequestParam(defaultValue = "1") Long payNo) {
 		
 		// 파일을 업로드 하는 위치를 지정
 				String uploadFoler = context.getRealPath("/resources/upload");
@@ -89,7 +81,7 @@ public class ReviewRestController {
 	
 	// 룸리스트에서 리뷰 전체 조회할 때
 	@GetMapping("/InquireRoomAll")
-	public ResponseEntity<?> inquireroom(@RequestParam(defaultValue = "1") long hotelNo){
+	public ResponseEntity<?> inquireroom(@RequestParam(defaultValue = "1") Long hotelNo){
 	
 		
 		return new ResponseEntity<>(revSer.findAllHotelReview(hotelNo),HttpStatus.OK);
@@ -98,7 +90,7 @@ public class ReviewRestController {
 	
 	// 룸리스트에서 리뷰 상위 3개 조회
 	@GetMapping("/InquireRoom3")
-	public ResponseEntity<?> inquireroom3(@RequestParam(defaultValue = "1") long hotelNo){
+	public ResponseEntity<?> inquireroom3(@RequestParam(defaultValue = "1") Long hotelNo){
 	
 		
 		return new ResponseEntity<>(revSer.findHotelReview3(hotelNo),HttpStatus.OK);
@@ -107,7 +99,7 @@ public class ReviewRestController {
 	
 	// 객실상세에서 리뷰 전체 조회
 	@GetMapping("/InquireRoomDetailAll")
-	public ResponseEntity<?> inquireroomdetail(@RequestParam(defaultValue = "1") long roomNo){
+	public ResponseEntity<?> inquireroomdetail(@RequestParam(defaultValue = "1") Long roomNo){
 	
 		
 		return new ResponseEntity<>(revSer.findRoomReviewAll(roomNo),HttpStatus.OK);
@@ -116,7 +108,7 @@ public class ReviewRestController {
 	
 	// 객실별 리뷰 상위 3개 조회
 	@GetMapping("/RoomDetail3")
-	public ResponseEntity<?> roomdetail3(@RequestParam(defaultValue = "1")long roomNo){
+	public ResponseEntity<?> roomdetail3(@RequestParam(defaultValue = "1")Long roomNo){
 	
 		return new ResponseEntity<>(revSer.findRoomReview3(roomNo),HttpStatus.OK);
 	}

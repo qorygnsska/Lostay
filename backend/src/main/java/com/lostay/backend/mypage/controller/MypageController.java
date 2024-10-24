@@ -35,9 +35,11 @@ public class MypageController {
 	}
 
 	// mypage 내가 작성한 리뷰 조회
-	@GetMapping("/mypageReview/{userNo}")
-	public ResponseEntity<?> mypageReview(@PathVariable Long userNo, @RequestParam(required = false) Integer page) {
+	@GetMapping("/mypageReview")
+	public ResponseEntity<?> mypageReview(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @RequestParam(required = false) Integer page) {
 
+		
+		Long userNo = customOAuth2User.getUserNo();
 		log.info("mypageReview실행");
 		// page가 null인 경우 기본값을 0으로 설정 (예: 첫 페이지)
 		if (page == null) {
@@ -47,10 +49,11 @@ public class MypageController {
 	}
 
 	// mypage 내가 선택한 찜목록 조회
-	@GetMapping("/mypageCartList/{userNo}")
-	public ResponseEntity<?> mypageCartList(@PathVariable Long userNo, @RequestParam(required = false) Integer page) {
+	@GetMapping("/mypageCartList")
+	public ResponseEntity<?> mypageCartList(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @RequestParam(required = false) Integer page) {
 		log.info("mypageCartList실행");
 
+		Long userNo = customOAuth2User.getUserNo();
 		// page가 null인 경우 기본값을 0으로 설정 (예: 첫 페이지)
 		if (page == null) {
 			page = 0; // 기본값 설정
@@ -60,14 +63,16 @@ public class MypageController {
 	}
 
 	// mypage 유저 정보 닉네임 수정
-	@PostMapping("/mypageUserInfo/{userNo}/nickname/{nickname}")
-	public void mypageUserInfoNickName(@PathVariable Long userNo, @PathVariable("nickname") String nickname) {
+	@PostMapping("/mypageUserInfo/nickname/{nickname}")
+	public void mypageUserInfoNickName(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @PathVariable("nickname") String nickname) {
+		Long userNo = customOAuth2User.getUserNo();
 		System.out.println("MypageController mypageUserInfoNickName실행");
 		mypageService.userUpdateNicName(userNo, nickname);
 	}
 	//mypage 유저 정보 전화번호 수정
-	@PostMapping("/mypageUserInfo/{userNo}/phone/{phone}")
-	public void mypageUserInfoPhone(@PathVariable Long userNo, @PathVariable("phone") String phone) {
+	@PostMapping("/mypageUserInfo/phone/{phone}")
+	public void mypageUserInfoPhone(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @PathVariable("phone") String phone) {
+		Long userNo = customOAuth2User.getUserNo();
 		System.out.println("MypageController mypageUserInfoPhone실행");
 		mypageService.userUpdatePhone(userNo, phone);
 	}
