@@ -25,17 +25,25 @@ public class AdminController {
 	AdminService adminService;
 	
 	
-	//이벤트 조회(1024 JIP)
+	//이벤트 전체 조회(1024 JIP)
 	@GetMapping("/adminEventList")
-	public ResponseEntity<?> adminEventList (@RequestParam(defaultValue = "") String eventTitle, @RequestParam(defaultValue = "0") int page) {
-		System.out.println("adminCont.adminEventList()");
-		System.out.println("searchValue(title): " + eventTitle + " page: " + page);
+	public ResponseEntity<?> adminEventList(@RequestParam(defaultValue = "") String eventTitle, @RequestParam(defaultValue = "1") int page) {
+		//System.out.println("adminCont.adminEventList()");
+		//System.out.println("searchValue(title): " + eventTitle + " /page: " + page);
 		
-		
-		
-		
-		return new ResponseEntity<>(adminService.getEventList(eventTitle,page), HttpStatus.OK);
+		//요청받은 페이지 인덱스는 0부터: page-1 
+		return new ResponseEntity<>(adminService.getEventList(eventTitle, page-1), HttpStatus.OK);
 	}
+	
+	//이벤트 단일 조회(1024 JIP)
+	@GetMapping("/adminEventDetail")
+	public ResponseEntity<?> adminEventDetail(Long eventNo) {
+		
+		return new ResponseEntity<>(adminService.getEventDetail(eventNo), HttpStatus.OK);
+	}
+	
+	
+	
 	
 	
 	
