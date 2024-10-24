@@ -41,6 +41,7 @@ public class ReviewRestController {
 				String uploadFoler = context.getRealPath("/resources/upload");
 				
 				ArrayList<String> fileReadName = new ArrayList<String>();
+				ArrayList<String> fileReadName2 = new ArrayList<String>();
 				
 				try {
 					// 업로드하는 폴더가 없을 경우
@@ -57,6 +58,7 @@ public class ReviewRestController {
 					for(int i=0; i<list.size(); i++) {
 						fileReadName.clear();
 						fileReadName.add(list.get(i).getOriginalFilename());
+						fileReadName2.add(list.get(i).getOriginalFilename());
 						long size = list.get(i)
 										.getSize();
 						String ImgName = fileReadName.toString().replace("[", "").replace("]", "");;
@@ -77,7 +79,7 @@ public class ReviewRestController {
 					e.printStackTrace();
 				}
 
-       revSer.saveMyReview(reviewRating,reviewContent,fileReadName, payNo);
+       revSer.saveMyReview(reviewRating,reviewContent,fileReadName2, payNo);
 	}
 	
 	

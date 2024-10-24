@@ -79,7 +79,7 @@ public class ReviewService {
 	}
 
 	// 작성한 리뷰 저장, 리뷰 작성 시 포인트 적립
-	public void saveMyReview(double reviewRating, String reviewContent, ArrayList<String> fileReadName, long payNo) {
+	public void saveMyReview(double reviewRating, String reviewContent, ArrayList<String> fileReadName2, long payNo) {
 				
 		Optional<Payment> newPayment = payRepo.findById(payNo);
 		
@@ -96,7 +96,7 @@ public class ReviewService {
 		
 		
 		StringBuilder sb = new StringBuilder();
-		for(String img : fileReadName) {
+		for(String img : fileReadName2) {
 			sb.append(img).append(", ");
 		}
 		
