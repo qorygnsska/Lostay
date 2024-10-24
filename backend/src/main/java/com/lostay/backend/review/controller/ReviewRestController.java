@@ -3,6 +3,7 @@ package com.lostay.backend.review.controller;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 
@@ -38,8 +39,10 @@ public class ReviewRestController {
 							   ,@RequestParam(defaultValue = "1") Long payNo) {
 		
 		// 파일을 업로드 하는 위치를 지정
-				String uploadFoler = context.getRealPath("/resources/upload");
-				
+//				String uploadFoler = context.getRealPath("/resources/upload");
+				String uploadFoler = "C:\\test\\upload";
+
+				// 서비스로 보내줄 배열
 				ArrayList<String> fileReadName = new ArrayList<String>();
 				
 				try {
@@ -55,18 +58,26 @@ public class ReviewRestController {
 							files.getFiles("files");
 					
 					for(int i=0; i<list.size(); i++) {
-						fileReadName.add(list.get(i).getOriginalFilename());
+						String img = list.get(i).getOriginalFilename();
+						
+						String n = img.toString().replace("[", "").replace("]", "");
+						String extension = n.substring(n.lastIndexOf("."),n.length());
+						
+						String newFileName = UUID.randomUUID().toString() + extension;
+						
+						fileReadName.add(newFileName);
+						
 						long size = list.get(i)
 										.getSize();
-						
-						System.out.println("파일명:" + fileReadName);
+						System.out.println("파일명:" + newFileName);
 						System.out.println("사이즈:" + size);
 						
 						// 저장할 파일 경로
-						File saveFile = new File(uploadFoler + File.separator + fileReadName);
+						File saveFile = new File(uploadFoler + File.separator + newFileName);
 						//파일저장
 						list.get(i).transferTo(saveFile);
-						System.out.println("파일 저장 성공");			
+						System.out.println("파일 저장 성공");	
+						System.out.println(saveFile);
 					}
 					
 					
