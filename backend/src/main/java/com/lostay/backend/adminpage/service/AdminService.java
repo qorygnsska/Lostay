@@ -9,12 +9,16 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lostay.backend.adminpage.dto.AdminEventDTO;
 import com.lostay.backend.adminpage.dto.AdminReviewDTO;
 import com.lostay.backend.adminpage.dto.AdminUserSerarchDTO;
 import com.lostay.backend.cart.entity.Cart;
+import com.lostay.backend.event.entity.Event;
+import com.lostay.backend.event.repository.EventRepository;
 import com.lostay.backend.hotel.dto.HotelDTO;
 import com.lostay.backend.mypage.dto.ReviewpageDTO;
 import com.lostay.backend.review.entity.Review;
@@ -28,6 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdminService {
 
+	@Autowired
+	EventRepository eventRepo;
+	
 	@Autowired
 	ReviewRepository reviewRepo;
 
@@ -89,6 +96,25 @@ public class AdminService {
       log.info("del실행");
       reviewRepo.delete(review); 
 		
+	}
+
+	//관리자 페이지 이벤트리스트(1024 JIP)
+	public Object getEventList(String eventTitle, int page) {
+		System.out.println("adminServ.getEventList()");
+
+		for(int i = 0; i < 5; i++) {
+			Pageable pageable = PageRequest.of(i, 4);
+			//1st: requested Page(from 0)
+			//2nd: the number of content included in the page
+			
+			System.out.println("requestPage: " + i + "of total 5");
+			Page<Event> pageOfEvent = eventRepo.findAll(pageable);
+			
+			System.out.println(pageOfEvent.getContent().toString());
+			System.out.println("totalPage: " + pageOfEvent.getTotalPages());
+		}
+	
+		return null;
 	}
 	
 	

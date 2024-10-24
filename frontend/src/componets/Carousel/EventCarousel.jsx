@@ -48,7 +48,7 @@ export default function Carousel({ eventList }) {
             <Slider ref={sliderRef} {...settings}>
                 {eventList.map((data, index) => (
                     <div key={index}>
-                        <a href="https://example.com">
+                        <a href={`/event-detail/${data.eventNo}`}>
                             <img src={`${data.eventThumbnail}`} alt={`슬라이드 ${index + 1}`} />
                         </a>
                     </div>

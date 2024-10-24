@@ -21,7 +21,7 @@ export default function PageEventDetail() {
             .then(data => {
                 console.log(data);
                 setEvent(data);
-                
+
             }).catch(error => {
                 alert('이벤트 페이지를 불러올 수 없습니다.');
                 console.log(error);
@@ -34,7 +34,7 @@ export default function PageEventDetail() {
     //2nd arg [no] : no가 바뀔 때마다 re-rendering
     useEffect(() => {
         getEvent();
-    }, [no]);    
+    }, [no]);
 
 
     // event 초기값이 null이라 서버에서 응답이 올때까지 nullPointerException 방지
@@ -50,7 +50,7 @@ export default function PageEventDetail() {
 
                     <div id="container_event_detail">
                         {/* url에서 localhost:3000/event-detail/ 까지 기본으로 들어감 */}
-                        <img src={'../'+event.eventImg} alt={event.eventTitle} />
+                        <img src={'../' + event.eventImg} alt={event.eventTitle} />
                     </div>
 
                 </div>
