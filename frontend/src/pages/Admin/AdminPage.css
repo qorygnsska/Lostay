@@ -9,18 +9,8 @@
         padding-top: 12px;
 
 
-        #table_header {
+        .table {
             text-align: center;
-        }
-
-
-        #table_body {
-            text-align: center;
-
-            .btn_container {
-                display: flex;
-                justify-content: space-evenly;
-            }
         }
 
 
@@ -40,12 +30,30 @@
 .page--event--manager--container {
     /* 관리자 이벤트페이지 */
 
-
-
     #btn_enroll {
         /* '이벤트 등록' 버튼 */
-
     }
+
+    #table_entire_event {
+
+        .event_no {
+            width: 15%;
+        }
+
+        .event_title {
+            width: 30%;
+        }
+
+        .event_period {
+            width: 40%;
+        }
+
+        .btn_container {
+            width: 15%;
+        }
+    }
+
+
 
 }
 

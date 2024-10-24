@@ -61,6 +61,7 @@ export default function PageUserManager() {
                             <tr>
                                 <th>#</th>
                                 <th>이름</th>
+                                {/* <th>별명</th> */}
                                 <th>이메일</th>
                                 <th>전화번호</th>
                                 <th>가입일</th>

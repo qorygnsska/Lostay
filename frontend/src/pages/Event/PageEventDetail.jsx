@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import BackNav from "../../componets/BackNav/BackNav";
 import { useParams } from 'react-router-dom';
 
+
 export default function PageEventDetail() {
 
 
@@ -29,8 +30,8 @@ export default function PageEventDetail() {
 
     }
 
-    //1st args getEventList() : getEvent 메서드에 effect 사용
-    //2nd args [no] : no가 바뀔 때마다 re-rendering
+    //1st arg getEventList() : getEvent 메서드에 effect 사용
+    //2nd arg [no] : no가 바뀔 때마다 re-rendering
     useEffect(() => {
         getEvent();
     }, [no]);    
@@ -38,7 +39,7 @@ export default function PageEventDetail() {
 
     // event 초기값이 null이라 서버에서 응답이 올때까지 nullPointerException 방지
     if (!event) {
-        return <p>DataNotArrived</p>
+        return <p>ServiceDenied</p>
     } else {
         return (
             <>
