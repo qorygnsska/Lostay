@@ -10,8 +10,9 @@
 
         .dropdown--box {
             align-self: self-end;
+            display: none;
 
-            .dropdown > button {
+            .dropdown>button {
                 background-color: #fff;
                 border-color: var(--lightGrayColor);
                 color: black;
@@ -21,6 +22,10 @@
             .dropdown--menu {
                 min-width: 110px;
             }
+        }
+
+        .dropdown--box.show {
+            display: block;
         }
 
         .notify {

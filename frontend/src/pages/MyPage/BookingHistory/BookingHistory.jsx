@@ -148,7 +148,7 @@ export default function BookingHistory() {
 
             <div className="booking--history--wrap">
                 {/* 보여줄 개월 수 선택 */}
-                <div className="dropdown--box">
+                <div className={`dropdown--box ${activeTab !== 0 ? 'show' : ''}`}>
                     <Dropdown onSelect={handleSelect} className="dropdown">
                         <Dropdown.Toggle>{selectedDate}</Dropdown.Toggle>
 

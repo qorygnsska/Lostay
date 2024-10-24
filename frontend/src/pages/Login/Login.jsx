@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./Login.css";
-import BackHeader from "../../componets/BackNav/BackNav";
+import Navbar from "../../componets/Navbar/Navbar";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/store";
 import { useNavigate } from "react-router-dom";
@@ -47,8 +47,6 @@ export default function Login() {
 
     return (
         <div className="login--container">
-            <BackHeader title="로그인" />
-
             <div className="login--wrap">
                 <div className="logo">
                     <img src="Logo/logo.png" />
@@ -93,6 +91,8 @@ export default function Login() {
                     <span>Google로 시작하기</span>
                 </button>
             </div>
+
+            <Navbar />
         </div>
     );
 }

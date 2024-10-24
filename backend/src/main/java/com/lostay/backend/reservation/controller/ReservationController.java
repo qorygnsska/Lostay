@@ -19,32 +19,33 @@ public class ReservationController {
 	
 	
 	// 예약 내역에서 예약한 숙소
-	@GetMapping("/BookHistory/{showmonth}")
-	public ResponseEntity<?> bookhistory(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @RequestParam int showMonth){
+	@GetMapping("/BookHistory")
+	public ResponseEntity<?> bookhistory(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
 		
 		Long userNo = customOAuth2User.getUserNo();
-		
+		//Long userNo = 1L;
 		return new ResponseEntity<>(resSer.findBookHistory(userNo),HttpStatus.OK);
 	}
 	
 	
 	// 예약 내역에서 이용한 숙소
 	@GetMapping("/BookedHistory")
-	public ResponseEntity<?> bookedhistory(@RequestParam(defaultValue = "1")long userNo
-										  ,@RequestParam(defaultValue = "Y")String payStatus){
+	public ResponseEntity<?> bookedhistory(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @RequestParam int showMonth){
 			
-		return new ResponseEntity<>(resSer.findBookedHistory(userNo,payStatus),HttpStatus.OK);
+		Long userNo = customOAuth2User.getUserNo();
+		//Long userNo = 1L;
+		return new ResponseEntity<>(resSer.findBookedHistory(userNo,showMonth),HttpStatus.OK);
 	}
 		
-		
-	// 예약 내역에서 취소한 숙소
-	@GetMapping("/BookCancleHistory")
-	public ResponseEntity<?> bookcanclehistory(@RequestParam(defaultValue = "1")long userNo
-											  ,@RequestParam(defaultValue = "N")String payStatus){
-					
-		return new ResponseEntity<>(resSer.findBookCancleHistory(userNo,payStatus),HttpStatus.OK);
-
-	}
+//		
+//	// 예약 내역에서 취소한 숙소
+//	@GetMapping("/BookCancleHistory")
+//	public ResponseEntity<?> bookcanclehistory(@RequestParam(defaultValue = "1")long userNo
+//											  ,@RequestParam(defaultValue = "N")String payStatus){
+//					
+//		return new ResponseEntity<>(resSer.findBookCancleHistory(userNo,payStatus),HttpStatus.OK);
+//
+//	}
 	
 	
 	// 예약 취소는 Payment Controller에 있음
