@@ -55,18 +55,20 @@ public class ReviewRestController {
 							files.getFiles("files");
 					
 					for(int i=0; i<list.size(); i++) {
+						fileReadName.clear();
 						fileReadName.add(list.get(i).getOriginalFilename());
 						long size = list.get(i)
 										.getSize();
-						
-						System.out.println("파일명:" + fileReadName);
+						String ImgName = fileReadName.toString().replace("[", "").replace("]", "");;
+						System.out.println("파일명:" + ImgName);
 						System.out.println("사이즈:" + size);
 						
 						// 저장할 파일 경로
-						File saveFile = new File(uploadFoler + File.separator + fileReadName);
+						File saveFile = new File(uploadFoler + File.separator + ImgName);
 						//파일저장
 						list.get(i).transferTo(saveFile);
-						System.out.println("파일 저장 성공");			
+						System.out.println("파일 저장 성공");	
+						System.out.println(saveFile);
 					}
 					
 					
