@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import com.lostay.backend.adminpage.dto.AdminReviewDTO;
 import com.lostay.backend.mypage.dto.MypageCartListDTO;
 import com.lostay.backend.mypage.dto.ReviewpageDTO;
+import com.lostay.backend.review.dto.ReviewsDTO;
 import com.lostay.backend.review.entity.Review;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
@@ -112,7 +113,56 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 			+ "Where rv.room.roomNo = :roomNo")
 	int findRoomReviewCount(@Param("roomNo")long roomNo);
 
-
+	
+	
+	
+	
+	//호텔 객실 리뷰 보기(홍정훈)
+	// 객실 이름 기준
+	 @Query("SELECT rv.reviewNo, rv.reviewRating, rv.reviewCreateAt, " +
+	           "u.userNickname, r.roomName, rv.reviewContent, rv.reviewImg " +
+	           "FROM Review rv " +
+	           "JOIN rv.room r " +
+	           "JOIN r.hotel h " +
+	           "JOIN rv.user u " +
+	           "WHERE h.hotelNo = :hotelNo AND r.roomNo = :roomNo " +
+	           "ORDER BY r.roomName") 
+	    List<Object[]> findReviewsByRoomName(@Param("hotelNo") Long hotelNo, @Param("roomNo") Long roomNo);
+	 // 최신 작성순
+	    @Query("SELECT rv.reviewNo, rv.reviewRating, rv.reviewCreateAt, " +
+	           "u.userNickname, r.roomName, rv.reviewContent, rv.reviewImg " +
+	           "FROM Review rv " +
+	           "JOIN rv.room r " +
+	           "JOIN r.hotel h " +
+	           "JOIN rv.user u " +
+	           "WHERE h.hotelNo = :hotelNo AND r.roomNo = :roomNo " +
+	           "ORDER BY rv.reviewCreateAt DESC") // 최신 작성순
+	    List<Object[]> findReviewsByDateDesc(@Param("hotelNo") Long hotelNo, @Param("roomNo") Long roomNo);
+	 // 평점 높은 순
+	    @Query("SELECT rv.reviewNo, rv.reviewRating, rv.reviewCreateAt, " +
+	           "u.userNickname, r.roomName, rv.reviewContent, rv.reviewImg " +
+	           "FROM Review rv " +
+	           "JOIN rv.room r " +
+	           "JOIN r.hotel h " +
+	           "JOIN rv.user u " +
+	           "WHERE h.hotelNo = :hotelNo AND r.roomNo = :roomNo " +
+	           "ORDER BY rv.reviewRating DESC") // 평점 높은 순
+	    List<Object[]> findReviewsByRatingDesc(@Param("hotelNo") Long hotelNo, @Param("roomNo") Long roomNo);
+	 // 평점 낮은 순
+	    @Query("SELECT rv.reviewNo, rv.reviewRating, rv.reviewCreateAt, " +
+	           "u.userNickname, r.roomName, rv.reviewContent, rv.reviewImg " +
+	           "FROM Review rv " +
+	           "JOIN rv.room r " +
+	           "JOIN r.hotel h " +
+	           "JOIN rv.user u " +
+	           "WHERE h.hotelNo = :hotelNo AND r.roomNo = :roomNo " +
+	           "ORDER BY rv.reviewRating ASC") // 평점 낮은 순
+	    List<Object[]> findReviewsByRatingAsc(@Param("hotelNo") Long hotelNo, @Param("roomNo") Long roomNo);
+	
+	
+	
+	
+	
 	
 
 

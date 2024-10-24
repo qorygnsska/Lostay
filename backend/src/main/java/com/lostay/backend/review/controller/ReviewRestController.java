@@ -40,8 +40,7 @@ public class ReviewRestController {
 		
 		// 파일을 업로드 하는 위치를 지정
 //				String uploadFoler = context.getRealPath("/resources/upload");
-				String uploadFoler = "C:\\test\\upload";
-
+			 	String uploadFoler = "C:\\Lostay\\frontend\\public\\reviews";
 				// 서비스로 보내줄 배열
 				ArrayList<String> fileReadName = new ArrayList<String>();
 				
@@ -122,6 +121,14 @@ public class ReviewRestController {
 	public ResponseEntity<?> roomdetail3(@RequestParam(defaultValue = "1")Long roomNo){
 	
 		return new ResponseEntity<>(revSer.findRoomReview3(roomNo),HttpStatus.OK);
+	}
+	
+	//리뷰보기(홍정훈)
+	@GetMapping("/HotelReviews")
+	public ResponseEntity<?>HotelReviews(@RequestParam()Long hotelNo,@RequestParam(required = false)Long roomNo,@RequestParam(required = false)String sort){
+	System.out.println("ReviewRestController HotelReviews실행");
+	return new ResponseEntity<>(revSer.findHotelReviews(hotelNo,roomNo,sort),HttpStatus.OK);
+	
 	}
 	
 }
