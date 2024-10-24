@@ -1,145 +1,52 @@
-import React, { useState } from "react";
+import React, { act, useEffect, useState } from "react";
 import BackNav from "../../../componets/BackNav/BackNav";
 import Navbar from "../../../componets/Navbar/Navbar";
 import { Dropdown, Nav } from "react-bootstrap";
 import BookingHistoryCom from "../../../componets/MyPage/BookingHistory/BookingHistory";
 import { Link } from "react-router-dom";
-import ReviewModal from "../../../componets/MyPage/BookingHistory/ReviewModal";
+import { privateApi } from '../../../api/api'
 
 export default function BookingHistory() {
-    const dateList = ["최근 3개월", "최근 6개월", "최근 12개월"];
+    const setMonth = [3, 6, 12];
     const tabList = ["예약한 숙소", "이용한 숙소", "취소한 숙소"];
 
-    const [selectedDate, setSelectedDate] = useState(dateList[0]);
+    // 드롭바 선택
+    const [selectedDate, setSelectedDate] = useState(setMonth[0]);
+
+    // 탭 선택
     const [tabText, setTabText] = useState(tabList[0]);
     const [activeTab, setActiveTab] = useState(0);
+
+
     const [borderStyle] = useState({ left: 0, width: 0 });
 
-    const [bookingList, setBookingList] = useState([
-        {
-            payNo: 1,
-            roomNo: 1,
-            payDay: "2024-10-05 (토)",
-            hotelName: "이비스 엠버서더 부산 시티센터",
-            checkInDay: "2024-10-06 (일)",
-            checkOutDay: "2024-10-07 (월)",
-            checkInTime: "15:00",
-            checkOutTime: "11:00",
-            image: "2b9ba01a5cfcd32ac752258732a5a669.webp",
-            roomCancle: "Y",
-            userNickname: "루이지애나포토존",
-        },
-        {
-            payNo: 2,
-            roomNo: 2,
-            payDay: "2024-10-10 (월)",
-            hotelName: "페어필드 바이 메리어트 서울",
-            checkInDay: "2024-10-11 (화)",
-            checkOutDay: "2024-10-12 (수)",
-            checkInTime: "15:00",
-            checkOutTime: "11:00",
-            image: "61cd5eb540030.webp",
-            roomCancle: "N",
-            userNickname: "루이지애나포토존",
-        },
-    ]);
+    // 가져온 데이터
+    const [bookList, setBookList] = useState([]);
+
+    const getDatas = async (activeTab) => {
+        const request = activeTab === 0 ? 'book' : activeTab === 1 ? `booked?showMonth=${selectedDate}` : `bookcancle?showMonth=${selectedDate}`;
+        try {
+            const response = await privateApi.get(`/bookhistory/${request}`); // API 요청
+            console.log(response.data)
+            setBookList(response.data)
+            return response.data;
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        getDatas(activeTab);
+    }, [activeTab, selectedDate]);
 
     const handleSelect = (eventKey) => {
-        setSelectedDate(dateList[eventKey]);
+        setSelectedDate(setMonth[eventKey]);
     };
 
     const handleSelectTab = (eventKey) => {
         setActiveTab(eventKey);
         setTabText(tabList[eventKey]);
-
-        if (eventKey === 0) {
-            setBookingList([
-                {
-                    payNo: 1,
-                    roomNo: 1,
-                    payDay: "2024-10-05 (토)",
-                    hotelName: "이비스 엠버서더 부산 시티센터",
-                    checkInDay: "2024-10-06 (일)",
-                    checkOutDay: "2024-10-07 (월)",
-                    checkInTime: "15:00",
-                    checkOutTime: "11:00",
-                    image: "2b9ba01a5cfcd32ac752258732a5a669.webp",
-                    roomCancle: "Y",
-                    userNickname: "루이지애나포토존",
-                },
-                {
-                    payNo: 2,
-                    roomNo: 2,
-                    payDay: "2024-10-10 (월)",
-                    hotelName: "페어필드 바이 메리어트 서울",
-                    checkInDay: "2024-10-11 (화)",
-                    checkOutDay: "2024-10-12 (수)",
-                    checkInTime: "15:00",
-                    checkOutTime: "11:00",
-                    image: "61cd5eb540030.webp",
-                    roomCancle: "N",
-                    userNickname: "루이지애나포토존",
-                },
-            ]);
-        } else if (eventKey === 1) {
-            setBookingList([
-                {
-                    payNo: 3,
-                    roomNo: 3,
-                    payDay: "2024-10-05 (토)",
-                    hotelName: "이비스 엠버서더 부산 시티센터",
-                    checkInDay: "2024-10-06 (일)",
-                    checkOutDay: "2024-10-07 (월)",
-                    checkInTime: "15:00",
-                    checkOutTime: "11:00",
-                    image: "2b9ba01a5cfcd32ac752258732a5a669.webp",
-                    review: "Y",
-                    userNickname: "루이지애나포토존",
-                },
-                {
-                    payNo: 2,
-                    roomNo: 2,
-                    payDay: "2024-10-10 (월)",
-                    hotelName: "페어필드 바이 메리어트 서울",
-                    checkInDay: "2024-10-11 (화)",
-                    checkOutDay: "2024-10-12 (수)",
-                    checkInTime: "15:00",
-                    checkOutTime: "11:00",
-                    image: "61cd5eb540030.webp",
-                    review: "N",
-                    userNickname: "루이지애나포토존",
-                },
-            ]);
-        } else {
-            setBookingList([
-                {
-                    payNo: 1,
-                    roomNo: 1,
-                    payDay: "2024-10-05 (토)",
-                    hotelName: "이비스 엠버서더 부산 시티센터",
-                    checkInDay: "2024-10-06 (일)",
-                    checkOutDay: "2024-10-07 (월)",
-                    checkInTime: "15:00",
-                    checkOutTime: "11:00",
-                    image: "2b9ba01a5cfcd32ac752258732a5a669.webp",
-                    cancle: "Y",
-                    userNickname: "루이지애나포토존",
-                },
-                {
-                    payNo: 2,
-                    roomNo: 2,
-                    payDay: "2024-10-10 (월)",
-                    hotelName: "페어필드 바이 메리어트 서울",
-                    checkInDay: "2024-10-11 (화)",
-                    checkOutDay: "2024-10-12 (수)",
-                    checkInTime: "15:00",
-                    checkOutTime: "11:00",
-                    image: "61cd5eb540030.webp",
-                    cancle: "N",
-                    userNickname: "루이지애나포토존",
-                },
-            ]);
-        }
     };
 
     return (
@@ -150,12 +57,12 @@ export default function BookingHistory() {
                 {/* 보여줄 개월 수 선택 */}
                 <div className={`dropdown--box ${activeTab !== 0 ? 'show' : ''}`}>
                     <Dropdown onSelect={handleSelect} className="dropdown">
-                        <Dropdown.Toggle>{selectedDate}</Dropdown.Toggle>
+                        <Dropdown.Toggle>최근 {selectedDate}개월</Dropdown.Toggle>
 
                         <Dropdown.Menu className="dropdown--menu">
-                            {dateList.map((dateVal, idx) => (
+                            {setMonth.map((dateVal, idx) => (
                                 <Dropdown.Item key={idx} eventKey={idx}>
-                                    {dateVal}
+                                    최근 {dateVal}개월
                                 </Dropdown.Item>
                             ))}
                         </Dropdown.Menu>
@@ -163,7 +70,7 @@ export default function BookingHistory() {
                 </div>
 
                 {/* 보여줄 예약 메뉴 선택 */}
-                <div className="tab--wrap">
+                <div className={`tab--wrap ${activeTab === 0 ? 'margin' : ''}`}>
                     <Nav fill variant="tabs" defaultActiveKey="/home">
                         {tabList.map((tabVal, idx) => (
                             <Nav.Item key={idx}>
@@ -203,17 +110,20 @@ export default function BookingHistory() {
                     </div>
                 ) : null}
 
-                {bookingList.length ? ( // 예약된 상품이 있을 때
+                {bookList.length ? ( // 예약된 상품이 있을 때
                     <div className="bookingList">
-                        {bookingList.map((booking, idx) => (
-                            <BookingHistoryCom key={idx} booking={booking} />
+                        {bookList.map((bookData, idx) => (
+                            <BookingHistoryCom key={idx} bookData={bookData} />
                         ))}
                     </div> // 예약된 상품이 없을 때
                 ) : (
                     <div className="booking--none">
                         <div className="booking--none--text">
                             <span>
-                                {selectedDate} 동안 {tabText}가 없습니다.
+                                {activeTab === 0
+                                    ? `${tabText}가 없습니다.`
+                                    : `최근 ${selectedDate}개월 동안 ${tabText}가 없습니다.`}
+
                             </span>
                             <span>상품을 예약해보세요</span>
                         </div>

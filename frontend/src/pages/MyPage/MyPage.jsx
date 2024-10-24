@@ -5,8 +5,6 @@ import { BsChatText } from "react-icons/bs";
 import { FaRegHeart, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { privateApi } from '../../api/api'
-import axios from "axios";
-
 export default function MyPage() {
 
     const [profile, setProfile] = useState(null);

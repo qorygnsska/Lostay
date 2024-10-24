@@ -68,6 +68,10 @@
             }
         }
 
+        .tab--wrap.margin {
+            margin-top: 78px;
+        }
+
         .bookingList {
             display: flex;
             flex-direction: column;
