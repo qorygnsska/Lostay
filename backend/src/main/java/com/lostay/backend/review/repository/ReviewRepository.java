@@ -84,6 +84,35 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	Page<AdminReviewDTO> adminReview(Pageable pageable);
 
 
+	 // 객실에 대한 리뷰 최근 3개
+	 @Query("select rv.reviewContent, rv.reviewCreateAt, rv.reviewRating "
+				+ ", r.roomNo, u.userNo, r.roomName, rv.reviewNo from Review rv "
+				+ "Join rv.room r "
+				+ "Join r.hotel h "
+				+ "Join rv.user u "
+				+ "Where rv.room.roomNo = :roomNo "
+				+ "ORDER BY rv.reviewCreateAt DESC ")	
+	List<Object[]> findRoomReview3(@Param("roomNo")long roomNo, Pageable pageable);
+
+
+	// 객실에 대한 룸 리뷰 평균
+	@Query("select AVG(rv.reviewRating) from Review rv "
+			+ "Join rv.room r "
+			+ "Join r.hotel h "
+			+ "Join rv.user u "
+			+ "Where rv.room.roomNo = :roomNo")
+	double findRoomReviewAvg(@Param("roomNo")long roomNo);
+
+
+	// 객실에 대한 룸 리뷰 총 개수
+	@Query("select COUNT(rv) from Review rv "
+			+ "Join rv.room r "
+			+ "Join r.hotel h "
+			+ "Join rv.user u "
+			+ "Where rv.room.roomNo = :roomNo")
+	int findRoomReviewCount(@Param("roomNo")long roomNo);
+
+
 	
 
 

@@ -30,7 +30,7 @@ public class RoomDTO {
 	private String[] roomImg;					// 객실이미지
 	private int roomPrice;						// 객실가격
 	private int roomDiscount;					// 객실할인율
-	private String roomAmenities;				// 객실편의시설
+	private String[] roomAmenities;				// 객실편의시설
 	private String[] roomIntroduction;			// 객실소개(정보)
 	private LocalTime roomCheckinTime;	// 객실체크인시간
 	private LocalTime roomCheckoutTime;	// 객실체크아웃시간
@@ -44,7 +44,7 @@ public class RoomDTO {
 	private String hotelName;
 	private String hotelRating;   // 호텔성급
 	private double reviewAvg;	// 별점 평균
-	private int reviewCount;	// 리뷰 총 개수
+	private int totalReviewCount;	// 리뷰 총 개수
 	private String hotelThumbnail;  // 호텔썸네일
 	private String[] hotelImg;      // 호텔이미지
 	private String[] hotelAmenities;   // 호텔서비스/시설
@@ -54,6 +54,9 @@ public class RoomDTO {
 	private long availableRooms;            // 남은 방 개수
 	private int discountPrice;              // 할인된 금액
 	
-	
-
+	// 검색창에 적혀있는 칼럼들
+	private LocalDate checkInDay;         // 체크인 날짜 
+	private LocalDate checkOutDay;		  // 체크아웃 날짜
+	private int period;					 // 몇박인지
+	private int searchPeople;           // 검색 시 인원 몇명인지
 }
