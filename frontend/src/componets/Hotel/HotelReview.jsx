@@ -11,28 +11,28 @@ export default function HotelReview({Reviews, HotelInfo}) {
                 <div className='StarDiv'>
                     <div className='Star'>
                         <FaStar className='StarIcon' />
-                        <div className='StarNum'>{HotelInfo.starAvg}</div>
+                        <div className='StarNum'>{HotelInfo.ReviewRating}</div>
                     </div>
-                    <span className='StarCount'>{HotelInfo.reviewCount}명 평가</span>
+                    <span className='StarCount'>{HotelInfo.totalReviewCount}명 평가</span>
                     <GrNext />
                 </div>
 
                 <div className='ReviewWrap'>
                     {Reviews.map((review) => (
-                        <div key={review.id} className='ContentBox'>
+                        <div key={review.reviewNo} className='ContentBox'>
                             <div className='ReviewSD'>
                                 <div className='ReviewStar'>
                                     <FaStar className='ReviewIcon' />
-                                    <span>{review.rank}</span>
+                                    <span>{review.reviewRating}</span>
                                 </div>
 
                                 <div className='ReviewDate'>
-                                    {review.date}
+                                    {review.reviewCreateAt}
                                 </div>
                             </div>
 
                             <div className='ReviewContent'>
-                                {review.content}
+                                {review.reviewContent}
                             </div>
 
                         </div>

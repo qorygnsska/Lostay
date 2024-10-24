@@ -50,6 +50,8 @@ export default function HotelList(props) {
   //   fetch('매핑주소')
   //     .then(response => response.json())
   //     .then(data => setHotels(data))
+  //     .then(data => setRooms(data))
+  //     .then(data => setReviews(data))
   //     .catch(error => console.error('Error fetching hotel data:', error));
   // }, []);
 
@@ -91,16 +93,16 @@ export default function HotelList(props) {
   // 더미 데이터 생성 함수
   const generateHotels = (page) => {
     const newHotels = Array(10).fill().map((_, index) => ({
-      id: (page - 1) * 10 + index + 1,
-      rank: '블랙·5성급·호텔',
-      name: '제주신라호텔',
-      location: '서귀포시',
-      rating: 9.6,
-      reviews: 901,
-      originalPrice: '300,000원',
-      discountRate: '10%',
-      discountedPrice: '270,000원',
-      image: '/HotelList/호텔1.jpg'
+      hotelNo: (page - 1) * 10 + index + 1,
+      hotelRating: '블랙·5성급·호텔',
+      hotelName: '제주신라호텔',
+      hotelAdress: '서귀포시',
+      ReviewRating: 9.6,
+      totalReviewCount: 901,
+      roomPrice: '300,000원',
+      roomDiscount: '10%',
+      roomDcprice: '270,000원',
+      hotelThumbnail: '/HotelList/호텔1.jpg'
     }));
     return newHotels;
   };

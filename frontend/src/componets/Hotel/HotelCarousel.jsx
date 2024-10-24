@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import Carousel from 'react-bootstrap/Carousel';
 
 export default function HotelCarousel({images}) {
+
+
     return (
         <div className='hotel--carousel--container'>
             <Carousel indicators={false}>
