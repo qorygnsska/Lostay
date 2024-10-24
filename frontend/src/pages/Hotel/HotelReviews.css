@@ -1,0 +1,234 @@
+.hotel--reviews--container{
+
+    .starTitle{
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .starDiv{
+        font-size: 50px;
+        font-weight: bold;
+    }
+
+    .star{
+        color: rgb(255, 224, 46);
+        margin-bottom: 10px;
+    }
+
+    .AllDiv{
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        margin-top: 20px;
+    }
+
+    .AllImgTitle{
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .AllShow{
+        font-size: 16px;
+        align-items: center;
+        color: #1a1a1a;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .AllImgDiv{
+        position: relative;
+        overflow: hidden;
+        align-items: center;
+        margin-bottom: 30px;
+        display: flex;
+        gap: 5px;
+    }
+
+    .AllImgDiv:hover{
+        .nextBtn, .prevBtn{
+            opacity: 1;
+        }
+    }
+
+    .AllImg{
+        width: 90px;
+        height: 90px;
+        border-radius: 10px;
+    } 
+
+    .prevBtn, .nextBtn{
+        background-color: white;
+        color: black;
+        opacity: 0;
+        border: 1px solid rgb(222, 222, 222);
+        border-radius: 5px;
+        padding: 5px;
+        cursor: pointer;
+    
+        
+    }
+
+    .prevBtn:hover, .nextBtn:hover{
+        background-color: rgb(222, 222, 222);
+        
+        
+    }
+
+    .prevBtn{
+        position: absolute;
+        left: -3px;
+        z-index: 1000;
+    }
+
+    .nextBtn{
+        position: absolute;
+        right: -3px;
+        z-index: 1000;
+    }
+
+
+    .RowLine {
+        border: 1px solid rgb(219, 219, 219);
+        opacity: 50%;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+    
+
+
+
+    .RoomFilter{
+        border-radius: 5px;
+        border: 1px solid rgb(128, 128, 128);
+        color: black;
+        display: flex;
+        justify-content: space-between;
+        padding: 5px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+
+
+
+
+    .RoomFilter2{
+        display: flex;
+        justify-content: space-between;
+        color: #1a1a1a;
+    }
+
+
+    .RoomFilterName2{
+        cursor: pointer;
+    }
+
+
+
+
+
+
+
+
+
+    .ReviewImgDiv{
+        position: relative;
+        overflow: hidden;
+        align-items: center;
+        margin-bottom: 30px;
+        display: flex;
+        gap: 5px;
+    }
+
+    .ReviewImgDiv:hover{
+        .rnextBtn, .rprevBtn{
+            opacity: 1;
+        }
+    }
+
+    .ReviewImg{
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
+    } 
+
+    .rprevBtn, .rnextBtn{
+        background-color: white;
+        color: black;
+        opacity: 0;
+        border: 1px solid rgb(222, 222, 222);
+        border-radius: 5px;
+        padding: 5px;
+        cursor: pointer;
+    
+        
+    }
+
+    .rprevBtn:hover, .rnextBtn:hover{
+        background-color: rgb(222, 222, 222);
+        
+        
+    }
+
+    .rprevBtn{
+        position: absolute;
+        left: -3px;
+        z-index: 1000;
+    }
+
+    .rnextBtn{
+        position: absolute;
+        right: -3px;
+        z-index: 1000;
+    }
+
+
+
+    .SDBox{
+        display: flex;
+        justify-content: space-between;
+        color: #1a1a1a;
+        margin-bottom: 3px;
+        font-size: 15px;
+    }
+
+    
+    .ReviewStar{
+        color: rgb(255, 224, 46);
+        margin-bottom: 4px;
+        margin-right: 2px;
+    }
+
+    .NRBox{
+        display: flex;
+
+        .RowLine2{
+            height: 35px;
+            margin-top: 3px;
+            border: 1px solid #cfcfcf;;
+            margin-left: 2px;
+            margin-right: 10px;
+        }
+    }
+    
+
+    .Nickname, .ReviewRoom{
+        color: #6d6d6d;
+        font-size: 14px;
+    }
+
+    .ReviewRoom{
+        margin-bottom: 10px;
+    }
+
+    .ReviewContent{
+        color: #1a1a1a;
+        margin-bottom: 10px;
+        font-size: 15px;
+    }
+   
+
+}

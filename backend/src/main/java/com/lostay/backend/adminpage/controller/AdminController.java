@@ -24,9 +24,25 @@ public class AdminController {
 	@Autowired
 	AdminService adminService;
 	
+	
+	//이벤트 조회(1024 JIP)
+	@GetMapping("/adminEventList")
+	public ResponseEntity<?> adminEventList (@RequestParam(defaultValue = "") String eventTitle, @RequestParam(defaultValue = "0") int page) {
+		System.out.println("adminCont.adminEventList()");
+		System.out.println("searchValue(title): " + eventTitle + " page: " + page);
+		
+		
+		
+		
+		return new ResponseEntity<>(adminService.getEventList(eventTitle,page), HttpStatus.OK);
+	}
+	
+	
+	
+	
 	//유저가 작성한 리뷰 조회
 	@GetMapping("/adminReview") 
-	public ResponseEntity<?>adminReview(@RequestParam(required = false) String userName,@RequestParam(required = false) Integer page){
+	public ResponseEntity<?> adminReview(@RequestParam(required = false) String userName,@RequestParam(required = false) Integer page){
 		log.info("AdminController adminReview실행");
 		System.out.println("유저이름"+ userName);
 		
@@ -37,9 +53,18 @@ public class AdminController {
 		return new ResponseEntity<>(adminService.adminReview(userName,page),HttpStatus.OK);
 	}
 	
+	
+	// 유저가 작성한 리뷰 삭제
+	@GetMapping("/adminUserReviewDel")//request Type 변경!!
+	public void adminUserReviewDel(@RequestParam Long reviewNo) {
+		 System.out.println("AdminController adminUserReviewDel실행");
+		 adminService.deleteById(reviewNo);
+	} 
+	
+	
 	//유저 조회
 	@GetMapping("/adminUserSearch") 
-	public ResponseEntity<?>adminUserSearch(@RequestParam(required = false) String userName,@RequestParam(required = false) Integer page){
+	public ResponseEntity<?> adminUserSearch(@RequestParam(required = false) String userName,@RequestParam(required = false) Integer page){
 		log.info("AdminController adminUserSearch실행");
 		System.out.println("유저이름"+ userName);
 		
@@ -50,12 +75,7 @@ public class AdminController {
 		return new ResponseEntity<>(adminService.adminUserSearch(userName,page),HttpStatus.OK);
 	}
 	
-	// 유저가 작성한 리뷰 삭제
-	@GetMapping("/adminUserReviewDel")
-	public void adminUserReviewDel(@RequestParam Long reviewNo) {
-		 System.out.println("AdminController adminUserReviewDel실행");
-		 adminService.deleteById(reviewNo);
-	} 
+
 	
 	
 }

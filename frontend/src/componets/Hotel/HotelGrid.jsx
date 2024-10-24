@@ -38,24 +38,24 @@ export default function HotelGrid({hotels}) {
             {hotels.map((hotel) => (
                 <div className='HotelRow' key={hotel.id}>
                     <div className='HotelCol'>
-                    <img src={hotel.image} alt='호텔이미지' className='HotelImg' />
+                    <img src={hotel.hotelThumbnail} alt='호텔이미지' className='HotelImg' />
                     <div className='HotelInfo'>
-                        <div className='HotelRank'>{hotel.rank}</div>
-                        <div className='HotelName'>{hotel.name}{hotel.id}</div>
-                        <div className='HotelLo'>{hotel.location}</div>
+                        <div className='HotelRank'>{hotel.hotelRating}</div>
+                        <div className='HotelName'>{hotel.hotelName}{hotel.hotelNo}</div>
+                        <div className='HotelLo'>{hotel.hotelAdress}</div>
                         <div className='StarDiv'>
                         <div className='Star'>
                             <FaStar className='StarIcon' />
-                            <div className='StarNum'>{hotel.rating}</div>
+                            <div className='StarNum'>{hotel.ReviewRating}</div>
                         </div>
-                        <span className='StarCount'>{hotel.reviews}명 평가</span>
+                        <span className='StarCount'>{hotel.totalReviewCount}명 평가</span>
                         </div>
                     </div>
                     <div className='HotelPrice'>
-                        <div className='RealPrice'>{hotel.originalPrice}</div>
+                        <div className='RealPrice'>{hotel.roomPrice}</div>
                         <div className='HotelDiscount'>
-                            <div className='Discount'>{hotel.discountRate}</div>
-                            <div className='DiscountPrice'>{hotel.discountedPrice}</div>
+                            <div className='Discount'>{hotel.roomDiscount}</div>
+                            <div className='DiscountPrice'>{hotel.roomDcprice}</div>
                         </div>
                     </div>
                     </div>

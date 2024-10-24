@@ -9,35 +9,35 @@ export default function ({rooms}) {
         <div className='room--grid--container'>
             <div className='RoomList'>
                 <div className='RoomRow'>
-                    <img src={rooms.thumbnail} alt='룸이미지' className='RoomImg' />
+                    <img src={rooms.roomThumbnail} alt='룸이미지' className='RoomImg' />
                     <div>
                         <div className='RoomInfo'>
                             <div className='InfoBox'>
-                                <div className='RoomName'>{rooms.name}</div>
+                                <div className='RoomName'>{rooms.roomName}</div>
                                 <div className='PTBox'>
-                                    <div className='PersonCount'><IoPersonOutline /> 기준 {rooms.p1}인 / 최대 {rooms.p2}인</div>
-                                    <div className='RoomTime'><FaRegClock /> 체크인 {rooms.checkIn} ~ 체크아웃 {rooms.checkOut}</div>
+                                    <div className='PersonCount'><IoPersonOutline /> {rooms.roomPeopleInfo}</div>
+                                    <div className='RoomTime'><FaRegClock /> 체크인 {rooms.roomCheckinTime} ~ 체크아웃 {rooms.roomCheckoutTime}</div>
                                 </div>
                             </div>
                             <div className='RoomPrice'>
-                                {rooms.roomCount > 0 ? (
+                                {rooms.availableRooms > 0 ? (
                                     <>
-                                        <div className='RealPrice'>{rooms.realPrice.toLocaleString()}원</div>
+                                        <div className='RealPrice'>{rooms.roomPrice.toLocaleString()}원</div>
                                         <div className='RoomDiscount'>
-                                            <div className='Discount'>{rooms.discount}%</div>
-                                            <div className='DiscountPrice'>{rooms.discountPrice.toLocaleString()}원</div>
+                                            <div className='Discount'>{rooms.roomDiscount}%</div>
+                                            <div className='DiscountPrice'>{rooms.roomDcprice.toLocaleString()}원</div>
                                         </div>
-                                        <div className='RoomCount'>남은 객실 {rooms.roomCount}개</div>
+                                        <div className='RoomCount'>남은 객실 {rooms.availableRooms}개</div>
                                         <div className='RoomBtn'>
                                             <Link to='/예약' className='rBtn'>예약하기</Link>
                                         </div>
                                     </>
                                 ) : (
                                     <>
-                                        <div className='RealPrice'>{rooms.realPrice.toLocaleString()}원</div>
+                                        <div className='RealPrice'>{rooms.roomPrice.toLocaleString()}원</div>
                                         <div className='RoomDiscount'>
-                                            <div className='sDiscount'>{rooms.discount}%</div>
-                                            <div className='sDiscountPrice'>{rooms.discountPrice.toLocaleString()}원</div>
+                                            <div className='sDiscount'>{rooms.roomDiscount}%</div>
+                                            <div className='sDiscountPrice'>{rooms.roomDcprice.toLocaleString()}원</div>
                                         </div>
                                         <div className='RoomBtn'>
                                             <button disabled className='srBtn'>예약마감</button>

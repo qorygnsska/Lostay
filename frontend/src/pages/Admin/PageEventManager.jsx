@@ -35,7 +35,7 @@ export default function PageEventManager() {
     const [updaterShow, setUpdaterShow] = useState(false);
 
 
-    const  openEventUpdater = () => {   //'수정' 버튼에 상속해줄 함수
+    const openEventUpdater = () => {   //'수정' 버튼에 상속해줄 함수
         setUpdaterShow(true);
 
     }
@@ -47,7 +47,7 @@ export default function PageEventManager() {
     }
 
 
-
+    // navigate 쓸까 window.location쓸까
     const navigate = useNavigate();
 
     //db에서 받아올 eventList(array)
@@ -55,26 +55,24 @@ export default function PageEventManager() {
 
     //Server에 db-event 요청
     const getEventList = () => {
-        fetch('http://localhost:9090/eventList')    // fetch() : (default) request 'GET', 'async'
+        fetch('http://localhost:9090/adminEventList')    // fetch() : (default) request 'GET', 'async'
             .then(response => response.json())  // response가 오면 json 변환
             .then(data => {
                 console.log(data);
                 //결과물로 setEventList 
-                setEventList(data);
+                //setEventList(data);
             })
             .catch(error => {
                 //alert('이벤트 정보를 불러올 수 없습니다.');
                 console.log(error);
 
-                //window.location.href = "/"; //refreshing window
-                //navigate('/admin-home'); //retaining window
+                navigate('/admin-home'); //retaining window
             })
     }
 
     useEffect(() => {
         getEventList();
     }, []);
-
 
 
     return (
@@ -100,14 +98,14 @@ export default function PageEventManager() {
                         </thead>
                         <tbody id="table_body">
                             {/* <tr>
-                                <td>1</td>
-                                <td>이벤트 제목1</td>
-                                <td>24.10.14. ~ 24.10.21.</td>
-                                <td className='btn_container'>
-                                    <CompAdminBtn click={openEventUpdater}>수정</CompAdminBtn>
-                                    <CompAdminBtn click={deleteEvent}>삭제</CompAdminBtn>
-                                </td>
-                            </tr> */}
+                                    <td>1</td>
+                                    <td>이벤트 제목1</td>
+                                    <td>24.10.14. ~ 24.10.21.</td>
+                                    <td className='btn_container'>
+                                        <CompAdminBtn click={openEventUpdater}>수정</CompAdminBtn>
+                                        <CompAdminBtn click={deleteEvent}>삭제</CompAdminBtn>
+                                    </td>
+                                </tr> */}
                             {eventList.map(function (event, index) {
                                 return (
                                     <tr key={index}>
