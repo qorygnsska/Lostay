@@ -40,8 +40,7 @@ public class ReviewRestController {
 		
 		// 파일을 업로드 하는 위치를 지정
 //				String uploadFoler = context.getRealPath("/resources/upload");
-				String uploadFoler = "C:\\test\\upload";
-
+			 	String uploadFoler = "C:\\Lostay\\frontend\\public\\reviews";
 				// 서비스로 보내줄 배열
 				ArrayList<String> fileReadName = new ArrayList<String>();
 				
