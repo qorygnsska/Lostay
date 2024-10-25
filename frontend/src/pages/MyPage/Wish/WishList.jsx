@@ -6,18 +6,26 @@ import { FaRegHeart } from "react-icons/fa";
 import { privateApi } from "../../../api/api";
 
 export default function WishList() {
-
     const [page, setPage] = useState(0);
     const [wishList, setWishList] = useState([]);
 
     const getData = async () => {
-
         try {
             const response = await privateApi.get(`/mypageCartList?page=${page}`); // API 요청
-            console.log(response.data)
-            setWishList(response.data)
+            console.log(response.data);
+            setWishList(response.data);
             return response.data;
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
+    const wishCancle = async (event, cartNo) => {
+        event.preventDefault();
+        try {
+            const response = await privateApi.post(`/cartdelete?cartNo=${cartNo}`); // API 요청
+            // 데이터 갱신 등의 로직 추가
+            getData();
         } catch (error) {
             console.error(error);
         }
@@ -35,7 +43,7 @@ export default function WishList() {
                 // 찜이 있을 떄
                 <div className="wishlist--card">
                     {wishList.map((data, index) => (
-                        <WishListComponent key={index} wishList={data} />
+                        <WishListComponent key={index} wishList={data} wishCancle={wishCancle} />
                     ))}
                 </div>
             ) : (
