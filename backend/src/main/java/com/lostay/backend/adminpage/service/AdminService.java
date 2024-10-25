@@ -3,6 +3,7 @@ package com.lostay.backend.adminpage.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,18 +36,18 @@ public class AdminService {
 
 	@Autowired
 	EventRepository eventRepo;
-	
+
 	@Autowired
 	ReviewRepository reviewRepo;
 
 	@Autowired
 	UserRepository userRepo;
-	
+
 	// 관리자 유저 리뷰 조회
 	public List<AdminReviewDTO> adminReview(String userName, int page) {
 		System.out.println("AdminService adminReview 실행");
 		PageRequest pageable = PageRequest.of(page, 10); // 페이지 요청
-		System.out.println("pageable:"+pageable);
+		System.out.println("pageable:" + pageable);
 		if (userName != null && !userName.isEmpty()) {
 			Page<AdminReviewDTO> reviewPage = reviewRepo.adminReviewPageSearch(userName, pageable);
 			List<AdminReviewDTO> adminReviewDTOList = reviewPage.getContent();
@@ -69,7 +71,7 @@ public class AdminService {
 	public Object adminUserSearch(String userName, int page) {
 		System.out.println("AdminService adminUserSearch 실행");
 		PageRequest pageable = PageRequest.of(page, 10); // 페이지 요청
-		System.out.println("pageable:"+pageable);
+		System.out.println("pageable:" + pageable);
 		if (userName != null && !userName.isEmpty()) {
 			Page<AdminUserSerarchDTO> userPage = userRepo.adminUserPageSearch(userName, pageable);
 			List<AdminUserSerarchDTO> adminUserSerarchDTOList = userPage.getContent();
@@ -84,39 +86,69 @@ public class AdminService {
 			for (AdminUserSerarchDTO dto : adminUserSerarchDTOList) {
 				dto.setPagesize(userPage.getTotalPages());
 			}
-			
+
 			return adminUserSerarchDTOList;
-			}
+		}
 	}
-	//관리자 페이지 유저 리뷰 삭제 
+
+	// 관리자 페이지 유저 리뷰 삭제
 	public void deleteById(Long reviewNo) {
 		log.info("AdminService deleteById 실행");
-      Review review = reviewRepo.findById(reviewNo)
-          .orElseThrow(() -> new EntityNotFoundException("review not found"));
-      log.info("del실행");
-      reviewRepo.delete(review); 
+		Review review = reviewRepo.findById(reviewNo)
+				.orElseThrow(() -> new EntityNotFoundException("review not found"));
+		log.info("del실행");
+		reviewRepo.delete(review);
+
+	}
+
+	
+	// 관리자 페이지 이벤트리스트(1024 JIP)
+	public Object getEventList(String eventTitle, int pageIndex) {
+		//System.out.println("adminServ.getEventList()");
+
+		Pageable pageable = PageRequest.of(pageIndex, 5, Sort.by("EventNo").descending());
+		// 1st: requested Page(from 0)//인덱스는 0부터
+		// 2nd: the number of content included in the page//페이지당 5개의 DTO를 담아서 보내주겠다
+		// 3rd: event_no 내림차순
 		
-	}
-
-	//관리자 페이지 이벤트리스트(1024 JIP)
-	public Object getEventList(String eventTitle, int page) {
-		System.out.println("adminServ.getEventList()");
-
-		for(int i = 0; i < 5; i++) {
-			Pageable pageable = PageRequest.of(i, 4);
-			//1st: requested Page(from 0)
-			//2nd: the number of content included in the page
-			
-			System.out.println("requestPage: " + i + "of total 5");
-			Page<Event> pageOfEvent = eventRepo.findAll(pageable);
-			
-			System.out.println(pageOfEvent.getContent().toString());
-			System.out.println("totalPage: " + pageOfEvent.getTotalPages());
+		Page<Event> pageOfEventEntity;
+		//해당 페이지를 좀 줘바
+		if(eventTitle=="") {
+			//System.out.println("everyEvent + pageIndex: " + pageIndex);
+			pageOfEventEntity = eventRepo.findAll(pageable);
+		} else {
+			//System.out.println("titleContaining: " + eventTitle + " /pageIndex: " + pageIndex);
+			pageOfEventEntity = eventRepo.findByEventTitleContaining(eventTitle, pageable);
 		}
-	
-		return null;
+		
+		//Page<eventEntity> -> Page<eventDTO>
+		Page<AdminEventDTO> pageOfEventDTO = 
+			pageOfEventEntity.map(e -> 
+				new AdminEventDTO(e.getEventNo(), e.getEventTitle(), e.getEventCreateAt(), e.getEventEndAt(), null, null));
+
+		//System.out.println(pageOfEventEntity.getContent());
+		//System.out.println(pageOfEventDTO.getContent());
+		return pageOfEventDTO;
 	}
+
 	
+	// 관리자 페이지 이벤트 상세(수정 모달)
+	public Object getEventDetail(Long eventNo) {
+		//반환해줄 eventDTO
+		AdminEventDTO eventDTO = new AdminEventDTO();
+		//DB에서 불러온 eventEntity
+		Event eventEntity = eventRepo.findById(eventNo)
+				.orElseThrow(() -> new EntityNotFoundException("event not found"));
+		//Entity -> DTO
+		eventDTO.setEventNo(eventEntity.getEventNo());
+		eventDTO.setEventTitle(eventEntity.getEventTitle());
+		eventDTO.setEventCreateAt(eventEntity.getEventCreateAt());
+		eventDTO.setEventEndAt(eventEntity.getEventEndAt());
+		eventDTO.setEventThumbnail(eventEntity.getEventThumbnail());
+		eventDTO.setEventImg(eventEntity.getEventImg());
+		
+		return eventDTO;
+	}
 	
 	
 

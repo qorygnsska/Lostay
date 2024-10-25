@@ -5,19 +5,23 @@ import { Calendar } from 'primereact/calendar';
 export default function CompEventUpdater(props) {
 
     
-    //default period: [start_at, end_at]
+    //default period: [create_at, end_at]
     const today = new Date(); //오늘 날짜
-    const start_at = new Date(today.setDate(today.getDate() + 1)); //오늘 + 1
+    const create_at = new Date(today.setDate(today.getDate() + 1)); //오늘 + 1
     const end_at = new Date(today.setDate(today.getDate() + 1)); //오늘 + 1 + 1
 
     //초기값은 props에서 받아오기
-    const [title, setTitle] = useState('이벤트 테스트');
-    const [period, setPeriod] = useState([start_at, end_at]);
+    const [title, setTitle] = useState('');
+    const [period, setPeriod] = useState([create_at, end_at]);
     //파일은 비워두기
     const [thumbnail, setThumbnail] = useState('');
     const [image, setImage] = useState('');
     
     
+    ////////////////////////////////////////////////////////////////////////////////////datePicker(calendar)
+    //달력 보였다 숨겼다
+    const [periodPicker, setPeriodPicker] = useState(false);
+
     const dateFormatter = (rawDate) => (rawDate.getFullYear().toString() + "/" + (rawDate.getMonth() + 1).toString() + "/" + rawDate.getDate().toString());
     
     const periodFormatter = (period_selected) => {
@@ -29,14 +33,38 @@ export default function CompEventUpdater(props) {
             return dateFormatter(period[0]) + ' - ' + dateFormatter(period[1]);
         }
     }
+    ////////////////////////////////////////////////////////////////////////////////////datePicker(calendar)
     
-    
-    const [periodPicker, setPeriodPicker] = useState(false);
+
+    //모달 열릴 때, 해당 이벤트 정보 불러오기
+    function getEventInfo() {
+        //console.log(props.picked + 'is opening');
+        
+        fetch(`http://localhost:9090/adminEventDetail?eventNo=${props.picked}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            setTitle(data.eventTitle);
+
+            const neoC = new Date(data.eventCreateAt);
+            const neoE = new Date(data.eventEndAt);
+            setPeriod([neoC, neoE])
+
+            setThumbnail(data.eventThumbnail)
+            setImage(data.eventImg)
+        })
+        .catch(error => {
+            console.log(error);
+            alert('이벤트 정보를 불러올 수 없습니다.');
+            dismissHandler();//모달 닫기
+        })
+    }
+
 
     //'닫기' 버튼 클릭 시(onHide), 모든 값 초기화하고 모달 숨김
-    const dismissHandler = () => {
+    function dismissHandler() {
         setTitle('');
-        setPeriod([]);
+        setPeriod([create_at, end_at]);
         setThumbnail('');
         setImage('');
         props.onHide();
@@ -65,6 +93,7 @@ export default function CompEventUpdater(props) {
                 size="lg"
                 centered
                 backdrop="static"   // will not close when clicking outside of the modal
+                onShow={getEventInfo}
                 onHide={dismissHandler}
             >
                 <Modal.Header closeButton>
@@ -103,7 +132,7 @@ export default function CompEventUpdater(props) {
                                 selectionMode="range"
                                 value={period}
                                 onChange={(e) => setPeriod(e.value)}
-                                //onClearButtonClick={() => setPeriod([start_at, end_at])}
+                                //onClearButtonClick={() => setPeriod([create_at, end_at])}
                                 hidden={!periodPicker ? true : false}
                             />
                         </div>
@@ -112,6 +141,7 @@ export default function CompEventUpdater(props) {
                             <Form.Control
                                 type='file'
                                 size='sm'
+                                value={''}
                                 onChange={(e) => setThumbnail(e.target.value)}
                             />
                         </Form.Group>
@@ -120,6 +150,7 @@ export default function CompEventUpdater(props) {
                             <Form.Control
                                 type='file'
                                 size='sm'
+                                value={''}
                                 onChange={(e) => setImage(e.target.value)}
                             />
                         </Form.Group>

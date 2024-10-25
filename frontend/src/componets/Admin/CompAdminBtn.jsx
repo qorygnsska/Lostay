@@ -12,7 +12,7 @@ export default function CompAdminBtn(props) {
     
     //버튼 클릭 시 호출할 함수는 'click'으로 상속
     //<CompAdminBtn 'click'={}>'children'</CompAdminBtn>
-    props.click();
+    props.click(props.no);
 
   }
 

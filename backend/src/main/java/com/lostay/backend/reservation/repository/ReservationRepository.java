@@ -19,6 +19,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 
 	// 체크인 안한 숙소
 	@Query("SELECT new com.lostay.backend.reservation.dto.ReservationHistoryDTO(" +
+			   "u.userNickname, " +
 	           "res.reservationNo, res.resReviewStatus, res.checkIn, res.checkOut, " +
 	           "p.payNo, p.payDay, r.roomNo, r.roomName, " +
 	           "r.roomCheckinTime, r.roomCheckoutTime, " +
@@ -36,6 +37,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 
 	// 이용 완료한 숙소
 	@Query("SELECT new com.lostay.backend.reservation.dto.ReservationHistoryDTO(" +
+			   "u.userNickname, " +
 	           "res.reservationNo, res.resReviewStatus, res.checkIn, res.checkOut, " +
 	           "p.payNo, p.payDay, r.roomNo, r.roomName, " +
 	           "r.roomCheckinTime, r.roomCheckoutTime, " +
@@ -54,6 +56,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 
 	// 예약 취소한 숙소
 	@Query("SELECT new com.lostay.backend.reservation.dto.ReservationHistoryDTO(" +
+			   "u.userNickname, " +
 	           "res.reservationNo, res.resReviewStatus, res.checkIn, res.checkOut, " +
 	           "p.payNo, p.payDay, r.roomNo, r.roomName, " +
 	           "r.roomCheckinTime, r.roomCheckoutTime, " +

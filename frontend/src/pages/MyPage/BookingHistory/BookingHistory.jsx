@@ -23,6 +23,41 @@ export default function BookingHistory() {
     // 가져온 데이터
     const [bookList, setBookList] = useState([]);
 
+
+    const payCancle = async (payNo) => {  // async 키워드 추가
+        try {
+            const response = await privateApi.get(`/PaymentCancle?payNo=${payNo}`); // API 요청
+            console.log(response.data);
+            getDatas(activeTab)
+            return response.data;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleReviewUpdate = async (payNo, uploadImg, reviewRating, reviewContent) => {
+        const formData = new FormData();
+
+        uploadImg.forEach((file) => {
+            formData.append('files', file); // 'files'는 서버에서 받을 필드 이름
+        });
+        formData.append('reviewRating', reviewRating); // 점수 추가
+        formData.append('text', reviewContent); // 리뷰 텍스트 추가
+        formData.append('payNo', payNo); // 결제 번호 추가
+        try {
+            const response = await privateApi.post('/UploadReviewImg', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log(response.data);
+            getDatas(activeTab)
+            return response.data;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const getDatas = async (activeTab) => {
         const request = activeTab === 0 ? 'book' : activeTab === 1 ? `booked?showMonth=${selectedDate}` : `bookcancle?showMonth=${selectedDate}`;
         try {
@@ -48,6 +83,12 @@ export default function BookingHistory() {
         setActiveTab(eventKey);
         setTabText(tabList[eventKey]);
     };
+
+    const handlePaymentCancel = async (payNo) => {
+        const result = await payCancle(payNo);
+        console.log('결제 취소 결과:', result);
+    };
+
 
     return (
         <div className="booking--history--container">
@@ -113,7 +154,7 @@ export default function BookingHistory() {
                 {bookList.length ? ( // 예약된 상품이 있을 때
                     <div className="bookingList">
                         {bookList.map((bookData, idx) => (
-                            <BookingHistoryCom key={idx} bookData={bookData} />
+                            <BookingHistoryCom key={idx} bookData={bookData} handlePaymentCancel={handlePaymentCancel} handleReviewUpdate={handleReviewUpdate} />
                         ))}
                     </div> // 예약된 상품이 없을 때
                 ) : (

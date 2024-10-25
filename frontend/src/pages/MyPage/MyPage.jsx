@@ -5,11 +5,13 @@ import { BsChatText } from "react-icons/bs";
 import { FaRegHeart, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { privateApi } from '../../api/api'
+import { useSelector } from "react-redux";
 export default function MyPage() {
 
     const [profile, setProfile] = useState(null);
-
+    const accessToken = useSelector((state) => state.auth.accessToken)
     const getDatas = async () => {
+        console.log(accessToken)
         try {
             const response = await privateApi.get('/mypage'); // API 요청
             console.log(response.data)
