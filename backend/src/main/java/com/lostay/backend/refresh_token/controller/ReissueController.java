@@ -95,8 +95,9 @@ public class ReissueController {
 		addRefreshEntity(userNo, newRefresh, refreshTkExpired);
 		
 		// 응답 설정
-		response.setHeader("Access-Control-Expose-Headers", "access");
-		response.setHeader("access", newAccess);
+		//response.setHeader("Access-Control-Expose-Headers", "access");
+		response.setHeader("Authorization", "Bearer " + newAccess);
+//		response.setHeader("access", newAccess);
 		response.addCookie(createCookie("refresh", newRefresh));
 		
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -146,9 +147,11 @@ public class ReissueController {
 		String newAccess = jwtUtil.createJwt("access", username, role, userNo, accessTkExpired);
 		
 		// 응답 설정
-		response.setHeader("Access-Control-Expose-Headers", "access");
-		response.setHeader("access", newAccess);
-		
+		//response.setHeader("Access-Control-Expose-Headers", "access");
+		//response.setHeader("access", newAccess);
+		response.setHeader("Authorization", "Bearer " + newAccess);
+		System.out.println("Bearer " + newAccess);
+//		response.setHeader("access", newAccess);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

@@ -163,7 +163,7 @@ export default function Payment() {
 
                             <div>
                                 <span>
-                                    - {paymentData ? paymentData.usePoint.toLocaleString() : 0}P
+                                    - {paymentData ? paymentData.payPoint.toLocaleString() : 0}P
                                 </span>
                             </div>
                         </div>
