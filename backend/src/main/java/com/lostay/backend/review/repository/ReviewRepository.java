@@ -67,7 +67,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 		List<Review> findByRoom_RoomNo(long roomNo);
 	
 	//관리자 페이지 유저 리뷰 조회(작성자 조건검색)
-	 @Query("SELECT new com.lostay.backend.adminpage.dto.AdminReviewDTO(r.reviewNo ,u.userName,h.hotelName, rm.roomName, r.reviewRating, r.reviewContent,r.reviewCreateAt) " +
+	 @Query("SELECT new com.lostay.backend.adminpage.dto.AdminReviewDTO(r.reviewNo ,u.userName,h.hotelName, rm.roomName, r.reviewRating, r.reviewContent,r.reviewCreateAt,r.reviewSanctionsAt) " +
 	           "FROM Review r " +
 	           "JOIN r.user u " +
 	           "JOIN r.room rm " +
@@ -76,7 +76,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	Page<AdminReviewDTO> adminReviewPageSearch(@Param("userName") String userName, Pageable pageable);
 
 	//관리자 페이지 유저 리뷰 조회
-	 @Query("SELECT new com.lostay.backend.adminpage.dto.AdminReviewDTO(r.reviewNo ,u.userName,h.hotelName, rm.roomName, r.reviewRating, r.reviewContent,r.reviewCreateAt) " +
+	 @Query("SELECT new com.lostay.backend.adminpage.dto.AdminReviewDTO(r.reviewNo ,u.userName,h.hotelName, rm.roomName, r.reviewRating, r.reviewContent,r.reviewCreateAt,r.reviewSanctionsAt) " +
 	           "FROM Review r " +
 	           "JOIN r.user u " +
 	           "JOIN r.room rm " +
