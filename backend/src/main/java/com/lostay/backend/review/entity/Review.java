@@ -1,5 +1,6 @@
 package com.lostay.backend.review.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
@@ -54,5 +55,5 @@ public class Review {
 	private LocalDateTime reviewCreateAt;		// 작성날짜
 	
 	@Column(name="review_sanctions_at")
-	private LocalDateTime reviewSanctionsAt;  //  제재날짜
+	private LocalDate reviewSanctionsAt;  //  제재날짜
 }
