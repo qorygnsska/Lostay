@@ -131,15 +131,18 @@ public class PaymentService {
 		userRepo.save(user);
 		
 		// 포인트 테이블에 포인트 내역 추가해야 함
-		LocalDateTime now = LocalDateTime.now();
-		Point newPoint = new Point();
-		newPoint.setUser(user);
-		newPoint.setPointDay(now);
-		newPoint.setPointPlusMinus(-1 * payPoint);
-		newPoint.setPointTitle("숙박 예약 사용");
+		if(payPoint > 0) {
+			LocalDateTime now = LocalDateTime.now();
+			Point newPoint = new Point();
+			newPoint.setUser(user);
+			newPoint.setPointDay(now);
+			
+			newPoint.setPointPlusMinus(-1 * payPoint);
+			newPoint.setPointTitle("숙박 예약 사용");
+			poRepo.save(newPoint);
+		}
 		//  0이면 적립, 1이면 사용
 //		newPoint.setStatus(1);
-		poRepo.save(newPoint);
 		
 				
 		// 객실에 관련된 정보 결제테이블에 외래키로 넣어주기
@@ -197,13 +200,16 @@ public class PaymentService {
 		resRepo.save(reservation);
 		payRepo.save(payment);
 		
-		Point point = new Point();
-		LocalDateTime now = LocalDateTime.now();
-		point.setPointDay(now);
-		point.setUser(user);
-		point.setPointTitle("숙박 결제 취소");
-		point.setPointPlusMinus(payPoint);
-		poRepo.save(point);
+		if(payPoint > 0) {
+			
+			Point point = new Point();
+			LocalDateTime now = LocalDateTime.now();
+			point.setPointDay(now);
+			point.setUser(user);
+			point.setPointTitle("숙박 결제 취소");
+			point.setPointPlusMinus(payPoint);
+			poRepo.save(point);
+		}
 
 	}
 
