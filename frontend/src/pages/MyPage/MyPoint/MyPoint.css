@@ -62,5 +62,16 @@
                 color: var(--lightGrayColor);
             }
         }
+
+        .points {
+            .nonePoint {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 200px;
+                font-size: 25px;
+                color: var(--lightGrayColor);
+            }
+        }
     }
 }
