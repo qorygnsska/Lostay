@@ -50,24 +50,34 @@ export default function CompEventInserter(props) {
 
 
     //이벤트 등록 실행
-    const insertHandler = async () => { // *****async function
+    const insertHandler = async() => { // *****async function
 
         console.log(title + '/' + period + '/' + thumbnail.substring(thumbnail.lastIndexOf('\\') + 1) + '/' + image.substring(image.lastIndexOf('\\') + 1));
         //쿼리 날릴 때 setter는 의미없음(reRendering에 필요할 뿐)
         //setThumbnail(thumbnail.substring(thumbnail.lastIndexOf('\\')+1));
         //setImage(image.substring(image.lastIndexOf('\\')+1))
 
-        const eventDTO = { eventTitle: title, eventCreateAt: period[0], eventEndAt: period[1], eventThumbnail: thumbnail, eventImg: image };//object type
+        //const eventDTO = { eventTitle: title, eventCreateAt: period[0], eventEndAt: period[1], eventThumbnail: thumbnail, eventImg: image };//object type
+        //console.log(eventDTO);
+        
+        //file type도 넘겨주려고 From형식으로 담아준다
+        const formData = new FormData();
+        formData.append('eventTitle', title);
+        formData.append('eventCreateAt', period[0]);
+        formData.append('eventEndAt', period[1]);
+        formData.append('eventThumbnail', thumbnail);
+        formData.append('eventimg', image);
+
 
         
         try {
             // async function & await fetch : 'synchronous' request-response pair
-            const response = await fetch('http://localhost:9090/eeeeeeeee', {
+            const response = await fetch('http://localhost:9090/adminEvent', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(eventDTO)
+                headers: {},    //헤더타입이 json이 아니기 때문에 'Content-Type': 'multipart/form-data'??
+                body: formData  //body도 jason으로 변환하지 않음
             });
-
+            //
             if(response.ok) {
                 alert('이벤트를 정상적으로 등록했습니다.');
                 dismissHandler();

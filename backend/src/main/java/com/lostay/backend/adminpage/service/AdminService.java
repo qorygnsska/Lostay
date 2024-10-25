@@ -145,8 +145,8 @@ public class AdminService {
 		eventDTO.setEventTitle(eventEntity.getEventTitle());
 		eventDTO.setEventCreateAt(eventEntity.getEventCreateAt());
 		eventDTO.setEventEndAt(eventEntity.getEventEndAt());
-		eventDTO.setEventThumbnail(eventEntity.getEventThumbnail());
-		eventDTO.setEventImg(eventEntity.getEventImg());
+		//eventDTO.setEventThumbnail(eventEntity.getEventThumbnail());
+		//eventDTO.setEventImg(eventEntity.getEventImg());
 		
 		return eventDTO;
 	}
