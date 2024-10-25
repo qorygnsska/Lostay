@@ -35,7 +35,7 @@ public class JWTFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {        
     	
     	
-    	String accessToken = request.getHeader("access");
+    	String accessToken = request.getHeader("Authorization");
     	System.out.println("accessToken 값 : "+ accessToken);
 
     	if (accessToken == null) {
@@ -43,6 +43,8 @@ public class JWTFilter extends OncePerRequestFilter {
 
     	    return;
     	}
+    	
+    	accessToken = accessToken.replace("Bearer ", "");
 
     	// 토큰 만료 여부 확인, 만료시 다음 필터로 넘기지 않음
     	try {
@@ -66,7 +68,6 @@ public class JWTFilter extends OncePerRequestFilter {
     	    response.setContentType("application/json");
     	    PrintWriter writer = response.getWriter();
     	    writer.print("{\"message\": \"invalid access token\"}");
-
 
     	    //response status code
     	    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

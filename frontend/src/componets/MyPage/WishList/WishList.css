@@ -52,9 +52,27 @@
                         align-items: center;
                         gap: 5px;
 
-                        .star--Icon {
-                            color: rgb(248, 183, 43);
+                        .review--box {
+                            display: flex;
+                            align-items: center;
+                            padding-left: 8px;
+                            width: 43px;
+                            height: 22px;
+                            border-radius: 7px;
+                            background-color: var(--starColor);
+                            margin-right: 4px;
+
+                            .review--avg {
+                                padding-top: 2px;
+                            }
+
+                            .star--Icon {
+                                width: 12px;
+                                height: 12px;
+                                margin-right: 5px
+                            }
                         }
+
                     }
                 }
 
@@ -85,8 +103,15 @@
                         flex-direction: column;
 
 
-                        span {
+                        .discount {
+                            color: var(--saleIconColor);
+                            font-weight: bold;
+                            font-size: 13px;
+                        }
+
+                        .roomDcPrice {
                             color: var(--lightGrayColor2);
+                            font-size: 14px;
                         }
                     }
 

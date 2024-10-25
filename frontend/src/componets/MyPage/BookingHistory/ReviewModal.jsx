@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { IoClose } from "react-icons/io5";
 import { FaStar } from "react-icons/fa6";
 import PreviewImg from './PreviewImg';
-export default function ReviewModal({ isOpen, onClose, hotelName, userNickname, updateReview }) {
+export default function ReviewModal({ show, onClose, hotelName, userNickname, updateReview, roomName, hotelThumbnail }) {
 
 
     const startArray = [1, 2, 3, 4, 5]
@@ -58,7 +58,7 @@ export default function ReviewModal({ isOpen, onClose, hotelName, userNickname, 
 
 
     // 리뷰 쓰기 버튼 클릭 시 모달창 보이도록 설정
-    if (!isOpen) return null;
+    if (!show) return null;
 
     return (
         <div className='review--modal--container'>
@@ -74,15 +74,24 @@ export default function ReviewModal({ isOpen, onClose, hotelName, userNickname, 
             </div>
 
             <div className="booking--info">
-                <div className='info--box'>
-                    <span>숙소 정보</span>
-                    <span>{hotelName}</span>
+                <img src={hotelThumbnail} alt='호텔이미지' />
+                <div className='info--wrap'>
+                    <div className='info--box'>
+                        <span>숙소 정보</span>
+                        <span>{hotelName}</span>
+                    </div>
+
+                    <div className='info--box'>
+                        <span>객실 정보</span>
+                        <span>{roomName}</span>
+                    </div>
+
+                    <div className='info--box'>
+                        <span>작성자명</span>
+                        <span>{userNickname}</span>
+                    </div>
                 </div>
 
-                <div className='info--box'>
-                    <span>작성자명</span>
-                    <span>{userNickname}</span>
-                </div>
             </div>
 
             <div className='review--content--wrap'>

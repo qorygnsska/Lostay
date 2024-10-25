@@ -36,7 +36,10 @@ export default function MyPoint({ pointData }) {
                     </div>
 
                     <div>
-                        <span className={pointData.pointPlusMinus > 0 ? 'plus' : 'minus'}>{pointData.pointPlusMinus.toLocaleString()}<span className='point--unit'>P</span></span>
+                        <span className={pointData.pointPlusMinus > 0 ? 'plus' : 'minus'}>
+                            {pointData.pointPlusMinus > 0 ? `+${pointData.pointPlusMinus.toLocaleString()}` : pointData.pointPlusMinus.toLocaleString()}
+                            <span className='point--unit'>P</span>
+                        </span>
                     </div>
                 </div>
             </div>
