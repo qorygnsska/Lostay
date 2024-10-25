@@ -59,6 +59,7 @@ export default function CompEventInserter(props) {
 
         const eventDTO = { eventTitle: title, eventCreateAt: period[0], eventEndAt: period[1], eventThumbnail: thumbnail, eventImg: image };//object type
 
+        
         try {
             // async function & await fetch : 'synchronous' request-response pair
             const response = await fetch('http://localhost:9090/eeeeeeeee', {
