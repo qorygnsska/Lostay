@@ -50,26 +50,28 @@ const formatTime = (timeStr) => {
 };
 
 export default function BookingHistory({ bookData, handlePaymentCancel, handleReviewUpdate }) {
-    const [isOpen, setIsOpen] = useState(false);
 
     // 리뷰 쓰기 모달 창
-    const toggleModal = () => {
-        setIsOpen(!isOpen);
+    const [isReviewModal, setIsReviewModal] = useState(false);
+    const reviewModalToggle = () => {
+        setIsReviewModal(!isReviewModal);
     };
 
     // 예약 취소 모달 창
-    const [show, setShow] = useState(false);
+    const [isBookCancleModal, setIsBookCancleModal] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const bookCancleModalToggle = () => {
+        setIsBookCancleModal(!isBookCancleModal)
+    }
 
     const cancelOk = () => {
         handlePaymentCancel(bookData.payNo);
-        setShow(false);
+        bookCancleModalToggle();
     }
 
     const updateReview = (uploadImg, reviewRating, reviewContent) => {
         handleReviewUpdate(bookData.payNo, uploadImg, reviewRating, reviewContent);
+        reviewModalToggle();
     }
 
     return (
@@ -133,14 +135,14 @@ export default function BookingHistory({ bookData, handlePaymentCancel, handleRe
                             {
                                 bookData.isWriteReview ? ( // 리뷰 작성 버튼 활성화
                                     bookData.isWriteReview ? (
-                                        <button onClick={toggleModal}>
+                                        <button onClick={reviewModalToggle}>
                                             <div className='booking--btn'>
                                                 <span>리뷰 작성</span>
                                             </div>
                                         </button>) : null
                                 ) : (
                                     bookData.isRoomCancle ? ( // 예약 취소 버튼 활성화
-                                        <button onClick={handleShow}>
+                                        <button onClick={bookCancleModalToggle}>
                                             <div className='booking--btn' >
                                                 <span>예약 취소</span>
                                             </div>
@@ -152,11 +154,12 @@ export default function BookingHistory({ bookData, handlePaymentCancel, handleRe
 
             {/* 리뷰쓰기 모달 창 */}
             <div className='review--modal--wrap'>
-                <ReviewModal isOpen={isOpen} onClose={toggleModal} hotelName={bookData.hotelName} userNickname={bookData.userNickname} updateReview={updateReview} />
+                <ReviewModal show={isReviewModal} onClose={reviewModalToggle} hotelName={bookData.hotelName} userNickname={bookData.userNickname} updateReview={updateReview}
+                    roomName={bookData.roomName} hotelThumbnail={bookData.hotelThumbnail} />
             </div>
 
             {/* 예약취소 모달 창 */}
-            <OkCancleModal show={show} handleClose={handleClose} content={"예약을 취소하시겠습니까?"} cancelOk={cancelOk} />
+            <OkCancleModal show={isBookCancleModal} onClose={bookCancleModalToggle} content={"예약을 취소하시겠습니까?"} cancelOk={cancelOk} />
         </div>
 
 

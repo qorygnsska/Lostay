@@ -1,13 +1,14 @@
 import React from 'react'
 import { FaStar } from "react-icons/fa6";
 
-export default function WishList({ hotel }) {
+export default function WishList({ wishList }) {
+
     return (
         <div className='wishlist--component--container'>
             <a href='ex.com'>
                 <div className='wishlist--wrap'>
                     <div className='wishlist--img'>
-                        <img src={`eventList/${hotel.image}`} alt={`hotel`} />
+                        <img src={`${wishList.hotelThumbnail}`} alt={`hotel`} />
                         <div className='wishlist--icon'>
                             <img src={`eventList/icon_favorite_selected.png`} alt="찜" />
                         </div>
@@ -17,30 +18,32 @@ export default function WishList({ hotel }) {
                     <div className='wishlist--box'>
                         <div className='hotel--info'>
                             <div>
-                                <span>{hotel.hotelRating}</span>
+                                <span>{wishList.hotelRating}</span>
                             </div>
 
                             <div>
-                                <span>{hotel.hotelName}</span>
+                                <span>{wishList.hotelName}</span>
                             </div>
 
                             <div className='review--wrap'>
-                                <FaStar className='star--Icon' />
-                                <span><strong>{hotel.reviewAvg}</strong></span>
-                                <span>({hotel.reviewCnt})</span>
+                                <div className='review--box'>
+                                    <FaStar className='star--Icon' />
+                                    <span className='review--avg'><strong>{wishList.reviewRating ? wishList.reviewRating : 0}</strong></span>
+                                </div>
+                                <span>{wishList.totalReviewCount}명 평가</span>
                             </div>
                         </div>
 
                         <div className="hotel--price--wrap">
                             {
-                                hotel.discount !== 0
+                                wishList.discount !== 0
                                     ? <div className="hotel--discount--price--wrap">
-                                        <span>{hotel.discount}%</span>
-                                        <span>{hotel.discountPrice}원</span>
+                                        <span className='discount'>{wishList.roomDiscount}%</span>
+                                        <span className='roomDcPrice'>{wishList.roomDcPrice}원</span>
                                     </div>
                                     : null
                             }
-                            <strong>{hotel.oriPrice}원~</strong>
+                            <strong>{wishList.roomPrice}원~</strong>
                         </div>
                     </div>
                 </div>

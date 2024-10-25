@@ -34,6 +34,8 @@ import "../src/componets/RoomNav/RoomNav.css";
 import "../src/componets/MyPage/BookingHistory/OkCancleModal.css"
 import "../src/componets/HotelReview/ReImgModal.css";
 import "../src/componets/HotelReview/AllImgModal.css";
+import "../src/componets/HotelReview/RoomFilterModal.css";
+import "../src/componets/HotelReview/RoomOrderModal.css";
 
 
 // CustomCSS for pages

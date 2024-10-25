@@ -28,7 +28,7 @@ export default function LoginPopup() {
                 console.log(response);
 
                 // 액세스 토큰 가져오기
-                const accessToken = response.headers["access"];
+                const accessToken = response.headers["authorization"];
 
                 if (window.opener) {
 

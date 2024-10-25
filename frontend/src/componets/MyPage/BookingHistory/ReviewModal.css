@@ -33,8 +33,8 @@
     }
 
     .booking--info {
+
         display: flex;
-        flex-direction: column;
         gap: 30px;
         margin-top: 40px;
         padding-left: 15px;
@@ -42,20 +42,32 @@
         padding-bottom: 40px;
         border-bottom: 1px solid var(--lightGrayColor);
 
-        .info--box {
+        img {
+            width: 140px;
+            height: 150px;
+            border-radius: 10px;
+        }
+
+        .info--wrap {
             display: flex;
-            font-size: 18px;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
 
-            span:nth-child(1) {
-                color: var(--lightGrayColor);
-                flex: 1
-            }
+            .info--box {
+                display: flex;
+                font-size: 18px;
+                gap: 20px;
 
-            span:nth-child(2) {
-                flex: 8;
+                span:nth-child(1) {
+                    color: var(--lightGrayColor);
+                    width: 70px;
+                }
+
             }
         }
     }
+
 
     .review--content--wrap {
         display: flex;

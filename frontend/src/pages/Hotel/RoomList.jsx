@@ -72,8 +72,8 @@ export default function RoomList() {
             roomCheckinTime: '15:00',
             roomCheckoutTime: '11:00',
             roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
+            roomDiscount: 0,
+            roomDcprice: 786500,
             availableRooms: 3,
         },
         {
@@ -85,8 +85,8 @@ export default function RoomList() {
             roomCheckinTime: '15:00',
             roomCheckoutTime: '11:00',
             roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
+            roomDiscount: 0,
+            roomDcprice: 786500,
             availableRooms: 0,
         },
         {
@@ -111,8 +111,8 @@ export default function RoomList() {
             roomCheckinTime: '15:00',
             roomCheckoutTime: '11:00',
             roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
+            roomDiscount: 0,
+            roomDcprice: 786500,
             availableRooms: 3,
         },
         {
@@ -137,8 +137,8 @@ export default function RoomList() {
             roomCheckinTime: '15:00',
             roomCheckoutTime: '11:00',
             roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
+            roomDiscount: 0,
+            roomDcprice: 786500,
             availableRooms: 3,
         },
         {
