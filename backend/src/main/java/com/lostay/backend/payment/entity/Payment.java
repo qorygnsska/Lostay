@@ -42,6 +42,8 @@ public class Payment {
     private String payStatus; // 결제 상태
     @Column(name = "pay_price")
     private int payPrice; // 결제 가격
+    @Column(name = "dis_price")
+    private int disPrice;	// 할인율이 적용된 객실 금액
     @Column(name = "pay_point")
     private int payPoint; // 사용한 포인트
     @Column(name = "cancle_day")

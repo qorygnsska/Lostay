@@ -24,11 +24,11 @@ export default function Home() {
     const getData = async () => {
         try {
             const [eventResp, hotelResp, locationResp, locationHotelResp, DCHotelResp] = await Promise.all([
-                axios.post('http://localhost:9090/eventMain'),
-                axios.post('http://localhost:9090/hotHotelsMain'),
-                axios.post('http://localhost:9090/locationMain'),
-                axios.post('http://localhost:9090/triphotelsMain'),
-                axios.post('http://localhost:9090/discountHotelMain')
+                axios.get('http://localhost:9090/eventMain'),
+                axios.get('http://localhost:9090/hotHotelsMain'),
+                axios.get('http://localhost:9090/locationMain'),
+                axios.get('http://localhost:9090/triphotelsMain'),
+                axios.get('http://localhost:9090/discountHotelMain')
             ]);
 
             setEventList(eventResp.data);

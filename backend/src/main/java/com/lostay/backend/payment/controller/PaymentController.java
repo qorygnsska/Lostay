@@ -92,11 +92,13 @@ public class PaymentController {
 	
 	// 결제 취소
 	@GetMapping("/PaymentCancle")
-	public void paymentcancle(@RequestParam(defaultValue = "2") Long payNo) {
+	public void paymentcancle(@RequestParam(defaultValue = "2") Long payNo,@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
 		
+		Long userNo = 1L;
+	
 		// 결제 취소 api 아직 안들어옴
 		
-		paySer.canclePayment(payNo);
+		paySer.canclePayment(payNo,userNo);
 		
 	}
 	

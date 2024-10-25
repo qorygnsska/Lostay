@@ -143,44 +143,22 @@ public class ReservationService {
 	}
 
 	
-	// 셋팅
+	// 기본 셋팅
 	private void bookHistorySet(List<BookHistoryDTO> bookHistoryList, BookHistoryDTO bookHistoryDTO, ReservationHistoryDTO dto) {
 		
 		bookHistoryDTO.setUserNickname(dto.getUserNickname());
 		bookHistoryDTO.setReservationNo(dto.getReservationNo());
+		bookHistoryDTO.setCheckIn(dto.getCheckIn());
+		bookHistoryDTO.setCheckOut(dto.getCheckOut());
 		bookHistoryDTO.setPayNo(dto.getPayNo());
+		bookHistoryDTO.setPayDay(dto.getPayDay());
 		bookHistoryDTO.setRoomNo(dto.getRoomNo());
 		bookHistoryDTO.setRoomName(dto.getRoomName());
-		bookHistoryDTO.setRoomCheckInTime(dto.getRoomCheckInTime().toString().substring(0, 5));
-		bookHistoryDTO.setRoomCheckOutTime(dto.getRoomCheckOutTime().toString().substring(0, 5));
+		bookHistoryDTO.setRoomCheckInTime(dto.getRoomCheckInTime());
+		bookHistoryDTO.setRoomCheckOutTime(dto.getRoomCheckOutTime());
 		bookHistoryDTO.setHotelNo(dto.getHotelNo());
 		bookHistoryDTO.setHotelName(dto.getHotelName());
 		bookHistoryDTO.setHotelThumbnail(dto.getHotelThumbnail());
-		
-		
-		// 날짜 계산
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-		String payDate = dto.getPayDay().format(formatter);
-        String checkInDate = dto.getCheckIn().format(formatter);
-        String checkOutDate = dto.getCheckOut().format(formatter);
-        
-        bookHistoryDTO.setPayDay(payDate);
-        bookHistoryDTO.setCheckInDate(checkInDate);
-        bookHistoryDTO.setCheckOutDate(checkOutDate);
-       
-       
-        // 요일 구하기
-        DayOfWeek dayOfWeek = dto.getCheckIn().getDayOfWeek();
-        String checkIndayOfWeek = dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale.KOREAN);
-        bookHistoryDTO.setCheckInDayOfWeek(checkIndayOfWeek);
-        
-        dayOfWeek = dto.getCheckOut().getDayOfWeek();
-        String checkOutdayOfWeek = dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale.KOREAN);
-        bookHistoryDTO.setCheckOutDayOfWeek(checkOutdayOfWeek);
-
-        // 몇 박인지 계산
-        long nights = ChronoUnit.DAYS.between(dto.getCheckIn().toLocalDate(), dto.getCheckOut().toLocalDate());
-        bookHistoryDTO.setNights(nights + "박");
 	}
 
 

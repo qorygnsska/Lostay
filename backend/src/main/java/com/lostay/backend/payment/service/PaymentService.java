@@ -65,7 +65,8 @@ public class PaymentService {
 		dto.setUserPhone(payment.getUser().getUserPhone());
 		dto.setPayDay(payment.getPayDay());
 		dto.setPayType(payment.getPayType());
-		dto.setRoomPrice(payment.getRoom().getRoomPrice() - payment.getPayPoint());
+		// 결제당시 할인율이 적용된 객실 금액
+		dto.setRoomPrice(payment.getDisPrice());
 		dto.setPayPrice(payment.getPayPrice());
 		dto.setPayPoint(payment.getPayPoint());
 		dto.setCancleDay(payment.getCancleDay());
@@ -92,6 +93,10 @@ public class PaymentService {
 		roomDto.setRoomCheckoutTime(room.getRoomCheckoutTime()); // 퇴실시간
 		roomDto.setRoomPeopleInfo(room.getRoomPeopleInfo());
 		roomDto.setRoomPrice(room.getRoomPrice());
+		int roomPrice = room.getRoomPrice();
+		int roomDiscount = room.getRoomDiscount();
+		int discountPrice = (int)roomPrice - roomPrice * roomDiscount/100;
+		roomDto.setDiscountPrice(discountPrice);
 
 		return roomDto;
 	}
@@ -130,10 +135,10 @@ public class PaymentService {
 		Point newPoint = new Point();
 		newPoint.setUser(user);
 		newPoint.setPointDay(now);
-		newPoint.setPointPlusMinus(payPoint);
+//		newPoint.setPointPlusMinus(payPoint);
 		newPoint.setPointTitle("숙박 예약 사용");
 		//  0이면 적립, 1이면 사용
-		newPoint.setStatus(1);
+//		newPoint.setStatus(1);
 		poRepo.save(newPoint);
 		
 				
@@ -147,8 +152,11 @@ public class PaymentService {
 		savePay.setRoom(room);
 		savePay.setPayType(payType);
 		savePay.setPayDay(payDay);
-		savePay.setPayPrice(payPrice);
-		savePay.setPayPrice(payPrice);
+		int roomPrice = room.getRoomPrice();
+		int roomDiscount = room.getRoomDiscount();
+		int discountPrice = (int)roomPrice - roomPrice * roomDiscount/100;
+		savePay.setDisPrice(discountPrice);
+		savePay.setPayPrice(discountPrice - payPoint);
 		savePay.setPayPoint(payPoint);
 		savePay.setPayStatus(payStatus);
 
@@ -168,17 +176,32 @@ public class PaymentService {
 	}
 
 	// 결제/예약 취소(status N으로 업데이트)
-	public void canclePayment(long payNo) {
+	public void canclePayment(Long payNo, Long userNo) {
 
 		Optional<Payment> newPayment = payRepo.findById(payNo);
 		Payment payment = newPayment.get();
 
+		Optional<User> newUser = userRepo.findById(userNo);
+		User user = newUser.get();
+		
+		int payPoint = payment.getPayPoint();
+		int userPoint = user.getUserPoint();
+		user.setUserPoint(userPoint + payPoint);
+		userRepo.save(user);
+		
 		Optional<Reservation> newReservation = resRepo.findByPayment_PayNo(payNo);
 		Reservation reservation = newReservation.get();
 		reservation.setResStatus("N");
 		payment.setPayStatus("N");
 		resRepo.save(reservation);
 		payRepo.save(payment);
+		
+		Point point = new Point();
+		LocalDateTime now = LocalDateTime.now();
+		point.setPointDay(now);
+		point.setUser(user);
+		point.setPointTitle("숙박 결제 취소");
+		poRepo.save(point);
 
 	}
 

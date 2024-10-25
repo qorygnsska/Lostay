@@ -6,6 +6,9 @@ import BookingHistoryCom from "../../../componets/MyPage/BookingHistory/BookingH
 import { Link } from "react-router-dom";
 import { privateApi } from '../../../api/api'
 
+
+
+
 export default function BookingHistory() {
     const setMonth = [3, 6, 12];
     const tabList = ["예약한 숙소", "이용한 숙소", "취소한 숙소"];
@@ -28,7 +31,7 @@ export default function BookingHistory() {
         try {
             const response = await privateApi.get(`/PaymentCancle?payNo=${payNo}`); // API 요청
             console.log(response.data);
-            getDatas(activeTab)
+            getData(activeTab)
             return response.data;
         } catch (error) {
             console.error(error);
@@ -51,14 +54,14 @@ export default function BookingHistory() {
                 },
             });
             console.log(response.data);
-            getDatas(activeTab)
+            getData(activeTab)
             return response.data;
         } catch (error) {
             console.error(error);
         }
     }
 
-    const getDatas = async (activeTab) => {
+    const getData = async (activeTab) => {
         const request = activeTab === 0 ? 'book' : activeTab === 1 ? `booked?showMonth=${selectedDate}` : `bookcancle?showMonth=${selectedDate}`;
         try {
             const response = await privateApi.get(`/bookhistory/${request}`); // API 요청
@@ -72,7 +75,7 @@ export default function BookingHistory() {
     };
 
     useEffect(() => {
-        getDatas(activeTab);
+        getData(activeTab);
     }, [activeTab, selectedDate]);
 
     const handleSelect = (eventKey) => {
