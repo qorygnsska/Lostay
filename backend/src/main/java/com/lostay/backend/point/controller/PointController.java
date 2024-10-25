@@ -26,10 +26,12 @@ public class PointController {
 	@Autowired
 	private PointService pointService;
 	
-	@PostMapping("/pointList") //유저 포인트 내역 조회
-	public ResponseEntity<?>pointList(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,@RequestParam() int monthNum){
+	@PostMapping("/pointList/{userNo}") //유저 포인트 내역 조회
+	public ResponseEntity<?>pointList(@PathVariable("userNo") Long userNo,@RequestParam() int monthNum){
+		
+		//@AuthenticationPrincipal CustomOAuth2User customOAuth2User
 		//@PathVariable("userNo") Long userNo
-		Long userNo = customOAuth2User.getUserNo();
+		//Long userNo = customOAuth2User.getUserNo();
 		log.info("pointList실행");
 		return new ResponseEntity<>(pointService.pointList(userNo,monthNum),HttpStatus.OK);
 	}
