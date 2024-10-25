@@ -1,5 +1,6 @@
 package com.lostay.backend.adminpage.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -21,11 +22,13 @@ public class AdminReviewDTO {
 	private double reviewRating; // 평점
 	private String reviewContent; // 리뷰내용
 	private LocalDateTime reviewCreateAt; // 작성날짜
+	private LocalDate reviewSanctionsAt; 
+	
 	private int pagesize; // 총 페이지 수
 	
 	
 	public AdminReviewDTO(Long reviewNo, String userName, String hotelName, String roomName, double reviewRating,
-			String reviewContent, LocalDateTime reviewCreateAt) {
+			String reviewContent, LocalDateTime reviewCreateAt, LocalDate reviewSanctionsAt) {
 		super();
 		this.reviewNo = reviewNo;
 		this.userName = userName;
@@ -34,6 +37,7 @@ public class AdminReviewDTO {
 		this.reviewRating = reviewRating;
 		this.reviewContent = reviewContent;
 		this.reviewCreateAt = reviewCreateAt;
+		this.reviewSanctionsAt =reviewSanctionsAt;
 	}
 	
 	
