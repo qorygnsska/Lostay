@@ -76,7 +76,7 @@ public class PaymentController {
 										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime payDay
 										  ,@RequestParam(defaultValue = "Y") String payStatus
 										  ,@RequestParam(defaultValue = "100000") int payPrice
-										  ,@RequestParam(defaultValue = "10") int payPoint
+										  ,@RequestParam(defaultValue = "0") int payPoint
 										  ,@RequestParam(defaultValue = "2024-11-21T15:00:00") 
 	   									   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkInDate
 	   									  ,@RequestParam(defaultValue = "2024-11-22T11:00:00") 
