@@ -71,4 +71,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 	           "ORDER BY res.checkIn DESC " )
 	List<ReservationHistoryDTO> findBookCancleHistory(@Param("userNo") Long userNo, @Param("resStatus") String resStatus);
 
+
 }

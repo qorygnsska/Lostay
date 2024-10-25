@@ -22,6 +22,7 @@ public class PaymentDTO {
 	private LocalDateTime payDay;		// 결제날짜
 	private String payStatus;			// 결제상태
 	private int payPrice;				// 결제가격
+    private int disPrice;	// 할인율이 적용된 객실 금액
 	private int payPoint;				// 사용한포인트
     private LocalDateTime cancleDay;  // 결제 취소 날짜   
 	

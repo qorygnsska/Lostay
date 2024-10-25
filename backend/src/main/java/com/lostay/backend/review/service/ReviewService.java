@@ -18,6 +18,8 @@ import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.payment.repository.PaymentRepository;
 import com.lostay.backend.point.entity.Point;
 import com.lostay.backend.point.repository.PointRepository;
+import com.lostay.backend.reservation.entity.Reservation;
+import com.lostay.backend.reservation.repository.ReservationRepository;
 import com.lostay.backend.review.dto.HotelInfoDTO;
 import com.lostay.backend.review.dto.HotelReviewsDTO;
 import com.lostay.backend.review.dto.HotelRoomsDTO;
@@ -52,6 +54,8 @@ public class ReviewService {
 	@Autowired
 	private HotelRepository hotelRepo;
 
+	@Autowired
+	private ReservationRepository resRepo;
 //	// 리뷰 작성하기 버튼 클릭
 //	public void saveMyReview(double reviewRating, String reviewContent, ArrayList<String> fileReadName, long payNo) {
 //
@@ -133,6 +137,12 @@ public class ReviewService {
 		int totalPoint = userPoint + 500;
 		user.setUserPoint(totalPoint);
 		userRepo.save(user);
+		
+		// 리뷰가 작성되면 예약테이블에서 리뷰 status y로 수정
+		Optional<Reservation> reservation = resRepo.findByPayment_PayNo(payNo);
+		Reservation r = reservation.get();
+		r.setResReviewStatus("Y");
+		resRepo.save(r);
 
 	}
 
