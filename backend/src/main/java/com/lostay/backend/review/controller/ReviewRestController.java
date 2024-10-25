@@ -127,6 +127,7 @@ public class ReviewRestController {
 	@GetMapping("/HotelReviews")
 	public ResponseEntity<?>HotelReviews(@RequestParam()Long hotelNo,@RequestParam(required = false)Long roomNo,@RequestParam(required = false)String sort){
 	System.out.println("ReviewRestController HotelReviews실행");
+	
 	return new ResponseEntity<>(revSer.findHotelReviews(hotelNo,roomNo,sort),HttpStatus.OK);
 	
 	}

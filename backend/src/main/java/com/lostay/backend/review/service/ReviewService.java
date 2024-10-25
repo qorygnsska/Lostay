@@ -283,8 +283,9 @@ public class ReviewService {
 	}
 	// 객실 조건 후 정렬 구분을 위한 메서드
 	private List<Object[]> findReviews(Long hotelNo, Long roomNo, String orderByColumn) {
+		
 		if (orderByColumn == null) {
-			return revRepo.findReviewsByRoomName(hotelNo, null); // 기본 정렬
+			return revRepo.findReviewsByRoomName(hotelNo, roomNo); // 기본 정렬
 		}
 		switch (orderByColumn) {
 		case "최신작성순":
