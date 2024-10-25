@@ -47,7 +47,7 @@ public class Hotel {
 	private String hotelIntroduction;			// 호텔소개
 
 	@Column(name="hotel_commission")
-	private String hotelCommission; 		//호텔 중개료
+	private int hotelCommission; 		//호텔 중개료
 	
 //	@ManyToMany(mappedBy = "hotels", fetch = FetchType.LAZY) // Cart 엔티티와의 관계 설정
 //	@ToString.Exclude
