@@ -66,7 +66,7 @@ public class PaymentService {
 		dto.setPayDay(payment.getPayDay());
 		dto.setPayType(payment.getPayType());
 		// 결제당시 할인율이 적용된 객실 금액
-		dto.setRoomPrice(payment.getDisPrice());
+		dto.setRoomPrice(payment.getPayPrice() + payment.getPayPoint());
 		dto.setPayPrice(payment.getPayPrice());
 		dto.setPayPoint(payment.getPayPoint());
 		dto.setCancleDay(payment.getCancleDay());
@@ -135,7 +135,7 @@ public class PaymentService {
 		Point newPoint = new Point();
 		newPoint.setUser(user);
 		newPoint.setPointDay(now);
-//		newPoint.setPointPlusMinus(payPoint);
+		newPoint.setPointPlusMinus(-1 * payPoint);
 		newPoint.setPointTitle("숙박 예약 사용");
 		//  0이면 적립, 1이면 사용
 //		newPoint.setStatus(1);
@@ -152,11 +152,12 @@ public class PaymentService {
 		savePay.setRoom(room);
 		savePay.setPayType(payType);
 		savePay.setPayDay(payDay);
-		int roomPrice = room.getRoomPrice();
-		int roomDiscount = room.getRoomDiscount();
-		int discountPrice = (int)roomPrice - roomPrice * roomDiscount/100;
-		savePay.setDisPrice(discountPrice);
-		savePay.setPayPrice(discountPrice - payPoint);
+//		int roomPrice = room.getRoomPrice();
+//		int roomDiscount = room.getRoomDiscount();
+//		int discountPrice = (int)roomPrice - roomPrice * roomDiscount/100;
+//		savePay.setDisPrice(discountPrice);
+		// 실제 결제 가격
+		savePay.setPayPrice(payPrice);
 		savePay.setPayPoint(payPoint);
 		savePay.setPayStatus(payStatus);
 
@@ -201,6 +202,7 @@ public class PaymentService {
 		point.setPointDay(now);
 		point.setUser(user);
 		point.setPointTitle("숙박 결제 취소");
+		point.setPointPlusMinus(payPoint);
 		poRepo.save(point);
 
 	}
