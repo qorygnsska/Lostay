@@ -27,4 +27,6 @@ public class ReviewDTO {
 	private double reviewAvg;					// 별점 평균
 	private long reviewCount;					// 리뷰 전체 개수
 	private String userNickname;				// 리뷰 작성자
+	
+	
 }

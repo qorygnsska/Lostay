@@ -31,7 +31,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 			+ "Join rv.room r  "
 			+ "Join r.hotel h "
 			+ "Join rv.user u "
-			+ "Where h.hotelNo = :hotelNo")
+			+ "Where h.hotelNo = :hotelNo "
+			+ "AND rv.reviewSanctionsAt IS NULL ")
 	List<Object[]> findHotelReview(@Param("hotelNo")long hotelNo);
 
 	
@@ -42,6 +43,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 			+ "Join r.hotel h "
 			+ "Join rv.user u "
 			+ "Where h.hotelNo = :hotelNo "
+			+ "AND rv.reviewSanctionsAt IS NULL "
 			+ "ORDER BY rv.reviewCreateAt DESC ")	
 	List<Object[]> findHotelReview3(@Param("hotelNo")long hotelNo,Pageable pageable);
 
@@ -101,7 +103,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 			+ "Join rv.room r "
 			+ "Join r.hotel h "
 			+ "Join rv.user u "
-			+ "Where rv.room.roomNo = :roomNo")
+			+ "Where rv.room.roomNo = :roomNo "
+			+ "AND rv.reviewSanctionsAt IS NULL ")
 	double findRoomReviewAvg(@Param("roomNo")long roomNo);
 
 
@@ -110,7 +113,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 			+ "Join rv.room r "
 			+ "Join r.hotel h "
 			+ "Join rv.user u "
-			+ "Where rv.room.roomNo = :roomNo")
+			+ "Where rv.room.roomNo = :roomNo "
+			+ "AND rv.reviewSanctionsAt IS NULL ")
 	int findRoomReviewCount(@Param("roomNo")long roomNo);
 
 	
