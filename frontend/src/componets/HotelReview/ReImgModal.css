@@ -1,0 +1,67 @@
+
+
+    .reviews--modal--container{
+  
+        .modal-content {
+            width: 768px;
+            margin: auto;
+    
+            .modal-header {
+                border-bottom: none;
+            }
+    
+            .main--image {
+                height: 600px;
+                width: 100%;
+            }
+    
+            .image--counter {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                color: white;
+                background-color: rgba(0, 0, 0, 0.3);
+                padding: 5px;
+                border-radius: 10px;
+                font-size: 13px;
+            }
+    
+            .thumbnail-container {
+                display: flex;
+                margin-top: 20px;
+                overflow-x: auto;
+    
+                .thumbnail--box {
+                    cursor: pointer;
+                    margin-left: 10px;
+                    padding-bottom: 10px;
+    
+                    .thumbnail-image {
+                        height: 100px;
+                        width: 100px;
+                        cursor: pointer;
+                        border-radius: 10px;
+                    }
+    
+                    .sel--border {
+                        border: 3px solid var(--regularBlueColor);
+                    }
+                }
+            }
+    
+            .thumbnail-container::-webkit-scrollbar {
+                height: 8px;
+            }
+    
+            .thumbnail-container::-webkit-scrollbar-thumb {
+                background-color: hsla(0, 0%, 42%, 0.49);
+            }
+        }
+    
+        @media screen and (max-width: 768px) {
+            .modal-content{
+                width: 100%;
+    
+            }
+        }
+    }
