@@ -52,4 +52,7 @@ public class Review {
 	private String reviewImg;					// 리뷰이미지
 	@Column(name="review_create_at")
 	private LocalDateTime reviewCreateAt;		// 작성날짜
+	
+	@Column(name="review_sanctions_at")
+	private LocalDateTime reviewSanctionsAt;  //  제재날짜
 }
