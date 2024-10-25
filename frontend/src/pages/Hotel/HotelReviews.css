@@ -57,6 +57,7 @@
         width: 90px;
         height: 90px;
         border-radius: 10px;
+        cursor: pointer;
     } 
 
     .prevBtn, .nextBtn{
@@ -153,6 +154,7 @@
         width: 120px;
         height: 120px;
         border-radius: 10px;
+        cursor: pointer;
     } 
 
     .rprevBtn, .rnextBtn{
@@ -229,6 +231,12 @@
         margin-bottom: 10px;
         font-size: 15px;
     }
-   
+
+
+
+
+    
 
 }
+
+

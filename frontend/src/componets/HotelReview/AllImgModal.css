@@ -1,0 +1,25 @@
+.allimg--modal--container{
+
+    .modal-content {
+        width: 768px;
+        margin: auto;
+
+        .modal-header {
+            border-bottom: none;
+        }
+
+        .ImgGrid{
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            gap: 5px;
+        }
+
+        .imgs{
+            width: 120px;
+            height: 120px;
+            cursor: pointer;
+        }
+
+    }
+}

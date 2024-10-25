@@ -5,7 +5,7 @@ import CompHeaderAdmin from '../../componets/Header/CompHeaderAdmin'
 import { Button, Container, Pagination, Table } from 'react-bootstrap'
 import CompAdminBtn from '../../componets/Admin/CompAdminBtn'
 import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 export default function PageEventManager() {
@@ -56,7 +56,8 @@ export default function PageEventManager() {
     }
 
 
-
+    // Date type -> String type
+    const dateFormatter = (rawDate) => (rawDate.getFullYear().toString() + "/" + (rawDate.getMonth() + 1).toString() + "/" + rawDate.getDate().toString());
 
     /////////////////////////////////////////////////////////////////////////////// pagination에 필요한 값들
     const [pageCount, setPageCount] = useState(1);
@@ -131,11 +132,15 @@ export default function PageEventManager() {
                                     </td>
                                 </tr> */}
                             {eventList.map(function (event, index) {
+                                //Date type 객체 생성
+                                const eachC = new Date(event.eventCreateAt);
+                                const eachE = new Date(event.eventEndAt);
+
                                 return (
                                     <tr key={index}>
                                         <td className="event_no">{event.eventNo}</td>
                                         <td className="event_title">{event.eventTitle}</td>
-                                        <td className="event_period">{event.eventCreateAt} ~ {event.eventEndAt}</td>
+                                        <td className="event_period">{dateFormatter(eachC)} ~ {dateFormatter(eachE)}</td>
                                         <td className="btn_container">
                                             {/*수정 또는 삭제 버튼에 어디서 뭘 누르는지 알려주기 */}
                                             <CompAdminBtn whoAreYou={'update_event'} no={event.eventNo} click={openEventUpdater} >수정</CompAdminBtn>

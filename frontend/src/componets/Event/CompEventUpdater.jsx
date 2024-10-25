@@ -5,14 +5,18 @@ import { Calendar } from 'primereact/calendar';
 export default function CompEventUpdater(props) {
 
     
-    //default period: [create_at, end_at]
     const today = new Date(); //오늘 날짜
-    const create_at = new Date(today.setDate(today.getDate() + 1)); //오늘 + 1
-    const end_at = new Date(today.setDate(today.getDate() + 1)); //오늘 + 1 + 1
+    today.setHours(0,0,0,0); //오늘 날짜의 시간, 분, 초, ms를 모두 0으로 설정
+
+    const tomorrow = new Date(today); //오늘 + 1
+    tomorrow.setDate(today.getDate() + 1);
+
+    const tdat = new Date(tomorrow); //오늘 + 1 + 1
+    tdat.setDate(tomorrow.getDate()+1)
 
     //초기값은 props에서 받아오기
     const [title, setTitle] = useState('');
-    const [period, setPeriod] = useState([create_at, end_at]);
+    const [period, setPeriod] = useState([tomorrow, tdat]);     //default period: [tomorrow, tdat]
     //파일은 비워두기
     const [thumbnail, setThumbnail] = useState('');
     const [image, setImage] = useState('');
@@ -46,9 +50,9 @@ export default function CompEventUpdater(props) {
             console.log(data);
             setTitle(data.eventTitle);
 
-            const neoC = new Date(data.eventCreateAt);
-            const neoE = new Date(data.eventEndAt);
-            setPeriod([neoC, neoE])
+            const createAt = new Date(data.eventCreateAt);
+            const endAt = new Date(data.eventEndAt);
+            setPeriod([createAt, endAt])
 
             setThumbnail(data.eventThumbnail)
             setImage(data.eventImg)
@@ -64,7 +68,7 @@ export default function CompEventUpdater(props) {
     //'닫기' 버튼 클릭 시(onHide), 모든 값 초기화하고 모달 숨김
     function dismissHandler() {
         setTitle('');
-        setPeriod([create_at, end_at]);
+        setPeriod([tomorrow, tdat]);
         setThumbnail('');
         setImage('');
         props.onHide();
@@ -72,7 +76,7 @@ export default function CompEventUpdater(props) {
 
 
     //이벤트 등록 실행
-    const insertHandler = () => {
+    const updateHandler = () => {
 
         //쿼리 날릴 때 setter는 의미없음(reRendering에 필요할 뿐)
         //setThumbnail(thumbnail.substring(thumbnail.lastIndexOf('\\')+1));
@@ -83,8 +87,8 @@ export default function CompEventUpdater(props) {
 
         }
 
-
     }
+
 
     return (
         <>
@@ -125,14 +129,14 @@ export default function CompEventUpdater(props) {
                             />
                         </Form.Group>
                         <div id="container_period_picker" className="d-flex justify-content-center">
-                            <Calendar 
-                                className="calendar mb-3"
+                            <Calendar className="calendar mb-3"
                                 inline
                                 showButtonBar
                                 selectionMode="range"
                                 value={period}
+                                minDate={today}
                                 onChange={(e) => setPeriod(e.value)}
-                                //onClearButtonClick={() => setPeriod([create_at, end_at])}
+                                onClearButtonClick={() => setPeriod([tomorrow, tdat])}
                                 hidden={!periodPicker ? true : false}
                             />
                         </div>
@@ -158,7 +162,7 @@ export default function CompEventUpdater(props) {
                 </Modal.Body>
                 <Modal.Footer>
                     {/* <Button hidden onClick={dismissHandler}>Close</Button> */}
-                    <Button onClick={insertHandler} variant="outline-danger" >수정하기</Button>
+                    <Button onClick={updateHandler} variant="outline-danger" >수정하기</Button>
                 </Modal.Footer>
             </Modal>
         </>
