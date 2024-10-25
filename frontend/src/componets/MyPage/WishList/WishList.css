@@ -73,6 +73,10 @@
                             }
                         }
 
+                        .totalReviewCount {
+                            color: var(--lightGrayColor2);
+                        }
+
                     }
                 }
 
@@ -106,12 +110,12 @@
                         .discount {
                             color: var(--saleIconColor);
                             font-weight: bold;
-                            font-size: 13px;
+                            font-size: 16px;
                         }
 
                         .roomDcPrice {
                             color: var(--lightGrayColor2);
-                            font-size: 14px;
+                            font-size: 18px;
                         }
                     }
 

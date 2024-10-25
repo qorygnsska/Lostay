@@ -30,7 +30,7 @@ export default function WishList({ wishList }) {
                                     <FaStar className='star--Icon' />
                                     <span className='review--avg'><strong>{wishList.reviewRating ? wishList.reviewRating : 0}</strong></span>
                                 </div>
-                                <span>{wishList.totalReviewCount}명 평가</span>
+                                <span className='totalReviewCount'>{wishList.totalReviewCount}명 평가</span>
                             </div>
                         </div>
 
