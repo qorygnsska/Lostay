@@ -12,7 +12,7 @@ export default function MyPage() {
 
         try {
             const response = await privateApi.get('/mypage'); // API 요청
-            console.log(response.data)
+
             setProfile(response.data)
             return response.data;
 
