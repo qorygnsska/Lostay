@@ -9,6 +9,10 @@ import { GrNext } from "react-icons/gr";
 import { GrDown } from "react-icons/gr";
 import ReImgModal from '../../componets/HotelReview/ReImgModal';
 import AllImgModal from '../../componets/HotelReview/AllImgModal';
+import RoomFilterModal from '../../componets/HotelReview/RoomFilterModal';
+import RoomOrderModal from '../../componets/HotelReview/RoomOrderModal';
+
+import BackNav from "../../componets/BackNav/BackNav";
 
 export default function HotelReviews() {
 
@@ -20,6 +24,45 @@ export default function HotelReviews() {
             "산 전망 디럭스 패밀리 트윈 룸3",
             "산 전망 디럭스 패밀리 트윈 룸4",
             "산 전망 디럭스 패밀리 트윈 룸5",
+            "산 전망 디럭스 패밀리 트윈 룸2",
+            "산 전망 디럭스 패밀리 트윈 룸3",
+            "산 전망 디럭스 패밀리 트윈 룸4",
+            "산 전망 디럭스 패밀리 트윈 룸5",
+            "산 전망 디럭스 패밀리 트윈 룸2",
+            "산 전망 디럭스 패밀리 트윈 룸3",
+            "산 전망 디럭스 패밀리 트윈 룸4",
+            "산 전망 디럭스 패밀리 트윈 룸5",
+            "산 전망 디럭스 패밀리 트윈 룸2",
+            "산 전망 디럭스 패밀리 트윈 룸3",
+            "산 전망 디럭스 패밀리 트윈 룸4",
+            "산 전망 디럭스 패밀리 트윈 룸5",
+            "산 전망 디럭스 패밀리 트윈 룸2",
+            "산 전망 디럭스 패밀리 트윈 룸3",
+            "산 전망 디럭스 패밀리 트윈 룸4",
+            "산 전망 디럭스 패밀리 트윈 룸5",
+            "산 전망 디럭스 패밀리 트윈 룸2",
+            "산 전망 디럭스 패밀리 트윈 룸3",
+            "산 전망 디럭스 패밀리 트윈 룸4",
+            "산 전망 디럭스 패밀리 트윈 룸5",
+            "산 전망 디럭스 패밀리 트윈 룸2",
+            "산 전망 디럭스 패밀리 트윈 룸3",
+            "산 전망 디럭스 패밀리 트윈 룸4",
+            "산 전망 디럭스 패밀리 트윈 룸5",
+            "산 전망 디럭스 패밀리 트윈 룸2",
+            "산 전망 디럭스 패밀리 트윈 룸3",
+            "산 전망 디럭스 패밀리 트윈 룸4",
+            "산 전망 디럭스 패밀리 트윈 룸5",
+            "산 전망 디럭스 패밀리 트윈 룸2",
+            "산 전망 디럭스 패밀리 트윈 룸3",
+            "산 전망 디럭스 패밀리 트윈 룸4",
+            "산 전망 디럭스 패밀리 트윈 룸5",
+            "산 전망 디럭스 패밀리 트윈 룸2",
+            "산 전망 디럭스 패밀리 트윈 룸3",
+            "산 전망 디럭스 패밀리 트윈 룸4",
+            "산 전망 디럭스 패밀리 트윈 룸5",
+            "산 전망 디럭스 패밀리 트윈 룸2",
+            "산 전망 디럭스 패밀리 트윈 룸3",
+            "산 전망 디럭스 패밀리 트윈 룸4",
         ],
         totalReviewCount: 400,
         ReviewRating: 4.9,
@@ -115,10 +158,30 @@ export default function HotelReviews() {
         setShow2(true);
     }
 
+    // 룸 필터 모달
+    const [show3, setShow3] = useState(false);
+    const handleClose3 = () => setShow3(false);
+    const filterClick = () => {
+        setShow3(true);
+    }
+    const basicRoom = '객실전체';
+
+
+    // 룸 정렬 모달
+    const [show4, setShow4] = useState(false);
+    const handleClose4 = () => setShow4(false);
+    const orderClick = () => {
+        setShow4(true);
+    }
+    const Orders = ['최신 작성 순', '평점 높은 순', '평점 낮은 순'];
+    const Basicorder = '최신 작성 순';
+
     
     return (
 
         <Container className='hotel--reviews--container'>
+            <BackNav title={`리뷰 (${hotelInfo.totalReviewCount})`} />
+
             <div className='starTitle'>숙소 평점</div>
             <div className='starDiv'><FaStar className='star' /> {hotelInfo.ReviewRating}</div>
 
@@ -139,7 +202,7 @@ export default function HotelReviews() {
 
             <div className='RowLine'></div>
 
-            <div className='RoomFilter'>
+            <div className='RoomFilter' onClick={filterClick}>
                 <div className='RoomFilterName'>객실 전체 ({reviews.length})</div>
                 <div><GrDown/></div>
             </div>
@@ -147,7 +210,7 @@ export default function HotelReviews() {
 
             <div className='RoomFilter2'>
                 <div><input type='checkbox' className='ImgCheck'/> 사진후기만 보기</div>
-                <div className='RoomFilterName2'>추천순 <GrDown/></div>
+                <div className='RoomFilterName2' onClick={orderClick}>최신순 <GrDown/></div>
             </div>
 
             <div className='RowLine'></div>
@@ -191,6 +254,10 @@ export default function HotelReviews() {
             <AllImgModal imgs={allImages} show={show2} handleClose={handleClose2}/>
 
             <ReImgModal imgs={images} show={show} ImgIdx={ImgIdx} handleClose={handleClose}/>
+
+            <RoomFilterModal show={show3} handleClose={handleClose3} rooms={hotelInfo.hotelRoom} basicRoom={basicRoom}/>
+
+            <RoomOrderModal show={show4} handleClose={handleClose4} Orders={Orders} Basicorder={Basicorder} />
 
             <Footer />
         </Container>

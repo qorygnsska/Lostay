@@ -14,6 +14,8 @@ import { IoNavigate } from "react-icons/io5";
 import KakaoMap from '../../componets/Map/KakaoMap';
 import RoomNav from '../../componets/RoomNav/RoomNav';
 
+import BackNav from "../../componets/BackNav/BackNav";
+
 
 export default function RoomDetail() {
 
@@ -69,6 +71,7 @@ export default function RoomDetail() {
     return (
 
         <Container className='room--detail--container'>
+            <BackNav title="객실상세" />
 
             <HotelCarousel images={RoomInfo.roomImg}/>
 
