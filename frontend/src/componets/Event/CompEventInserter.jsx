@@ -6,17 +6,24 @@ export default function CompEventInserter(props) {
 
 
     const today = new Date(); //오늘 날짜
+    today.setHours(0,0,0,0); //오늘 날짜의 시간, 분, 초, ms를 모두 0으로 설정
 
-    //default period: [start_at, end_at]
-    const start_at = new Date(today.setDate(today.getDate() + 1)); //오늘 + 1
-    const end_at = new Date(today.setDate(today.getDate() + 1)); //오늘 + 1 + 1
+    const tomorrow = new Date(today); //오늘 + 1
+    tomorrow.setDate(today.getDate() + 1);
 
+    const tdat = new Date(tomorrow); //오늘 + 1 + 1
+    tdat.setDate(tomorrow.getDate()+1)
 
     const [title, setTitle] = useState('');
-    const [period, setPeriod] = useState([start_at, end_at]);
+    const [period, setPeriod] = useState([tomorrow, tdat]);
+    //default period: [tomorrow, tdat]
+    //minDate: tomorrow (내일 0시부터 시작되는 이벤트)
     const [thumbnail, setThumbnail] = useState('');
     const [image, setImage] = useState('');
 
+    ////////////////////////////////////////////////////////////////////////////////////datePicker(calendar)
+    //달력 보였다 숨겼다
+    const [periodPicker, setPeriodPicker] = useState(false);
 
     const dateFormatter = (rawDate) => (rawDate.getFullYear().toString() + "/" + (rawDate.getMonth() + 1).toString() + "/" + rawDate.getDate().toString());
 
@@ -29,14 +36,13 @@ export default function CompEventInserter(props) {
             return dateFormatter(period[0]) + ' - ' + dateFormatter(period[1]);
         }
     }
+    ////////////////////////////////////////////////////////////////////////////////////datePicker(calendar)
 
-
-    const [periodPicker, setPeriodPicker] = useState(false);
 
     //'닫기' 버튼 클릭 시(onHide), 모든 값 초기화하고 모달 숨김
     const dismissHandler = () => {
         setTitle('');
-        setPeriod([start_at, end_at]);
+        setPeriod([tomorrow, tdat]);
         setThumbnail('');
         setImage('');
         props.onHide();
@@ -51,10 +57,9 @@ export default function CompEventInserter(props) {
         //setThumbnail(thumbnail.substring(thumbnail.lastIndexOf('\\')+1));
         //setImage(image.substring(image.lastIndexOf('\\')+1))
 
-        const eventDTO = { title: title, start_at: start_at, thumbnail: thumbnail };//object type
+        const eventDTO = { eventTitle: title, eventCreateAt: period[0], eventEndAt: period[1], eventThumbnail: thumbnail, eventImg: image };//object type
 
         try {
-
             // async function & await fetch : 'synchronous' request-response pair
             const response = await fetch('http://localhost:9090/eeeeeeeee', {
                 method: 'POST',
@@ -65,14 +70,18 @@ export default function CompEventInserter(props) {
             if(response.ok) {
                 alert('이벤트를 정상적으로 등록했습니다.');
                 dismissHandler();
+            }else {
+                console.log(response);
+                alert('서버와 통신이 원활하지 않습니다.');
             }
 
-        }catch(error) {
-            alert('서버와 통신이 원활하지 않습니다.');
+        } catch(error) {
             console.log(error);
+            alert('서버와 통신이 원활하지 않습니다.');
         }
 
     }
+
 
     return (
         <>
@@ -112,14 +121,14 @@ export default function CompEventInserter(props) {
                             />
                         </Form.Group>
                         <div id="container_period_picker" className="d-flex justify-content-center">
-                            <Calendar
-                                className="calendar mb-3"
+                            <Calendar className="calendar mb-3"
                                 inline
                                 showButtonBar
                                 selectionMode="range"
                                 value={period}
+                                minDate={tomorrow}
                                 onChange={(e) => setPeriod(e.value)}
-                                onClearButtonClick={() => setPeriod([start_at, end_at])}
+                                onClearButtonClick={() => setPeriod([tomorrow, tdat])}
                                 hidden={!periodPicker ? true : false}
                             />
                         </div>
