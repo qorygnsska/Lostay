@@ -25,33 +25,33 @@ public class MainController {
 	
 	
 	//국내 인기여행지 조회
-	@PostMapping("/locationMain") 
+	@GetMapping("/locationMain") 
 	public ResponseEntity<?>locationMain(){
 		log.info("locationMaint실행");
 		return new ResponseEntity<>(mainService.locationFindAll(),HttpStatus.OK);
 	}
 	//이벤트 조회
-	@PostMapping("/eventMain")
+	@GetMapping("/eventMain")
 	public ResponseEntity<?>eventMain(){
 		log.info("locationMaint실행");
 		return new ResponseEntity<>(mainService.eventFindAll(),HttpStatus.OK);
 	}
 	//특가 호텔 조회
-	@PostMapping("/discountHotelMain")
+	@GetMapping("/discountHotelMain")
 	public ResponseEntity<?>discountHotelMain(){
 		log.info("discountHotelMain실행");
 		return new ResponseEntity<>(mainService.findTop10HtolesDiscount(),HttpStatus.OK);
 
 	}
 	//인기 호텔 조회
-	@PostMapping("/hotHotelsMain")
+	@GetMapping("/hotHotelsMain")
 	public ResponseEntity<?>hotHotlesMain(){
 		log.info("hotHotlesMain실행");
 		return new ResponseEntity<>(mainService.findTop10HtolesRating(),HttpStatus.OK);
 
 	}
 	//여행지별 숙소
-    @PostMapping("/triphotelsMain")
+    @GetMapping("/triphotelsMain")
     public ResponseEntity<?>triphotlesMain(){
 		log.info("triphotlesMain실행");
 		return new ResponseEntity<>(mainService.findByHotelAddressContaining(),HttpStatus.OK);

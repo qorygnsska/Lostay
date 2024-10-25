@@ -1,82 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BackNav from "../../../componets/BackNav/BackNav";
 import Navbar from "../../../componets/Navbar/Navbar";
 import MyPointComponent from "../../../componets/MyPage/MyPoint/MyPoint";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { TbParkingCircle } from "react-icons/tb";
+import { privateApi } from "../../../api/api";
+
+
+
 
 export default function MyPoint() {
-    // 받을 데이터
-    const data = {
-        userPoint: 1300,
-        points: [
-            {
-                pointDay: "2024-10-18T09:00:00",
-                pointPlusMinus: 100,
-                pointTitle: "예매 추가",
-            },
-            {
-                pointDay: "2024-10-18T10:00:00",
-                pointPlusMinus: -100,
-                pointTitle: "예매 사용",
-            },
-            {
-                pointDay: "2024-10-16T09:00:00",
-                pointPlusMinus: -1000,
-                pointTitle: "예매 사용",
-            },
-            {
-                pointDay: "2024-10-15T09:00:00",
-                pointPlusMinus: -100,
-                pointTitle: "예매 사용",
-            },
-            {
-                pointDay: "2024-09-18T09:00:00",
-                pointPlusMinus: -100,
-                pointTitle: "예매 사용",
-            },
-            {
-                pointDay: "2024-09-17T09:00:00",
-                pointPlusMinus: 100,
-                pointTitle: "예매 추가",
-            },
-            {
-                pointDay: "2024-08-17T09:00:00",
-                pointPlusMinus: 200,
-                pointTitle: "예매 추가",
-            },
-            {
-                pointDay: "2024-04-15T09:00:00",
-                pointPlusMinus: 300,
-                pointTitle: "예매 추가",
-            },
-            {
-                pointDay: "2024-03-13T09:00:00",
-                pointPlusMinus: -100,
-                pointTitle: "예매 사용",
-            },
-            {
-                pointDay: "2023-11-12T09:00:00",
-                pointPlusMinus: -100,
-                pointTitle: "예매 사용",
-            },
-            {
-                pointDay: "2023-10-11T10:00:00",
-                pointPlusMinus: 100,
-                pointTitle: "예매 추가",
-            },
-            {
-                pointDay: "2023-10-10T09:00:00",
-                pointPlusMinus: 100,
-                pointTitle: "예매 추가",
-            },
-            {
-                pointDay: "2023-10-01T09:00:00",
-                pointPlusMinus: 1000,
-                pointTitle: "예매 추가",
-            },
-        ],
+
+    const [monthNum, setMonthNum] = useState(0);
+    const [pointDatas, setPointDatas] = useState(null)
+
+    const getData = async () => {
+        try {
+            const response = await privateApi.get(`/pointList?monthNum=${monthNum}`); // API 요청
+            console.log(response.data)
+            setPointDatas(response.data)
+            return response.data;
+
+        } catch (error) {
+            console.error(error);
+        }
     };
+
+    useEffect(() => {
+        getData();
+    }, [monthNum]);
+
 
     // 현재 년도
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -101,43 +54,16 @@ export default function MyPoint() {
                 if (currentMonth === 12)
                     setCurrentYear((prevYear) => prevYear + 1);
             }
+
+            setMonthNum(monthNum - 1)
         } else {
             setCurrentMonth((prevMonth) =>
                 prevMonth === 1 ? 12 : prevMonth - 1
             );
             if (currentMonth === 1) setCurrentYear((prevYear) => prevYear - 1);
+
+            setMonthNum(monthNum + 1);
         }
-    };
-
-    // 선택한 월의 포인트 데이터 계산
-    const getMonthlyPoints = () => {
-        const startOfMonth = new Date(currentYear, currentMonth - 1, 1); // 선택한 월의 첫번째 날짜
-        const endOfMonth = new Date(currentYear, currentMonth, 0); // 선택한 월의 마지막 날
-
-        // 조건에 맞는 데이터 추출함
-        return data.points
-            .filter((item) => {
-                const pointDate = new Date(item.pointDay);
-                return pointDate >= startOfMonth && pointDate <= endOfMonth;
-            })
-            .map((item) => {
-                const date = new Date(item.pointDay);
-                const dayOfWeek = date.getDay();
-                return {
-                    day: `${date.getDate()} (${dayNames[dayOfWeek]})`,
-                    fullDate: `${date.getFullYear()}.${(date.getMonth() + 1)
-                        .toString()
-                        .padStart(2, "0")}.${date
-                        .getDate()
-                        .toString()
-                        .padStart(2, "0")}`, // 원하는 형식으로 날짜 변환
-                    pointPlusMinus:
-                        item.pointPlusMinus > 0
-                            ? `+${item.pointPlusMinus}`
-                            : item.pointPlusMinus, // 포인트 부호 추가
-                    pointTitle: item.pointTitle,
-                };
-            });
     };
 
     // 버튼 비활성화 조건
@@ -158,7 +84,8 @@ export default function MyPoint() {
                     </div>
 
                     <span className="point">
-                        1,300<span className="point--unit">P</span>
+                        {pointDatas ? pointDatas.userPoint.toLocaleString() : 0}
+                        <span className="point--unit">P</span>
                     </span>
                 </div>
 
@@ -181,9 +108,13 @@ export default function MyPoint() {
                 </div>
 
                 <div className="points">
-                    {getMonthlyPoints().map((pointData, index) => (
-                        <MyPointComponent key={index} pointData={pointData} />
-                    ))}
+                    {pointDatas?.points.length > 0 ? (
+                        pointDatas.points.map((pointData, index) => (
+                            <MyPointComponent key={index} pointData={pointData} />
+                        ))
+                    ) : (
+                        <div className="nonePoint"><span>적립/상용된 포인트가 없습니다.</span></div>
+                    )}
                 </div>
             </div>
 

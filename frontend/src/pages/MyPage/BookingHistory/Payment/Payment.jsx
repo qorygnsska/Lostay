@@ -80,7 +80,7 @@ export default function Payment() {
 
                         <div className="hotel--content">
                             <span>
-                                {checkInDate} {checkInDayOfWeek} ~ {checkOutDate} {checkOutDayOfWeek} | {nights}
+                                {checkInDate} ({checkInDayOfWeek}) ~ {checkOutDate} ({checkOutDayOfWeek}) | {nights}
                             </span>
                         </div>
 
@@ -151,7 +151,7 @@ export default function Payment() {
 
                             <div>
                                 <span>
-                                    {paymentData?.roomPrice ? paymentData.roomPrice.toLocaleString() : 0}원
+                                    {paymentData ? paymentData.roomPrice.toLocaleString() : 0}원
                                 </span>
                             </div>
                         </div>
@@ -163,7 +163,7 @@ export default function Payment() {
 
                             <div>
                                 <span>
-                                    - {paymentData?.usePoint ? paymentData.usePoint.toLocaleString() : 0}P
+                                    - {paymentData ? paymentData.usePoint.toLocaleString() : 0}P
                                 </span>
                             </div>
                         </div>
@@ -177,7 +177,7 @@ export default function Payment() {
 
                             <div className="payment--total--price">
                                 <span>
-                                    {paymentData?.payPrice ? paymentData.payPrice.toLocaleString() : 0}원
+                                    {paymentData ? paymentData.payPrice.toLocaleString() : 0}원
                                 </span>
                             </div>
                         </div>
@@ -211,7 +211,7 @@ export default function Payment() {
 
                                 <div>
                                     <span>
-                                        {paymentData?.payPrice ? paymentData.payPrice.toLocaleString() : 0}원
+                                        {paymentData ? paymentData.payPrice.toLocaleString() : 0}원
                                     </span>
                                 </div>
                             </div>
@@ -221,7 +221,7 @@ export default function Payment() {
                                     <span>환불 포인트</span>
                                 </div>
                                 <span>
-                                    + {paymentData?.payPoint ? paymentData.payPoint.toLocaleString() : 0}P
+                                    + {paymentData ? paymentData.payPoint.toLocaleString() : 0}P
                                 </span>
                             </div>
                         </div>
@@ -234,7 +234,7 @@ export default function Payment() {
 
                                 <div className="payment--total--price">
                                     <span>
-                                        {paymentData?.roomPrice.toLocaleString() ? paymentData.roomPrice.toLocaleString() : 0}원
+                                        {paymentData ? paymentData.roomPrice.toLocaleString() : 0}원
                                     </span>
                                 </div>
                             </div>
