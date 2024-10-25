@@ -50,7 +50,7 @@ export default function CompEventInserter(props) {
 
 
     //이벤트 등록 실행
-    const insertHandler = async () => { // *****async function
+    const insertHandler = async() => { // *****async function
 
         console.log(title + '/' + period + '/' + thumbnail.substring(thumbnail.lastIndexOf('\\') + 1) + '/' + image.substring(image.lastIndexOf('\\') + 1));
         //쿼리 날릴 때 setter는 의미없음(reRendering에 필요할 뿐)
@@ -58,11 +58,12 @@ export default function CompEventInserter(props) {
         //setImage(image.substring(image.lastIndexOf('\\')+1))
 
         const eventDTO = { eventTitle: title, eventCreateAt: period[0], eventEndAt: period[1], eventThumbnail: thumbnail, eventImg: image };//object type
-
+        console.log(eventDTO);
+        
         
         try {
             // async function & await fetch : 'synchronous' request-response pair
-            const response = await fetch('http://localhost:9090/eeeeeeeee', {
+            const response = await fetch('http://localhost:9090/adminEvent', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(eventDTO)

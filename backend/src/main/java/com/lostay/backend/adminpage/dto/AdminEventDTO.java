@@ -3,6 +3,7 @@ package com.lostay.backend.adminpage.dto;
 import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.lostay.backend.event.entity.Event;
 
@@ -19,7 +20,7 @@ public class AdminEventDTO {
 	private String eventTitle;
 	private LocalDateTime eventCreateAt;
 	private LocalDateTime eventEndAt;
-	private String eventThumbnail;
-	private String eventImg;
+	private MultipartFile eventThumbnail;
+	private MultipartFile eventImg;
 	
 }
