@@ -1,5 +1,6 @@
 package com.lostay.backend.adminpage.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,12 +93,12 @@ public class AdminService {
 	}
 
 	// 관리자 페이지 유저 리뷰 삭제
-	public void deleteById(Long reviewNo) {
+	public void updateById(Long reviewNo, LocalDate reviewSanctionsAt) {
 		log.info("AdminService deleteById 실행");
 		Review review = reviewRepo.findById(reviewNo)
 				.orElseThrow(() -> new EntityNotFoundException("review not found"));
-		log.info("del실행");
-		reviewRepo.delete(review);
+	    review.setReviewSanctionsAt(reviewSanctionsAt);
+		reviewRepo.save(review);
 
 	}
 
@@ -149,7 +150,7 @@ public class AdminService {
 		
 		return eventDTO;
 	}
-	
+
 	
 
 }

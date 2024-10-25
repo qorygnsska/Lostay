@@ -1,6 +1,10 @@
 package com.lostay.backend.adminpage.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -62,11 +66,11 @@ public class AdminController {
 	}
 	
 	
-	// 유저가 작성한 리뷰 삭제
-	@GetMapping("/adminUserReviewDel")//request Type 변경!!
-	public void adminUserReviewDel(@RequestParam Long reviewNo) {
+	// 유저가 작성한 리뷰 제재
+	@PostMapping("/adminUserReviewDel")
+	public void adminUserReviewDel(@RequestParam Long reviewNo,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate reviewSanctionsAt ) {
 		 System.out.println("AdminController adminUserReviewDel실행");
-		 adminService.deleteById(reviewNo);
+		 adminService.updateById(reviewNo,reviewSanctionsAt);
 	} 
 	
 	
