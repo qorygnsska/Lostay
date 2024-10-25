@@ -26,6 +26,7 @@ public class PointController {
 	@Autowired
 	private PointService pointService;
 	
+
 	@GetMapping("/pointList") //유저 포인트 내역 조회
 	public ResponseEntity<?>pointList(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,@RequestParam() int monthNum){
 		//@PathVariable("userNo") Long userNo
