@@ -1,5 +1,5 @@
-import React from 'react'
-import { Container } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Container} from 'react-bootstrap'
 import { FaStar } from "react-icons/fa";
 
 import Footer from '../../componets/Footer/Footer';
@@ -7,6 +7,8 @@ import Footer from '../../componets/Footer/Footer';
 import { GrPrevious } from "react-icons/gr";
 import { GrNext } from "react-icons/gr";
 import { GrDown } from "react-icons/gr";
+import ReImgModal from '../../componets/HotelReview/ReImgModal';
+import AllImgModal from '../../componets/HotelReview/AllImgModal';
 
 export default function HotelReviews() {
 
@@ -32,7 +34,7 @@ export default function HotelReviews() {
             userNickname: '사람1',
             roomName: "산 전망 디럭스 패밀리 트윈 룸1",
             reviewContent: '아이와 편안하고 즐겁게 여행할 수 있는 더할 나위 없는 최상의 숙소입니다.',
-            reviewImg: ['/HotelList/호텔1.jpg', '/HotelList/호텔1.jpg', '/HotelList/호텔1.jpg', '/HotelList/호텔1.jpg'],
+            reviewImg: ['/HotelList/호텔1.jpg', '/HotelList/룸1.jpg', '/HotelList/호텔1.jpg', '/HotelList/호텔1.jpg'],
 
         },
         {
@@ -89,7 +91,31 @@ export default function HotelReviews() {
 
     const allImages = reviews.flatMap(review => review.reviewImg);
 
+    const [ImgIdx, setImgIdx] = useState(0); // 이미지 인덱스
 
+    const [images, setImages] = useState([]);
+
+    
+
+    // 사진 전체보기 캐러셀
+    const handleImageClick = (idx, img) => {
+        setImgIdx(idx); // 선택한 이미지의 인덱스를 저장
+        setShow(true); // 모달 열기
+        setImages(img);
+    };
+
+    // 캐러셀 모달
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+
+    // 전체보기 모달
+    const [show2, setShow2] = useState(false);
+    const handleClose2 = () => setShow2(false);
+    const AllClick = () => {
+        setShow2(true);
+    }
+
+    
     return (
 
         <Container className='hotel--reviews--container'>
@@ -98,14 +124,14 @@ export default function HotelReviews() {
 
             <div className='AllDiv'>
                 <div className='AllImgTitle'>숙소 리뷰사진</div>
-                <div className='AllShow'>전체보기({allImages.length})<GrNext/></div>
+                <div className='AllShow' onClick={AllClick}>전체보기({allImages.length})<GrNext/></div>
             </div>
 
             <div className='AllImgDiv'>
                 <div className='prevBtn'><GrPrevious/></div>
         
-                {allImages.map((img) => (
-                    <img src={img} alt='리뷰총이미지' className='AllImg' />
+                {allImages.map((img, idx) => (
+                    <img src={img} key={idx} alt='리뷰총이미지' className='AllImg' onClick={() => handleImageClick(idx, allImages)}/>
                 ))}
            
                 <div className='nextBtn'><GrNext/></div>
@@ -148,8 +174,8 @@ export default function HotelReviews() {
                     ) : (
                         <div className='ReviewImgDiv'>
                             <div className='rprevBtn'><GrPrevious/></div>
-                            {review.reviewImg.map((img) => (
-                                <img src={img} alt='리뷰총이미지' className='ReviewImg' />
+                            {review.reviewImg.map((img, idx) => (
+                                <img src={img} key={idx} alt='리뷰이미지' className='ReviewImg' onClick={() => handleImageClick(idx, review.reviewImg)}/>
                             ))}
                             <div className='rnextBtn'><GrNext/></div>
                         </div>
@@ -160,6 +186,11 @@ export default function HotelReviews() {
                 ))}
                 
             </div>
+
+
+            <AllImgModal imgs={allImages} show={show2} handleClose={handleClose2}/>
+
+            <ReImgModal imgs={images} show={show} ImgIdx={ImgIdx} handleClose={handleClose}/>
 
             <Footer />
         </Container>
