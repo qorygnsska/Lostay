@@ -27,11 +27,12 @@ public class CartController {
 	private CartService cartService;
 	//내가 선택한 찜 호텔 저장
 	 @PostMapping("/cartsave")
-	 public void createCart(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @RequestParam Long hotelId) {
+	 public ResponseEntity<?> createCart(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @RequestParam Long hotelId) {
 		 
 		 	long userNo = customOAuth2User.getUserNo();
 //		 	long userId = 1L;
-	        cartService.cartsave(userNo, hotelId);
+	        
+	 return new ResponseEntity<>(cartService.cartsave(userNo, hotelId), HttpStatus.OK);
 }
 	 
 		//내가 선택한 찜 호텔 삭제

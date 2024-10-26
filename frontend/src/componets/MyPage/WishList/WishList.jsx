@@ -1,17 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { privateApi } from "../../../api/api";
 import { Link } from "react-router-dom";
+import { FaRegHeart } from "react-icons/fa";
 
-export default function WishList({ wishList, wishCancle }) {
+export default function WishList({ wishList, setToast, setToastText, index }) {
+    const [wishState, setWishState] = useState(true);
+    const [cartNo, setCartNo] = useState(wishList.cartNo);
+
+    const wishToggle = async (event) => {
+        event.preventDefault();
+        try {
+            if(wishState){
+                const response = await privateApi.post(`/cartdelete?cartNo=${cartNo}`); // API 요청
+                if(response.status === 200){
+                    setWishState(!wishState)
+                    setToast(true)
+                    setToastText('찜 해제')
+                }
+            }else{
+                const response = await privateApi.post(`/cartsave?hotelId=${wishList.hotelNo}`); // API 요청
+                if(response.status === 200){
+                    console.log(response)
+                    setWishState(!wishState)
+                    setToast(true)
+                    setToastText('찜 추가')
+                    console.log(response.data)
+                    setCartNo(response.data.cartNo)
+                }
+            }
+            
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    
     return (
-        <div className="wishlist--component--container">
+        <div className={`wishlist--component--container ${index % 2 === 0 ? 'wishlist--border' : ''}` }>
             <Link to="/hotellist">
                 <div className="wishlist--wrap">
                     <div className="wishlist--img">
                         <img src={`${wishList.hotelThumbnail}`} alt={`hotel`} />
-                        <div className="wishlist--icon" onClick={(event) => wishCancle(event, wishList.cartNo)}>
-                            <img src={`eventList/icon_favorite_selected.png`} alt="찜" />
+                        <div className="wishlist--icon" onClick={(event) => wishToggle(event)}>
+                            {
+                                wishState ? <img src={`eventList/icon_favorite_selected.png`} alt="찜" />: <FaRegHeart className="icon"/>
+                            }
+                           
                         </div>
                     </div>
 
@@ -43,11 +77,12 @@ export default function WishList({ wishList, wishCancle }) {
                                     <span className="roomDcPrice">{wishList.roomDcPrice.toLocaleString()}원</span>
                                 </div>
                             ) : null}
-                            <strong>{wishList.roomPrice}원~</strong>
+                            <strong>{wishList.roomPrice.toLocaleString()}원~</strong>
                         </div>
                     </div>
                 </div>
             </Link>
+            
         </div>
     );
 }

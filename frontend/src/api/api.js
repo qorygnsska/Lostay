@@ -11,7 +11,7 @@ export const privateApi = axios.create({
 privateApi.interceptors.request.use(
     (config) => {
         const state = store.getState();
-        const accessToken = state.user.accessToken; // Redux에서 accessToken 가져오기
+        const accessToken = state.user.aT; // Redux에서 accessToken 가져오기
         console.log(accessToken);
         if (accessToken) {
             config.headers["Authorization"] = `${accessToken}`;
@@ -43,16 +43,19 @@ privateApi.interceptors.response.use(
                 if (res.status === 200) {
                     // Redux에 새로운 access token 저장
                     const newAccessToken = res.headers["access"];
-                    store.dispatch(login({ authState: true, accessToken: newAccessToken }));
-
-                    console.log(newAccessToken);
+                    console.log('newAccessToken',newAccessToken)
+                    store.dispatch(login({ userState: true, aT: newAccessToken }));
+                    
                     // 원래 요청을 새로운 access token으로 재시도
-
-                    error.config.headers["access"] = `${newAccessToken}`;
+                    error.config.headers["authorization"] = `${newAccessToken}`;
                     return privateApi(error.config);
+                }else{
+                    console.log('로그아웃한다잉2')
+                    store.dispatch(logout());
                 }
-            } catch (err) {
+            } catch (error) {
                 // refresh token 요청 실패 시 로그아웃
+                console.log('로그아웃한다잉')
                 store.dispatch(logout());
             }
         }

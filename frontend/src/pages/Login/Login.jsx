@@ -15,7 +15,7 @@ export default function Login() {
                 const { accessToken } = event.data.payload;
                 console.log(accessToken);
                 // Redux에 액세스 토큰 저장
-                dispatch(login({ userState: true, accessToken: accessToken }));
+                dispatch(login({ userState: true, aT: accessToken }));
                 navigate("/");
             }
         };

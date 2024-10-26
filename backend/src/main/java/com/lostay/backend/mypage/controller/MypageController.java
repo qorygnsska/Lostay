@@ -53,8 +53,8 @@ public class MypageController {
 	public ResponseEntity<?> mypageCartList(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @RequestParam(required = false) Integer page) {
 		log.info("mypageCartList실행");
 
-		Long userNo = customOAuth2User.getUserNo();
-
+		//Long userNo = customOAuth2User.getUserNo();
+		Long userNo = 1L;
 		return new ResponseEntity<>(mypageService.mypageCartList(userNo, page), HttpStatus.OK);
 
 	}

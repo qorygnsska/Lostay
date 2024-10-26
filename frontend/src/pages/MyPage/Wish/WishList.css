@@ -2,7 +2,8 @@
     margin-bottom: 50px;
 
     .wishlist--card {
-        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
     }
 
     .wishlist--blank {

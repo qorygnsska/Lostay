@@ -21,22 +21,22 @@ public class MypageCartListDTO {
 	private int roomPrice; // 객실 가격
 
 	private double roomDcPrice; // 할인된 가격
-	private int pagesize; // 총 페이지 수
-
-	public MypageCartListDTO(Long userNo, Long cartNo, Long hotelNo, String hotelName, String hotelThumbnail,
-			String hotelRating, Double reviewRating, Long totalReviewCount, int roomDiscount, int roomPrice,
-			double roomDcPrice) {
-		this.userNo = userNo;
-		this.cartNo = cartNo;
-		this.hotelNo = hotelNo;
-		this.hotelName = hotelName;
-		this.hotelThumbnail = hotelThumbnail;
-		this.hotelRating = hotelRating;
-		this.reviewRating = reviewRating;
-		this.totalReviewCount = totalReviewCount;
-		this.roomDiscount = roomDiscount;
-		this.roomPrice = roomPrice;
-		this.roomDcPrice = roomDcPrice; 
-	}
+//	private int pagesize; // 총 페이지 수
+//
+//	public MypageCartListDTO(Long userNo, Long cartNo, Long hotelNo, String hotelName, String hotelThumbnail,
+//			String hotelRating, Double reviewRating, Long totalReviewCount, int roomDiscount, int roomPrice,
+//			double roomDcPrice) {
+//		this.userNo = userNo;
+//		this.cartNo = cartNo;
+//		this.hotelNo = hotelNo;
+//		this.hotelName = hotelName;
+//		this.hotelThumbnail = hotelThumbnail;
+//		this.hotelRating = hotelRating;
+//		this.reviewRating = reviewRating;
+//		this.totalReviewCount = totalReviewCount;
+//		this.roomDiscount = roomDiscount;
+//		this.roomPrice = roomPrice;
+//		this.roomDcPrice = roomDcPrice; 
+//	}
 
 }

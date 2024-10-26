@@ -29,7 +29,7 @@ public class ReissueController {
 	private final JWTUtil jwtUtil;
 	private final RefreshTokenRepository refreshTkRepo;
 	private final UserRepository userRepo;
-	private Long refreshTkExpired = 24 * 60 * 60 * 60L; // 1일
+	private Long refreshTkExpired = 7 * 24 * 60 * 60 * 60L; // 1일
 	private Long accessTkExpired = 60 * 60 * 60L; // 1시간
 	//30 * 60 * 60L; 30분
 
@@ -67,6 +67,7 @@ public class ReissueController {
 		try {
 			jwtUtil.isExpired(refresh);
 		} catch (ExpiredJwtException e) {
+			refreshTkRepo.deleteByRtToken(refresh);
 			return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
 		}
 

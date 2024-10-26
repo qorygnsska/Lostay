@@ -4,17 +4,17 @@ const userSlice = createSlice({
     name: "user",
     initialState: {
         userState: false, // 초기값 설정
-        accessToken: null,
+        aT: null,
     },
     reducers: {
         login(state, action) {
             state.userState = action.payload.userState;
-            state.accessToken = action.payload.accessToken;
+            state.aT = action.payload.aT;
         },
         logout(state) {
             // 로그아웃 시 상태 초기화
             state.userState = false;
-            state.accessToken = null;
+            state.aT = null;
         },
     },
 });

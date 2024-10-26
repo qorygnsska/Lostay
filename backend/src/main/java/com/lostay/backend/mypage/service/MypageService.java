@@ -1,7 +1,9 @@
 package com.lostay.backend.mypage.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,17 +74,25 @@ public class MypageService {
 	//내가 선택한 찜 목록 조회
 	public Object mypageCartList(Long userNo, int page) {
 	    log.info("MypageService mypageCartList 실행");
-
+	    System.out.println("p[age" + page);
 	    PageRequest pageable = PageRequest.of(page, 10); // 페이지 요청
 	    Page<MypageCartListDTO> cartPage = cartRepo.findTop10CartPage(userNo, pageable);
 
 	    List<MypageCartListDTO> cartpageDTOList = cartPage.getContent();
 
 	    // 총 요소 수 및 페이지 수 설정
-	    for (MypageCartListDTO dto : cartpageDTOList) {
-	        dto.setPagesize(cartPage.getTotalPages()); // 총 페이지 수 설정
-	    }
-	    return cartpageDTOList;
+//	    for (MypageCartListDTO dto : cartpageDTOList) {
+//	        dto.setPagesize(cartPage.getTotalPages()); // 총 페이지 수 설정
+//	    }
+	    
+	    Map<String, Object> cartList = new HashMap<>();
+	    cartList.put("wishList", cartpageDTOList);
+	    cartList.put("totalPage", cartPage.getTotalPages()-1);
+	    cartList.put("page", page);
+	    
+		List<Object> finalResult = new ArrayList<>();
+		finalResult.add(cartList);
+	    return cartList;
 		    
 
 	}

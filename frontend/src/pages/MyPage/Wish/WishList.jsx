@@ -3,48 +3,56 @@ import BackNav from "../../../componets/BackNav/BackNav";
 import Navbar from "../../../componets/Navbar/Navbar";
 import WishListComponent from "../../../componets/MyPage/WishList/WishList";
 import { FaRegHeart } from "react-icons/fa";
-import { privateApi } from "../../../api/api";
+import useGetWishs from "../../../hooks/wishInfiniteLoading";
+import {useInView} from "react-intersection-observer";
+import Toast from "../../../componets/Toast/Toast";
+import { useQueryClient } from "@tanstack/react-query";
+
 
 export default function WishList() {
-    const [page, setPage] = useState(0);
-    const [wishList, setWishList] = useState([]);
+    const{data, isLoading, error, fetchNextPage, hasNextPage, isFetchNextPage} = useGetWishs();
+    const [toast, setToast] = useState(false);
+    const [toastText, setToastText] = useState('');
 
-    const getData = async () => {
-        try {
-            const response = await privateApi.get(`/mypageCartList?page=${page}`); // API 요청
-            console.log(response.data);
-            setWishList(response.data);
-            return response.data;
-        } catch (error) {
-            console.error(error);
+    const {ref,inView} = useInView()
+
+    // 스크롤 초기화
+    const queryClient = useQueryClient();
+    
+    function handleRefresh() {
+        const cachedData = queryClient.getQueryData(['wishs']);
+
+        // 캐시가 있을때만 진행
+        if (cachedData) {
+            queryClient.resetQueries(['wishs']);
         }
-    };
+    }
 
-    const wishCancle = async (event, cartNo) => {
-        event.preventDefault();
-        try {
-            const response = await privateApi.post(`/cartdelete?cartNo=${cartNo}`); // API 요청
-            // 데이터 갱신 등의 로직 추가
-            getData();
-        } catch (error) {
-            console.error(error);
+    useEffect(()=>{
+        handleRefresh()
+    },[])
+
+    // 무한 스클롤 설정
+    useEffect(() =>{
+        
+        if(inView && hasNextPage && !isFetchNextPage){
+            fetchNextPage()
         }
-    };
+    },[inView])
 
-    useEffect(() => {
-        getData();
-    }, [page]);
-
+    
     return (
         <div className="wishlist--container">
             <BackNav title={"찜"} />
-
-            {wishList.length ? (
+  
+            {isLoading ? null : data?.pages[0].totalPage > -1 ? (
                 // 찜이 있을 떄
                 <div className="wishlist--card">
-                    {wishList.map((data, index) => (
-                        <WishListComponent key={index} wishList={data} wishCancle={wishCancle} />
-                    ))}
+                    {data?.pages.map((page) => 
+                        page.wishList.map((wish,index)=>(
+                            <WishListComponent key={index} wishList={wish} setToast={setToast} setToastText={setToastText} index={index}/>
+                        )))}
+                        
                 </div>
             ) : (
                 // 찜이 없을 때
@@ -56,7 +64,8 @@ export default function WishList() {
                     </div>
                 </div>
             )}
-
+            <h1 ref={ref} style={{ height: '20px', visibility: 'hidden' }}></h1>
+            {toast && <Toast setToast={setToast} text={toastText} />}
             <Navbar />
         </div>
     );

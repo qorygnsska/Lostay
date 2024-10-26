@@ -11,6 +11,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import { Provider } from "react-redux";
 
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+
 // 효준
 import Home from "./pages/Home/Home"; // 메인 페이지
 import Login from "./pages/Login/Login"; // 로그인 페이지
@@ -39,7 +41,7 @@ import PageEventManager from "./pages/Admin/PageEventManager"; // 관리자 페�
 import PageReviewManager from "./pages/Admin/PageReviewManager"; // 관리자 페이지 - 리뷰 관리
 import PageUserManager from "./pages/Admin/PageUserManager"; // 관리자 페이지 - 사용자 관리
 
-const persistor = persistStore(store);
+
 
 const router = createBrowserRouter([
     {
@@ -77,11 +79,15 @@ const router = createBrowserRouter([
     },
 ]);
 
+const persistor = persistStore(store);
+const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-            <RouterProvider router={router} />
+            <QueryClientProvider client={queryClient}>
+                <RouterProvider router={router} />
+            </QueryClientProvider>
         </PersistGate>
     </Provider>
 );
