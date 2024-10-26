@@ -1,20 +1,20 @@
 import { privateApi } from "../api/api"
 import {useInfiniteQuery} from "@tanstack/react-query";
 
-const axiosWishs = async(page) => {
+const axiosReviews = async(page) => {
     try {
-        const response = await privateApi.get(`/mypageCartList?page=${page}`); // API 요청
+        const response = await privateApi.get(`/mypageReview?page=${page}`); // API 요청
         return response.data;
     } catch (error) {
         throw error;
     }
 }
 
-const useGetWishs = () =>{
+const useGetReviews = () =>{
     return useInfiniteQuery({
-        queryKey:['reviews'],
+        queryKey:['wishs'],
         queryFn:({pageParam})=>{
-            return axiosWishs(pageParam)
+            return axiosReviews(pageParam)
         },
         getNextPageParam:(last)=>{
             if(last.page < last.totalPage){
@@ -26,4 +26,4 @@ const useGetWishs = () =>{
     })
 }
 
-export default useGetWishs;
+export default useGetReviews;

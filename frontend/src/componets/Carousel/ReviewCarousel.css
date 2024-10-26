@@ -1,0 +1,97 @@
+.review--carousel--container {
+    position: relative;
+
+    .slick-slide {
+        padding-left: 1px;
+
+        .image--box {
+            cursor: pointer;
+
+            img {
+                border: 1px solid var(--lightGrayColor);
+                border-radius: 8px;
+                width: 80px;
+                height: 80px;
+            }
+
+            img.isSelect{
+                border: 3px solid var(--regularBlueColor);
+            }
+        }
+
+
+    }
+
+
+    .move--btn {
+        position: absolute;
+        top: 32%;
+        display: none;
+
+        button {
+            background: #fff;
+            border: 1px solid black;
+            cursor: pointer;
+            border-radius: 100%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+    }
+
+    .left--move--btn {
+
+        transform: translateX(-14px);
+
+        .arrow {
+            width: 15px;
+            height: 15px;
+            padding-right: 2px;
+        }
+    }
+
+    .right--move--btn {
+        transform: translateX(14px);
+        right: 0;
+
+        .arrow {
+            width: 15px;
+            height: 15px;
+            padding-left: 2px;
+        }
+    }
+
+    .right--move--btn.isModal--btn{
+        transform: translateX(2px);
+    }
+
+    .default--image--wrap{
+
+        display: flex;
+        gap: 7px;
+
+        .image--box {
+            cursor: pointer;
+
+            img {
+                border: 1px solid var(--lightGrayColor);
+                border-radius: 8px;
+                width: 80px;
+                height: 80px;
+            }
+
+            img.isSelect{
+                border: 3px solid var(--regularBlueColor);
+            }
+        }
+    }
+
+}
+
+.review--carousel--container:hover .move--btn{
+    display: block;
+}

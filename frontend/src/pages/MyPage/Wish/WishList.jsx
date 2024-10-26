@@ -44,7 +44,7 @@ export default function WishList() {
     return (
         <div className="wishlist--container">
             <BackNav title={"찜"} />
-  
+            {console.log(data)}
             {isLoading ? null : data?.pages[0].totalPage > -1 ? (
                 // 찜이 있을 떄
                 <div className="wishlist--card">

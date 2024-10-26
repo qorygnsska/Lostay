@@ -102,15 +102,15 @@ public class ReviewService {
 
 		StringBuilder sb = new StringBuilder();
 		for (String img : fileReadName) {
-			sb.append(img).append(", ");
+		    sb.append("reviews/").append(img).append(","); // 파일명 앞에 "reviews/" 추가
 		}
 
 		if (sb.length() > 0) {
-			sb.setLength(sb.length() - 2);
+		    sb.setLength(sb.length() - 1); // 마지막 쉼표 제거
 		}
 
 		String reviewImg = sb.toString();
-
+		
 		Review review = new Review();
 		review.setReviewContent(reviewContent);
 		review.setReviewCreateAt(now);

@@ -38,13 +38,10 @@ public class MypageController {
 	@GetMapping("/mypageReview")
 	public ResponseEntity<?> mypageReview(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @RequestParam(required = false) Integer page) {
 
-		
 		Long userNo = customOAuth2User.getUserNo();
+
 		log.info("mypageReview실행");
-		// page가 null인 경우 기본값을 0으로 설정 (예: 첫 페이지)
-		if (page == null) {
-			page = 0; // 기본값 설정
-		}
+	
 		return new ResponseEntity<>(mypageService.mypageReview(userNo, page), HttpStatus.OK);
 	}
 
@@ -53,8 +50,8 @@ public class MypageController {
 	public ResponseEntity<?> mypageCartList(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @RequestParam(required = false) Integer page) {
 		log.info("mypageCartList실행");
 
-		//Long userNo = customOAuth2User.getUserNo();
-		Long userNo = 1L;
+		Long userNo = customOAuth2User.getUserNo();
+
 		return new ResponseEntity<>(mypageService.mypageCartList(userNo, page), HttpStatus.OK);
 
 	}

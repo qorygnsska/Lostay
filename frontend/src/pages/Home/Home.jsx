@@ -36,8 +36,6 @@ export default function Home() {
             setLocationList(locationResp.data);
             setLocationHotelList(locationHotelResp.data);
             setDCHotelList(DCHotelResp.data)
-            console.log(locationList);
-            console.log(eventResp.data);
         } catch (error) {
             console.error(error);
         }
