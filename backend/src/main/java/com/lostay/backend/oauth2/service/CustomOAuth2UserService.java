@@ -32,7 +32,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
     	
-        System.out.println("여기타니?");
     	OAuth2User oAuth2User = super.loadUser(userRequest);
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         
@@ -43,13 +42,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         else if (registrationId.equals("kakao")) {oAuth2Response = new GoogleResponse(oAuth2User.getAttributes()); }
         else { return null;}
 
-        String userToken = oAuth2Response.getProvider()+"_"+oAuth2Response.getProviderId();
-        User existData = userRepository.findByUserToken(userToken);
+        String userProviderId = oAuth2Response.getProvider()+"_"+oAuth2Response.getProviderId();
+        User existData = userRepository.findByUserProviderId(userProviderId);
         if (existData == null) {
 
             String nickname = getNickname(); 
             
-            UserDTO userDTO = createUser(oAuth2Response, userToken, nickname);
+            UserDTO userDTO = createUser(oAuth2Response, userProviderId, nickname);
    
             return new CustomOAuth2User(userDTO);
         } else {
@@ -61,7 +60,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
          	userDTO.setUserNo(existData.getUserNo());
             userDTO.setUserName(existData.getUserName());
             userDTO.setUserEmail(existData.getUserEmail());
-            userDTO.setUserToken(existData.getUserToken());
+            userDTO.setUserProviderId(existData.getUserProviderId());
             userDTO.setUserRole(existData.getUserRole());
 
             return new CustomOAuth2User(userDTO);
@@ -78,23 +77,23 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
     
 
-    public UserDTO createUser(OAuth2Response oAuth2Response, String userToken, String nickname) {
+    public UserDTO createUser(OAuth2Response oAuth2Response, String userProviderId, String nickname) {
     	 User user = new User();
          user.setUserName(oAuth2Response.getName());
          user.setUserEmail(oAuth2Response.getEmail());
-         user.setUserToken(userToken);
+         user.setUserProviderId(userProviderId);
          user.setUserRole("ROLE_USER");
          user.setUserNickname(nickname);
     
          
          userRepository.save(user);
-         User existData = userRepository.findByUserToken(userToken);
+         User existData = userRepository.findByUserProviderId(userProviderId);
          
          UserDTO userDTO = new UserDTO();
          userDTO.setUserNo(existData.getUserNo());
          userDTO.setUserName(existData.getUserName());
          userDTO.setUserEmail(existData.getUserEmail());
-         userDTO.setUserToken(existData.getUserToken());
+         userDTO.setUserProviderId(existData.getUserProviderId());
          userDTO.setUserRole(existData.getUserRole());
         return userDTO;
     }

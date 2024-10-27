@@ -21,28 +21,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lostay.backend.jwt.JWTUtil;
 import com.lostay.backend.oauth2.service.CustomOAuth2User;
+import com.lostay.backend.redis.repository.RedisRepository;
+import com.lostay.backend.refresh_token.dto.RefreshTokenDTO;
 import com.lostay.backend.refresh_token.entity.RefreshToken;
-import com.lostay.backend.refresh_token.repository.RefreshTokenRepository;
+import com.lostay.backend.refresh_token.service.RefreshTokenService;
 import com.lostay.backend.user.entity.User;
 import com.lostay.backend.user.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 
 // 소셜 로그인 성공 시
 @Component
 @Transactional
+@RequiredArgsConstructor
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JWTUtil jwtUtil;
     private final UserRepository userRepo;
-    private final RefreshTokenRepository refreshTkRepo;
-    private Long refreshTkExpired = 24 * 60 * 60 * 60L; // 1일
+    private final RefreshTokenService refreshTokenService;
+    private Long refreshTkExpired = 24 * 60 * 60 * 1000L; // 1일
 
-    public CustomSuccessHandler(JWTUtil jwtUtil, UserRepository userRepo, RefreshTokenRepository refreshTkRepo) {
-
-        this.jwtUtil = jwtUtil;
-		this.userRepo = userRepo;
-		this.refreshTkRepo = refreshTkRepo;
-    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -62,8 +61,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // 리프레쉬 토큰 생성
         String refreshToken = jwtUtil.createJwt("refresh",username, role, userNo, refreshTkExpired); // 1일 유지
         
-        // 리프레쉬 토큰 DB 저장
-        addRefreshEntity(userNo, refreshToken, refreshTkExpired);
+        // 리프레쉬 토큰 Redis 저장
+        addRefreshEntity(userNo, refreshToken);
 
         // 응답 설정
         response.addCookie(createCookie("refresh", refreshToken));
@@ -82,19 +81,19 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         return cookie;
     }
     
-    private void addRefreshEntity(Long userNo, String refresh, Long expiredMs) {
+    // redis에 리프레쉬 토큰 저장
+    private void addRefreshEntity(Long userNo, String refresh) {
  
-        Date date = new Date(System.currentTimeMillis() + expiredMs);
-
-        RefreshToken refreshEntity = new RefreshToken();
-        Optional<User> findUser = userRepo.findById(userNo);
-        
+        Optional<User> findUser = userRepo.findById(userNo);       
         User user = findUser.get();
-
-        refreshEntity.setUser(user);
-        refreshEntity.setRtToken(refresh);
-        refreshEntity.setRtExpiration(date.toString());
-
-        refreshTkRepo.save(refreshEntity);
+        
+        System.out.println("userproid: " + user.getUserProviderId());
+        System.out.println("refresh: " + refresh);
+        
+        RefreshTokenDTO refreshTokenDTO = new RefreshTokenDTO();
+        refreshTokenDTO.setUserProviderId(user.getUserProviderId());
+        refreshTokenDTO.setRefreshToken(refresh);
+        
+        refreshTokenService.create(refreshTokenDTO);
     }
 }

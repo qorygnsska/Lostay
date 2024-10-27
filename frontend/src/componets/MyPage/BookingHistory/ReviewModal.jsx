@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoClose } from "react-icons/io5";
 import { FaStar } from "react-icons/fa6";
 import PreviewImg from './PreviewImg';
@@ -56,9 +56,20 @@ export default function ReviewModal({ show, onClose, hotelName, userNickname, up
         setReviewContent(e.target.value);
     };
 
+    useEffect(() => {
+        // 모달이 열릴 때마다 상태 초기화
+        if (show) {
+            setReviewRating(0);
+            setReviewContent("");
+            setUploadImg([]);
+            setPreviewImg([]);
+        }
+    }, [show]);
 
     // 리뷰 쓰기 버튼 클릭 시 모달창 보이도록 설정
     if (!show) return null;
+
+
 
     return (
         <div className='review--modal--container'>
