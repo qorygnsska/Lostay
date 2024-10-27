@@ -105,11 +105,13 @@ public class ReviewService {
 		    sb.append("reviews/").append(img).append(","); // 파일명 앞에 "reviews/" 추가
 		}
 
+		String reviewImg = null;
 		if (sb.length() > 0) {
 		    sb.setLength(sb.length() - 1); // 마지막 쉼표 제거
+		    reviewImg = sb.toString();
 		}
 
-		String reviewImg = sb.toString();
+		 
 		
 		Review review = new Review();
 		review.setReviewContent(reviewContent);

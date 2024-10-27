@@ -19,5 +19,5 @@ public class UserDTO {
 	private String userRole;		// 역할
 	private String userStatus;		// 탈퇴여부
 	private String userCreateAt;	// 가입일자
-	private String userToken;		// 소셜토큰
+	private String userProviderId;	// 소셜토큰
 }

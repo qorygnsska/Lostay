@@ -11,16 +11,16 @@ export default function WishList({ wishList, setToast, setToastText, index }) {
     const wishToggle = async (event) => {
         event.preventDefault();
         try {
-            if(wishState){
+            if (wishState) {
                 const response = await privateApi.post(`/cartdelete?cartNo=${cartNo}`); // API 요청
-                if(response.status === 200){
+                if (response.status === 200) {
                     setWishState(!wishState)
                     setToast(true)
                     setToastText('찜 해제')
                 }
-            }else{
+            } else {
                 const response = await privateApi.post(`/cartsave?hotelId=${wishList.hotelNo}`); // API 요청
-                if(response.status === 200){
+                if (response.status === 200) {
                     console.log(response)
                     setWishState(!wishState)
                     setToast(true)
@@ -29,23 +29,23 @@ export default function WishList({ wishList, setToast, setToastText, index }) {
                     setCartNo(response.data.cartNo)
                 }
             }
-            
+
         } catch (error) {
             console.error(error);
         }
     };
-    
+
     return (
-        <div className={`wishlist--component--container ${index % 2 === 0 ? 'wishlist--border' : ''}` }>
+        <div className={`wishlist--component--container ${index % 2 === 0 ? 'wishlist--border' : ''}`}>
             <Link to="/hotellist">
                 <div className="wishlist--wrap">
                     <div className="wishlist--img">
                         <img src={`${wishList.hotelThumbnail}`} alt={`hotel`} />
                         <div className="wishlist--icon" onClick={(event) => wishToggle(event)}>
                             {
-                                wishState ? <img src={`eventList/icon_favorite_selected.png`} alt="찜" />: <FaRegHeart className="icon"/>
+                                wishState ? <img src={`eventList/icon_favorite_selected.png`} alt="찜" /> : <FaRegHeart className="icon" />
                             }
-                           
+
                         </div>
                     </div>
 
@@ -82,7 +82,7 @@ export default function WishList({ wishList, setToast, setToastText, index }) {
                     </div>
                 </div>
             </Link>
-            
+
         </div>
     );
 }

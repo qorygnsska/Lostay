@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RefreshTokenDTO {
 
-	private Long rtNo;		// 토큰넘버
-	
-	private Long userNo;	// 회원넘버 외래키
-	private int rtToken;	// 리프레쉬토큰
+	private String userProviderId;
+	private String refreshToken;
 }

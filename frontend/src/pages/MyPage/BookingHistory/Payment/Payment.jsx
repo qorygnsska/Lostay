@@ -6,6 +6,18 @@ import { PiCopyBold } from "react-icons/pi";
 import Toast from "../../../../componets/Toast/Toast";
 import { privateApi } from '../../../../api/api'
 
+
+// 날짜변경
+const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더합니다.
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}.${month}.${day}`;
+};
+
 export default function Payment() {
     const location = useLocation();
     const paymentType = location.state?.paymentType;
@@ -198,7 +210,7 @@ export default function Payment() {
                                 </div>
 
                                 <div>
-                                    <span>{paymentData?.payDay}</span>
+                                    <span>{formatDate(paymentData?.cancleDay).toLocaleString()}</span>
                                 </div>
                             </div>
                         </div>
