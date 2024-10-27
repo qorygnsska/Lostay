@@ -9,9 +9,9 @@ export default function WishList({ wishList }) {
                 <div className='wishlist--wrap'>
                     <div className='wishlist--img'>
                         <img src={`${wishList.hotelThumbnail}`} alt={`hotel`} />
-                        <div className='wishlist--icon'>
+                        {/* <div className='wishlist--icon' onClick={ }>
                             <img src={`eventList/icon_favorite_selected.png`} alt="찜" />
-                        </div>
+                        </div> */}
                     </div>
 
 
