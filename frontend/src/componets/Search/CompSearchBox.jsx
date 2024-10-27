@@ -102,7 +102,6 @@ export default function CompSearchBox(props) {
     const modalOnShow = () => {
         //헤더의 어디(장소, 날짜, 인원 중)를 눌렀는지 확인하여 auto-focusing
         //console.log('focusing at modal: ' + props.focus);
-
     }
 
 

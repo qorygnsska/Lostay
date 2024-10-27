@@ -91,14 +91,12 @@
                         opacity: 0.7;
                     }
 
+
                     .period_selected:hover {
                         opacity: 0.9;
                     }
 
-
-
-
-
+                
                     .p-highlight {
                         /* selected Date */
                         background-color: lightskyblue;
@@ -106,7 +104,6 @@
                         color: black !important;
                         font-weight: bold !important;
                     }
-
 
                 }
 

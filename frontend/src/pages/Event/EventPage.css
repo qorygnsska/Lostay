@@ -28,11 +28,18 @@
 .page--event--list--container {
     /* 이벤트 리스트페이지 */
 
+    #container_swtich {
+        margin-top: 12px;
+        display: flex;
+        justify-content: end;
+    }
+
+
+
     #container_event_list {
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
-        margin-top: 12px;
         margin-bottom: 60px;
         padding: 12px;
         gap: 12px;

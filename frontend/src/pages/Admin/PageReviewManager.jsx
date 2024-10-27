@@ -12,18 +12,12 @@ export default function PageReviewManager() {
     //하위요소가 값을 넘겨주면 실행할 함수
     const functionForMyChild = (fromMyChild) => {
         //fromMyChild: 하위요소가 넘겨준 변수(text_search)의 매개변수
-        setText_fromChild(fromMyChild);
         //console.log('text_fromChild: ' + text_fromChild);   //previousState
         //console.log('fromChild: ' + fromMyChild);
+        setText_fromChild(fromMyChild);
     }
 
 
-    function deleteReview() {   //하위요소 '삭제' 버튼에 상속해줄 함수
-        if(window.confirm('정말 삭제?')){
-            console.log('삭제 실행');
-            
-        }
-    }
 
 
     return (
@@ -59,7 +53,7 @@ export default function PageReviewManager() {
                                 <td>이벤트 내용</td>
                                 <td>24.10.15.</td>
                                 <td className='btn_container'>
-                                    <CompAdminBtn click={deleteReview}>삭제</CompAdminBtn>
+                                    <CompAdminBtn whoAreYou={'hide_review'} no={'0'}>숨김</CompAdminBtn>
                                 </td>
                             </tr>
                         </tbody>

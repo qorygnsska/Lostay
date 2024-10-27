@@ -22,7 +22,6 @@ export default function CompHeaderAdmin() {
     //   //args-2nd: 시간차, 1000ms
 
 
-    
     const [clock, setClock] = useState(new Date());
 
     useEffect(() => {
@@ -68,8 +67,9 @@ export default function CompHeaderAdmin() {
                     {/* useState */}
                     <p className='mb-0'>{time.toLocaleString()}</p>
                     
-                    {/* useEffect */}
+                    {/* useEffect 
                     <p className='mb-0'>{clock.toLocaleString()}</p>
+                    */}
 
 
                     <Nav variant="underline" >

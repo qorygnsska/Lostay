@@ -4,27 +4,17 @@ import { Calendar } from 'primereact/calendar';
 
 export default function CompEventInserter(props) {
 
-
+    ////////////////////////////////////////////////////////////////////////////////////datePicker(calendar)
     const today = new Date(); //오늘 날짜
-    today.setHours(0,0,0,0); //오늘 날짜의 시간, 분, 초, ms를 모두 0으로 설정
+    today.setHours(0, 0, 0, 0); //오늘 날짜의 시간, 분, 초, ms를 모두 0으로 설정
 
     const tomorrow = new Date(today); //오늘 + 1
     tomorrow.setDate(today.getDate() + 1);
 
     const tdat = new Date(tomorrow); //오늘 + 1 + 1
-    tdat.setDate(tomorrow.getDate()+1)
+    tdat.setDate(tomorrow.getDate() + 1)
 
-    const [title, setTitle] = useState('');
-    const [period, setPeriod] = useState([tomorrow, tdat]);
-    //default period: [tomorrow, tdat]
-    //minDate: tomorrow (내일 0시부터 시작되는 이벤트)
-    const [thumbnail, setThumbnail] = useState('');
-    const [image, setImage] = useState('');
-
-    ////////////////////////////////////////////////////////////////////////////////////datePicker(calendar)
-    //달력 보였다 숨겼다
-    const [periodPicker, setPeriodPicker] = useState(false);
-
+    // Date() -> "yyyy/MM/dd" (날짜 형식 -> 텍스트 형식 변환 함수)
     const dateFormatter = (rawDate) => (rawDate.getFullYear().toString() + "/" + (rawDate.getMonth() + 1).toString() + "/" + rawDate.getDate().toString());
 
     const periodFormatter = (period_selected) => {
@@ -38,6 +28,15 @@ export default function CompEventInserter(props) {
     }
     ////////////////////////////////////////////////////////////////////////////////////datePicker(calendar)
 
+    const [title, setTitle] = useState('');
+    const [period, setPeriod] = useState([tomorrow, tdat]);
+    //default period: [tomorrow, tdat]
+    //minDate: tomorrow (내일 0시부터 시작되는 이벤트)
+    const [thumbnail, setThumbnail] = useState('');
+    const [image, setImage] = useState('');
+
+    //////////////////////////////////////////////////////////for hidden
+    const [periodPicker, setPeriodPicker] = useState(false);
 
     //'닫기' 버튼 클릭 시(onHide), 모든 값 초기화하고 모달 숨김
     const dismissHandler = () => {
@@ -45,54 +44,75 @@ export default function CompEventInserter(props) {
         setPeriod([tomorrow, tdat]);
         setThumbnail('');
         setImage('');
+        setPeriodPicker(false);
         props.onHide();
     }
-
+    //////////////////////////////////////////////////////////for hidden
 
     //이벤트 등록 실행
-    const insertHandler = async() => { // *****async function
+    const insertHandler = async () => { // *****async function
 
-        console.log(title + '/' + period + '/' + thumbnail.substring(thumbnail.lastIndexOf('\\') + 1) + '/' + image.substring(image.lastIndexOf('\\') + 1));
-        //쿼리 날릴 때 setter는 의미없음(reRendering에 필요할 뿐)
-        //setThumbnail(thumbnail.substring(thumbnail.lastIndexOf('\\')+1));
-        //setImage(image.substring(image.lastIndexOf('\\')+1))
+        console.log(title + '/' + period + '/' + thumbnail + '/' + image);
 
-        //const eventDTO = { eventTitle: title, eventCreateAt: period[0], eventEndAt: period[1], eventThumbnail: thumbnail, eventImg: image };//object type
-        //console.log(eventDTO);
-        
-        //file type도 넘겨주려고 From형식으로 담아준다
-        const formData = new FormData();
-        formData.append('eventTitle', title);
-        formData.append('eventCreateAt', period[0]);
-        formData.append('eventEndAt', period[1]);
-        formData.append('eventThumbnail', thumbnail);
-        formData.append('eventimg', image);
+        if (title === '') {
+            alert('이벤트 제목을 입력하세요.');
+        } else if (thumbnail === '') {
+            alert('섬네일을 등록하세요.');
+        } else if (image === '') {
+            alert('이미지를 등록하세요.');
+        } else {
 
+            ////////////////////////////////////////////////toISOString 시차 적응
+            //front의 js Date: 한국 표준시
+            //toISOString(): UTC기준
+            //시차 9시간
+            const eventCreateAt = new Date(period[0]);
+            eventCreateAt.setHours(eventCreateAt.getHours() + 9);
 
-        
-        try {
-            // async function & await fetch : 'synchronous' request-response pair
-            const response = await fetch('http://localhost:9090/adminEvent', {
-                method: 'POST',
-                headers: {},    //헤더타입이 json이 아니기 때문에 'Content-Type': 'multipart/form-data'??
-                body: formData  //body도 jason으로 변환하지 않음
-            });
-            //
-            if(response.ok) {
-                alert('이벤트를 정상적으로 등록했습니다.');
-                dismissHandler();
-            }else {
-                console.log(response);
+            let eventEndAt;
+            if (period[1] == null) {   //종료날짜를 선택하지 않은 경우
+                eventEndAt = new Date(period[0]);
+            } else {
+                eventEndAt = new Date(period[1]);
+            }
+            eventEndAt.setHours(eventEndAt.getHours() + 9 + 23, 59, 59);//마지막 날의 23:59:59
+            ////////////////////////////////////////////////toISOString 시차 적응
+
+            //file type도 넘겨주려고 From형식으로 담아준다(multipart/form-data)
+            const formData = new FormData();
+            formData.append('eventTitle', title);
+            formData.append('eventCreateAt', eventCreateAt.toISOString());
+            formData.append('eventEndAt', eventEndAt.toISOString());
+            formData.append('thumbnail', thumbnail);
+            formData.append('image', image);
+
+            try {
+                // async function & await fetch : 'synchronous' request-response pair
+                const response = await fetch('http://localhost:9090/adminEvent', {
+                    method: 'POST',
+                    headers: {},
+                    body: formData
+                    //헤더타입을 빈 객체로 정의하는 이유 
+                    // 헤더를 'Content-Type': 'multipart/form-data'로 명시해주면 boundary가 자동으로 붙어서 컨트롤러에서 받을 떄 boundary를 맞춰줘야 함
+                    // 헤더를 명시하지 않으면 실제로는 'Content-Type': 'multipart/form-data'으로 만들어지지만 boundary는 붙지 않음
+                    // 헤더타입이 json이 아니기 때문에 ('Content-Type': 'application/json')
+                    // body도 json으로 변환하지 않음 (JSON.stringfy(object))
+                });
+                //
+                if (response.ok) {
+                    alert('이벤트를 정상적으로 등록했습니다.');
+                    window.location.href = "/admin-event"; //refreshing window
+                } else {
+                    console.log(response);
+                    alert('서버와 통신이 원활하지 않습니다.');
+                }
+
+            } catch (error) {
+                console.log(error);
                 alert('서버와 통신이 원활하지 않습니다.');
             }
-
-        } catch(error) {
-            console.log(error);
-            alert('서버와 통신이 원활하지 않습니다.');
         }
-
     }
-
 
     return (
         <>
@@ -148,7 +168,8 @@ export default function CompEventInserter(props) {
                             <Form.Control
                                 type='file'
                                 size='sm'
-                                onChange={(e) => setThumbnail(e.target.value)}
+                                accept="image/*"// 모든 이미지 파일
+                                onChange={(e) => setThumbnail(e.target.files[0])}//파일 하나만
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="input_image">
@@ -156,7 +177,8 @@ export default function CompEventInserter(props) {
                             <Form.Control
                                 type='file'
                                 size='sm'
-                                onChange={(e) => setImage(e.target.value)}
+                                accept="image/*"
+                                onChange={(e) => setImage(e.target.files[0])}//파일 하나만
                             />
                         </Form.Group>
                     </Form>
