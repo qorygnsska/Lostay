@@ -47,7 +47,7 @@ export default function PageEventList() {
     //2nd arg [] : 처음 마운트될 때만 실행,,,,
     useEffect(() => {
         getEventList();
-    }, []);
+    }, []); //viewOnGoing을 넣어주면 값이 바뀔때마다 DB에 접근
 
     //요소를 반환하지 않고 데이터 처리만 하는 경우(return null component)
     //응답받고 navigate로 넘기고, 2nd args에 navigate값을 넣어주기도 함

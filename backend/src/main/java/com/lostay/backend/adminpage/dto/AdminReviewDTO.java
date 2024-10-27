@@ -24,21 +24,23 @@ public class AdminReviewDTO {
 	private LocalDateTime reviewCreateAt; // 작성날짜
 	private LocalDate reviewSanctionsAt; 
 	
-	private int pagesize; // 총 페이지 수
+	
+	//(1027 JIP 수정: 개별DTO 필드변수에서 pagesize 제거)
+	//private int pagesize; // 총 페이지 수
 	
 	
-	public AdminReviewDTO(Long reviewNo, String userName, String hotelName, String roomName, double reviewRating,
-			String reviewContent, LocalDateTime reviewCreateAt, LocalDate reviewSanctionsAt) {
-		super();
-		this.reviewNo = reviewNo;
-		this.userName = userName;
-		this.hotelName = hotelName;
-		this.roomName = roomName;
-		this.reviewRating = reviewRating;
-		this.reviewContent = reviewContent;
-		this.reviewCreateAt = reviewCreateAt;
-		this.reviewSanctionsAt =reviewSanctionsAt;
-	}
+	//public AdminReviewDTO(Long reviewNo, String userName, String hotelName, String roomName, double reviewRating,
+	//		String reviewContent, LocalDateTime reviewCreateAt, LocalDate reviewSanctionsAt) {
+	//	super();
+	//	this.reviewNo = reviewNo;
+	//	this.userName = userName;
+	//	this.hotelName = hotelName;
+	//	this.roomName = roomName;
+	//	this.reviewRating = reviewRating;
+	//	this.reviewContent = reviewContent;
+	//	this.reviewCreateAt = reviewCreateAt;
+	//	this.reviewSanctionsAt =reviewSanctionsAt;
+	//}
 	
 	
 	

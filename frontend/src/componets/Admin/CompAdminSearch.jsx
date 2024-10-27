@@ -21,7 +21,7 @@ export default function CompAdminSearch(props) { //props: 상위요소에게서 
 
 
   const handleClick = () => {
-    console.log('click_btn_search //where: ' + props.where);  //어느페이지에서 눌렀는지 확인
+    //console.log('click_btn_search //where: ' + props.where);  //어느페이지에서 눌렀는지 확인
 
     if (text_search == '') {
       handleNull();
@@ -37,11 +37,11 @@ export default function CompAdminSearch(props) { //props: 상위요소에게서 
 
 
   const handleNull = () => {  //모든 값 가져오기?
-    console.log('input_nothing');
+    //console.log('input_nothing');
   }
 
   const handleSearch = () => {  //검색 필터링
-    console.log('input_something');
+    //console.log('input_something');
   }
 
 

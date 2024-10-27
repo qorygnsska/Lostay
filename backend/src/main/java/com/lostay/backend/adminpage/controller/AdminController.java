@@ -76,7 +76,6 @@ public class AdminController {
 		} else {
 			return ResponseEntity.notFound().build();//code 404
 		}
-		
 	}
 	
 	//이벤트 수정(1026 JIP)
@@ -118,51 +117,50 @@ public class AdminController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	//유저가 작성한 리뷰 조회
+	//유저가 작성한 리뷰 조회//(1027 JIP 수정)
 	@GetMapping("/adminReview") 
-	public ResponseEntity<?> adminReview(@RequestParam(required = false) String userName,@RequestParam(required = false) Integer page){
-		log.info("AdminController adminReview실행");
-		System.out.println("유저이름"+ userName);
+	public ResponseEntity<?> adminReview(boolean underSanction, 
+			@RequestParam(defaultValue = "") String userName,// 기본값 설정
+			@RequestParam(defaultValue = "1") int page){// 기본값 설정
 		
-		// page가 null인 경우 기본값을 0으로 설정 (예: 첫 페이지)
-		if (page == null) {
-			page = 0; // 기본값 설정
-		}
-		return new ResponseEntity<>(adminService.adminReview(userName,page),HttpStatus.OK);
+		log.info("AdminController adminReview실행");
+		System.out.println("숨김보기 " + underSanction + " 유저이름 "+ userName + " 페이지 "+page);
+		//underSanction 필터 쓸까 말까?
+		
+		// 요청한 page 1 -> 넘겨줄 index 0 (예: 첫 페이지)
+		//return new ResponseEntity<>("success", HttpStatus.OK);
+		return new ResponseEntity<>(adminService.adminReview(userName,page-1),HttpStatus.OK);
 	}
 	
 	
 	// 유저가 작성한 리뷰 제재
 	@PostMapping("/adminUserReviewDel")
-	public void adminUserReviewDel(@RequestParam Long reviewNo,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate reviewSanctionsAt ) {
+	public void adminUserReviewDel(@RequestParam Long reviewNo,
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate reviewSanctionsAt ) {
 		 System.out.println("AdminController adminUserReviewDel실행");
 		 adminService.updateById(reviewNo,reviewSanctionsAt);
 	} 
 	
 	
-	//유저 조회
+	//유저 조회//(1027 JIP 수정)
 	@GetMapping("/adminUserSearch") 
-	public ResponseEntity<?> adminUserSearch(@RequestParam(required = false) String userName,@RequestParam(required = false) Integer page){
+	public ResponseEntity<?> adminUserSearch(
+			@RequestParam(defaultValue = "") String userName,// 기본값 설정
+			@RequestParam(defaultValue = "1") int page){// 기본값 설정
+		
 		log.info("AdminController adminUserSearch실행");
-		System.out.println("유저이름"+ userName);
+		
+		System.out.println("유저이름 "+ userName + " 페이지 "+page);
 		
 		// page가 null인 경우 기본값을 0으로 설정 (예: 첫 페이지)
-		if (page == null) {
-			page = 0; // 기본값 설정
-		}
-		return new ResponseEntity<>(adminService.adminUserSearch(userName,page),HttpStatus.OK);
+		//if (page == null) {
+		//	page = 0; // 기본값 설정
+		//}
+		
+		return new ResponseEntity<>(adminService.adminUserSearch(userName,page-1),HttpStatus.OK);
 	}
 	
 
-	
-	
 }
 
 

@@ -11,21 +11,26 @@ export default function CompAdminBtn(props) {
     console.log(props.whoAreYou + " no: " + props.no);
     //버튼 클릭 시 호출할 함수는 'callParent'으로 상속
     //<CompAdminBtn 'callParent'={}>'children'</CompAdminBtn>
+
+    // 이벤트 '수정' 버튼 클릭 시
     if (props.whoAreYou === 'update_event') {
 
-      props.callParent(props.no);
+      props.callParent(props.no); //CompEventUpdater에서 처리하도록 전달
 
+      // 이벤트 '삭제' 버튼 클릭 시
     } else if (props.whoAreYou === 'delete_event') {
 
       if (window.confirm('정말 삭제하시겠습니까?')) {
         deleteEvent();
       }
 
-    } else {
-
+      // 리뷰 '숨김' 버튼 클릭 시
+    } else if (props.whoAreYou === 'hide_review') {
+      if (window.confirm('정말 비공개로 전환하시겠습니까?')) {
+        hideReview();
+      }
     }
   }
-
 
   // 이벤트 '삭제' 버튼 클릭 시
   async function deleteEvent() {
@@ -47,14 +52,15 @@ export default function CompAdminBtn(props) {
     }
   }
 
+  // 리뷰 '숨김' 버튼 클릭 시
+  async function hideReview() {
 
+    //axios&then으로 처리
+    console.log('안녕');
 
+  }
 
-
-
-
-
-
+  
   return (  //Customized Button
     <>
       <button className='comp--admin--btn--container' onClick={clickhandler}>{props.children}</button>

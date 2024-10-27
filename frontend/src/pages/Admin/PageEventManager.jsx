@@ -9,8 +9,8 @@ import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
 
 export default function PageEventManager() {
 
-
-    const [viewOngoing, setViewOngoing] = useState(false); //default: 전체 보기
+    //default: 전체 보기 vs 진행 중인 이벤트만 보기
+    const [viewOngoing, setViewOngoing] = useState(false); 
 
     //하위요소(검색창)가 넘겨줄 값을 담을 변수
     const [text_fromChild, setText_fromChild] = useState('');
@@ -23,7 +23,6 @@ export default function PageEventManager() {
         setText_fromChild(fromMyChild);
         setActivePage(1);//이벤트리스트 호출(검색할 때는 setPage=1)
     }
-
 
     //////////////////////////////////////////////////////////for hidden
     // EventInserter(Modal) 열렸닝?
@@ -38,7 +37,6 @@ export default function PageEventManager() {
         setPickedEvent(eventNo);
     }
     //////////////////////////////////////////////////////////for hidden
-
 
     // Date type -> String type(두자리수 맞춤)
     const dateFormatter = (rawDate) => (rawDate.getFullYear().toString() + "/" + (rawDate.getMonth() + 1).toString().padStart(2, '0') + "/" + rawDate.getDate().toString().padStart(2, '0'));
@@ -59,10 +57,11 @@ export default function PageEventManager() {
 
     //Server에 eventList 요청
     const getEventList = (onGoing, eventTitle, requestedPage) => {
-        //console.log('request list of event/ search: ' + eventTitle + '/ page: ' + requestedPage);
-        setActivePage(requestedPage);   //요청한 페이지로 page 버튼 activation
 
-        fetch(`http://localhost:9090/adminEventList?eventTitle=${eventTitle}&onGoing=${onGoing}&page=${requestedPage}`)    // fetch() : (default) request 'GET', 'async'
+        console.log(`getEvent ViewOnGoing: ${viewOngoing} eventTitle: ${eventTitle} page: ${requestedPage}`);
+
+        // fetch() : (default) request 'GET', 'async' // async&await이나 then()은 같은 것
+        fetch(`http://localhost:9090/adminEventList?onGoing=${onGoing}&eventTitle=${eventTitle}&page=${requestedPage}`)    
             .then(response => response.json())  // response가 오면 json 변환
             .then(data => {
                 console.log(data);
@@ -76,6 +75,8 @@ export default function PageEventManager() {
             })
     }
 
+    //1st arg getEventList() : getEventList 메서드에 effect 사용
+    //2nd arg [] : 빈 배열이면 처음 마운트될 때만 실행,,, 배열에 담긴 변수가 변할 때마다 실행하려 re-rendering
     useEffect(() => {
         getEventList(viewOngoing, text_fromChild, activePage);
     }, [viewOngoing, text_fromChild, activePage]);
@@ -86,12 +87,12 @@ export default function PageEventManager() {
             <div className='page--event--manager--container page--admin'>
                 <CompHeaderAdmin />
 
-                <Container id='section_container'>
+                <Container id='container_section'>
 
                     <div className="d-flex justify-content-between mb-3">
                         <Button id="btn_enroll" onClick={() => setInserterShow(true)} variant="outline-success" size="sm" >이벤트 등록</Button>
                         <div className="d-flex">
-                            <Form.Switch id="switch_viewer" label="현재 진행 중" onClick={() => setViewOngoing(!viewOngoing)} />
+                            <Form.Switch id="switch_viewer" label="'진행 중' 보기" onClick={() => setViewOngoing(!viewOngoing)} />
                             <CompAdminSearch where={'admin-event'} callParent={functionForMyChild} />
                         </div>
                     </div>
@@ -136,15 +137,8 @@ export default function PageEventManager() {
                         </tbody>
                     </Table>
 
-                    <div className="d-flex justify-content-center">
-                        {/* <Pagination>
-                            <Pagination.First onClick={() => getEventList(text_fromChild, 1)} />
-                            <Pagination.Prev onClick={() => getEventList(text_fromChild, activePage - 1 < 1 ? 1 : activePage - 1)} />
-                            {pageComp}
-                            <Pagination.Next onClick={() => getEventList(text_fromChild, activePage + 1 > pageCount ? pageCount : activePage + 1)} />
-                            <Pagination.Last onClick={() => getEventList(text_fromChild, pageCount)} />
-                        </Pagination> */}
-                        <Pagination>
+                    <div id="container_paging" className="d-flex justify-content-center">
+                        <Pagination hidden={pageComp.length===0?true:false}>
                             <Pagination.First onClick={() => setActivePage(1)} />
                             <Pagination.Prev onClick={() => setActivePage(activePage - 1 < 1 ? 1 : activePage - 1)} />
                             {pageComp}
