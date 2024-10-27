@@ -9,36 +9,28 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lostay.backend.jwt.JWTUtil;
-import com.lostay.backend.refresh_token.entity.RefreshToken;
-import com.lostay.backend.refresh_token.repository.RefreshTokenRepository;
-import com.lostay.backend.user.entity.User;
+import com.lostay.backend.refresh_token.service.RefreshTokenService;
 import com.lostay.backend.user.repository.UserRepository;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @Transactional
+@RequiredArgsConstructor
 public class ReissueController {
 
 	private final JWTUtil jwtUtil;
-	private final RefreshTokenRepository refreshTkRepo;
-	private final UserRepository userRepo;
-	private Long refreshTkExpired = 24 * 60 * 60 * 60L; // 1일
-	private Long accessTkExpired = 60 * 60 * 60L; // 1시간
-	//30 * 60 * 60L; 30분
 
-	public ReissueController(JWTUtil jwtUtil, RefreshTokenRepository refreshTkRepo, UserRepository userRepo) {
+    private final RefreshTokenService refreshTokenService;
+	private Long refreshTkExpired = 24 * 60 * 60 * 1000L; // 1일
+	private Long accessTkExpired = 60 * 60 * 1000L; // 1시간
 
-		this.jwtUtil = jwtUtil;
-		this.refreshTkRepo = refreshTkRepo;
-		this.userRepo = userRepo;
-	}
 
 	@PostMapping("/reissue")
 	public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
@@ -67,6 +59,12 @@ public class ReissueController {
 		try {
 			jwtUtil.isExpired(refresh);
 		} catch (ExpiredJwtException e) {
+			String userProviderId = refreshTokenService.getKey(refresh);
+			
+			if(userProviderId != null) {
+				refreshTokenService.delete(userProviderId);	
+			}
+			
 			return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
 		}
 
@@ -77,7 +75,7 @@ public class ReissueController {
 		}
 		
 		// 토큰 DB에 저장되어 있는지 확인
-		Boolean isExist = refreshTkRepo.existsByRtToken(refresh);
+		Boolean isExist = refreshTokenService.existsRefreshToken(refresh);
 		if (!isExist) {			
 			return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
 		}
@@ -90,14 +88,22 @@ public class ReissueController {
 		String newAccess = jwtUtil.createJwt("access", username, role, userNo, accessTkExpired);
 		String newRefresh = jwtUtil.createJwt("refresh", username, role, userNo, refreshTkExpired);
 
+		System.out.println("기존 리프레쉬 토큰" + refresh);
+		System.out.println("새로운 리프레쉬 토큰" + newRefresh);
+		
 		// Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
-		refreshTkRepo.deleteByRtToken(refresh);
-		addRefreshEntity(userNo, newRefresh, refreshTkExpired);
+//		String userProviderId = refreshTokenService.getKey(newRefresh);
+//		
+//		RefreshTokenDTO refreshTokenDTO = new RefreshTokenDTO();
+//		refreshTokenDTO.setUserProviderId(userProviderId);
+//		refreshTokenDTO.setRefreshToken(newRefresh);			
+		
+		refreshTokenService.update(refresh, newRefresh, userNo);
+		
 		
 		// 응답 설정
 		//response.setHeader("Access-Control-Expose-Headers", "access");
 		response.setHeader("Authorization", "Bearer " + newAccess);
-//		response.setHeader("access", newAccess);
 		response.addCookie(createCookie("refresh", newRefresh));
 		
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -130,6 +136,13 @@ public class ReissueController {
 		try {
 			jwtUtil.isExpired(refresh);
 		} catch (ExpiredJwtException e) {
+			
+			String userProviderId = refreshTokenService.getKey(refresh);
+			
+			if(userProviderId != null) {
+				refreshTokenService.delete(userProviderId);	
+			}			
+			
 			return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
 		}
 
@@ -145,13 +158,11 @@ public class ReissueController {
 
 		// 새로 발급할 토큰 생성
 		String newAccess = jwtUtil.createJwt("access", username, role, userNo, accessTkExpired);
-		
+
 		// 응답 설정
 		//response.setHeader("Access-Control-Expose-Headers", "access");
-		//response.setHeader("access", newAccess);
 		response.setHeader("Authorization", "Bearer " + newAccess);
-		System.out.println("Bearer " + newAccess);
-//		response.setHeader("access", newAccess);
+
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
@@ -166,22 +177,4 @@ public class ReissueController {
 
 		return cookie;
 	}
-
-	
-	private void addRefreshEntity(Long userNo, String refresh, Long expiredMs) {
-
-        Date date = new Date(System.currentTimeMillis() + expiredMs);
-
-        RefreshToken refreshEntity = new RefreshToken();
-        
-        Optional<User> findUser = userRepo.findById(userNo);
-        
-        User user = findUser.get();
-        
-        refreshEntity.setUser(user);
-        refreshEntity.setRtToken(refresh);
-        refreshEntity.setRtExpiration(date.toString());
-
-        refreshTkRepo.save(refreshEntity);
-    }
 }

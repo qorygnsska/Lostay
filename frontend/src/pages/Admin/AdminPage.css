@@ -34,6 +34,15 @@
         /* '이벤트 등록' 버튼 */
     }
 
+    .form-switch {
+        margin-right: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+
+
     #table_entire_event {
 
         .event_no {

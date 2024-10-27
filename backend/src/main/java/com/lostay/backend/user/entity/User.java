@@ -63,8 +63,8 @@ public class User {
 	@Column(nullable = false, updatable = false, name="user_create_at")
 	private String userCreateAt;	// 가입일자
 	
-	@Column(nullable = false, name="user_token")
-	private String userToken;		// 소셜토큰
+	@Column(nullable = false, name="user_provider_id")
+	private String userProviderId;		// 소셜토큰
 	
 	
 	@PrePersist

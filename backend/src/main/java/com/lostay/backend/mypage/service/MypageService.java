@@ -1,7 +1,10 @@
 package com.lostay.backend.mypage.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,32 +60,56 @@ public class MypageService {
 	    log.info("MypageService mypageReview 실행");
 	    
 	    PageRequest pageable = PageRequest.of(page, 10); // 페이지 요청
-	    Page<ReviewpageDTO> reviewPage = reopo.findTop10ReviewPage(userNo, pageable); // Page<ReviewpageDTO>로 변경
+	   
+	    Page<Object[]> reviewPage = reopo.findTop10ReviewPage(userNo, pageable); // Page<ReviewpageDTO>로 변경
 	    
-	    List<ReviewpageDTO> reviewpageDTOList = reviewPage.getContent();
-
-	    // 총 요소 수 및 페이지 수 설정
-	    for (ReviewpageDTO dto : reviewpageDTOList) {
-	        dto.setReviewCount(reviewPage.getTotalElements()); // 총 요소 수 설정
-	        dto.setPagesize(reviewPage.getTotalPages()); // 총 페이지 수 설정
+	    
+	  
+	    List<ReviewpageDTO> reviewpageDTOList = new ArrayList<>();
+	    
+	    // Object[]를 반복하여 ReviewpageDTO로 변환
+	    for (Object[] row : reviewPage.getContent()) {
+	    	ReviewpageDTO dto = new ReviewpageDTO();
+	    	dto.setReviewContent((String) row[0]);
+	    	dto.setReviewCreateAt((LocalDateTime) row[1]);
+	        if (row[2] != null) {
+	            String[] str = row[2].toString().split(",");
+	            dto.setReviewImg(str);
+	        } else {
+	            dto.setReviewImg(null); // 빈 배열로 초기화
+	        }
+	    	dto.setReviewRating((double) row[3]);
+	        dto.setRoomName((String) row[4]);
+	       
+	        reviewpageDTOList.add(dto);
 	    }
-	    return reviewpageDTOList; 
+
+	    
+	    Map<String, Object> reviewList = new HashMap<>();
+	    reviewList.put("reviewList", reviewpageDTOList);
+	    reviewList.put("totalReview", reviewPage.getTotalElements());
+	    reviewList.put("totalPage", reviewPage.getTotalPages()-1);
+	    reviewList.put("page", page);
+	    
+	    return reviewList; 
 	}
 
 	//내가 선택한 찜 목록 조회
 	public Object mypageCartList(Long userNo, int page) {
 	    log.info("MypageService mypageCartList 실행");
-
+	    System.out.println("p[age" + page);
 	    PageRequest pageable = PageRequest.of(page, 10); // 페이지 요청
 	    Page<MypageCartListDTO> cartPage = cartRepo.findTop10CartPage(userNo, pageable);
 
 	    List<MypageCartListDTO> cartpageDTOList = cartPage.getContent();
-
-	    // 총 요소 수 및 페이지 수 설정
-	    for (MypageCartListDTO dto : cartpageDTOList) {
-	        dto.setPagesize(cartPage.getTotalPages()); // 총 페이지 수 설정
-	    }
-	    return cartpageDTOList;
+	    
+	    Map<String, Object> cartList = new HashMap<>();
+	    cartList.put("wishList", cartpageDTOList);
+	    cartList.put("totalPage", cartPage.getTotalPages()-1);
+	    cartList.put("page", page);
+	    
+		
+	    return cartList;
 		    
 
 	}

@@ -20,7 +20,23 @@ public class AdminEventDTO {
 	private String eventTitle;
 	private LocalDateTime eventCreateAt;
 	private LocalDateTime eventEndAt;
-	private MultipartFile eventThumbnail;
-	private MultipartFile eventImg;
+	private String eventThumbnail;
+	private String eventImg;
 	
+	
+	
+	public Event toEntity() {
+		
+		Event eventEntity = new Event();
+		eventEntity.setEventTitle(eventTitle);
+		eventEntity.setEventCreateAt(eventCreateAt);
+		eventEntity.setEventEndAt(eventEndAt);
+		eventEntity.setEventThumbnail(eventThumbnail);
+		eventEntity.setEventImg(eventImg);
+		
+		return eventEntity;
+	}
+
+	
+
 }

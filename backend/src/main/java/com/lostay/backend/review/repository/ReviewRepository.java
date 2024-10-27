@@ -17,13 +17,12 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
 
 	//Mypage리뷰 내역 조회
-	 @Query("SELECT new com.lostay.backend.mypage.dto.ReviewpageDTO(r.reviewContent, r.reviewCreateAt, r.reviewImg, r.reviewRating, rm.roomName) " +
-	           "FROM Review r " +
-	           "JOIN r.user u " +
-	           "JOIN r.room rm " +
-	           "WHERE u.userNo = :userNo")
-	    Page<ReviewpageDTO> findTop10ReviewPage(@Param("userNo") Long userNo, Pageable pageable);
-
+	@Query("SELECT r.reviewContent, r.reviewCreateAt, r.reviewImg, r.reviewRating, rm.roomName " +
+		       "FROM Review r " +
+		       "JOIN r.user u " +
+		       "JOIN r.room rm " +
+		       "WHERE u.userNo = :userNo")
+	Page<Object[]> findTop10ReviewPage(@Param("userNo") Long userNo, Pageable pageable);
 	
 	// 객실리스트 전체 리뷰 조회
 	@Query("select rv.reviewContent, rv.reviewImg, rv.reviewCreateAt, rv.reviewRating"

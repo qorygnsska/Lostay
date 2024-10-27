@@ -36,6 +36,7 @@ import "../src/componets/HotelReview/ReImgModal.css";
 import "../src/componets/HotelReview/AllImgModal.css";
 import "../src/componets/HotelReview/RoomFilterModal.css";
 import "../src/componets/HotelReview/RoomOrderModal.css";
+import "../src/componets/Carousel/ReviewCarousel.css"
 
 
 // CustomCSS for pages

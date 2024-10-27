@@ -2,31 +2,30 @@ import React, { useEffect } from "react";
 import "./Login.css";
 import Navbar from "../../componets/Navbar/Navbar";
 import { useDispatch } from "react-redux";
-import { login } from "../../store/store";
+import { login } from "../../store/userSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-
     const dispatch = useDispatch();
     let navigate = useNavigate();
 
     useEffect(() => {
         const handleLoginMessage = (event) => {
-            if (event.data.type === 'LOGIN_SUCCESS') {
+            if (event.data.type === "LOGIN_SUCCESS") {
                 const { accessToken } = event.data.payload;
-
+                console.log(accessToken);
                 // Redux에 액세스 토큰 저장
-                dispatch(login({ authState: true, accessToken: accessToken }));
-                navigate('/');
+                dispatch(login({ userState: true, aT: accessToken }));
+                navigate("/");
             }
         };
 
         // 메시지 이벤트 리스너 등록
-        window.addEventListener('message', handleLoginMessage);
+        window.addEventListener("message", handleLoginMessage);
 
         // 컴포넌트 언마운트 시 이벤트 리스너 제거
         return () => {
-            window.removeEventListener('message', handleLoginMessage);
+            window.removeEventListener("message", handleLoginMessage);
         };
     }, [dispatch]);
 
@@ -37,12 +36,7 @@ export default function Login() {
         const left = window.innerWidth / 2 - width / 2;
         const top = window.innerHeight / 2 - height / 2;
 
-        window.open(
-            popupUrl,
-            `${social}Login`,
-            `width=${width},height=${height},top=${top},left=${left}`
-        );
-
+        window.open(popupUrl, `${social}Login`, `width=${width},height=${height},top=${top},left=${left}`);
     };
 
     return (
@@ -57,37 +51,16 @@ export default function Login() {
                     <span className="title">로그인/회원가입</span>
                 </div>
 
-                <button
-                    onClick={() => onSocialLogin("naver")}
-                    className="login--btn navar--btn"
-                >
-                    <img
-                        src="LoginIcon/ic-login-naver.svg"
-                        alt="icon"
-                        className="icon"
-                    />
+                <button onClick={() => onSocialLogin("naver")} className="login--btn navar--btn">
+                    <img src="LoginIcon/ic-login-naver.svg" alt="icon" className="icon" />
                     <span>네이버로 시작하기</span>
                 </button>
-                <button
-                    onClick={() => onSocialLogin("kakao")}
-                    className="login--btn kakao--btn"
-                >
-                    <img
-                        src="LoginIcon/ic-login-kakao.svg"
-                        alt="icon"
-                        className="icon"
-                    />
+                <button onClick={() => onSocialLogin("kakao")} className="login--btn kakao--btn">
+                    <img src="LoginIcon/ic-login-kakao.svg" alt="icon" className="icon" />
                     <span>카카오로 시작하기</span>
                 </button>
-                <button
-                    onClick={() => onSocialLogin("google")}
-                    className="login--btn google--btn"
-                >
-                    <img
-                        src="LoginIcon/ic-login-google.svg"
-                        alt="icon"
-                        className="icon"
-                    />
+                <button onClick={() => onSocialLogin("google")} className="login--btn google--btn">
+                    <img src="LoginIcon/ic-login-google.svg" alt="icon" className="icon" />
                     <span>Google로 시작하기</span>
                 </button>
             </div>

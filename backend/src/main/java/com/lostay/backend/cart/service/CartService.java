@@ -46,7 +46,7 @@ public class CartService {
 	    private SessionFactory sessionFactory;
 	 
 
-	public void cartsave(Long userNo, Long hotelNo) {
+	public Object cartsave(Long userNo, Long hotelNo) {
 		  // 사용자 찾기
 	    User user = userRepo.findById(userNo).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 	    
@@ -61,7 +61,10 @@ public class CartService {
 	    cart.getHotels().add(hotel); // 카트에 호텔을 추가합니다.
 	    
 	    // 카트 저장
-	    cartRepo.save(cart);
+	    Cart cartEntity = cartRepo.save(cart);
+	    CartDTO cartDTO = new CartDTO(cartEntity.getCartNo());
+	   
+	    return cartDTO;
 	}
 
 	//내가 선택한 호텔찜 삭제

@@ -51,14 +51,14 @@
             text-decoration: none;
             color: var(--regularBlueColor);
             font-weight: bold;
-            font-size: 18px;
+            font-size: 15px;
             display: flex;
             align-items: center;
 
             .icon {
                 color: var(--regularBlueColor);
-                width: 16px;
-                height: 16px;
+                width: 13px;
+                height: 13px;
             }
         }
     }

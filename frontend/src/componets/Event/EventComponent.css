@@ -22,36 +22,31 @@
 .comp--event--manager--modal {
     /* EventManager 공통 */
 
-    #container_period_picker {
 
-        .calendar {
-            max-width: 466px;
-            width: 90%;
-
-            text-align: center;
+    .calendar {
+        text-align: center;
 
 
-            th:first-child,
-            td:first-child {
-                /* 첫째 th와 td : 일요일 */
-                color: red;
-            }
+        th:first-child,
+        td:first-child {
+            /* 첫째 th와 td : 일요일 */
+            color: red;
+        }
 
-            th:last-child,
-            td:last-child {
-                /* 막내 th와 td : 토요일 */
-                color: blue;
-            }
+        th:last-child,
+        td:last-child {
+            /* 막내 th와 td : 토요일 */
+            color: blue;
+        }
 
 
-            .p-datepicker-title {
-                display: flex;
-                gap: 12px;
-            }
-
+        .p-datepicker-title {
+            display: flex;
+            gap: 12px;
         }
 
     }
+
 }
 
 .comp--event--inserter--container {
@@ -61,21 +56,70 @@
         color: green;
     }
 
-    .form-label {
-        color: green;
+    .calendar {
+        width: 90%;
+
     }
+
+
+
 
 }
 
 .comp--event--updater--container {
-
     /* EventUpdater 컴포넌트(EventManager) */
+
+
     #title_modal {
         color: orange;
     }
 
-    .form-label {
-        color: orange;
+
+    #container_period_input {
+
+        .period_input {
+            width: 48%;
+        }
+
+
+
+        #mock_label {
+            height: 24px;
+            margin-bottom: 8px;
+        }
+
+        #seperator_period {
+            /* 구분자 */
+            margin: 8px;
+        }
     }
+
+
+    #container_period_calendar {
+
+        .calendar {
+            width: 48%;
+        }
+
+
+        #calendar_create_at {
+            float: left;
+        }
+
+        #calendar_end_at {
+            float: right;
+        }
+
+    }
+
+
+    #container_file {
+        clear: both;/* calendar의 float 속성 영향 제거 */
+
+        .txt_file {
+            color: red;
+        }
+    }
+
 
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, Carousel } from 'react-bootstrap';
 import Slider from 'react-slick';
+import ReviewCarousel from '../../Carousel/ReviewCarousel';
 
 export default function ImageModal({ imageModalShow, onClose, images, initialIndex }) {
 
@@ -11,7 +12,7 @@ export default function ImageModal({ imageModalShow, onClose, images, initialInd
     }, [initialIndex, imageModalShow]); // 모달 열기/닫기 시 인덱스 업데이트
 
 
-    const handleSelect = (selectedIndex) => {
+    const handleImageSelect = (selectedIndex) => {
         setIndex(selectedIndex);
     };
 
@@ -29,14 +30,14 @@ export default function ImageModal({ imageModalShow, onClose, images, initialInd
             {/* 메인 이미지 캐러셀 */}
             <Carousel
                 activeIndex={index}
-                onSelect={handleSelect}
+                onSelect={handleImageSelect}
                 controls={true}
                 indicators={false} // 도트 제거
                 interval={null} // 자동 전환 끄기
             >
                 {images.map((img, index) => (
                     <Carousel.Item key={index}>
-                        <img src={`eventList/${img}`} alt={`Main Image ${index}`} className='main--image' />
+                        <img src={img} alt={`Main Image ${index}`} className='main--image' />
                         <div className="image--counter">
                             {index + 1} / {images.length}
                         </div>
@@ -46,12 +47,17 @@ export default function ImageModal({ imageModalShow, onClose, images, initialInd
 
             {/* 썸네일 이미지 리스트 */}
             <div className="thumbnail-container">
+                <ReviewCarousel images={images} handleImageSelect={handleImageSelect} isModal={true} propIndex={index} />
+            </div>
+
+            {/*             
+            <div className="thumbnail-container">
                 {images.map((img, idx) => (
                     <div key={idx} onClick={() => setIndex(idx)} className="thumbnail--box" >
                         <img src={`eventList/${img}`} alt={`Thumbnail ${idx}`} className={`thumbnail-image ${index === idx ? 'sel--border' : ''}`} />
                     </div>
                 ))}
-            </div>
+            </div> */}
         </Modal>
     );
 }

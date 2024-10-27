@@ -12,13 +12,13 @@
 
 
             .info--title {
-                font-size: 19px;
+                font-size: 17px;
                 font-weight: bold;
             }
 
             .info--date {
                 color: var(--lightGrayColor2);
-                font-size: 17px;
+                font-size: 14px;
             }
         }
 
@@ -35,43 +35,38 @@
         .myreview--content {
             margin-top: 25px;
             margin-bottom: 0;
-            font-size: 18px;
-        }
-
-        .myreview--image--wrap {
-            display: flex;
-            gap: 6px;
-            margin-top: 30px;
-            margin-bottom: 30px;
-            width: 100%;
-            overflow: hidden;
-            overflow-x: auto;
-            padding-bottom: 5px;
-
-            .myreview--image {
-                cursor: pointer;
-                padding-bottom: 10px;
-
-                img {
-                    width: 100px;
-                    height: 100px;
-                    border-radius: 10px;
-                }
-            }
-        }
-
-        .myreview--image--wrap::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .myreview--image--wrap::-webkit-scrollbar-thumb {
-            background-color: hsla(0, 0%, 42%, 0.49);
+            padding-left: 3px;
+            font-size: 13px;
+            white-space: pre-line;
         }
 
     }
 }
 
 .myreview--modal--container {
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        background-color: rgba(76, 76, 76, 0.7);; /* 버튼 배경색 */
+        text-align: center;
+        width: 60px;
+        height: 100px;
+        align-self: center;
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            width: 50px;
+            height: 50px;
+        }
+    }
+
+    .carousel-control-prev{
+        margin-left: 10px;
+    }
+
+    .carousel-control-next{
+        margin-right: 10px;
+    }
 
     .modal-content {
         width: 768px;
@@ -98,7 +93,9 @@
         }
 
         .thumbnail-container {
-            display: flex;
+            margin-top: 50px;
+            margin-left: 10px;
+            /* display: flex;
             margin-top: 20px;
             overflow-x: auto;
 
@@ -117,7 +114,7 @@
                 .sel--border {
                     border: 3px solid var(--regularBlueColor);
                 }
-            }
+            } */
         }
 
         .thumbnail-container::-webkit-scrollbar {

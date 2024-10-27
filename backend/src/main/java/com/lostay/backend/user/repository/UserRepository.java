@@ -16,7 +16,7 @@ import com.lostay.backend.user.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	User findByUserToken(String userToken);
+	User findByUserProviderId(String userProviderId);
 
 	boolean existsByUserNickname(String nickname);
 
