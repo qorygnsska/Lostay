@@ -305,6 +305,7 @@ export default function RoomList() {
     return (
         <Container className='room--list'>
             
+            {/* {RoomInfos?.hotelImg.length > 0 && <HotelCarousel images={RoomInfos.hotelImg}/>} */}
             <HotelCarousel images={HotelInfo.hotelThumbnail}/>
 
             <div className='HotelInfo'>
