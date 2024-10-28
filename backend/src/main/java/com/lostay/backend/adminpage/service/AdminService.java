@@ -277,7 +277,7 @@ public class AdminService {
 		// }
 		
 		if(inactive) {
-			return null;
+			return userRepo.adminUserPageSearchInactive(userName, pageable);
 		} else {
 			return userRepo.adminUserPageSearch(userName, pageable);
 			

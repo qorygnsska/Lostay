@@ -11,6 +11,11 @@ export default function PageReviewManager() {
     //default: 전체 보기 vs 숨긴 리뷰만 보기
     const [viewUnderSanction, setViewUnderSanction] = useState(false);
 
+    function filterHandler() {
+        setViewUnderSanction(!viewUnderSanction);
+        setActivePage(1);//필터가 켜질 때 1page 요청
+    }
+
     //하위요소(검색창)가 넘겨줄 값을 담을 변수
     const [text_fromChild, setText_fromChild] = useState('');
 
@@ -20,7 +25,7 @@ export default function PageReviewManager() {
         //console.log('text_fromChild: ' + text_fromChild);   //previousState
         //console.log('fromChild: ' + fromMyChild);
         setText_fromChild(fromMyChild);
-        setActivePage(1);
+        setActivePage(1);//검색어가 바뀔 때 1page 요청
     }
 
     // Date type -> String type(두자리수 맞춤)
@@ -40,30 +45,9 @@ export default function PageReviewManager() {
     // db에서 받아올 reviewList(array)
     const [reviewList, setReviewList] = useState([]); //초기값은 []: empty array
 
-    //////////////////////임시데이터
-    const review1 = {
-        reviewNo: 1,
-        userName: '심재호',
-        hotelName: '좋은호텔',
-        roomName: '그저그런방',
-        reviewRating: '8',
-        reviewContent: '그럭저럭'
-    }
-
-    const review2 = {
-        reviewNo: 2,
-        userName: '박정일',
-        hotelName: '그저그런호텔',
-        roomName: '좋은방',
-        reviewRating: '7',
-        reviewContent: '그럭저럭22'
-    }
-
-    //////////////////////임시데이터
-
     const getReviewList = (underSanction, userName, requestedPage) => {
 
-        console.log(`getReview viewUnderSanction: ${underSanction} userName: ${userName} page: ${requestedPage}`);
+        console.log(`getReview ViewUnderSanction: ${underSanction} userName: ${userName} page: ${requestedPage}`);
 
         //인증 토큰 연계한 Axios 'GET' request by privateApi(Customized Comp)
         // async&await이나 then()은 같은 것
@@ -73,13 +57,6 @@ export default function PageReviewManager() {
                 console.log(response.data);
                 setReviewList(response.data.content); //Page<DTO>.getContent()
                 setPageCount(response.data.totalPages); // Page<DTO>.getTotalPages()
-
-                //////////////////////임시데이터
-                if (response.data.totalPages === 0) {
-                    setReviewList([review1, review2]);
-                    setPageCount(1);
-                }
-                //////////////////////임시데이터
             })
             .catch(error => {
                 console.log(error);
@@ -106,7 +83,7 @@ export default function PageReviewManager() {
                     {/*<p className='mb-2'>하위컴포넌트(검색창)가 준 값: {text_fromChild}</p>*/}
                     <div className='d-flex justify-content-end mb-3'>
                         {/* 하위요소를 생성하면서, 상위요소를 부르면 실행할 함수명을 지정 */}
-                        <Form.Switch id="switch_viewer" label="'비공개' 보기" onClick={() => setViewUnderSanction(!viewUnderSanction)} />
+                        <Form.Switch id="switch_viewer" label="'비공개' 보기" onClick={filterHandler} />
                         <CompAdminSearch where={'admin-review'} callParent={functionForMyChild} />
                     </div>
 

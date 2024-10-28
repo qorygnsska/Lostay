@@ -31,14 +31,21 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	Page<AdminUserSerarchDTO> adminUserPageSearch(@Param("userName") String userName, Pageable pageable);
 
 	 
-	//관리자 유저정보 전체조회
+	//관리자 유저정보 조회(이름검색+비활성)
+	 @Query("SELECT new com.lostay.backend.adminpage.dto.AdminUserSerarchDTO(u.userNo,u.userName,u.userNickname,u.userEmail,u.userPhone,u.userCreateAt,u.userPoint,u.userStatus) " +
+	           "FROM User u " +
+	           "WHERE u.userName LIKE CONCAT('%', :userName, '%')" +
+	           "AND u.userStatus = 'N'")
+	Page<AdminUserSerarchDTO> adminUserPageSearchInactive(@Param("userName") String userName, Pageable pageable);
 	 
+	 
+	//관리자 유저정보 전체조회
 	 @Query("SELECT new com.lostay.backend.adminpage.dto.AdminUserSerarchDTO(u.userNo,u.userName,u.userNickname,u.userEmail,u.userPhone,u.userCreateAt,u.userPoint,u.userStatus) " +
 	           "FROM User u " 
 	          )
 	Page<AdminUserSerarchDTO> adminUserPage(PageRequest pageable);
 
-
-		
-
+	 
+	 
+	
 }
