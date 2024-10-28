@@ -1,28 +1,23 @@
 package com.lostay.backend.adminpage.controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.lostay.backend.adminpage.dto.AdminEventDTO;
 import com.lostay.backend.adminpage.service.AdminService;
-import com.lostay.backend.hotel.controller.HotelController;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -67,7 +62,7 @@ public class AdminController {
 		// System.out.println(dto);
 
 		// service에 DB 입력 요청
-		boolean result = adminService.insertEvent(dto, thumbnail, image);
+		boolean result = adminService.createEvent(dto, thumbnail, image);
 
 		if (result) {
 			return new ResponseEntity<>("event has been created", HttpStatus.CREATED);// code 201
@@ -153,14 +148,14 @@ public class AdminController {
 
 		//log.info("AdminController adminUserList실행");
 
-		System.out.println("비활성 보기 " + inactive +"유저이름 " + userName + " 페이지 " + page);
+		//System.out.println("비활성 보기 " + inactive +"유저이름 " + userName + " 페이지 " + page);
 
 		// page가 null인 경우 기본값을 0으로 설정 (예: 첫 페이지)
 		// if (page == null) {
 		// page = 0; // 기본값 설정
 		// }
 
-		return new ResponseEntity<>(adminService.adminUserSearch(inactive, userName, page - 1), HttpStatus.OK);
+		return new ResponseEntity<>(adminService.getUserList(inactive, userName, page - 1), HttpStatus.OK);
 	}
 
 }

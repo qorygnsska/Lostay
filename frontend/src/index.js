@@ -38,6 +38,7 @@ import PageEventList from "./pages/Event/PageEventList"; // 이벤트리스트 �
 import PageEventDetail from "./pages/Event/PageEventDetail"; // 이벤트상세 페이지
 import PageAdminHome from "./pages/Admin/PageAdminHome"; // 관리자 페이지 - 메인
 import PageEventManager from "./pages/Admin/PageEventManager"; // 관리자 페이지 - 이벤트 관리
+import PageHotelManager from "./pages/Admin/PageHotelManager"; // 관리자 페이지 - 호텔 객실 관리
 import PageReviewManager from "./pages/Admin/PageReviewManager"; // 관리자 페이지 - 리뷰 관리
 import PageUserManager from "./pages/Admin/PageUserManager"; // 관리자 페이지 - 사용자 관리
 
@@ -65,7 +66,7 @@ const router = createBrowserRouter([
             { path: "/hotelList", element: <HotelList /> },
             { path: "/roomList", element: <RoomList /> },
             { path: "/hotelMap", element: <HotelMap /> },
-            { path: "/roomDetail", element: <RoomDetail /> },
+            { path: "/roomDetail/:no", element: <RoomDetail /> },
             { path: "/hotelReviews", element: <HotelReviews /> },
 
             // 정일
@@ -73,6 +74,7 @@ const router = createBrowserRouter([
             { path: "/event-detail/:no", element: <PageEventDetail /> },
             { path: "/admin-home", element: <PageAdminHome /> },
             { path: "/admin-event", element: <PageEventManager /> },
+            { path: "/admin-hotel", element: <PageHotelManager /> },
             { path: "/admin-review", element: <PageReviewManager /> },
             { path: "/admin-user", element: <PageUserManager /> },
         ],

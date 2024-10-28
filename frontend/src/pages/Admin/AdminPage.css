@@ -34,7 +34,7 @@
 
 
 .page--event--manager--container {
-    /* 관리자 이벤트페이지 */
+    /* 관리자 이벤트 페이지 */
 
     #table_entire_event {
 
@@ -57,8 +57,18 @@
 }
 
 
+.page--hotel--manager--container {
+    /* 관리자 호텔 객실 페이지 */
+
+}
+
+
+
+
+
+
 .page--review--manager--container {
-    /* 관리자 리뷰페이지 */
+    /* 관리자 리뷰 페이지 */
 
     #table_entire_review {
 
@@ -98,7 +108,7 @@
 
 
 .page--user--manager--container {
-    /* 관리자 사용자페이지 */
+    /* 관리자 회원 페이지 */
 
     #table_entire_user {
 

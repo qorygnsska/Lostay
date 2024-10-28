@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminUserSerarchDTO {
+public class AdminUserDTO {
 
 	
 	private Long userNo;       // 회원넘버
