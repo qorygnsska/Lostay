@@ -58,6 +58,7 @@ import "../src/pages/MyPage/MyPoint/MyPoint.css";
 import "../src/pages/Reservation/Reservation.css";
 import "../src/pages/Hotel/RoomDetail.css";
 import "../src/pages/Hotel/HotelReviews.css";
+import "../src/pages/Login/LoginPhone.css"
 
 function App() {
     return (

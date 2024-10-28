@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CompHeaderAdmin from '../../componets/Header/CompHeaderAdmin'
 import { Container } from 'react-bootstrap'
-import CompHeaderGeneral from '../../componets/Header/CompHeaderGeneral';
-import CompSearchBox from '../../componets/Search/CompSearchBox';
+
 
 export default function PageAdminHome() {
 

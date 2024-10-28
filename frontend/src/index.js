@@ -11,12 +11,13 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import { Provider } from "react-redux";
 
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // 효준
 import Home from "./pages/Home/Home"; // 메인 페이지
 import Login from "./pages/Login/Login"; // 로그인 페이지
 import LoginPopup from "./pages/Login/LoginPopup"; // 소셜 로그인 팝업 페이지
+import LoginPhone from "./pages/Login/LoginPhone"; // 소셜 휴대폰번호 인증 팝업 페이지
 import Payment from "./pages/MyPage/BookingHistory/Payment/Payment"; // 결제 내역 페이지
 import MyPage from "./pages/MyPage/MyPage"; // 마이페이지 - 메인
 import WishList from "./pages/MyPage/Wish/WishList"; // 마이페이지 - 찜 내역
@@ -38,6 +39,7 @@ import PageEventList from "./pages/Event/PageEventList"; // 이벤트리스트 �
 import PageEventDetail from "./pages/Event/PageEventDetail"; // 이벤트상세 페이지
 import PageAdminHome from "./pages/Admin/PageAdminHome"; // 관리자 페이지 - 메인
 import PageEventManager from "./pages/Admin/PageEventManager"; // 관리자 페이지 - 이벤트 관리
+import PageHotelManager from "./pages/Admin/PageHotelManager"; // 관리자 페이지 - 호텔 객실 관리
 import PageReviewManager from "./pages/Admin/PageReviewManager"; // 관리자 페이지 - 리뷰 관리
 import PageUserManager from "./pages/Admin/PageUserManager"; // 관리자 페이지 - 사용자 관리
 
@@ -52,6 +54,7 @@ const router = createBrowserRouter([
             { index: true, element: <Home /> },
             { path: "/login", element: <Login /> },
             { path: "/login-popup", element: <LoginPopup /> },
+            { path: "/login-phone", element: <LoginPhone /> },
             { path: "/payment", element: <Payment /> },
             { path: "/mypage", element: <MyPage /> },
             { path: "/wishlist", element: <WishList /> },
@@ -65,7 +68,7 @@ const router = createBrowserRouter([
             { path: "/hotelList", element: <HotelList /> },
             { path: "/roomList", element: <RoomList /> },
             { path: "/hotelMap", element: <HotelMap /> },
-            { path: "/roomDetail", element: <RoomDetail /> },
+            { path: "/roomDetail/:roomNo", element: <RoomDetail /> },
             { path: "/hotelReviews", element: <HotelReviews /> },
 
             // 정일
@@ -73,6 +76,7 @@ const router = createBrowserRouter([
             { path: "/event-detail/:no", element: <PageEventDetail /> },
             { path: "/admin-home", element: <PageAdminHome /> },
             { path: "/admin-event", element: <PageEventManager /> },
+            { path: "/admin-hotel", element: <PageHotelManager /> },
             { path: "/admin-review", element: <PageReviewManager /> },
             { path: "/admin-user", element: <PageUserManager /> },
         ],

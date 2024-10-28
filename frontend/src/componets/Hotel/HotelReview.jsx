@@ -11,7 +11,7 @@ export default function HotelReview({Reviews, HotelInfo}) {
                 <div className='StarDiv'>
                     <div className='Star'>
                         <FaStar className='StarIcon' />
-                        <div className='StarNum'>{HotelInfo.ReviewRating}</div>
+                        <div className='StarNum'>{HotelInfo.reviewAvg}</div>
                     </div>
                     <span className='StarCount'>{HotelInfo.totalReviewCount}명 평가</span>
                     <GrNext />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Carousel from 'react-bootstrap/Carousel';
 import ReImgModal from '../HotelReview/ReImgModal';
@@ -17,12 +17,16 @@ export default function HotelCarousel({images}) {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
 
+    useEffect(() => {
+        console.log({images})
+    }, []);
+
     return (
         <div className='hotel--carousel--container'>
             <Carousel indicators={false}>
                 {images.map((image, idx) => (
-                    <Carousel.Item>
-                    <img src={image} key={idx} alt='호텔이미지' className='HotelImg' onClick={() => handleImageClick(idx)}/>
+                    <Carousel.Item key={idx}>
+                    <img src={image} alt='호텔이미지' className='HotelImg' onClick={() => handleImageClick(idx)}/>
                     <div className="image--counter">
                         {idx + 1} / {images.length}
                     </div>
