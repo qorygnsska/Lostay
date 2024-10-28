@@ -23,7 +23,8 @@ import axios from 'axios';
 
 export default function RoomList() {
 
-    const [RoomInfos, setRoomInfos] = useState([]);  // 객실 정보를 저장할 state
+    const [RoomInfos, setRoomInfos] = useState({ list: [] , dto: []});  // 객실 정보를 저장할 state
+    const [RoomReviews, setRoomReviews] = useState([]);  // 리뷰 정보를 저장할 state
     const [error, setError] = useState(null);        // 에러 핸들링을 위한 state
     const [loading, setLoading] = useState(true);    // 로딩 상태 관리
 
@@ -47,9 +48,24 @@ export default function RoomList() {
         }
       };
 
+      // 룸리스트 리뷰3개 가져오기
+    const fetchHotelRoomListReview3 = async () => {
+        try {
+          const response = await axios.get('http://localhost:9090/InquireRoom3', {
+            params: { hotelNo },
+          });
+          setRoomReviews(response.data); 
+        } catch (error) {
+          setError(error); 
+        } finally {
+          setLoading(false);
+        }
+      };
+
     useEffect(() => {
-        fetchHotelRoomList();  // 함수 호출
-      }, []);  // 컴포넌트가 처음 렌더링될 때 한 번 실행
+        fetchHotelRoomList(); 
+        fetchHotelRoomListReview3();
+      }, []);
 
   
     const HotelInfo = {
@@ -90,228 +106,29 @@ export default function RoomList() {
             reviewContent: '최고의 숙소!!!!'
         }
     ];
-
-    const rooms = [
-        {
-            roomNo: 1,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 0,
-            roomDcprice: 786500,
-            availableRooms: 3,
-        },
-        {
-            roomNo: 2,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 0,
-            roomDcprice: 786500,
-            availableRooms: 0,
-        },
-        {
-            roomNo: 3,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
-            availableRooms: 3,
-        },
-        {
-            roomNo: 4,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 0,
-            roomDcprice: 786500,
-            availableRooms: 3,
-        },
-        {
-            roomNo: 5,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
-            availableRooms: 0,
-        },
-        {
-            roomNo: 6,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 0,
-            roomDcprice: 786500,
-            availableRooms: 3,
-        },
-        {
-            roomNo: 7,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
-            availableRooms: 0,
-        },
-        {
-            roomNo: 8,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
-            availableRooms: 3,
-        },
-        {
-            roomNo: 9,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
-            availableRooms: 3,
-        },
-        {
-            roomNo: 10,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
-            availableRooms: 3,
-        },
-        {
-            roomNo: 11,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
-            availableRooms: 0,
-        },
-        {
-            roomNo: 12,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
-            availableRooms: 3,
-        },
-        {
-            roomNo: 13,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
-            availableRooms: 3,
-        },
-        {
-            roomNo: 14,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
-            availableRooms: 0,
-        },
-        {
-            roomNo: 15,
-            roomName: '산 전망 스탠다드 더블 룸',
-            roomThumbnail: '/HotelList/룸1.jpg',
-            roomPeopleInfo: '기준2인 · 최대3인 (유료)',
-            roomPeopleMax: 3,
-            roomCheckinTime: '15:00',
-            roomCheckoutTime: '11:00',
-            roomPrice: 786500,
-            roomDiscount: 49,
-            roomDcprice: 399300,
-            availableRooms: 3,
-        },
-        
-    ];
     
     
     const [showAll, setshowAll] = useState(false);
 
-    const displayedRooms = showAll ? RoomInfos : RoomInfos.slice(0, 10);
+    const displayedRooms = showAll ? RoomInfos.list : RoomInfos.list.slice(0, 10);
 
 
 
     const handleFindButtonClick = () => {
-        const encodedLocation = encodeURIComponent(HotelInfo.hotelAdress); // 주소를 URL 인코딩
+        const encodedLocation = encodeURIComponent(RoomInfos.dto.hotelAdress); // 주소를 URL 인코딩
         window.location.href = `/HotelMap?location=${encodedLocation}`;
     };
     
     return (
         <Container className='room--list'>
             
-            {/* {RoomInfos?.hotelImg.length > 0 && <HotelCarousel images={RoomInfos.hotelImg}/>} */}
+            {/* {RoomInfos.dto.hotelImg?.length > 0 && <HotelCarousel images={RoomInfos.dto.hotelImg}/>} */}
             <HotelCarousel images={HotelInfo.hotelThumbnail}/>
 
             <div className='HotelInfo'>
                 <div className='HotelRN'>
-                    <div className='HotelRank'>{HotelInfo.hotelRating}</div>
-                    <div className='HotelName'>{HotelInfo.hotelName}</div>
+                    <div className='HotelRank'>{RoomInfos.dto.hotelRating}</div>
+                    <div className='HotelName'>{RoomInfos.dto.hotelName}</div>
                 </div>
 
                 <IoIosHeartEmpty className='HeartIcon'/>
@@ -319,36 +136,36 @@ export default function RoomList() {
 
             <div className='RowLine'></div>
 
-            <HotelReview Reviews={Reviews} HotelInfo={HotelInfo} />
+            <HotelReview Reviews={RoomReviews} HotelInfo={RoomInfos.dto}/>
 
 
             <div className='HotelLocation'>
                 <div className='LoTitle'>위치/길찾기</div>
-                <span className='LoContent'>{HotelInfo.hotelAdress}</span>
+                <span className='LoContent'>{RoomInfos.dto.hotelAdress}</span>
                 <Button id='FindBtn' onClick={handleFindButtonClick}>길찾기<IoNavigate /></Button> 
                 
-                <KakaoMap Location={HotelInfo.hotelAdress} />
+                {RoomInfos.dto.hotelAdress?.length > 0 && <KakaoMap Location={RoomInfos.dto.hotelAdress} />}
             </div>
 
             <div className='RLtitle'>객실선택</div>
 
-            {displayedRooms.map(rooms => (
-                <RoomGrid rooms={rooms}/>
+            {displayedRooms.map((rooms, idx) => (
+                <RoomGrid rooms={rooms} key={idx}/>
             ))}
 
-            {RoomInfos.length > 10 && !showAll && (
+            {RoomInfos.list.length > 10 && !showAll && (
                 <div onClick={() => setshowAll(true)} className='showAll'>객실 모두보기</div>
             )}
 
             <div className='RowLine'></div>
 
             <div className='IntroTitle'>숙소 소개</div>
-            <HotelIntroduce introduce={HotelInfo.hotelIntroduction}/>
+            <HotelIntroduce introduce={RoomInfos.dto.hotelIntroduction}/>
 
             <div className='RowLine'></div>
 
             <div className='ServiceTitle'>서비스 및 부대시설</div>
-            <HotelService services={HotelInfo.hotelAmenities}/>
+            {RoomInfos.dto.hotelAmenities?.length > 0 && <HotelService services={RoomInfos.dto.hotelAmenities}/>}
             
 
             

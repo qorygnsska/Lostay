@@ -17,10 +17,6 @@ export default function HotelCarousel({images}) {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
 
-    useEffect(() => {
-        console.log({images})
-    }, []);
-
     return (
         <div className='hotel--carousel--container'>
             <Carousel indicators={false}>

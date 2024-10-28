@@ -2,6 +2,7 @@ import React from 'react'
 
 import { FaStar } from "react-icons/fa";
 import { GrNext } from "react-icons/gr";
+import { Link } from 'react-router-dom';
 
 export default function HotelReview({Reviews, HotelInfo}) {
 
@@ -11,23 +12,23 @@ export default function HotelReview({Reviews, HotelInfo}) {
                 <div className='StarDiv'>
                     <div className='Star'>
                         <FaStar className='StarIcon' />
-                        <div className='StarNum'>{HotelInfo.reviewAvg}</div>
+                        <div className='StarNum'>{HotelInfo.reviewAvg?.toFixed(1)}</div>
                     </div>
-                    <span className='StarCount'>{HotelInfo.totalReviewCount}명 평가</span>
-                    <GrNext />
+                    <Link className='StarCount'><span >{HotelInfo.totalReviewCount}명 평가 <GrNext /></span></Link>
                 </div>
 
                 <div className='ReviewWrap'>
                     {Reviews.map((review) => (
+                        <Link className='LinkBox'>
                         <div key={review.reviewNo} className='ContentBox'>
                             <div className='ReviewSD'>
                                 <div className='ReviewStar'>
                                     <FaStar className='ReviewIcon' />
-                                    <span>{review.reviewRating}</span>
+                                    <span>{review.reviewRating.toFixed(1)}</span>
                                 </div>
 
                                 <div className='ReviewDate'>
-                                    {review.reviewCreateAt}
+                                    {review.reviewCreateAt.slice(0, 10)}
                                 </div>
                             </div>
 
@@ -36,6 +37,7 @@ export default function HotelReview({Reviews, HotelInfo}) {
                             </div>
 
                         </div>
+                        </Link>
                     ))}
                 </div>
             </div>
