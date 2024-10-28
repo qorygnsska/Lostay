@@ -24,7 +24,7 @@ public class EventService {
 	
 
 	public EventDTO findByEventId(Long eventNo) {
-		log.info("eventService findByEventId() 실행");
+		//log.info("eventService findByEventId() 실행");
 		Optional<Event> eventEntity=eventRepo.findById(eventNo);
 			EventDTO dto = new EventDTO();
 			dto.setEventNo(eventEntity.get().getEventNo());

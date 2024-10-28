@@ -91,8 +91,8 @@ export default function PageUserManager() {
                                 <th className="user_nick">별명</th>
                                 <th className="user_email">이메일</th>
                                 <th className="user_phone">전화번호</th>
-                                <th className="user_cDate">가입일</th>
                                 <th className="user_point">포인트</th>
+                                <th className="user_cDate">가입일</th>
                                 <th className="user_stat">활성</th>
                             </tr>
                         </thead>
@@ -107,8 +107,8 @@ export default function PageUserManager() {
                                         <td className="user_nick">{user.userNickname}</td>
                                         <td className="user_email">{user.userEmail}</td>
                                         <td className="user_phone">{user.userPhone}</td>
+                                        <td className="user_point">{user.userPoint.toLocaleString()}P</td>
                                         <td className="user_cDate">{dateFormatter(eachDate)}</td>
-                                        <td className="user_point">{user.userPoint}</td>
                                         <td className="user_stat">{user.userStatus}</td>
                                     </tr>
                                 )

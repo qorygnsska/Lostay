@@ -68,7 +68,7 @@ export default function LocationHotelCarousel({ locationHotelList }) {
                                                             <FaStar className="star--Icon" />
                                                         </span>
                                                         <span className="review--avg">
-                                                            <strong>{hotel.reviewAvg ? hotel.reviewAvg : 0}</strong>
+                                                            <strong>{hotel.reviewRating ? hotel.reviewRating : 0}</strong>
                                                         </span>
                                                     </div>
 
