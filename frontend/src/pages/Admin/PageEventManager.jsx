@@ -12,6 +12,11 @@ export default function PageEventManager() {
     //default: 전체 보기 vs 진행 중인 이벤트만 보기
     const [viewOngoing, setViewOngoing] = useState(false); 
 
+    function filterHandler() {
+        setViewOngoing(!viewOngoing);
+        setActivePage(1);//필터가 켜질 때 1page 요청
+    }
+
     //하위요소(검색창)가 넘겨줄 값을 담을 변수
     const [text_fromChild, setText_fromChild] = useState('');
 
@@ -21,7 +26,7 @@ export default function PageEventManager() {
         //console.log('text_fromChild: ' + text_fromChild);   //previousState
         //console.log('fromChild: ' + fromMyChild);
         setText_fromChild(fromMyChild);
-        setActivePage(1);//이벤트리스트 호출(검색할 때는 setPage=1)
+        setActivePage(1);//검색어가 바뀔 때 1page 요청
     }
 
     //////////////////////////////////////////////////////////for hidden
@@ -92,7 +97,7 @@ export default function PageEventManager() {
                     <div className="d-flex justify-content-between mb-3">
                         <Button id="btn_enroll" onClick={() => setInserterShow(true)} variant="outline-success" size="sm" >이벤트 등록</Button>
                         <div className="d-flex">
-                            <Form.Switch id="switch_viewer" label="'진행 중' 보기" onClick={() => setViewOngoing(!viewOngoing)} />
+                            <Form.Switch id="switch_viewer" label="'진행 중' 보기" onClick={filterHandler} />
                             <CompAdminSearch where={'admin-event'} callParent={functionForMyChild} />
                         </div>
                     </div>

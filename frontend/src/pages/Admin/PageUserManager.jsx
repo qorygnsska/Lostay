@@ -9,6 +9,11 @@ export default function PageUserManager() {
     //default: 전체 보기 vs 비활성 유저만 보기
     const [viewInactive, setViewInactive] = useState(false);
 
+    function filterHandler() {
+        setViewInactive(!viewInactive);
+        setActivePage(1);//필터가 켜질 때 1page 요청
+    }
+
     //하위요소(검색창)가 넘겨줄 값을 담을 변수
     const [text_fromChild, setText_fromChild] = useState('');
 
@@ -18,9 +23,8 @@ export default function PageUserManager() {
         //console.log('text_fromChild: ' + text_fromChild);   //previousState
         //console.log('fromChild: ' + fromMyChild);
         setText_fromChild(fromMyChild);
-        setActivePage(1);
+        setActivePage(1);//검색어가 바뀔 때 1page 요청
     }
-
 
     // Date type -> String type(두자리수 맞춤)
     const dateFormatter = (rawDate) => (rawDate.getFullYear().toString() + "/" + (rawDate.getMonth() + 1).toString().padStart(2, '0') + "/" + rawDate.getDate().toString().padStart(2, '0'));
@@ -39,29 +43,9 @@ export default function PageUserManager() {
     // db에서 받아올 userList(array)
     const [userList, setUserList] = useState([]); //초기값은 []: empty array
 
-    //////////////////////임시데이터
-    const user1 = {
-        userNo: 1,
-        userName: '심재호',
-        userEmail: 'shim@lostay.com',
-        userPhone: '010-1111-1111',
-        userPoint: 1200,
-        userStatus: '탈퇴'
-    };
-
-    const user2 = {
-        userNo: 2,
-        userName: '박정일',
-        userEmail: 'qwer@lostay.com',
-        userPhone: '010-2222-2222',
-        userPoint: 2000,
-        userStatus: '활동'
-    };
-    //////////////////////임시데이터
-
     const getUserList = (inactive ,userName, requestedPage) => {
 
-        console.log(`getUser userName: ${userName} page: ${requestedPage}`);
+        console.log(`getUser ViewInactive: ${viewInactive} userName: ${userName} page: ${requestedPage}`);
 
         //인증 토큰 연계한 Axios 'GET' request by privateApi(Customized Comp)
         // async&await이나 then()은 같은 것
@@ -71,13 +55,6 @@ export default function PageUserManager() {
                 console.log(response.data);
                 setUserList(response.data.content); //Page<DTO>.getContent()
                 setPageCount(response.data.totalPages); // Page<DTO>.getTotalPages()
-
-                //////////////////////임시데이터
-                if (response.data.totalPages === 0) {
-                    setUserList([user1, user2]);
-                    setPageCount(1);
-                }
-                //////////////////////임시데이터
             })
             .catch(error => {
                 console.log(error);
@@ -102,7 +79,7 @@ export default function PageUserManager() {
                 <Container id='container_section'>
 
                     <div className='d-flex justify-content-end mb-3'>
-                        <Form.Switch id="switch_viewer" label="'비활성' 보기" onClick={() => setViewInactive(!viewInactive)} />
+                        <Form.Switch id="switch_viewer" label="'비활성' 보기" onClick={filterHandler} />
                         <CompAdminSearch where={'admin-user'} callParent={functionForMyChild} />
                     </div>
 
