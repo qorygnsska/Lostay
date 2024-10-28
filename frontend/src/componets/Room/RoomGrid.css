@@ -15,7 +15,6 @@
           width: 200px;
           height: 200px;
           border-radius: 10px;
-          margin-right: 20px;
      }
 
      .RoomInfo {
@@ -27,6 +26,7 @@
           height: 200px;
           padding: 20px;
           margin-bottom: 10px;
+          margin-left: 20px;
      }
 
 
@@ -37,10 +37,15 @@
      }
 
      .RoomName {
+          width: 365px;
           font-weight: bold;
           font-size: 18px;
           margin-bottom: 10px;
-          color: black;
+
+          #nameLink{
+               color: black;
+               text-decoration: none;
+          }
      }
 
      .PTBox {

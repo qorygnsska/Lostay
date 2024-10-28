@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 
 import { IoIosHeartEmpty } from "react-icons/io";
@@ -19,10 +19,39 @@ import RoomGrid from '../../componets/Room/RoomGrid';
 import Footer from '../../componets/Footer/Footer';
 import HotelService from '../../componets/Hotel/HotelService';
 import HotelIntroduce from '../../componets/Hotel/HotelIntroduce';
+import axios from 'axios';
 
 export default function RoomList() {
 
+    const [RoomInfos, setRoomInfos] = useState([]);  // 객실 정보를 저장할 state
+    const [error, setError] = useState(null);        // 에러 핸들링을 위한 state
+    const [loading, setLoading] = useState(true);    // 로딩 상태 관리
 
+    // 기본 파라미터
+    const hotelNo = 1;
+    const checkInDate = "2024-10-20T15:00:00";
+    const checkOutDate = "2024-10-22T11:00:00";
+    const peopleMax = 3;
+
+    useEffect(() => {
+        // 비동기 함수 선언
+        const fetchHotelRoomList = async () => {
+          try {
+            const response = await axios.get('http://localhost:9090/HotelRoomList', {
+              params: { hotelNo, checkInDate, checkOutDate, peopleMax },
+            });
+            setRoomInfos(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
+          } catch (error) {
+            setError(error);  // 오류가 발생한 경우 에러 저장
+          } finally {
+            setLoading(false);  // 로딩 상태 종료
+          }
+        };
+    
+        fetchHotelRoomList();  // 함수 호출
+      }, []);  // 컴포넌트가 처음 렌더링될 때 한 번 실행
+
+  
     const HotelInfo = {
         hotelNo: 1,
         hotelRating: "블랙·5성급·호텔",
@@ -264,7 +293,7 @@ export default function RoomList() {
     
     const [showAll, setshowAll] = useState(false);
 
-    const displayedRooms = showAll ? rooms : rooms.slice(0, 10);
+    const displayedRooms = showAll ? RoomInfos : RoomInfos.slice(0, 10);
 
 
 
@@ -306,7 +335,7 @@ export default function RoomList() {
                 <RoomGrid rooms={rooms}/>
             ))}
 
-            {rooms.length > 10 && !showAll && (
+            {RoomInfos.length > 10 && !showAll && (
                 <div onClick={() => setshowAll(true)} className='showAll'>객실 모두보기</div>
             )}
 
