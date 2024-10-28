@@ -8,9 +8,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function CompSearchBox(props) {
 
-    //'검색' 실행 시 페이지 이동
-    const navigate = useNavigate();//retaining window//not refreshing
-
     //requestParameter(검색한 주소, 날짜, 인원)를 기억할 변수
     const [place, setPlace] = useState(props.place);
     const [check_in, setCheck_in] = useState(props.check_in);
@@ -143,30 +140,17 @@ export default function CompSearchBox(props) {
         }
       }
 
-
     //'검색' 버튼 클릭!
     const searchHandler = async () => { 
-        console.log('search: ' + place + '/' + check_in + '-' + check_out + '/' + member);
-
-
-        //navigate(decodeURI(`/hotelList?search=${place}&check_in=${check_in}&check_out=${check_out}&member=${member}`));
-        navigate(`/hotelList?search=${place}&check_in=${check_in}&check_out=${check_out}&member=${member}`);
-
-        // try{
-        //     const response = await axios.get('http://localhost:9090/testhotel')
-        //     console.log('response: ' + response);
-        //     console.log('response.status: ' + response.status);
-        //     console.log('response.data.length: ' + response.data.length);
-        // }catch(error) {
-        //     console.log(error);
-        // }
+        //console.log('@CompSearchBox place: ' + place + '/' + check_in + '-' + check_out + '/' + member);
+        window.location.href=`/hotelList?place=${place}&check_in=${check_in}&check_out=${check_out}&member=${member}`;
     }
     //////////////////////////////////////////////////////////for eventHandler
 
 
     return (
         <>
-            <Modal onShow={modalOnShow} onHide={modalOnHide}
+            <Modal onShow={modalOnShow} onHide={modalOnHide} onKeyUp={keyHandler}
                 className='comp--search--box-container'
                 {...props}
                 fullscreen={true}
@@ -176,7 +160,7 @@ export default function CompSearchBox(props) {
                 </Modal.Header>
 
                 <Modal.Body id="body_searchBox">
-                    <Form onKeyUp={keyHandler}>
+                    <Form >
 
                         <InputGroup className='mb-3'>
                             <InputGroup.Text ><MdOutlinePlace size="24" /></InputGroup.Text>

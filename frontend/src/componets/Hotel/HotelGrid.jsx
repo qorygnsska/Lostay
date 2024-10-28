@@ -26,17 +26,20 @@ export default function HotelGrid({hotels}) {
                         <div className='HotelPrice'>
                             {hotel.roomDiscount > 0 ? (
                                 <>
-                                <div className='RealPrice'>{hotel.roomPrice.toLocaleString()}원</div>
+                                <div className='RealPrice'>{hotel.roomPrice}원</div>
+                                {/* .toLocaleString() 1028JIP: 함수 오류로 뺌 */}
                                 <div className='HotelDiscount'>
                                     <div className='Discount'>{hotel.roomDiscount}%</div>
-                                    <div className='DiscountPrice'>{hotel.roomDcprice.toLocaleString()}원</div>
+                                    <div className='DiscountPrice'>{hotel.roomDcprice}원</div>
+                                    {/* .toLocaleString()  1028JIP: 함수 오류로 뺌 */}
                                 </div>
                                 </>
                             ) : (
                                 <>
                                 <div className='HotelDiscount'>
                                     <div className='Discount' style={{ visibility: 'hidden' }}>{hotel.roomDiscount}%</div>
-                                    <div className='DiscountPrice'>{hotel.roomDcprice.toLocaleString()}원</div>
+                                    <div className='DiscountPrice'>{hotel.roomDcprice}원</div>
+                                    {/* .toLocaleString()  1028JIP: 함수 오류로 뺌 */}
                                 </div>
                                 </>
                             )}

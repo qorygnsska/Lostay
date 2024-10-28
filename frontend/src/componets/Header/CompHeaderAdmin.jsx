@@ -53,8 +53,6 @@ export default function CompHeaderAdmin() {
         if(window.confirm('정말 로그아웃?')) {
             console.log('로그아웃 실행');
 
-
-
             //window.location.href="/"; //메인페이지로 이동
             navigate('/');  //not refreshing
         }

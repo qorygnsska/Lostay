@@ -10,10 +10,14 @@
         border-style: solid;
         border-radius: 100%;
         border-width: 1px;
-        border-color: gray;
         background-color: transparent;
+        border-color: gray;
         color: gray;
 
     }
 
+    #nav_to_top:hover {
+        border-color: black;
+        color: black;
+    }
 }

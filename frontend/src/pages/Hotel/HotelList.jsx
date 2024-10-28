@@ -9,20 +9,41 @@ import HotelModal from '../../componets/Hotel/HotelModal';
 import HotelGrid from '../../componets/Hotel/HotelGrid';
 import CompHeaderGeneral from '../../componets/Header/CompHeaderGeneral';
 import CompSearchBox from '../../componets/Search/CompSearchBox';
-
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import NavTop from '../../componets/NavToTop/NavTop';
 
 
 export default function HotelList(props) {
 
-
-  ////////////////////////////////////////JIP1017
-  const place = '제주도';
+  //////////////////////////////////////////////////////////////////////////////JIP1028
   const today = new Date(); //오늘 날짜
-  const check_in = new Date(today.setDate(today.getDate()+1));
-  const check_out = new Date(today.setDate(today.getDate()+2));
-  const member = 2;
-  ////////////////////////////////////////JIP1017
+  //////////////////////////////////////////////////////////for default parameters
+  //hotelList에서 default 값 지정
+  //홈에서 검색을 안하고 /hotelList url로 치고 들어올 경우 parameter가 없을 수 있음
+  //useState는 오류남
+  let place = '';
+  let check_in = new Date(today); //오늘 + 1(tomorrow)
+  check_in.setDate(today.getDate() + 1);
+  let check_out = new Date(check_in); //오늘 + 1 + 1(the day after tomorrow)
+  check_out.setDate(check_in.getDate() + 1);
+  let member = 2;
 
+  const location = useLocation(); //uri 가져오기
+  //console.log(location);
+  //console.log(location.pathname);
+  try {//uri -> parameter 가져와서 decoding -> '&' 구분자로 split
+    const parameters = decodeURI(location.search).split('&');
+    //parameters 배열에서 각각 '=' 구분자로 split
+    place = parameters[0].split('=')[1];
+    check_in = new Date(parameters[1].split('=')[1]);
+    check_out = new Date(parameters[2].split('=')[1]);
+    member = parameters[3].split('=')[1];
+  } catch (error) {
+    place=''; //try구문에서 place부터 에러가 나서, 미지정 시 place = undefined가 됨
+   }
+  //////////////////////////////////////////////////////////for default parameters
+  //////////////////////////////////////////////////////////for hidden & focus
   // searchBox(Modal)이 열렸니?
   const [searchBoxShow, setSearchBoxShow] = useState(false);
 
@@ -33,15 +54,37 @@ export default function HotelList(props) {
 
   // Header에서 어떤 input 눌렀니?
   const [focus, setFocus] = useState('input_place');
-
+  // input(on header) 선택 위치에 따라 focus 변경 -> 하위 모달에 focus 전달 & 모달 열기
   const functionSearchPicker = (fromMyChild) => {
     console.log(fromMyChild + ' is picked at headerGeneral');
-    //선택 위치에 따라 focus 변경 -> 하위 모달에 focus 전달
     setFocus(fromMyChild);
     setSearchBoxShow(true);
   }
-  ////////////////////////////////////////JIP1017
+  //////////////////////////////////////////////////////////for hidden & focus
+  const getHotelList = async () => {
+    try {
+      //Date -> String 변환
+      const checkIn = check_in.getFullYear().toString()+'-'+(check_in.getMonth()+1).toString().padStart(2, '0')+'-'+check_in.getDate().toString().padStart(2, '0');
+      const checkOut = check_out.getFullYear().toString()+'-'+(check_out.getMonth()+1).toString().padStart(2, '0')+'-'+check_out.getDate().toString().padStart(2, '0');
 
+      // async&await이나 then()은 같은 것
+      const response = await axios.get(`http://localhost:9090/testhotel?hotelsearch=${place}&checkIn=${checkIn}&checkOut=${checkOut}&roomPeopleInfo=${member}`);
+      console.log('response.status: ' + response.status);
+      console.log('response.data.length: ' + response.data.length);
+
+      if(response.status===200) {//HttpStatus.OK
+        setHotels(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('서버와 통신이 원활하지 않습니다.');
+    }
+  }
+
+  useEffect(() => {
+    getHotelList();
+  }, []);
+  //////////////////////////////////////////////////////////////////////////////JIP1028
 
 
   // const [hotels, setHotels] = useState([]);
@@ -249,7 +292,8 @@ export default function HotelList(props) {
 
   // 페이지별 데이터 로딩 함수
   const loadMoreHotels = () => {
-    const newHotels = hotel.slice((page - 1) * 5, page * 5); // 5개씩 가져오기
+    //////////////////////////////////////////////////1028JIP: hotel -> hotels로 바꿈!
+    const newHotels = hotels.slice((page - 1) * 5, page * 5); // 5개씩 가져오기
 
     if (newHotels.length === 0) {
       setHasMore(false); // 더 이상 데이터가 없으면 종료
@@ -306,9 +350,11 @@ export default function HotelList(props) {
 
       <HotelGrid hotels={hotels} />
 
-      
+
       {/* 뷰포트 안에 들어오면 더 많은 데이터를 로드 */}
       {hasMore ? <div ref={ref} style={{ height: '1px' }} /> : <p id='NoHotel'>더 이상 호텔이 없습니다.</p>}
+
+      <NavTop />
     </Container>
   )
 }
