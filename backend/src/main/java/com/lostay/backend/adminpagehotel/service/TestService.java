@@ -26,11 +26,11 @@ public class TestService {
 	
 	public Object getHotels(int pageIndex) {
 		
-		Pageable pageable = PageRequest.of(pageIndex, 10, Sort.by("roomNo").descending());
+		Pageable pageable = PageRequest.of(pageIndex, 10, Sort.by("hotelNo").descending());
 		
 		List<HotelInfosDTO> hotelsDTO=hotelRepo.findBYHotelsInfo(pageable);
 		
-		return null;
+		return hotelsDTO;
 	}
 
 }
