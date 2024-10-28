@@ -150,7 +150,7 @@ public class ReissueController {
 		
 		// 전화번호 저장
 		Long userNo = jwtUtil.getUserNo(refresh);
-		phoneNum = phoneNum.replace("-", "");
+
 		System.out.println("phtone 번호" + phoneNum);
 		User userEntity = userRepo.findByUserNo(userNo);
 		userEntity.setUserPhone(phoneNum);

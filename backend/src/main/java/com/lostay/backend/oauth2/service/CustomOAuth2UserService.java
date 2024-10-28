@@ -1,6 +1,11 @@
 package com.lostay.backend.oauth2.service;
 
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.NonUniqueResultException;
+
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -44,8 +49,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         else { return null;}
 
         String userProviderId = oAuth2Response.getProvider()+"_"+oAuth2Response.getProviderId();
-        User existData = userRepository.findByUserProviderId(userProviderId);
-        if (existData == null) {
+        String userStatus = "Y";
+   
+        Optional<User> user = userRepository.findFirstByUserProviderIdAndUserStatus(userProviderId, userStatus);
+        
+        
+        if (!user.isPresent()) {
         	
             String nickname = getNickname();
             
@@ -55,7 +64,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             
             return new CustomOAuth2User(userDTO,isNewUser);
         } else {
-        	
+        	User existData = user.get();
         	updateUser(existData, oAuth2Response);
             
          	UserDTO userDTO = new UserDTO();
@@ -96,8 +105,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     
          
          userRepository.save(user);
-         User existData = userRepository.findByUserProviderId(userProviderId);
-         
+         Optional<User> optionalUser = userRepository.findFirstByUserProviderIdAndUserStatus(userProviderId, "Y");
+         User existData = optionalUser.get();
          UserDTO userDTO = new UserDTO();
          userDTO.setUserNo(existData.getUserNo());
          userDTO.setUserName(existData.getUserName());

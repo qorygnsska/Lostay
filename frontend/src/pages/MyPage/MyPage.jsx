@@ -3,11 +3,19 @@ import BackNav from "../../componets/BackNav/BackNav";
 import Navbar from "../../componets/Navbar/Navbar";
 import { BsChatText } from "react-icons/bs";
 import { FaRegHeart, FaChevronRight } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { privateApi } from '../../api/api'
+import { useDispatch } from "react-redux";
+import OkCancleModal from "../../componets/MyPage/BookingHistory/OkCancleModal";
+import { logout } from "../../store/userSlice";
 export default function MyPage() {
 
+    // 로그아웃
+    const [isShowModal, setShowModal] = useState(false);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [profile, setProfile] = useState(null);
+
     const getData = async () => {
 
         try {
@@ -24,6 +32,39 @@ export default function MyPage() {
     useEffect(() => {
         getData();
     }, []);
+
+
+
+
+
+
+    const showModalToggle = () => {
+        setShowModal(!isShowModal)
+    }
+
+    const cancelOk = () => {
+        userLogout();
+        showModalToggle();
+    }
+
+
+
+    const userLogout = async () => {
+        try {
+            const ef = await privateApi.post('http://localhost:9090/mypageUser/userLogout'); // API 요청
+
+            if (ef.status === 200) {
+                dispatch(logout());
+                navigate("/"); // 로그인 페이지로 이동
+            }
+
+            return ef;
+        } catch (error) {
+
+        }
+    }
+
+
 
     return (
         <div className="mypage--container">
@@ -136,7 +177,7 @@ export default function MyPage() {
 
                     {/* 로그 아웃 링크 */}
                     <div className="logout">
-                        <button className="logout--btn">
+                        <button className="logout--btn" onClick={showModalToggle}>
                             <div>
                                 <span>로그아웃</span>
                             </div>
@@ -156,7 +197,8 @@ export default function MyPage() {
                     />
                 </div>
             </div>
-
+            {/* 예약취소 모달 창 */}
+            <OkCancleModal show={isShowModal} onClose={showModalToggle} content={"로그아웃 하시겠습니까?"} cancelOk={cancelOk} />
             <Navbar />
         </div>
     );

@@ -207,7 +207,7 @@ export default function LoginPhone() {
                     <div className='input--box'>
                         <input
                             id='verificationCode'
-                            placeholder="인증번를 잘못 입력하셨습니다"
+                            placeholder="인증번호"
                             ref={verificationCodeRef}
                             value={verificationCode}
                             maxLength={6}
