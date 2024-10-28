@@ -33,21 +33,21 @@ export default function RoomList() {
     const checkOutDate = "2024-10-22T11:00:00";
     const peopleMax = 3;
 
+    // 룸리스트 가져오기
+    const fetchHotelRoomList = async () => {
+        try {
+          const response = await axios.get('http://localhost:9090/HotelRoomList', {
+            params: { hotelNo, checkInDate, checkOutDate, peopleMax },
+          });
+          setRoomInfos(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
+        } catch (error) {
+          setError(error);  // 오류가 발생한 경우 에러 저장
+        } finally {
+          setLoading(false);  // 로딩 상태 종료
+        }
+      };
+
     useEffect(() => {
-        // 비동기 함수 선언
-        const fetchHotelRoomList = async () => {
-          try {
-            const response = await axios.get('http://localhost:9090/HotelRoomList', {
-              params: { hotelNo, checkInDate, checkOutDate, peopleMax },
-            });
-            setRoomInfos(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
-          } catch (error) {
-            setError(error);  // 오류가 발생한 경우 에러 저장
-          } finally {
-            setLoading(false);  // 로딩 상태 종료
-          }
-        };
-    
         fetchHotelRoomList();  // 함수 호출
       }, []);  // 컴포넌트가 처음 렌더링될 때 한 번 실행
 
@@ -56,7 +56,7 @@ export default function RoomList() {
         hotelNo: 1,
         hotelRating: "블랙·5성급·호텔",
         hotelName : "제주신라호텔",
-        ReviewRating : 4.8,
+        reviewAvg : 4.8,
         totalReviewCount : 518,
         hotelAdress: "제주특별자치도 서귀포시 색달동 3039-3",
         hotelIntroduction: "세계 자연문화유산인 제주의 아름다운 풍광을 담은 리조트로써 그 명성을 쌓아가고 있는 제주신라호텔은 1980년 개관부터 지금까지 품격과 문화가 있는 휴식지로서 수많은 굵직한 국제행사를 성공적으로 치러온 최고의 리조트입니다 이국적인 분위기와 최고의 시설을 선보이며 고객에게 먼저 다가가는 리조트에 특화된 서비스로 호텔에 다녀간 세계의 국가수반을 비롯 많은 VIP들에게 크나큰 찬사를 받아 왔습니다",

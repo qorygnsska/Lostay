@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 
 import HotelCarousel from '../../componets/Hotel/HotelCarousel';
 
 import { GrNext } from "react-icons/gr";
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Footer from '../../componets/Footer/Footer';
 
 import { IoCheckmark } from "react-icons/io5";
@@ -15,9 +15,38 @@ import KakaoMap from '../../componets/Map/KakaoMap';
 import RoomNav from '../../componets/RoomNav/RoomNav';
 
 import BackNav from "../../componets/BackNav/BackNav";
+import axios from 'axios';
 
 
 export default function RoomDetail() {
+
+    const [RoomDetail, setRoomDetail] = useState();  // 객실 정보를 저장할 state
+    const [error, setError] = useState(null);        // 에러 핸들링을 위한 state
+    const [loading, setLoading] = useState(true);    // 로딩 상태 관리
+    
+    // 기본 파라미터
+    const {roomNo} = useParams();
+    const checkInDate = "2024-10-20T15:00:00";
+    const checkOutDate = "2024-10-22T11:00:00";
+    const peopleMax = 3;
+
+    // 룸디테일 가져오기
+    const fetchHotelRoomDetail = async () => {
+        try {
+          const response = await axios.get('http://localhost:9090/RoomDetail', {
+            params: { roomNo, checkInDate, checkOutDate, peopleMax },
+          });
+          setRoomDetail(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
+        } catch (error) {
+          setError(error);  // 오류가 발생한 경우 에러 저장
+        } finally {
+          setLoading(false);  // 로딩 상태 종료
+        }
+    };
+
+    useEffect(() => {
+        fetchHotelRoomDetail();  // 함수 호출
+    }, []);  // 컴포넌트가 처음 렌더링될 때 한 번 실행
 
     const RoomInfo = {
         roomNo: 1,
@@ -33,7 +62,7 @@ export default function RoomDetail() {
         roomAmenities: ['TV', '냉장고', '전기주전자', '찻잔', '티백', '물컵', '전화기', '금고', '슬리퍼', '욕실용품', '드라이기'],
         roomImg: ['/HotelList/룸1.jpg', '/HotelList/룸2.jpg'],
         totalReviewCount: 58,
-        ReviewRating: 4.5,
+        reviewAvg: 4.5,
         hotelAdress: "제주특별자치도 서귀포시 색달동 3039-3",
         InDate:'10월 9일',
         OutDate:'10월 10일',
@@ -73,26 +102,25 @@ export default function RoomDetail() {
         <Container className='room--detail--container'>
             <BackNav title="객실상세" />
 
-            <HotelCarousel images={RoomInfo.roomImg}/>
+            {RoomDetail?.roomImg.length > 0 && <HotelCarousel images={RoomDetail.roomImg}/>}
 
             <div className='NameBox'>
-                <div className='RoomName'>{RoomInfo.roomName}</div>
-                <Link className='HotelName'>{RoomInfo.hotelName}<GrNext/></Link>
+                <div className='RoomName'>{RoomDetail?.roomName}</div>
+                <Link className='HotelName'>{RoomDetail?.hotelName}<GrNext/></Link>
             </div>
 
             <div className='RowLine'></div>
 
             <div className='InfoBox'>
                 <div className='InfoTitle'>객실 안내</div>
-                <div className='CheckInfo'>체크인 {RoomInfo.roomCheckinTime} ~ 체크아웃 {RoomInfo.roomCheckoutTime}</div>
-                {RoomInfo.roomIntroduction.map(info => (
-                    <div className='InfoContent'>{info}</div>
+                {RoomDetail?.roomIntroduction.map((info, idx) => (
+                    <div className='InfoContent' key={idx}>{info}</div>
                 ))}
 
                 <div className='SerTitle'>편의시설</div>
                 <div className='SerDiv'>
-                    {RoomInfo.roomAmenities.map(service => (
-                        <div className='SerContent'><IoCheckmark /> {service}</div>
+                    {RoomDetail?.roomAmenities.map((service, idx) => (
+                        <div className='SerContent' key={idx}><IoCheckmark /> {service}</div>
                     ))}
                 </div>
 
