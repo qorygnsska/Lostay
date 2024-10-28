@@ -97,7 +97,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
 		 @Query("SELECT new com.lostay.backend.adminpagehotel.dto.HotelInfosDTO(h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission, SUM(r.roomCount)) " +
 			       "FROM Hotel h LEFT JOIN h.rooms r " +
 			       "GROUP BY h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission")
-		List<HotelInfosDTO> findBYHotelsInfo(Pageable pageable);
+		Page<HotelInfosDTO> findBYHotelsInfo(Pageable pageable);
 
 
 		

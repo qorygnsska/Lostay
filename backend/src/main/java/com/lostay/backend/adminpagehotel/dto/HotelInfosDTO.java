@@ -25,7 +25,18 @@ public class HotelInfosDTO {
     private String hotelAdress;        // 호텔주소
     private int hotelCommission;       // 호텔 중개료
     private Long totalRoomCount;        // 객실 종류 객실개수 총합
-  //private List<roomsDTO> rooms;      // 객실 정보 리스트
+    private List<roomsDTO> rooms;      // 객실 정보 리스트
+	
+    public HotelInfosDTO(Long hotelNo, String hotelName, String hotelRating, String hotelAdress, int hotelCommission,
+			Long totalRoomCount) {
+		super();
+		this.hotelNo = hotelNo;
+		this.hotelName = hotelName;
+		this.hotelRating = hotelRating;
+		this.hotelAdress = hotelAdress;
+		this.hotelCommission = hotelCommission;
+		this.totalRoomCount = totalRoomCount;
+	}
 
   
 	

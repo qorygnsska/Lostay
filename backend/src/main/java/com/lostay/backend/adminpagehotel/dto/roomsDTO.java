@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class roomsDTO {
 	
+	
 	private Long roomNo;
 	private String roomName;
 	private int roomCount;
 	private int roomPrice;
 	private int roomDiscount;
 	
-	
+
 	
 }
