@@ -114,17 +114,23 @@ public class MypageService {
 
 	}
 	//mypage 유정 정보수정(nickname)
-	public void userUpdateNicName(Long userNo, String nickname) {
+	public boolean  userUpdateNicName(Long userNo, String nickname) {
 		 log.info("MypageService userUpdateNicName 실행");
-		 Optional<User> userEntityOptional = userRepo.findById(userNo);	      
+		 Optional<User> userEntityOptional = userRepo.findById(userNo);	  
+		 
 		  User userEntity = userEntityOptional.orElseThrow(() -> new RuntimeException("User not found"));
-
+		  
+		    // 닉네임 중복 검사
+		    if (userRepo.existsByUserNickname(nickname)) {
+		        return false; // 닉네임이 이미 존재하는 경우 false 반환
+		    }
+		  
 		    // 닉네임 업데이트
 		    userEntity.setUserNickname(nickname);
 
 		    // 업데이트된 엔티티 저장
-		    userRepo.save(userEntity);
-		 
+		   // userRepo.save(userEntity);
+		    return true; // 업데이트 성공 시 true 반환
 	}
 	//mypage 유저 정보수정(phone)
 	public void userUpdatePhone(Long userNo, String phone) {

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -57,12 +58,20 @@ public class MypageController {
 	}
 
 	// mypage 유저 정보 닉네임 수정
-	@PostMapping("/mypageUserInfo/nickname/{nickname}")
-	public void mypageUserInfoNickName(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @PathVariable("nickname") String nickname) {
+	@PutMapping("/mypageUserInfo/nickname/{nickname}")
+	public  ResponseEntity<?> mypageUserInfoNickName(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @PathVariable("nickname") String nickname) {
 		Long userNo = customOAuth2User.getUserNo();
 		System.out.println("MypageController mypageUserInfoNickName실행");
-		mypageService.userUpdateNicName(userNo, nickname);
+		boolean result = mypageService.userUpdateNicName(userNo, nickname);
+
+		if (result) {
+			return new ResponseEntity<>("성공", HttpStatus.OK);
+		} else {
+			return ResponseEntity.notFound().build();// code 404
+		}
 	}
+	
+	
 	//mypage 유저 정보 전화번호 수정
 	@PostMapping("/mypageUserInfo/phone/{phone}")
 	public void mypageUserInfoPhone(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @PathVariable("phone") String phone) {
