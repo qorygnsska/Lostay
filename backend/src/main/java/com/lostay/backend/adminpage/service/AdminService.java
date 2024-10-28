@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.lostay.backend.adminpage.dto.AdminEventDTO;
 import com.lostay.backend.adminpage.dto.AdminReviewDTO;
-import com.lostay.backend.adminpage.dto.AdminUserSerarchDTO;
+import com.lostay.backend.adminpage.dto.AdminUserDTO;
 import com.lostay.backend.cart.entity.Cart;
 import com.lostay.backend.event.entity.Event;
 import com.lostay.backend.event.repository.EventRepository;
@@ -39,7 +39,8 @@ public class AdminService {
 
 	@Autowired
 	EventRepository eventRepo;
-
+	
+	//이벤트 이미지 파일 저장 경로
 	String eventDirPath = "C:\\Lostay\\frontend\\public\\event\\";
 
 	@Autowired
@@ -61,12 +62,12 @@ public class AdminService {
 
 		Page<Event> pageOfEventEntity;
 
-		if (onGoing) {
-			System.out.println("onGoing +" + eventTitle);
+		if (onGoing) {//현재 진행 중인 이벤트만: 시작날짜 < 오늘 < 종료날짜
+			//System.out.println("onGoing +" + eventTitle);
 			pageOfEventEntity = eventRepo.findByEventTitleContainingAndEventCreateAtLessThanAndEventEndAtGreaterThan(
 					eventTitle, now, now, pageable);
 		} else {
-			System.out.println("total +" + eventTitle);
+			//System.out.println("total +" + eventTitle);
 			pageOfEventEntity = eventRepo.findByEventTitleContaining(eventTitle, pageable);
 		}
 
@@ -98,15 +99,15 @@ public class AdminService {
 	}
 
 	// 관리자 페이지 이벤트 등록(1026 JIP)
-	public boolean insertEvent(AdminEventDTO dto, MultipartFile thumbnail, MultipartFile image) {
-		// System.out.println("adminServ.insertEvent()");
+	public boolean createEvent(AdminEventDTO dto, MultipartFile thumbnail, MultipartFile image) {
+		// System.out.println("adminServ.createEvent()");
 		boolean result = false;
 		try {
-			// 이벤트 번호가 부여되지 않았으니 일단 DB에 저장하여 부여받음
+			// 이벤트 번호가 부여되지 않았으니 일단 DB에 저장(create)하여 eventNo 부여받음
 			// thumbnail과 image는 null로 들어감
 			Event entity = eventRepo.save(dto.toEntity());
 
-			Long eventNo = entity.getEventNo();// 생성된 entity의 no를 받아와서
+			Long eventNo = entity.getEventNo();// 생성된 entity의 eventNo를 받아와서
 			// 디렉토리 경로
 			String dirPath = eventDirPath + eventNo.toString();
 			// 디렉토리 객체
@@ -123,7 +124,8 @@ public class AdminService {
 			File file_img = new File(dirPath + "\\" + image.getOriginalFilename());
 			image.transferTo(file_img);
 
-			// entity 재설정(Transactional이기 때문에 entity값만 재설정해주면 save가 됨
+			// entity 재설정(Transactional이기 때문에 entity값만 재설정해주면 자동으로 바인딩하여 save(update)가 됨
+			// entity를 save하니 entity가 2개 만들어짐!!
 			entity.setEventThumbnail(file_tn.getAbsolutePath().substring(dirPath.indexOf("event")));
 			entity.setEventImg(file_img.getAbsolutePath().substring(dirPath.indexOf("event")));
 
@@ -187,11 +189,11 @@ public class AdminService {
 	// (1027 JIP 수정: Pageable type 변경)
 	// (1027 JIP 수정: return type을 List<> -> Object(Page<>)로 바꾸고 주석처리)
 	public Object getReviewList(boolean underSanction, String userName, int pageIndex) {
-		System.out.println("AdminService getReviewList 실행");
+		//System.out.println("AdminService getReviewList 실행");
 		// PageRequest pageable = PageRequest.of(page, 10); // 페이지 요청
 
 		Pageable pageable = PageRequest.of(pageIndex, 10, Sort.by("reviewNo").descending());
-		System.out.println("pageable:" + pageable);
+		//System.out.println("pageable:" + pageable);
 
 		// if (userName != null && !userName.isEmpty()) {
 		// Page<AdminReviewDTO> reviewPage = reviewRepo.adminReviewPageSearch(userName,
@@ -212,7 +214,7 @@ public class AdminService {
 		// return adminReviewDTOList;
 		// }
 
-		if(underSanction) {
+		if(underSanction) {//'제재'된 리뷰만
 			return reviewRepo.adminReviewPageSearchUnderSanction(userName, pageable);
 		} else {
 			return reviewRepo.adminReviewPageSearch(userName, pageable);
@@ -250,12 +252,12 @@ public class AdminService {
 	// 관리자 유저 정보 조회
 	// (1027 JIP 수정: Pageable type 변경)
 	// (1027 JIP 수정: return type을 List<> -> Object(Page<>)로 바꾸고 주석처리)
-	public Object adminUserSearch(boolean inactive, String userName, int pageIndex) {
-		System.out.println("AdminService adminUserSearch 실행");
+	public Object getUserList(boolean inactive, String userName, int pageIndex) {
+		//System.out.println("AdminService getUserList 실행");
 
 		// PageRequest pageable = PageRequest.of(pageIndex, 10); // 페이지 요청
 		Pageable pageable = PageRequest.of(pageIndex, 10, Sort.by("userNo").descending());
-		System.out.println("pageable:" + pageable);
+		//System.out.println("pageable:" + pageable);
 
 		// if (userName != null && !userName.isEmpty()) {
 		// Page<AdminUserSerarchDTO> userPage = userRepo.adminUserPageSearch(userName,
@@ -276,7 +278,7 @@ public class AdminService {
 		// return adminUserSerarchDTOList;
 		// }
 		
-		if(inactive) {
+		if(inactive) {//'비활성'인 회원만
 			return userRepo.adminUserPageSearchInactive(userName, pageable);
 		} else {
 			return userRepo.adminUserPageSearch(userName, pageable);

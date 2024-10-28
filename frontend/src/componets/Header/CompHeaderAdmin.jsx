@@ -81,6 +81,10 @@ export default function CompHeaderAdmin() {
                         </Nav.Item>
 
                         <Nav.Item>
+                            <NavLink to="/admin-hotel" className="nav-link" >호텔&middot;객실</NavLink>
+                        </Nav.Item>
+
+                        <Nav.Item>
                             {/* <Nav.Link href="/admin-review" className={`${selectedLink =="/admin-review"?"active":""}`} >리뷰</Nav.Link> */}
                             {/* <Link to="/admin-review" className={`nav-link ${selectedLink=="/admin-review"?"active":""}`}>리뷰</Link> */}
                             <NavLink to="/admin-review" className="nav-link" >리뷰</NavLink>
