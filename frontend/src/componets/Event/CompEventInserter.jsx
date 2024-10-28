@@ -18,9 +18,9 @@ export default function CompEventInserter(props) {
     const dateFormatter = (rawDate) => (rawDate.getFullYear().toString() + "/" + (rawDate.getMonth() + 1).toString() + "/" + rawDate.getDate().toString());
 
     const periodFormatter = (period_selected) => {
-        if (period_selected == null || period_selected == '') {
+        if (period_selected === null || period_selected === '') {
             return null;
-        } else if (period_selected[1] == null) {
+        } else if (period_selected[1] === null) {
             return dateFormatter(period[0]);
         } else {
             return dateFormatter(period[0]) + ' - ' + dateFormatter(period[1]);

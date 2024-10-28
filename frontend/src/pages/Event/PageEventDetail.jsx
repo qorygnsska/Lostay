@@ -48,6 +48,8 @@ export default function PageEventDetail() {
                     {/* BackNav title에 이벤트 title 넣어주기 */}
                     <BackNav title={event.eventTitle} />
 
+{/* process.env.PUBLIC_URL: public folder 접근 */}
+{/* <img src={process.env.PUBLIC_URL + "/images/logo-spring.png"} className="spring" alt="logo2"   /> */}
                     <div id="container_event_detail">
                         {/* url에서 localhost:3000/event-detail/ 까지 기본으로 들어감 */}
                         <img src={'../' + event.eventImg} alt={event.eventTitle} />

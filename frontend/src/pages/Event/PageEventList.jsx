@@ -76,7 +76,6 @@ export default function PageEventList() {
                     ))} */}
 
                     {eventList.map(function (event, index) {
-
                         if (viewOngoing) {  
                             if (new Date(event.eventCreateAt) < today && new Date(event.eventEndAt) > today) {
                                 return (

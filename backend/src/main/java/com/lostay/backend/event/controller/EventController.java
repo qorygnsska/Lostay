@@ -26,7 +26,7 @@ public class EventController {
 	//이벤트 전체 보기
 	@GetMapping("/eventList")
 	 public ResponseEntity<?>eventList(){
-		log.info("eventController eventList실행");//오타 수정 1023 JIP
+		//log.info("eventController eventList실행");
 		return new ResponseEntity<>(mainService.eventFindAll(),HttpStatus.OK);
 
 	}
@@ -34,7 +34,7 @@ public class EventController {
 	//이벤트 상세 보기
 	@GetMapping("/eventDetail/{eventNo}") //이벤트 상세 정보
 	public ResponseEntity<?>eventDetail(@PathVariable Long eventNo){
-		log.info("eventController eventDetail실행");//로그 수정 1023 JIP
+		//log.info("eventController eventDetail실행");//로그 수정 1023 JIP
 		return new ResponseEntity<>(eventService.findByEventId(eventNo),HttpStatus.OK);
 	}
 	

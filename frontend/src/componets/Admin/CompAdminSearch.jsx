@@ -23,7 +23,7 @@ export default function CompAdminSearch(props) { //props: 상위요소에게서 
   const handleClick = () => {
     //console.log('click_btn_search //where: ' + props.where);  //어느페이지에서 눌렀는지 확인
 
-    if (text_search == '') {
+    if (text_search === '') {
       handleNull();
     } else {
       handleSearch();

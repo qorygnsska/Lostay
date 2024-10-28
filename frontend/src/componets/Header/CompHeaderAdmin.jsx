@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Container, Nav, Navbar } from 'react-bootstrap'
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 export default function CompHeaderAdmin() {
+
+
+    const navigate = useNavigate();
 
     //const location = useLocation();//url 정보 가져오기
     //const selectedLink = location.pathname.toString();
@@ -22,17 +25,17 @@ export default function CompHeaderAdmin() {
     //   //args-2nd: 시간차, 1000ms
 
 
-    const [clock, setClock] = useState(new Date());
+    // const [clock, setClock] = useState(new Date());
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const tick = setInterval(() => {
-            setClock(new Date());
-        }, 1000);
+    //     const tick = setInterval(() => {
+    //         setClock(new Date());
+    //     }, 1000);
 
-        return (() => clearInterval(tick))
+    //     return (() => clearInterval(tick))
 
-    }, []);
+    // }, []);
 
     //useEffect(1st, 2nd)
     //args-1st: function
@@ -49,7 +52,11 @@ export default function CompHeaderAdmin() {
         
         if(window.confirm('정말 로그아웃?')) {
             console.log('로그아웃 실행');
-            
+
+
+
+            //window.location.href="/"; //메인페이지로 이동
+            navigate('/');  //not refreshing
         }
     }
 

@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Container, Form, InputGroup, Modal } from 'react-bootstrap'
 import { GoDash, GoPeople } from 'react-icons/go';
 import CompMemberPicker from './CompMemberPicker';
 import { MdOutlineCalendarMonth, MdOutlinePlace } from 'react-icons/md';
 import { Calendar } from 'primereact/calendar';
+import axios from 'axios';
 
 
 export default function CompSearchBox(props) {
@@ -98,17 +99,23 @@ export default function CompSearchBox(props) {
 
 
     //////////////////////////////////////////////////////////for eventHandler
+
     //모달이 열릴 때
     const modalOnShow = () => {
         //헤더의 어디(장소, 날짜, 인원 중)를 눌렀는지 확인하여 auto-focusing
         //console.log('focusing at modal: ' + props.focus);
     }
 
+    //모달이 닫힐 때
+    const modalOnHide = () => {
+    }
+
+
 
     //체크인 날짜를 선택했다
     const checkInHandler = (check_in_selected) => {
 
-        console.log('selected check IN: ' +  check_in_selected);
+        //console.log('selected check IN: ' +  check_in_selected);
         
         //'Clear' 버튼을 클릭하면 왜 null이 들어오는지????
         if (check_in_selected === null || check_in_selected === '') {
@@ -145,9 +152,27 @@ export default function CompSearchBox(props) {
 
 
     //'검색' 버튼 클릭!
-    const searchHandler = () => {
+    const searchHandler = () => { //***async 
         console.log('search: ' + place + '/' + check_in + '-' + check_out + '/' + member);
         //쿼리 날리고 페이지 이동 to /hotelList
+
+        try{
+            //const response = await axios.get()
+
+            //console.log(response);
+            //console.log(response);
+            
+            
+
+        }catch(error) {
+            console.log(error);
+        }
+        
+
+
+
+
+
 
     }
     //////////////////////////////////////////////////////////for eventHandler
@@ -155,7 +180,7 @@ export default function CompSearchBox(props) {
 
     return (
         <>
-            <Modal onShow={modalOnShow}
+            <Modal onShow={modalOnShow} onHide={modalOnHide}
                 className='comp--search--box-container'
                 {...props}
                 fullscreen={true}
