@@ -18,6 +18,7 @@ import Home from "./pages/Home/Home"; // 메인 페이지
 import Login from "./pages/Login/Login"; // 로그인 페이지
 import LoginPopup from "./pages/Login/LoginPopup"; // 소셜 로그인 팝업 페이지
 import LoginPhone from "./pages/Login/LoginPhone"; // 소셜 휴대폰번호 인증 팝업 페이지
+import LoginAdmin from "./pages/Login/LoginAdmin"; // 어드민 로그인
 import Payment from "./pages/MyPage/BookingHistory/Payment/Payment"; // 결제 내역 페이지
 import MyPage from "./pages/MyPage/MyPage"; // 마이페이지 - 메인
 import WishList from "./pages/MyPage/Wish/WishList"; // 마이페이지 - 찜 내역
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
             { path: "/login", element: <Login /> },
             { path: "/login-popup", element: <LoginPopup /> },
             { path: "/login-phone", element: <LoginPhone /> },
+            { path: "/admin-login", element: <LoginAdmin /> },
             { path: "/payment", element: <Payment /> },
             { path: "/mypage", element: <MyPage /> },
             { path: "/wishlist", element: <WishList /> },
