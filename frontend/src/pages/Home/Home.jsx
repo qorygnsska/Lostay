@@ -46,14 +46,22 @@ export default function Home() {
     }, []);
 
 
-    ////////////////////////////////////////JIP1017
+    ////////////////////////////////////////JIP1028
+    ////////////////////////////////////////////////////////////////////////////////////datePicker(calendar)
     const today = new Date(); //오늘 날짜
-    const check_in = new Date(today.setDate(today.getDate() + 1)); //오늘 + 1
-    const check_out = new Date(today.setDate(today.getDate() + 1)); //오늘 + 1 + 1
 
+    const tomorrow = new Date(today); //오늘 + 1(tomorrow)
+    tomorrow.setDate(today.getDate() + 1);
+
+    const tdat = new Date(tomorrow); //오늘 + 1 + 1(the day after tomorrow)
+    tdat.setDate(tomorrow.getDate() + 1);
+    ////////////////////////////////////////////////////////////////////////////////////datePicker(calendar)
+    //////////////////////////////////////////////////////////for hidden
     // searchBox(Modal)이 열렸니?
     const [searchBoxShow, setSearchBoxShow] = useState(false);
-    ////////////////////////////////////////JIP1017
+    //////////////////////////////////////////////////////////for hidden
+    ////////////////////////////////////////JIP1028
+
     return (
         <div className="home--container">
             <div className="logo">
@@ -102,17 +110,15 @@ export default function Home() {
 
             <Navbar />
 
-            {/* searchBox(Modal) JIP1017 */}
+            {/* searchBox(Modal) JIP1028 */}
             <CompSearchBox
                 show={searchBoxShow}
-                onHide={() => {
-                    setSearchBoxShow(false);
-                }}
-                place={""}
-                check_in={check_in}
-                check_out={check_out}
+                onHide={() => {setSearchBoxShow(false)}}
+                place={''} //default
+                check_in={tomorrow} //default
+                check_out={tdat} //default
                 member={2} //default
-                focus={"input_place"}
+                focus={"input_place"} //default focus
             />
         </div>
     );

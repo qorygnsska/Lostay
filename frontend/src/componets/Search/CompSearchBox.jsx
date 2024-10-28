@@ -4,15 +4,12 @@ import { GoDash, GoPeople } from 'react-icons/go';
 import CompMemberPicker from './CompMemberPicker';
 import { MdOutlineCalendarMonth, MdOutlinePlace } from 'react-icons/md';
 import { Calendar } from 'primereact/calendar';
-
+import { useNavigate } from 'react-router-dom';
 
 export default function CompSearchBox(props) {
 
-
-    // const props_check_in = new Date(props.check_in);
-    // props_check_in.setHours(0,0,0,0);
-    // const props_check_out = new Date(props.check_out);
-    // props_check_out.setHours(0,0,0,0);
+    //'검색' 실행 시 페이지 이동
+    const navigate = useNavigate();//retaining window//not refreshing
 
     //requestParameter(검색한 주소, 날짜, 인원)를 기억할 변수
     const [place, setPlace] = useState(props.place);
@@ -45,12 +42,10 @@ export default function CompSearchBox(props) {
     minDate_check_out_origin.setDate(check_in.getDate() + 1) //체크인 날짜 + 1
     const [minDate_check_out, setMinDate_check_out] = useState(minDate_check_out_origin);
 
-
     //선택 가능한 최대 체크아웃 날짜(최대 10연박)
     const maxDate_check_out_origin = new Date(check_in);
     maxDate_check_out_origin.setDate(check_in.getDate() + 10) //체크인 날짜 +10
     const [maxDate_check_out, setMaxDate_check_out] = useState(maxDate_check_out_origin);
-
 
     //////////////////////////////////////////////////////////dateTemplate(prop) : specific dates as a parameter to customizing style
     const dateTemplateHandler = (date) => {
@@ -75,12 +70,9 @@ export default function CompSearchBox(props) {
     }
     //////////////////////////////////////////////////////////dateTemplate(prop) : specific dates as a parameter to customizing style
 
-
     // Date() -> "yyyy/MM/dd" (날짜 형식 -> 텍스트 형식 변환 함수)
     const dateFormatter = (rawDate) => (rawDate.getFullYear().toString() + "/" + (rawDate.getMonth() + 1).toString() + "/" + rawDate.getDate().toString());
     //////////////////////////////////////////////////////////for datePicker(Calendar)
-
-
 
     //////////////////////////////////////////////////////////for hidden
     //달력(datePicker) 표시 여부
@@ -95,20 +87,23 @@ export default function CompSearchBox(props) {
     const [memberPicker, setMemberPicker] = useState(false);
     //////////////////////////////////////////////////////////for hidden
 
-
-
     //////////////////////////////////////////////////////////for eventHandler
+
     //모달이 열릴 때
     const modalOnShow = () => {
         //헤더의 어디(장소, 날짜, 인원 중)를 눌렀는지 확인하여 auto-focusing
         //console.log('focusing at modal: ' + props.focus);
     }
 
+    //모달이 닫힐 때
+    const modalOnHide = () => {
+    }
+
 
     //체크인 날짜를 선택했다
     const checkInHandler = (check_in_selected) => {
 
-        console.log('selected check IN: ' +  check_in_selected);
+        //console.log('selected check IN: ' +  check_in_selected);
         
         //'Clear' 버튼을 클릭하면 왜 null이 들어오는지????
         if (check_in_selected === null || check_in_selected === '') {
@@ -137,25 +132,41 @@ export default function CompSearchBox(props) {
         if (check_in_selected < marginLeft) {
             setCheck_out(maxDate_check_out_temp);
         }
-
         //결과적으로 체크인 날짜는 선택한 날짜로 지정
         setCheck_in(check_in_selected);
     }
 
+    const keyHandler = (event) => {  //엔터키 누르면 '검색' 클릭 실행
+        //console.log(event.target.value);
+        if(event.key === 'Enter') {
+          searchHandler();  
+        }
+      }
 
 
     //'검색' 버튼 클릭!
-    const searchHandler = () => {
+    const searchHandler = async () => { 
         console.log('search: ' + place + '/' + check_in + '-' + check_out + '/' + member);
-        //쿼리 날리고 페이지 이동 to /hotelList
 
+
+        //navigate(decodeURI(`/hotelList?search=${place}&check_in=${check_in}&check_out=${check_out}&member=${member}`));
+        navigate(`/hotelList?search=${place}&check_in=${check_in}&check_out=${check_out}&member=${member}`);
+
+        // try{
+        //     const response = await axios.get('http://localhost:9090/testhotel')
+        //     console.log('response: ' + response);
+        //     console.log('response.status: ' + response.status);
+        //     console.log('response.data.length: ' + response.data.length);
+        // }catch(error) {
+        //     console.log(error);
+        // }
     }
     //////////////////////////////////////////////////////////for eventHandler
 
 
     return (
         <>
-            <Modal onShow={modalOnShow}
+            <Modal onShow={modalOnShow} onHide={modalOnHide}
                 className='comp--search--box-container'
                 {...props}
                 fullscreen={true}
@@ -165,7 +176,7 @@ export default function CompSearchBox(props) {
                 </Modal.Header>
 
                 <Modal.Body id="body_searchBox">
-                    <Form>
+                    <Form onKeyUp={keyHandler}>
 
                         <InputGroup className='mb-3'>
                             <InputGroup.Text ><MdOutlinePlace size="24" /></InputGroup.Text>
@@ -204,7 +215,6 @@ export default function CompSearchBox(props) {
                                     value={dateFormatter(check_out)}
                                     readOnly
                                     onClick={() => setCheckOutPicker(!checkOutPicker)}
-
                                 />
                             </InputGroup>
                         </div>

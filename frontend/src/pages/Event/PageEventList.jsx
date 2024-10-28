@@ -15,7 +15,6 @@ export default function PageEventList() {
     const today = new Date(); //오늘 날짜
     ////////////////////////////////////////////////////////////////////////////switch to view onGoing
 
-
     //db에서 받아올 eventList(array)
     const [eventList, setEventList] = useState([]); //초기값은 []: empty array
 
@@ -56,7 +55,6 @@ export default function PageEventList() {
         console.log(`view: ${viewOngoing ? "onGoing" : "total"}`);
     }, [viewOngoing]);
 
-
     return (
         <>
             <div className='page--event--list--container'>
@@ -76,7 +74,6 @@ export default function PageEventList() {
                     ))} */}
 
                     {eventList.map(function (event, index) {
-
                         if (viewOngoing) {  
                             if (new Date(event.eventCreateAt) < today && new Date(event.eventEndAt) > today) {
                                 return (

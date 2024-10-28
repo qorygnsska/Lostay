@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react'
 import BackNav from "../../componets/BackNav/BackNav";
 import { useParams } from 'react-router-dom';
 
-
 export default function PageEventDetail() {
-
 
     const [event, setEvent] = useState();//초기값 null
     //{eventNo: "", eventCreateAt: "", eventEndAt: "",  eventImg:  "",  eventThumbnail:  "", eventTitle: ""}
@@ -14,7 +12,6 @@ export default function PageEventDetail() {
 
     // function getEvent() {}
     const getEvent = () => {
-
         //request 'GET'
         fetch(`http://localhost:9090/eventDetail/${no}`)
             .then(response => response.json())
@@ -27,7 +24,6 @@ export default function PageEventDetail() {
                 console.log(error);
                 window.location.href = "/event-list"; //refreshing window
             })
-
     }
 
     //1st arg getEventList() : getEvent 메서드에 effect 사용
@@ -35,7 +31,6 @@ export default function PageEventDetail() {
     useEffect(() => {
         getEvent();
     }, [no]);
-
 
     // event 초기값이 null이라 서버에서 응답이 올때까지 nullPointerException 방지
     if (!event) {
@@ -48,6 +43,8 @@ export default function PageEventDetail() {
                     {/* BackNav title에 이벤트 title 넣어주기 */}
                     <BackNav title={event.eventTitle} />
 
+{/* process.env.PUBLIC_URL: public folder 접근 */}
+{/* <img src={process.env.PUBLIC_URL + "/images/logo-spring.png"} className="spring" alt="logo2"   /> */}
                     <div id="container_event_detail">
                         {/* url에서 localhost:3000/event-detail/ 까지 기본으로 들어감 */}
                         <img src={'../' + event.eventImg} alt={event.eventTitle} />
