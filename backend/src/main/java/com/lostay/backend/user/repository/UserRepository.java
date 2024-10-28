@@ -1,6 +1,5 @@
 package com.lostay.backend.user.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -10,17 +9,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.lostay.backend.adminpage.dto.AdminReviewDTO;
 import com.lostay.backend.adminpage.dto.AdminUserDTO;
 import com.lostay.backend.user.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	User findByUserProviderId(String userProviderId);
-
 	boolean existsByUserNickname(String nickname);
 	User findByUserNo(Long userNo);
-	
+
+
 	
 	
 	
@@ -44,6 +41,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	           "FROM User u " 
 	          )
 	Page<AdminUserDTO> adminUserPage(PageRequest pageable);
+
+
+	 // 사용자 유무
+	 @Query("SELECT u FROM User u WHERE u.userProviderId = :userProviderId AND u.userStatus = :userStatus")
+	 Optional<User> findFirstByUserProviderIdAndUserStatus(@Param("userProviderId") String userProviderId, @Param("userStatus") String userStatus);
+
 
 
 	 

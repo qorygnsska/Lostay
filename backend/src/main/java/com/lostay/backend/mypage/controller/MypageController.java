@@ -1,5 +1,8 @@
 package com.lostay.backend.mypage.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,6 +91,23 @@ public class MypageController {
 		Long userNo = customOAuth2User.getUserNo();
 
 		return new ResponseEntity<>(mypageService.myPageInfoEdit(userNo), HttpStatus.OK);
+	}
+	
+	
+	@PostMapping("mypageUser/unsubscribe")
+	public ResponseEntity<?> mypageUnsubscribe(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+		Long userNo = customOAuth2User.getUserNo();
+		System.out.println("MypageController mypageUnsubscribe");
+		mypageService.userUnsubscribe(userNo);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PostMapping("mypageUser/userLogout")
+	public void userLogout(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+		Long userNo = customOAuth2User.getUserNo();
+		System.out.println("MypageController userLogout");
+		mypageService.userLogout(userNo);
 	}
 	
 	

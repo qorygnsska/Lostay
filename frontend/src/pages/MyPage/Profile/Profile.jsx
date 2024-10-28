@@ -5,6 +5,10 @@ import { FaPencil } from "react-icons/fa6";
 import { FaChevronRight } from "react-icons/fa";
 import { privateApi } from "../../../api/api";
 import axios from "axios";
+import OkCancleModal from "../../../componets/MyPage/BookingHistory/OkCancleModal";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../../store/userSlice";
 
 
 export default function Profile() {
@@ -92,7 +96,7 @@ export default function Profile() {
             setNicknameEidt(false);
         } else {
             try {
-                const response = await privateApi.post(`http://localhost:9090/mypageUserInfo/nickname/${nickname}`); // API 요청
+                const response = await privateApi.put(`http://localhost:9090/mypageUserInfo/nickname/${nickname}`); // API 요청
 
                 if (response.status === 200) {
                     setNicknameEidt(false);
@@ -307,6 +311,36 @@ export default function Profile() {
         }
     };
 
+
+    // 회원 탈퇴
+    const [isShowModal, setShowModal] = useState(false);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const showModalToggle = () => {
+        setShowModal(!isShowModal)
+    }
+
+    const cancelOk = () => {
+        userUnsubscript();
+        showModalToggle();
+        navigate("/", { replace: true });
+    }
+
+    const userUnsubscript = async () => {
+        try {
+            const response = await privateApi.post('http://localhost:9090/mypageUser/unsubscribe'); // API 요청
+
+            if (response.status === 200) {
+                dispatch(logout());
+            }
+
+            return response.data;
+        } catch (error) {
+
+        }
+    }
+
     return (
         <div className="profile--container">
             <BackNav title="내 정보 관리" />
@@ -427,12 +461,16 @@ export default function Profile() {
                         </div>
                     </div>
 
-                    <div className="profile--delete">
+                    <div className="profile--delete" onClick={showModalToggle}>
                         <p>회원탈퇴</p>
                         <FaChevronRight className="icon" />
                     </div>
                 </div>
             </div>
+
+            {/* 예약취소 모달 창 */}
+            <OkCancleModal show={isShowModal} onClose={showModalToggle} content={"회원탈퇴 하시겠습니까?"} cancelOk={cancelOk} />
+
             <Navbar />
         </div>
     );
