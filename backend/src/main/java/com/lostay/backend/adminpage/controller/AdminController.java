@@ -120,7 +120,7 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") int page) {// 기본값 설정
 
 		//log.info("AdminController adminReviewList실행");
-		System.out.println("비공개 보기 " + underSanction + " 유저이름 " + userName + " 페이지 " + page);
+		//System.out.println("비공개 보기 " + underSanction + " 유저이름 " + userName + " 페이지 " + page);
 
 		// 요청한 page 1 -> 넘겨줄 index 0 (예: 첫 페이지)
 		// return new ResponseEntity<>("success", HttpStatus.OK);
@@ -153,7 +153,7 @@ public class AdminController {
 
 		//log.info("AdminController adminUserList실행");
 
-		//System.out.println("유저이름 " + userName + " 페이지 " + page);
+		System.out.println("비활성 보기 " + inactive +"유저이름 " + userName + " 페이지 " + page);
 
 		// page가 null인 경우 기본값을 0으로 설정 (예: 첫 페이지)
 		// if (page == null) {

@@ -38,7 +38,11 @@ public class RoomService {
 		List<Object[]> newRoom = roomRepo.findHotelRoomList(hotelNo, in, out);
 		List<RoomDTO> dtos = new ArrayList<RoomDTO>();
 		int reviewCount = revRepo.findHotelReviewCount(hotelNo);
-		double ReviewAvg = revRepo.findHotelReviewAvg(hotelNo);
+		Double ReviewAvg = revRepo.findHotelReviewAvg(hotelNo);
+		
+		if (ReviewAvg == null) {
+			ReviewAvg = 0.0;
+		}
 		
 		for(Object[] r : newRoom) {
 			RoomDTO d = new RoomDTO();
