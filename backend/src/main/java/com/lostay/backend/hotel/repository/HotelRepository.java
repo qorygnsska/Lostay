@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.lostay.backend.adminpagehotel.dto.HotelInfosDTO;
+import com.lostay.backend.adminpage.dto.HotelInfosDTO;
 import com.lostay.backend.hotel.entity.Hotel;
 import com.lostay.backend.review.dto.HotelInfoDTO;
 import com.lostay.backend.review.dto.HotelRoomsDTO;
@@ -94,7 +94,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
 
 		 
 		//관리자 페이지 호텔 정보 가져오기(홍정훈)10-28
-		 @Query("SELECT new com.lostay.backend.adminpagehotel.dto.HotelInfosDTO(h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission, SUM(r.roomCount)) " +
+		 @Query("SELECT new com.lostay.backend.adminpage.dto.HotelInfosDTO(h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission, SUM(r.roomCount)) " +
 			       "FROM Hotel h LEFT JOIN h.rooms r " +
 			       "GROUP BY h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission")
 		Page<HotelInfosDTO> findBYHotelsInfo(Pageable pageable);

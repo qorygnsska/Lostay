@@ -21,13 +21,19 @@ import org.springframework.web.multipart.MultipartFile;
 import com.lostay.backend.adminpage.dto.AdminEventDTO;
 import com.lostay.backend.adminpage.dto.AdminReviewDTO;
 import com.lostay.backend.adminpage.dto.AdminUserSerarchDTO;
+import com.lostay.backend.adminpage.dto.HotelInfosDTO;
+import com.lostay.backend.adminpage.dto.roomsDTO;
 import com.lostay.backend.cart.entity.Cart;
 import com.lostay.backend.event.entity.Event;
 import com.lostay.backend.event.repository.EventRepository;
 import com.lostay.backend.hotel.dto.HotelDTO;
+import com.lostay.backend.hotel.entity.Hotel;
+import com.lostay.backend.hotel.repository.HotelRepository;
 import com.lostay.backend.mypage.dto.ReviewpageDTO;
 import com.lostay.backend.review.entity.Review;
 import com.lostay.backend.review.repository.ReviewRepository;
+import com.lostay.backend.room.entity.Room;
+import com.lostay.backend.room.repository.RoomRepository;
 import com.lostay.backend.user.repository.UserRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +43,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdminService {
 
+	 @Autowired 
+	 private HotelRepository hotelRepo;
+	    
+     @Autowired
+	 private RoomRepository roomRepo;
+	
+	
 	@Autowired
 	EventRepository eventRepo;
 
@@ -284,5 +297,56 @@ public class AdminService {
 		}
 		
 	}
+	
+	
+	
+	
+	//홍정훈(관리자 페이지 호텔.객실 텝 정보 조회)
+    public Page<HotelInfosDTO> getHotels(int pageIndex) {
+        Pageable pageable = PageRequest.of(pageIndex, 10, Sort.by("hotelNo").ascending());
+        Page<HotelInfosDTO> hotelsDTOPage = hotelRepo.findBYHotelsInfo(pageable);    
+        // 모든 호텔을 가져옴
+        List<Hotel> allHotels = hotelRepo.findAll(); 
+        // 각 호텔 DTO에 방 리스트 설정
+        for (HotelInfosDTO dto : hotelsDTOPage.getContent()) {
+            List<roomsDTO> roomsList = new ArrayList<>(); // 호텔마다 새로운 리스트 생성
+            // 모든 호텔에서 해당 호텔의 방 정보를 가져옴
+            for (Hotel hotel : allHotels) {
+                if (hotel.getHotelNo().equals(dto.getHotelNo())) {
+                    for (Room room : hotel.getRooms()) {
+                        roomsDTO roomsdto = new roomsDTO();
+                        roomsdto.setRoomNo(room.getRoomNo()); 
+                        roomsdto.setRoomName(room.getRoomName()); 
+                        roomsdto.setRoomCount(room.getRoomCount()); 
+                        roomsdto.setRoomPrice(room.getRoomPrice()); 
+                        roomsdto.setRoomDiscount(room.getRoomDiscount()); 
+                        roomsList.add(roomsdto); // 방 정보를 리스트에 추가
+                    }
+                }
+            }
+
+            dto.setRooms(roomsList); // 각 호텔 DTO에 방 리스트 설정
+        }
+
+        return hotelsDTOPage; // Page<HotelInfosDTO> 반환
+    }
+
+  //홍정훈(관리자 페이지 호텔.객실 텝 객실 할인율 수정)
+	public boolean updateRoomDiscount(Long roomNo, int roomDiscount) {
+		   Optional<Room> optionalRoom = roomRepo.findById(roomNo); // 방을 가져옴
+
+		    if (optionalRoom.isPresent()) { // 방이 존재하면
+		        Room room = optionalRoom.get(); // 방 객체 가져오기
+		        room.setRoomDiscount(roomDiscount); // 할인율 업데이트
+		        return true; 
+		    } else {
+		        return false; 
+		    }
+	}
+     
+	
+	
+	
+	
 
 }

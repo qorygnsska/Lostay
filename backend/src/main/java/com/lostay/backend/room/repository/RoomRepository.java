@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.lostay.backend.adminpagehotel.dto.roomsDTO;
+import com.lostay.backend.adminpage.dto.roomsDTO;
 import com.lostay.backend.room.entity.Room;
 
 @Repository

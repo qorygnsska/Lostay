@@ -1,4 +1,4 @@
-package com.lostay.backend.adminpagehotel.dto;
+package com.lostay.backend.adminpage.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
