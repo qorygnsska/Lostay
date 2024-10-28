@@ -8,19 +8,19 @@ import { useInView } from "react-intersection-observer";
 
 export default function MyReview() {
 
-    const{data, isLoading, error, fetchNextPage, hasNextPage, isFetchNextPage} = useGetReviews();
+    const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchNextPage } = useGetReviews();
     // 감지 div
-    const {ref,inView} = useInView()
+    const { ref, inView } = useInView()
 
     // 무한 스클롤 설정
-    useEffect(() =>{
-        
-        if(inView && hasNextPage && !isFetchNextPage){
+    useEffect(() => {
+
+        if (inView && hasNextPage && !isFetchNextPage) {
             fetchNextPage()
         }
-    },[inView])
+    }, [inView])
+    console.log(data)
 
-   
     return (
         <div className="my--review--container">
             <BackNav title="내 리뷰" />
@@ -37,11 +37,11 @@ export default function MyReview() {
                     </span>
                 </div>
 
-                {isLoading ? null :  data.pages[0].totalPage > -1 ? 
-                    data.pages.map((page)=>
-                        page.reviewList.map((review,index)=>(
+                {isLoading ? null : data.pages[0].totalPage > -1 ?
+                    data.pages.map((page) =>
+                        page.reviewList.map((review, index) => (
                             <MyReviewComponent review={review} key={index} />
-                        ))) 
+                        )))
                     : ( // 리뷰가 없을 때
                         <div className="reviews">
                             <div>

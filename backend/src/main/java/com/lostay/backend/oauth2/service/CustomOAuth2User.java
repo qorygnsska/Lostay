@@ -13,10 +13,12 @@ import com.lostay.backend.user.dto.UserDTO;
 public class CustomOAuth2User implements OAuth2User {
 
     private final UserDTO userDTO;
+    private final boolean isNewUser;
 
-    public CustomOAuth2User(UserDTO userDTO) {
+    public CustomOAuth2User(UserDTO userDTO, boolean isNewUser) {
 
         this.userDTO = userDTO;
+		this.isNewUser = isNewUser;
     }
 
     @Override
@@ -50,5 +52,10 @@ public class CustomOAuth2User implements OAuth2User {
     public Long getUserNo() {
     	
     	return userDTO.getUserNo();
+    }
+    
+    public boolean getIsNewUser() {
+    	
+    	return isNewUser;
     }
 }

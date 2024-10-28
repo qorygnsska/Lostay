@@ -60,6 +60,9 @@ dependencies {
     
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    
+    // coolSMS
+    implementation 'net.nurigo:sdk:4.3.0'
 }
 
 tasks.named('test') {

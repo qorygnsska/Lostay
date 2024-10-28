@@ -63,10 +63,21 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         
         // 리프레쉬 토큰 Redis 저장
         addRefreshEntity(userNo, refreshToken);
-
-        // 응답 설정
         response.addCookie(createCookie("refresh", refreshToken));
-        response.sendRedirect("http://localhost:3000/login-popup?success=true");
+
+        // 첫 회원가입 확인
+        boolean isNewUser = customOAuth2User.getIsNewUser();
+        
+        if(isNewUser) {
+        	// 응답 설정
+        	response.sendRedirect("http://localhost:3000/login-phone?success=true");
+        }else {
+        	// 응답 설정
+            response.sendRedirect("http://localhost:3000/login-popup?success=true");
+        }
+        
+        
+        
     }
 
     // 쿠키 만들기

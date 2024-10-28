@@ -11,12 +11,13 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import { Provider } from "react-redux";
 
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // 효준
 import Home from "./pages/Home/Home"; // 메인 페이지
 import Login from "./pages/Login/Login"; // 로그인 페이지
 import LoginPopup from "./pages/Login/LoginPopup"; // 소셜 로그인 팝업 페이지
+import LoginPhone from "./pages/Login/LoginPhone"; // 소셜 휴대폰번호 인증 팝업 페이지
 import Payment from "./pages/MyPage/BookingHistory/Payment/Payment"; // 결제 내역 페이지
 import MyPage from "./pages/MyPage/MyPage"; // 마이페이지 - 메인
 import WishList from "./pages/MyPage/Wish/WishList"; // 마이페이지 - 찜 내역
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
             { index: true, element: <Home /> },
             { path: "/login", element: <Login /> },
             { path: "/login-popup", element: <LoginPopup /> },
+            { path: "/login-phone", element: <LoginPhone /> },
             { path: "/payment", element: <Payment /> },
             { path: "/mypage", element: <MyPage /> },
             { path: "/wishlist", element: <WishList /> },
