@@ -21,7 +21,7 @@
             .profile {
                 display: flex;
                 flex-direction: column;
-                gap: 20px;
+                gap: 10px;
 
                 .profile--child {
                     display: flex;
@@ -41,7 +41,7 @@
                         padding-right: 10px;
                         justify-content: space-between;
                         align-items: center;
-                        gap: 40px;
+                        gap: 12px;
 
                         input {
                             flex: 1;
@@ -52,9 +52,16 @@
                         input:not([readonly]) {
                             border-bottom: 1px solid black;
                         }
+
+                        .icon{
+                            width: 20px;
+                            height: 20px;
+                        }
                     }
                 }
             }
+
+        
 
             .nickname--edit--btn,
             .phone--edit--btn {
@@ -62,11 +69,12 @@
                 font-weight: bold;
                 width: 50px;
                 border-radius: 10px;
-                height: 35px;
+                height: 30px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 margin-left: 107px;
+                font-size: 15px;
             }
         }
 
@@ -75,8 +83,8 @@
             margin-top: 80px;
             width: 100%;
             background-color: #fff;
-            padding: 20px 15px;
-            font-size: 25px;
+            padding: 15px 15px;
+            font-size: 20px;
 
             left: 0;
             display: flex;
@@ -101,5 +109,28 @@
 
     .focus {
         cursor: pointer;
+    }
+
+    .wraning--message{
+        margin-left: 108px;
+        font-size: 12px;
+        color: var(--redColor);
+    }
+
+    .input--box{
+        margin-left: 107px;
+        
+    }
+    .send--num--btn {
+        border: none;
+        color: #fff;
+        background-color: var(--logoColor);
+        padding: 5px 9px;
+        border-radius: 5px;
+        margin-left: 10px;
+    }
+
+    .send--num--btn.disabled {
+        background-color: var(--lightGrayColor3);
     }
 }
