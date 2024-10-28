@@ -59,7 +59,9 @@ export default function HotelList(props) {
 
   // 무한 스크롤
   const [ref, inView] = useInView();
-  const [page, setPage] = useState(1);
+  const [hotels, setHotels] = useState([]); // 로딩된 호텔 목록
+  const [page, setPage] = useState(1); // 현재 페이지
+  const [hasMore, setHasMore] = useState(true); // 더 불러올 데이터가 있는지 여부
 
   const hotel = [
     {
@@ -244,36 +246,25 @@ export default function HotelList(props) {
     },
   ];
 
-  // // 더미 데이터 생성 함수
-  // const generateHotels = (page) => {
-  //   const newHotels = Array(10).fill().map((_, index) => ({
-  //     hotelNo: (page - 1) * 10 + index + 1,
-  //     hotelRating: '블랙·5성급·호텔',
-  //     hotelName: '제주신라호텔',
-  //     hotelAdress: '서귀포시',
-  //     ReviewRating: 9.6,
-  //     totalReviewCount: 901,
-  //     roomPrice: 300000,
-  //     roomDiscount: 10,
-  //     roomDcprice: 270000,
-  //     hotelThumbnail: '/HotelList/호텔1.jpg'
-  //   }));
-  //   return newHotels;
-  // };
 
-  // // 호텔 데이터를 로드하는 함수
-  // const loadMoreHotels = () => {
-  //   const newHotels = generateHotels(page);
-  //   setHotels((prevHotels) => [...prevHotels, ...newHotels]);
-  //   setPage((prevPage) => prevPage + 1);
-  // };
+  // 페이지별 데이터 로딩 함수
+  const loadMoreHotels = () => {
+    const newHotels = hotel.slice((page - 1) * 5, page * 5); // 5개씩 가져오기
 
-  // useEffect로 뷰포트에 들어갈 때마다 더 많은 호텔을 로드
-  useEffect(() => {
-    if (inView) {
-      
+    if (newHotels.length === 0) {
+      setHasMore(false); // 더 이상 데이터가 없으면 종료
+    } else {
+      setHotels((prevHotels) => [...prevHotels, ...newHotels]); // 기존 데이터에 추가
+      setPage((prevPage) => prevPage + 1); // 다음 페이지로 증가
     }
-  }, [inView]);
+  };
+
+  // 뷰포트에 들어올 때마다 데이터 로드
+  useEffect(() => {
+    if (inView && hasMore) {
+      loadMoreHotels();
+    }
+  }, [inView, hasMore]);
 
 
   // 모달
@@ -313,9 +304,11 @@ export default function HotelList(props) {
 
       <HotelModal props={props} show={show} handleClose={handleClose} />
 
-      <HotelGrid hotels={hotel} />
+      <HotelGrid hotels={hotels} />
+
+      
       {/* 뷰포트 안에 들어오면 더 많은 데이터를 로드 */}
-      <div ref={ref} style={{ height: '1px' }} />
+      {hasMore ? <div ref={ref} style={{ height: '1px' }} /> : <p id='NoHotel'>더 이상 호텔이 없습니다.</p>}
     </Container>
   )
 }

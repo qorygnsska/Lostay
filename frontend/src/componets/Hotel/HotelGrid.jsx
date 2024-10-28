@@ -10,37 +10,38 @@ export default function HotelGrid({hotels}) {
             {hotels.map((hotel) => (
                 <div className='HotelRow' key={hotel.id}>
                     <div className='HotelCol'>
-                    <img src={hotel.hotelThumbnail} alt='호텔이미지' className='HotelImg' />
-                    <div className='HotelInfo'>
-                        <div className='HotelRank'>{hotel.hotelRating}</div>
-                        <div className='HotelName'>{hotel.hotelName}{hotel.hotelNo}</div>
-                        <div className='HotelLo'>{hotel.hotelAdress}</div>
-                        <div className='StarDiv'>
-                        <div className='Star'>
-                            <FaStar className='StarIcon' />
-                            <div className='StarNum'>{hotel.ReviewRating}</div>
-                        </div>
-                        <span className='StarCount'>{hotel.totalReviewCount}명 평가</span>
-                        </div>
-                    </div>
-                    <div className='HotelPrice'>
-                        {hotel.roomDiscount > 0 ? (
-                            <>
-                            <div className='RealPrice'>{hotel.roomPrice.toLocaleString()}원</div>
-                            <div className='HotelDiscount'>
-                                <div className='Discount'>{hotel.roomDiscount}%</div>
-                                <div className='DiscountPrice'>{hotel.roomDcprice.toLocaleString()}원</div>
+                        <img src={hotel.hotelThumbnail} alt='호텔이미지' className='HotelImg' />
+                        <div className='HotelInfo'>
+                            <div className='HotelRank'>{hotel.hotelRating}</div>
+                            <div className='HotelName'>{hotel.hotelName}</div>
+                            <div className='HotelLo'>{hotel.hotelAdress}</div>
+                            <div className='StarDiv'>
+                            <div className='Star'>
+                                <FaStar className='StarIcon' />
+                                <div className='StarNum'>{hotel.ReviewRating}</div>
                             </div>
-                            </>
-                        ) : (
-                            <>
-                            <div className='HotelDiscount'>
-                                <div className='DiscountPrice'>{hotel.roomDcprice.toLocaleString()}원</div>
+                            <span className='StarCount'>{hotel.totalReviewCount}명 평가</span>
                             </div>
-                            </>
-                        )}
-                        
-                    </div>
+                        </div>
+                        <div className='HotelPrice'>
+                            {hotel.roomDiscount > 0 ? (
+                                <>
+                                <div className='RealPrice'>{hotel.roomPrice.toLocaleString()}원</div>
+                                <div className='HotelDiscount'>
+                                    <div className='Discount'>{hotel.roomDiscount}%</div>
+                                    <div className='DiscountPrice'>{hotel.roomDcprice.toLocaleString()}원</div>
+                                </div>
+                                </>
+                            ) : (
+                                <>
+                                <div className='HotelDiscount'>
+                                    <div className='Discount' style={{ visibility: 'hidden' }}>{hotel.roomDiscount}%</div>
+                                    <div className='DiscountPrice'>{hotel.roomDcprice.toLocaleString()}원</div>
+                                </div>
+                                </>
+                            )}
+                            
+                        </div>
                     </div>
                     <div className='RowLine'></div>
                 </div>
