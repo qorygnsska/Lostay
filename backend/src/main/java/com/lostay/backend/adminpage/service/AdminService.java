@@ -184,78 +184,105 @@ public class AdminService {
 	}
 
 	// 관리자 유저 리뷰 조회
-	//(1027 JIP 수정: Pageable type 변경)
-	//(1027 JIP 수정: return type을 List<> -> Object(Page<>)로 바꾸고 주석처리)
-	public Object adminReview(String userName, int pageIndex) {
-		System.out.println("AdminService adminReview 실행");
-		//PageRequest pageable = PageRequest.of(page, 10); // 페이지 요청
-		
+	// (1027 JIP 수정: Pageable type 변경)
+	// (1027 JIP 수정: return type을 List<> -> Object(Page<>)로 바꾸고 주석처리)
+	public Object getReviewList(boolean underSanction, String userName, int pageIndex) {
+		System.out.println("AdminService getReviewList 실행");
+		// PageRequest pageable = PageRequest.of(page, 10); // 페이지 요청
+
 		Pageable pageable = PageRequest.of(pageIndex, 10, Sort.by("reviewNo").descending());
 		System.out.println("pageable:" + pageable);
-		
-		//if (userName != null && !userName.isEmpty()) {
-		//	Page<AdminReviewDTO> reviewPage = reviewRepo.adminReviewPageSearch(userName, pageable);
-		//	List<AdminReviewDTO> adminReviewDTOList = reviewPage.getContent();
+
+		// if (userName != null && !userName.isEmpty()) {
+		// Page<AdminReviewDTO> reviewPage = reviewRepo.adminReviewPageSearch(userName,
+		// pageable);
+		// List<AdminReviewDTO> adminReviewDTOList = reviewPage.getContent();
 		//
-		//	for (AdminReviewDTO dto : adminReviewDTOList) {
-		//		dto.setPagesize(reviewPage.getTotalPages());
-		//	}
-		//	return adminReviewDTOList;
-		//} else {
-		//	Page<AdminReviewDTO> reviewPage = reviewRepo.adminReview(pageable);
-		//	List<AdminReviewDTO> adminReviewDTOList = reviewPage.getContent();
+		// for (AdminReviewDTO dto : adminReviewDTOList) {
+		// dto.setPagesize(reviewPage.getTotalPages());
+		// }
+		// return adminReviewDTOList;
+		// } else {
+		// Page<AdminReviewDTO> reviewPage = reviewRepo.adminReview(pageable);
+		// List<AdminReviewDTO> adminReviewDTOList = reviewPage.getContent();
 		//
-		//	for (AdminReviewDTO dto : adminReviewDTOList) {
-		//		dto.setPagesize(reviewPage.getTotalPages());
-		//	}
-		//	return adminReviewDTOList;
-		//}
+		// for (AdminReviewDTO dto : adminReviewDTOList) {
+		// dto.setPagesize(reviewPage.getTotalPages());
+		// }
+		// return adminReviewDTOList;
+		// }
+
+		if(underSanction) {
+			return reviewRepo.adminReviewPageSearchUnderSanction(userName, pageable);
+		} else {
+			return reviewRepo.adminReviewPageSearch(userName, pageable);
+		}
 		
-		return reviewRepo.adminReviewPageSearch(userName, pageable);
 	}
 
-	
-	// 관리자 페이지 유저 리뷰 삭제
-	public void updateById(Long reviewNo, LocalDate reviewSanctionsAt) {
-		log.info("AdminService deleteById 실행");
-		Review review = reviewRepo.findById(reviewNo)
-				.orElseThrow(() -> new EntityNotFoundException("review not found"));
-		review.setReviewSanctionsAt(reviewSanctionsAt);
-		reviewRepo.save(review);
+	// 관리자 페이지 유저 리뷰 삭제//(1028 JIP 수정)
+	// return type: void -> boolean
+	public boolean updateReview(Long reviewNo) {
+		//log.info("AdminService updateReview 실행");
 
+		boolean result = false;
+		try {
+			
+			Review review = reviewRepo.findById(reviewNo)
+					.orElseThrow(() -> new EntityNotFoundException("review not found"));
+			
+			//제재 일자를 프론트에서 매개변수로 받아오지 않고 
+			//백에서 수정하는 당시의 일자 객체를 생성
+			LocalDate reviewSanctionsAt = LocalDate.now();
+			review.setReviewSanctionsAt(reviewSanctionsAt);
+	
+			//entity 재설정(Transactional이기 때문에 entity값만 재설정해주면 save가 됨
+			//reviewRepo.save(review);
+			
+			//System.out.println("수정(제재)된 review: " + review);
+			result = true;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
-	
-	
+
 	// 관리자 유저 정보 조회
-	//(1027 JIP 수정: Pageable type 변경)
-	//(1027 JIP 수정: return type을 List<> -> Object(Page<>)로 바꾸고 주석처리)
-	public Object adminUserSearch(String userName, int pageIndex) {
+	// (1027 JIP 수정: Pageable type 변경)
+	// (1027 JIP 수정: return type을 List<> -> Object(Page<>)로 바꾸고 주석처리)
+	public Object adminUserSearch(boolean inactive, String userName, int pageIndex) {
 		System.out.println("AdminService adminUserSearch 실행");
-		
-		//PageRequest pageable = PageRequest.of(pageIndex, 10); // 페이지 요청
+
+		// PageRequest pageable = PageRequest.of(pageIndex, 10); // 페이지 요청
 		Pageable pageable = PageRequest.of(pageIndex, 10, Sort.by("userNo").descending());
 		System.out.println("pageable:" + pageable);
+
+		// if (userName != null && !userName.isEmpty()) {
+		// Page<AdminUserSerarchDTO> userPage = userRepo.adminUserPageSearch(userName,
+		// pageable);
+		// List<AdminUserSerarchDTO> adminUserSerarchDTOList = userPage.getContent();
+
+		// for (AdminUserSerarchDTO dto : adminUserSerarchDTOList) {
+		// dto.setPagesize(userPage.getTotalPages());
+		// }
+		// return adminUserSerarchDTOList;
+		// } else {
+		// Page<AdminUserSerarchDTO> userPage = userRepo.adminUserPage(pageable);
+		// List<AdminUserSerarchDTO> adminUserSerarchDTOList = userPage.getContent();
+		// for (AdminUserSerarchDTO dto : adminUserSerarchDTOList) {
+		// dto.setPagesize(userPage.getTotalPages());
+		// }
+
+		// return adminUserSerarchDTOList;
+		// }
 		
-		//if (userName != null && !userName.isEmpty()) {
-		//	Page<AdminUserSerarchDTO> userPage = userRepo.adminUserPageSearch(userName, pageable);
-		//	List<AdminUserSerarchDTO> adminUserSerarchDTOList = userPage.getContent();
-
-		//	for (AdminUserSerarchDTO dto : adminUserSerarchDTOList) {
-		//		dto.setPagesize(userPage.getTotalPages());
-		//	}
-		//	return adminUserSerarchDTOList;
-		//} else {
-		//	Page<AdminUserSerarchDTO> userPage = userRepo.adminUserPage(pageable);
-		//	List<AdminUserSerarchDTO> adminUserSerarchDTOList = userPage.getContent();
-		//	for (AdminUserSerarchDTO dto : adminUserSerarchDTOList) {
-		//		dto.setPagesize(userPage.getTotalPages());
-		//	}
-
-		//	return adminUserSerarchDTOList;
-		//}
-		return userRepo.adminUserPageSearch(userName, pageable);
+		if(inactive) {
+			return null;
+		} else {
+			return userRepo.adminUserPageSearch(userName, pageable);
+			
+		}
+		
 	}
-
-
 
 }

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react'
 
 
@@ -37,7 +38,8 @@ export default function CompAdminBtn(props) {
     try {
       // async function & await fetch : 'synchronous' request-response pair
       const response = await fetch(`http://localhost:9090/adminEvent/${props.no}`, { method: 'DELETE' });
-
+      //console.log(response.ok);
+      
       if (response.ok) {
         alert('이벤트를 정상적으로 삭제했습니다.');
         window.location.href = "/admin-event"; //refreshing window
@@ -52,18 +54,32 @@ export default function CompAdminBtn(props) {
     }
   }
 
-  // 리뷰 '숨김' 버튼 클릭 시
-  async function hideReview() {
-
-    //axios&then으로 처리
-    console.log('안녕');
-
+  // 리뷰 '제재' 버튼 클릭 시
+  function hideReview() {
+    //axios&then으로 처리 // async&await이나 then()은 같은 것
+    axios.put(`http://localhost:9090/adminReview/${props.no}`)
+      .then(response => {
+        //console.log('response: ' + response);
+        //console.log('response.ok: ' + response.ok);
+        //console.log('response.data: ' + response.data);
+        if(response.status===200) {
+          alert('해당 리뷰를 숨김 처리했습니다.');
+          window.location.href = "/admin-review";
+        }else {
+          console.log('response.status: ' + response.status);
+          alert('서버와 통신이 원활하지 않습니다.');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        alert('서버와 통신이 원활하지 않습니다.');
+      })
   }
 
   
   return (  //Customized Button
     <>
-      <button className='comp--admin--btn--container' onClick={clickhandler}>{props.children}</button>
+      <button className={`comp--admin--btn--container ${props.disable?"btn_disabled":""}`} onClick={clickhandler} disabled={props.disable}>{props.children}</button>
     </>
   )
 }
