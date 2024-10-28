@@ -11,7 +11,7 @@ export default function PageReviewManager() {
     //default: 전체 보기 vs 숨긴 리뷰만 보기
     const [viewUnderSanction, setViewUnderSanction] = useState(false);
 
-    //하위요소가 넘겨줄 값을 담을 변수
+    //하위요소(검색창)가 넘겨줄 값을 담을 변수
     const [text_fromChild, setText_fromChild] = useState('');
 
     //하위요소가 값을 넘겨주면 실행할 함수
@@ -67,7 +67,7 @@ export default function PageReviewManager() {
 
         //인증 토큰 연계한 Axios 'GET' request by privateApi(Customized Comp)
         // async&await이나 then()은 같은 것
-        axios.get(`http://localhost:9090/adminReview?underSanction=${underSanction}&userName=${userName}&page=${requestedPage}`)
+        axios.get(`http://localhost:9090/adminReviewList?underSanction=${underSanction}&userName=${userName}&page=${requestedPage}`)
             .then(response => {
                 //console.log(response);
                 console.log(response.data);
@@ -75,7 +75,7 @@ export default function PageReviewManager() {
                 setPageCount(response.data.totalPages); // Page<DTO>.getTotalPages()
 
                 //////////////////////임시데이터
-                if(response.data.totalPages===0) {
+                if (response.data.totalPages === 0) {
                     setReviewList([review1, review2]);
                     setPageCount(1);
                 }
@@ -103,13 +103,11 @@ export default function PageReviewManager() {
 
                 <Container id='container_section'>
 
+                    {/*<p className='mb-2'>하위컴포넌트(검색창)가 준 값: {text_fromChild}</p>*/}
                     <div className='d-flex justify-content-end mb-3'>
-                        {/*<p className='mb-2'>하위컴포넌트(검색창)가 준 값: {text_fromChild}</p>*/}
                         {/* 하위요소를 생성하면서, 상위요소를 부르면 실행할 함수명을 지정 */}
-                        <div className="d-flex">
-                            <Form.Switch id="switch_viewer" label="'비공개' 보기" onClick={() => setViewUnderSanction(!viewUnderSanction)} />
-                            <CompAdminSearch where={'admin-review'} callParent={functionForMyChild} />
-                        </div>
+                        <Form.Switch id="switch_viewer" label="'비공개' 보기" onClick={() => setViewUnderSanction(!viewUnderSanction)} />
+                        <CompAdminSearch where={'admin-review'} callParent={functionForMyChild} />
                     </div>
 
                     <Table striped bordered hover id='table_entire_review'>
@@ -138,6 +136,11 @@ export default function PageReviewManager() {
                             {reviewList.map(function (review, index) {
                                 const eachDate = new Date(review.reviewCreateAt);
 
+                                let alreadySanctioned = false;
+                                if (review.reviewSanctionsAt !== null) {//날짜가 들어있으면 이미 제재 당함
+                                    alreadySanctioned = true;
+                                }
+
                                 return (
                                     <tr key={index}>
                                         <td className="review_no">{review.reviewNo}</td>
@@ -146,10 +149,10 @@ export default function PageReviewManager() {
                                         <td className="room_name">{review.roomName}</td>
                                         <td className="review_rating">{review.reviewRating}</td>
                                         <td className="review_content">{review.reviewContent}</td>
-                                        <td className="review_date">{dateFormatter(eachDate)}}</td>
+                                        <td className="review_date">{dateFormatter(eachDate)}</td>
                                         <td className="btn_container">
                                             {/*수정 또는 삭제 버튼에 어디서 뭘 누르는지 알려주기 */}
-                                            <CompAdminBtn whoAreYou={'hide_review'} no={review.reviewNo} >숨김</CompAdminBtn>
+                                            <CompAdminBtn whoAreYou={'hide_review'} no={review.reviewNo} disable={alreadySanctioned} >제재</CompAdminBtn>
                                         </td>
                                     </tr>
                                 )

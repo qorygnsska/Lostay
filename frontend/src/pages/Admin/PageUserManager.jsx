@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import CompHeaderAdmin from '../../componets/Header/CompHeaderAdmin'
-import { Container, Pagination, Table } from 'react-bootstrap'
+import { Container, Form, Pagination, Table } from 'react-bootstrap'
 import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
 import axios from 'axios';
 
 export default function PageUserManager() {
 
-    //활성유저만 보기, 비활성 유저만 보기 등등 필터 넣을건지?
+    //default: 전체 보기 vs 비활성 유저만 보기
+    const [viewInactive, setViewInactive] = useState(false);
 
-
-    //하위요소가 넘겨줄 값을 담을 변수
+    //하위요소(검색창)가 넘겨줄 값을 담을 변수
     const [text_fromChild, setText_fromChild] = useState('');
 
     //하위요소가 값을 넘겨주면 실행할 함수
@@ -59,13 +59,13 @@ export default function PageUserManager() {
     };
     //////////////////////임시데이터
 
-    const getUserList = (userName, requestedPage) => {
+    const getUserList = (inactive ,userName, requestedPage) => {
 
         console.log(`getUser userName: ${userName} page: ${requestedPage}`);
 
         //인증 토큰 연계한 Axios 'GET' request by privateApi(Customized Comp)
         // async&await이나 then()은 같은 것
-        axios.get(`http://localhost:9090/adminUserSearch?userName=${userName}&page=${requestedPage}`)
+        axios.get(`http://localhost:9090/adminUserList?inactive=${inactive}&userName=${userName}&page=${requestedPage}`)
             .then(response => {
                 //console.log(response);
                 console.log(response.data);
@@ -73,7 +73,7 @@ export default function PageUserManager() {
                 setPageCount(response.data.totalPages); // Page<DTO>.getTotalPages()
 
                 //////////////////////임시데이터
-                if(response.data.totalPages===0) {
+                if (response.data.totalPages === 0) {
                     setUserList([user1, user2]);
                     setPageCount(1);
                 }
@@ -90,8 +90,8 @@ export default function PageUserManager() {
     //1st arg getUserList() : getUserList 메서드에 effect 사용
     //2nd arg [] : 빈 배열이면 처음 마운트될 때만 실행,,, 배열에 담긴 변수가 변할 때마다 실행하려 re-rendering
     useEffect(() => {
-        getUserList(text_fromChild, activePage);
-    }, [text_fromChild, activePage]);
+        getUserList(viewInactive, text_fromChild, activePage);
+    }, [viewInactive, text_fromChild, activePage]);
 
 
     return (
@@ -102,6 +102,7 @@ export default function PageUserManager() {
                 <Container id='container_section'>
 
                     <div className='d-flex justify-content-end mb-3'>
+                        <Form.Switch id="switch_viewer" label="'비활성' 보기" onClick={() => setViewInactive(!viewInactive)} />
                         <CompAdminSearch where={'admin-user'} callParent={functionForMyChild} />
                     </div>
 
@@ -115,7 +116,7 @@ export default function PageUserManager() {
                                 <th className="user_phone">전화번호</th>
                                 <th className="user_cDate">가입일</th>
                                 <th className="user_point">포인트</th>
-                                <th className="user_stat">계정 상태</th>
+                                <th className="user_stat">활성</th>
                             </tr>
                         </thead>
                         <tbody id="table_body">

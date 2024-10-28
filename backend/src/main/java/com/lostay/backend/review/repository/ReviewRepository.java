@@ -76,6 +76,18 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	           "WHERE u.userName LIKE CONCAT('%', :userName, '%')")
 	Page<AdminReviewDTO> adminReviewPageSearch(@Param("userName") String userName, Pageable pageable);
 
+	 
+	 //관리자 페이지 유저 리뷰 조회(작성자 조건검색 + 현재 제재중인 것만 보기)
+	 @Query("SELECT new com.lostay.backend.adminpage.dto.AdminReviewDTO(r.reviewNo ,u.userName,h.hotelName, rm.roomName, r.reviewRating, r.reviewContent,r.reviewCreateAt,r.reviewSanctionsAt) " +
+	           "FROM Review r " +
+	           "JOIN r.user u " +
+	           "JOIN r.room rm " +
+	           "JOIN rm.hotel h " +
+	           "WHERE u.userName LIKE CONCAT('%', :userName, '%')" +
+	           "AND r.reviewSanctionsAt IS NOT NULL " )
+	 Page<AdminReviewDTO> adminReviewPageSearchUnderSanction(@Param("userName")String userName, Pageable pageable);
+
+	 
 	//관리자 페이지 유저 리뷰 조회
 	 @Query("SELECT new com.lostay.backend.adminpage.dto.AdminReviewDTO(r.reviewNo ,u.userName,h.hotelName, rm.roomName, r.reviewRating, r.reviewContent,r.reviewCreateAt,r.reviewSanctionsAt) " +
 	           "FROM Review r " +
@@ -169,6 +181,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	           "AND rv.reviewSanctionsAt IS NULL " +
 	    		"ORDER BY rv.reviewRating ASC") // 평점 낮은 순
 	    List<Object[]> findReviewsByRatingAsc(@Param("hotelNo") Long hotelNo, @Param("roomNo") Long roomNo);
+
 	
 	
 	
