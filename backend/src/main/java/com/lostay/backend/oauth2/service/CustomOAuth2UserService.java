@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lostay.backend.oauth2.dto.GoogleResponse;
+import com.lostay.backend.oauth2.dto.KakaoResponse;
 import com.lostay.backend.oauth2.dto.NaverResponse;
 import com.lostay.backend.oauth2.dto.OAuth2Response;
 import com.lostay.backend.user.dto.UserDTO;
@@ -35,22 +36,24 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     	OAuth2User oAuth2User = super.loadUser(userRequest);
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         
-        
+        System.out.println(oAuth2User.getAttributes());
         OAuth2Response oAuth2Response = null;
         if (registrationId.equals("naver")) { oAuth2Response = new NaverResponse(oAuth2User.getAttributes()); } 
         else if (registrationId.equals("google")) { oAuth2Response = new GoogleResponse(oAuth2User.getAttributes()); } 
-        else if (registrationId.equals("kakao")) {oAuth2Response = new GoogleResponse(oAuth2User.getAttributes()); }
+        else if (registrationId.equals("kakao")) {oAuth2Response = new KakaoResponse(oAuth2User.getAttributes()); }
         else { return null;}
 
         String userProviderId = oAuth2Response.getProvider()+"_"+oAuth2Response.getProviderId();
         User existData = userRepository.findByUserProviderId(userProviderId);
         if (existData == null) {
-
-            String nickname = getNickname(); 
+        	
+            String nickname = getNickname();
             
             UserDTO userDTO = createUser(oAuth2Response, userProviderId, nickname);
-   
-            return new CustomOAuth2User(userDTO);
+            
+            boolean isNewUser = true;
+            
+            return new CustomOAuth2User(userDTO,isNewUser);
         } else {
         	
         	updateUser(existData, oAuth2Response);
@@ -63,7 +66,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userDTO.setUserProviderId(existData.getUserProviderId());
             userDTO.setUserRole(existData.getUserRole());
 
-            return new CustomOAuth2User(userDTO);
+            boolean isNewUser = false;
+            if(existData.getUserPhone() == null) {
+            	isNewUser = true;
+            }
+            
+            
+            return new CustomOAuth2User(userDTO,isNewUser);
         }
     }
     

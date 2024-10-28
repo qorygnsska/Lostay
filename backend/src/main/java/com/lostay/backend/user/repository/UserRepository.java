@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	User findByUserProviderId(String userProviderId);
 
 	boolean existsByUserNickname(String nickname);
-
+	User findByUserNo(Long userNo);
 	
 	
 	
@@ -45,7 +45,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	          )
 	Page<AdminUserDTO> adminUserPage(PageRequest pageable);
 
+
 	 
 	 
-	
 }

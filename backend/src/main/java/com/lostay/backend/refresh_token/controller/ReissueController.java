@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lostay.backend.jwt.JWTUtil;
 import com.lostay.backend.refresh_token.service.RefreshTokenService;
+import com.lostay.backend.user.entity.User;
 import com.lostay.backend.user.repository.UserRepository;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -27,10 +29,10 @@ public class ReissueController {
 
 	private final JWTUtil jwtUtil;
 
-    private final RefreshTokenService refreshTokenService;
+	private final RefreshTokenService refreshTokenService;
+	private final UserRepository userRepo;
 	private Long refreshTkExpired = 24 * 60 * 60 * 1000L; // 1일
 	private Long accessTkExpired = 60 * 60 * 1000L; // 1시간
-
 
 	@PostMapping("/reissue")
 	public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
@@ -38,7 +40,7 @@ public class ReissueController {
 		// 쿠키에서 리프레쉬토큰 가져오기
 		String refresh = null;
 		Cookie[] cookies = request.getCookies();
-	
+
 		if (cookies == null) {
 			return new ResponseEntity<>("No cookies found", HttpStatus.BAD_REQUEST);
 		}
@@ -60,11 +62,11 @@ public class ReissueController {
 			jwtUtil.isExpired(refresh);
 		} catch (ExpiredJwtException e) {
 			String userProviderId = refreshTokenService.getKey(refresh);
-			
-			if(userProviderId != null) {
-				refreshTokenService.delete(userProviderId);	
+
+			if (userProviderId != null) {
+				refreshTokenService.delete(userProviderId);
 			}
-			
+
 			return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
 		}
 
@@ -73,10 +75,10 @@ public class ReissueController {
 		if (!category.equals("refresh")) {
 			return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
 		}
-		
+
 		// 토큰 DB에 저장되어 있는지 확인
 		Boolean isExist = refreshTokenService.existsRefreshToken(refresh);
-		if (!isExist) {			
+		if (!isExist) {
 			return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
 		}
 
@@ -90,32 +92,31 @@ public class ReissueController {
 
 		System.out.println("기존 리프레쉬 토큰" + refresh);
 		System.out.println("새로운 리프레쉬 토큰" + newRefresh);
-		
+
 		// Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
 //		String userProviderId = refreshTokenService.getKey(newRefresh);
 //		
 //		RefreshTokenDTO refreshTokenDTO = new RefreshTokenDTO();
 //		refreshTokenDTO.setUserProviderId(userProviderId);
 //		refreshTokenDTO.setRefreshToken(newRefresh);			
-		
+
 		refreshTokenService.update(refresh, newRefresh, userNo);
-		
-		
+
 		// 응답 설정
-		//response.setHeader("Access-Control-Expose-Headers", "access");
+		// response.setHeader("Access-Control-Expose-Headers", "access");
 		response.setHeader("Authorization", "Bearer " + newAccess);
 		response.addCookie(createCookie("refresh", newRefresh));
-		
+
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/newAccess")
 	public ResponseEntity<?> newAccess(HttpServletRequest request, HttpServletResponse response) {
 
 		// 쿠키에서 리프레쉬토큰 가져오기
 		String refresh = null;
 		Cookie[] cookies = request.getCookies();
-	
+
 		if (cookies == null) {
 			return new ResponseEntity<>("No cookies found", HttpStatus.BAD_REQUEST);
 		}
@@ -127,6 +128,40 @@ public class ReissueController {
 			}
 		}
 
+		return createAccess(request, response, refresh);
+	}
+
+	@PostMapping("/newAccess/{phonenum}")
+	public ResponseEntity<?> newAccessFirst(HttpServletRequest request, HttpServletResponse response,@PathVariable("phonenum") String phoneNum) {
+		// 쿠키에서 리프레쉬토큰 가져오기
+		String refresh = null;
+		Cookie[] cookies = request.getCookies();
+
+		if (cookies == null) {
+			return new ResponseEntity<>("No cookies found", HttpStatus.BAD_REQUEST);
+		}
+
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals("refresh")) {
+
+				refresh = cookie.getValue();
+			}
+		}
+		
+		// 전화번호 저장
+		Long userNo = jwtUtil.getUserNo(refresh);
+		phoneNum = phoneNum.replace("-", "");
+		System.out.println("phtone 번호" + phoneNum);
+		User userEntity = userRepo.findByUserNo(userNo);
+		userEntity.setUserPhone(phoneNum);
+		
+		userRepo.save(userEntity);
+		
+		return createAccess(request, response, refresh);
+	}
+
+	private ResponseEntity<?> createAccess(HttpServletRequest request, HttpServletResponse response, String refresh) {
+
 		// 토큰 존재여부 확인
 		if (refresh == null) {
 			return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
@@ -136,13 +171,13 @@ public class ReissueController {
 		try {
 			jwtUtil.isExpired(refresh);
 		} catch (ExpiredJwtException e) {
-			
+
 			String userProviderId = refreshTokenService.getKey(refresh);
-			
-			if(userProviderId != null) {
-				refreshTokenService.delete(userProviderId);	
-			}			
-			
+
+			if (userProviderId != null) {
+				refreshTokenService.delete(userProviderId);
+			}
+
 			return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
 		}
 
@@ -160,10 +195,11 @@ public class ReissueController {
 		String newAccess = jwtUtil.createJwt("access", username, role, userNo, accessTkExpired);
 
 		// 응답 설정
-		//response.setHeader("Access-Control-Expose-Headers", "access");
+		// response.setHeader("Access-Control-Expose-Headers", "access");
 		response.setHeader("Authorization", "Bearer " + newAccess);
 
 		return new ResponseEntity<>(HttpStatus.OK);
+
 	}
 
 	// 쿠키 만들기
