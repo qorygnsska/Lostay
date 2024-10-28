@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +24,7 @@ import com.lostay.backend.mypage.dto.MypageDTO;
 import com.lostay.backend.mypage.dto.MypageEditInfoDTO;
 import com.lostay.backend.mypage.dto.MypageCartListDTO;
 import com.lostay.backend.mypage.dto.ReviewpageDTO;
+import com.lostay.backend.redis.repository.RedisRepository;
 import com.lostay.backend.review.entity.Review;
 import com.lostay.backend.review.repository.ReviewRepository;
 import com.lostay.backend.room.repository.RoomRepository;
@@ -41,6 +46,9 @@ public class MypageService {
 	
 	@Autowired
 	private CartRepository cartRepo;
+	
+	@Autowired
+	private RedisRepository redisRepo;
 	
 	//mypage화면 조회
 	public Object myPageInfo(Long userNo) {
@@ -157,9 +165,35 @@ public class MypageService {
 		return userdto;
 		
 	}
-	
-	
 
+	public void userUnsubscribe(Long userNo) {
+		log.info("MypageService userUnsubscribe 실행");
+		
+		Optional<User> userEntityOptional = userRepo.findById(userNo);	  
+		
+		User userEntity = userEntityOptional.orElseThrow(() -> new RuntimeException("User not found"));
+		
+		// 탈퇴한 유저로 수정
+		userEntity.setUserStatus("N");
+		
+		// Redis 삭제
+		String key = userEntity.getUserProviderId();
+		System.out.println(key);
+		redisRepo.deleteById(key);
+	}
 
+	public void userLogout(Long userNo) {
+		log.info("MypageService userLogout 실행");
+		
+		Optional<User> userEntityOptional = userRepo.findById(userNo);	  
+		
+		User userEntity = userEntityOptional.orElseThrow(() -> new RuntimeException("User not found"));
+		
+		// Redis 삭제
+		String key = userEntity.getUserProviderId();
+		System.out.println(key);
+		redisRepo.deleteById(key);	
+	}
+	
 
 }

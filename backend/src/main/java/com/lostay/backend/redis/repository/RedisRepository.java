@@ -11,4 +11,5 @@ public interface RedisRepository extends CrudRepository<RefreshToken, String>{
 	Optional<RefreshToken> findByRefreshToken(String refreshToken);
 	Optional<RefreshToken> findByUserProviderId(String userProviderId);
 	Optional<RefreshToken> findUserProviderIdByRefreshToken(String refreshToken);
+	void deleteByUserProviderId(String key);
 }
