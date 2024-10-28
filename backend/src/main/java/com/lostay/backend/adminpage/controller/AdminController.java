@@ -85,7 +85,6 @@ public class AdminController {
 		// System.out.println(dto);
 		// System.out.println(thumbnail);
 		// System.out.println(image);
-
 		boolean result = adminService.updateEvent(dto, thumbnail, image);
 
 		if (result) {
@@ -157,5 +156,30 @@ public class AdminController {
 
 		return new ResponseEntity<>(adminService.getUserList(inactive, userName, page - 1), HttpStatus.OK);
 	}
+	
+	
+	
+	//홍정훈(관리자 페이지 호텔.객실 텝 정보 조회)
+		@GetMapping("/adminhotelsList")
+		public ResponseEntity<?> adminEventList(@RequestParam(defaultValue = "1") int page) {
+			
+			return new ResponseEntity<>(adminService.getHotels(page-1), HttpStatus.OK);
+		}
+
+		//홍정훈(관리자 페이지 호텔.객실 텝 객실 할인율 수정)
+		@PutMapping("/adminhotelsListUpdate")
+		public ResponseEntity<?> adminhotelsListUpdate(Long roomNo,int roomDiscount) {
+
+		
+			boolean result = adminService.updateRoomDiscount(roomNo,roomDiscount);
+
+			if (result) {
+				return new ResponseEntity<>("room has been modified", HttpStatus.OK);
+			} else {
+				return ResponseEntity.notFound().build();// code 404
+			}
+		}
+	
+	
 
 }
