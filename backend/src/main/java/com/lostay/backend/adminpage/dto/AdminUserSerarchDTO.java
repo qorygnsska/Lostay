@@ -21,20 +21,22 @@ public class AdminUserSerarchDTO {
 	private int userPoint;			// 회원포인트
 	private String userStatus;		// 탈퇴여부
 	
-	private int pagesize; // 총 페이지 수
+	
+	//(1027 JIP 수정: 개별DTO 필드변수에서 pagesize 제거)
+	//private int pagesize; // 총 페이지 수
 
-	public AdminUserSerarchDTO(Long userNo, String userName, String userNickname, String userEmail, String userPhone,
-			String userCreateAt, int userPoint, String userStatus) {
-		super();
-		this.userNo = userNo;
-		this.userName = userName;
-		this.userNickname = userNickname;
-		this.userEmail = userEmail;
-		this.userPhone = userPhone;
-		this.userCreateAt = userCreateAt;
-		this.userPoint = userPoint;
-		this.userStatus = userStatus;
-	}
+	//public AdminUserSerarchDTO(Long userNo, String userName, String userNickname, String userEmail, String userPhone,
+	//		String userCreateAt, int userPoint, String userStatus) {
+	//	super();
+	//	this.userNo = userNo;
+	//	this.userName = userName;
+	//	this.userNickname = userNickname;
+	//	this.userEmail = userEmail;
+	//	this.userPhone = userPhone;
+	//	this.userCreateAt = userCreateAt;
+	//	this.userPoint = userPoint;
+	//	this.userStatus = userStatus;
+	//}
 	
 	
 	

@@ -4,18 +4,24 @@
     position: absolute;
     left: 0;
 
-    #section_container {
+
+
+    .form-switch {
+        margin-right: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+
+    #container_section {
         max-width: 100%;
         padding-top: 12px;
-
 
         .table {
             text-align: center;
         }
-
-
     }
-
 
 }
 
@@ -30,54 +36,102 @@
 .page--event--manager--container {
     /* 관리자 이벤트페이지 */
 
-    #btn_enroll {
-        /* '이벤트 등록' 버튼 */
-    }
-
-    .form-switch {
-        margin-right: 12px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-
-
     #table_entire_event {
 
         .event_no {
-            width: 15%;
+            width: 10%;
         }
 
         .event_title {
-            width: 30%;
+            width: 40%;
         }
 
         .event_period {
-            width: 40%;
+            width: 35%;
         }
 
         .btn_container {
             width: 15%;
         }
     }
-
-
-
 }
 
 
 .page--review--manager--container {
     /* 관리자 리뷰페이지 */
 
+    #table_entire_review {
 
+        .review_no {
+            width: 5%;
+        }
 
+        .user_name {
+            width: 7.5%;
+        }
+
+        .hotel_name {
+            width: 15%;
+        }
+
+        .room_name {
+            width: 22.5%;
+        }
+
+        .review_rating {
+            width: 5%;
+        }
+
+        .review_content {
+            width: 25%;
+        }
+
+        .review_date {
+            width: 12.5%;
+        }
+
+        .btn_container {
+            width: 7.5%;
+        }
+    }
 }
 
 
 .page--user--manager--container {
     /* 관리자 사용자페이지 */
 
+    #table_entire_user {
 
+        .user_no {
+            width: 7.5%;
+        }
 
+        .user_name {
+            width: 10%;
+        }
+
+        .user_nick {
+            width: 15%;
+        }
+
+        .user_email {
+            width: 20%;
+        }
+
+        .user_phone {
+            width: 15%;
+        }
+
+        .user_cDate {
+            width: 12.5%;
+        }
+
+        .user_point {
+            width: 10%;
+        }
+
+        .user_stat {
+            width: 10%;
+        }
+    }
 }
