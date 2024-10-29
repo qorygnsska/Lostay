@@ -67,7 +67,7 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 	@Query("SELECT new com.lostay.backend.room.dto.RoomListHotelInfoDTO( "
 		  + "h.hotelNo ,h.hotelRating, h.hotelName, COALESCE(AVG(rv.reviewRating), 0.0), "
 		  + "COUNT(rv.reviewNo), h.hotelAdress, "
-		  + "h.hotelIntroduction, h.hotelAmenities, h.hotelThumbnail "
+		  + "h.hotelIntroduction, h.hotelAmenities, h.hotelImage "
 		  + ") from Hotel h "
 		  + "LEFT JOIN h.rooms r "
 		  + "LEFT JOIN r.reviews rv "
