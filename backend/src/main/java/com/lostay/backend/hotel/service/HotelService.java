@@ -39,9 +39,9 @@ public class HotelService {
             orderByColumn = "overallAverageReviewRating"; // 기본 정렬 기준
         } else {
             switch (sort) {
-            	case "평점 높은 순":
-            		orderByColumn = "overallAverageReviewRating";
-            		break;
+                case "평점 높은 순":
+                    orderByColumn = "overallAverageReviewRating";
+                    break;
                 case "리뷰 많은 순":
                     orderByColumn = "totalReviewCount";
                     break;
@@ -91,8 +91,7 @@ public class HotelService {
                 "          AND rs.checkOut > :checkIn " +
                 "    ) " +
             "GROUP BY " +
-                "    h.hotelNo, h.hotelName, h.hotelRating, h.hotelThumbnail " +
-            "HAVING COUNT(r.roomNo) > 0 " // 기본 조건 추가
+                "    h.hotelNo, h.hotelName, h.hotelRating, h.hotelThumbnail "
         );
 
         // 어메니티 조건 추가
@@ -113,8 +112,11 @@ public class HotelService {
         }
 
         // soldOut 조건 추가
-        if (soldOut == 0) {
-            query.append(" AND COUNT(r.roomNo) > 0 "); // 매진된 숙소 제외
+        if (soldOut == 1) {  	
+            query.append("HAVING COUNT(r.roomNo) > 0 "); // 매진되지 않은 호텔만 포함
+        } else if (soldOut == 0) {
+        
+            query.append("HAVING COUNT(r.roomNo) >= 0 "); // 전부 포함
         }
 
         // roomDiscountState 조건 추가
@@ -176,6 +178,4 @@ public class HotelService {
 
         return hotHotelDTOList;
     }
-
-    
 }
