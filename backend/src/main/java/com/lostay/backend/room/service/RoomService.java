@@ -81,7 +81,10 @@ public class RoomService {
 	//  해당 객실에 대한 정보 조회
 	public RoomDTO findRoomInfo(long roomNo,LocalDateTime checkInDate, LocalDateTime checkOutDate, int peopleMax) {
 		
-		Long hotelNo = hotelRepo.findByRoom_RoomNo(roomNo);
+		Optional<Room> newRoom2 = roomRepo.findById(roomNo);
+		Room room2 = newRoom2.get();
+		
+		Long hotelNo = room2.getHotel().getHotelNo();
 		
 		List<RoomCustomDTO> list = roomRepo.findRoomCumstomList(hotelNo,checkInDate,checkOutDate);
 		Long avc = 0L;

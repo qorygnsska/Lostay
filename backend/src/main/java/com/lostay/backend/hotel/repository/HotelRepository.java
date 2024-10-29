@@ -99,14 +99,8 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
 			       "GROUP BY h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission")
 		Page<HotelInfosDTO> findBYHotelsInfo(Pageable pageable);
 
-
-		Long findByRoom_RoomNo(long roomNo);
-
-
-		
-
-
-		
+		 
+		 
 	
 //	@Query("SELECT " +
 //		       "h.hotelNo, " +

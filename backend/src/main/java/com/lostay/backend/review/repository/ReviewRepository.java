@@ -101,9 +101,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	 // 객실에 대한 리뷰 최근 3개
 	 @Query("select rv.reviewContent, rv.reviewCreateAt, rv.reviewRating "
 				+ ", r.roomNo, u.userNo, r.roomName, rv.reviewNo from Review rv "
-				+ "Join rv.room r "
-				+ "Join r.hotel h "
-				+ "Join rv.user u "
+				+ "LEFT JOIN rv.room r "
+				+ "LEFT JOIN r.hotel h "
+				+ "LEFT JOIN rv.user u "
 				+ "Where rv.room.roomNo = :roomNo "
 				+ "ORDER BY rv.reviewCreateAt DESC ")	
 	List<Object[]> findRoomReview3(@Param("roomNo")long roomNo, Pageable pageable);
@@ -169,5 +169,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	           "AND rv.reviewSanctionsAt IS NULL " +
 	    		"ORDER BY rv.reviewRating ASC") // 평점 낮은 순
 	    List<Object[]> findReviewsByRatingAsc(@Param("hotelNo") Long hotelNo, @Param("roomNo") Long roomNo);
+
 
 }
