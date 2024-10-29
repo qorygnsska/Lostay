@@ -184,29 +184,39 @@ public class ReviewService {
 
 		Pageable pageable = PageRequest.of(0, 3); // 첫 번째 페이지, 3개 항목
 
-		List<Object[]> ReviewList = revRepo.findHotelReview3(hotelNo, pageable);
 		List<ReviewDTO> dtoList = new ArrayList<ReviewDTO>();
+		long num = revRepo.findHotelReviewCount(hotelNo);
+		
+		if(num > 0) {
+			List<Object[]> ReviewList = revRepo.findHotelReview3(hotelNo, pageable);
 
-		double reviewAvg = revRepo.findHotelReviewAvg(hotelNo);
-		long reviewCount = revRepo.findHotelReviewCount(hotelNo);
+			double reviewAvg = revRepo.findHotelReviewAvg(hotelNo);
+			long reviewCount = revRepo.findHotelReviewCount(hotelNo);
 
-		for (Object[] d : ReviewList) {
-			ReviewDTO dto = new ReviewDTO();
-			dto.setReviewContent((String) d[0]);
+			for (Object[] d : ReviewList) {
+				ReviewDTO dto = new ReviewDTO();
+				dto.setReviewContent((String) d[0]);
 
-			dto.setReviewCreateAt((LocalDateTime) d[1]);
-			dto.setReviewRating((double) d[2]);
-			dto.setRoomNo((long) d[3]);
-			dto.setUserNo((long) d[4]);
-			dto.setRoomName((String) d[5]);
-			dto.setReviewNo((long) d[6]);
-			dto.setReviewAvg(reviewAvg);
-			dto.setReviewCount(reviewCount);
+				dto.setReviewCreateAt((LocalDateTime) d[1]);
+				dto.setReviewRating((double) d[2]);
+				dto.setRoomNo((long) d[3]);
+				dto.setUserNo((long) d[4]);
+				dto.setRoomName((String) d[5]);
+				dto.setReviewNo((long) d[6]);
+				dto.setReviewAvg(reviewAvg);
+				dto.setReviewCount(reviewCount);
 
-			dtoList.add(dto);
+				dtoList.add(dto);
+			}
+			
+			return dtoList;
+		}else {
+			
+			return dtoList;
 		}
+		
+		
 
-		return dtoList;
 	}
 
 	// 객실에 대한 리뷰 전체 조회
