@@ -9,7 +9,7 @@ export default function ({rooms}) {
         <div className='room--grid--container'>
             <div className='RoomList'>
                 <div className='RoomRow'>
-                    <Link to={`/RoomDetail/${rooms.roomNo}`}><img src={rooms.roomThumbnail} alt='룸이미지' className='RoomImg' /></Link>
+                    <Link to={`/RoomDetail/${rooms.roomNo}`}><img src={'../../../../' + rooms.roomThumbnail} alt='룸이미지' className='RoomImg' /></Link>
                     <div>
                         <div className='RoomInfo'>
                             <div className='InfoBox'>
