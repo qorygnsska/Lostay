@@ -18,8 +18,8 @@ export default function HotelReview({Reviews, HotelInfo}) {
                 </div>
 
                 <div className='ReviewWrap'>
-                    {Reviews.map((review) => (
-                        <Link className='LinkBox'>
+                    {Reviews.map((review, idx) => (
+                        <Link className='LinkBox' key={idx}>
                         <div key={review.reviewNo} className='ContentBox'>
                             <div className='ReviewSD'>
                                 <div className='ReviewStar'>

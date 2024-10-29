@@ -25,10 +25,10 @@ export default function RoomDetail() {
     const [loading, setLoading] = useState(true);    // 로딩 상태 관리
     
     // 기본 파라미터
-    const {roomNo} = useParams();
-    const checkInDate = "2024-10-20T15:00:00";
-    const checkOutDate = "2024-10-22T11:00:00";
-    const peopleMax = 3;
+    const { roomNo, checkIn, checkOut, member } = useParams();
+    const checkInDate = checkIn;
+    const checkOutDate = checkOut;
+    const peopleMax = member;
 
     // 룸디테일 가져오기
     const fetchHotelRoomDetail = async () => {
@@ -37,6 +37,7 @@ export default function RoomDetail() {
             params: { roomNo, checkInDate, checkOutDate, peopleMax },
           });
           setRoomDetail(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
+          console.log(response.data)
         } catch (error) {
           setError(error);  // 오류가 발생한 경우 에러 저장
         } finally {
@@ -93,7 +94,7 @@ export default function RoomDetail() {
 
 
     const handleFindButtonClick = () => {
-        const encodedLocation = encodeURIComponent(RoomInfo.hotelAdress); // 주소를 URL 인코딩
+        const encodedLocation = encodeURIComponent(RoomDetail.hotelAdress); // 주소를 URL 인코딩
         window.location.href = `/HotelMap?location=${encodedLocation}`;
     };
 
@@ -106,7 +107,7 @@ export default function RoomDetail() {
 
             <div className='NameBox'>
                 <div className='RoomName'>{RoomDetail?.roomName}</div>
-                <Link className='HotelName'>{RoomDetail?.hotelName}<GrNext/></Link>
+                <Link to={`/RoomList/${RoomDetail?.hotelNo}/${checkInDate}/${checkOutDate}/${peopleMax}`} className='HotelName'>{RoomDetail?.hotelName}<GrNext/></Link>
             </div>
 
             <div className='RowLine'></div>
@@ -134,12 +135,12 @@ export default function RoomDetail() {
 
 
             <div className='LoTitle'>위치/길찾기</div>
-            <span className='LoContent'>{RoomInfo.hotelAdress}</span>
+            <span className='LoContent'>{RoomDetail?.hotelAdress}</span>
             <Button id='FindBtn' onClick={handleFindButtonClick}>길찾기<IoNavigate /></Button> 
                 
-            <KakaoMap Location={RoomInfo.hotelAdress} />
+            {RoomDetail?.hotelAdress.length > 0 && <KakaoMap Location={RoomDetail.hotelAdress} />}
 
-            <RoomNav info={RoomInfo}/>
+            {RoomDetail && <RoomNav info={RoomDetail}/>}
             <Footer />
         </Container>
 

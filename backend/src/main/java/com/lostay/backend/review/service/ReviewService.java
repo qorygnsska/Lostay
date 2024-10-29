@@ -157,15 +157,8 @@ public class ReviewService {
 		for (Object[] d : ReviewList) {
 			ReviewDTO dto = new ReviewDTO();
 			dto.setReviewContent((String) d[0]);
-			
-			if(d[1] != null) {
-				String[] str = d[1].toString().split(",");
-				dto.setReviewImg(str);	
-			}else {
-				String[] str = new String[0];
-				dto.setReviewImg(str);	
-
-			}
+			String[] str = d[1].toString().split(",");
+			dto.setReviewImg(str);
 			dto.setReviewCreateAt((LocalDateTime) d[2]);
 			dto.setReviewRating((double) d[3]);
 			dto.setRoomNo((long) d[4]);
@@ -237,16 +230,8 @@ public class ReviewService {
 				dto.setUserNickname(r.getUser().getUserNickname());
 				dto.setReviewRating(r.getReviewRating());
 				dto.setReviewCreateAt(r.getReviewCreateAt());
-				
-				if(r.getReviewImg() != null) {
-					
-					String[] str = r.getReviewImg().split(",");
-					dto.setReviewImg(str);
-				}else {
-					String[] str = new String[0];
-					dto.setReviewImg(str);	
-
-				}
+				String[] str = r.getReviewImg().split(",");
+				dto.setReviewImg(str);
 				dto.setRoomName(r.getRoom().getRoomName());
 				dto.setReviewContent(r.getReviewContent());
 				
@@ -296,76 +281,76 @@ public class ReviewService {
 	}
 
 	// 호텔 리뷰 조회 (홍정훈)
-		public Object findHotelReviews(Long hotelNo, Long roomNo, String sort) {
-			HotelInfoDTO hotelInfoDTO = hotelRepo.hoteInfo(hotelNo);
-			List<HotelRoomsDTO> roomNames = hotelRepo.findRoomNames(hotelNo);
-			List<Object[]> results = new ArrayList<Object[]>();
+	public Object findHotelReviews(Long hotelNo, Long roomNo, String sort) {
+		HotelInfoDTO hotelInfoDTO = hotelRepo.hoteInfo(hotelNo);
+		List<HotelRoomsDTO> roomNames = hotelRepo.findRoomNames(hotelNo);
+		List<Object[]> results = new ArrayList<Object[]>();
 
-			// roomNo가 있을 경우와 없을 경우에 따라 쿼리 실행
-			if (roomNo != null) {
-				results = findReviews(hotelNo, roomNo, sort);
-			} else {
-				results = findReviewsByHotelNo(hotelNo, sort);
-			}
+		// roomNo가 있을 경우와 없을 경우에 따라 쿼리 실행
+		if (roomNo != null) {
+			results = findReviews(hotelNo, roomNo, sort);
+		} else {
+			results = findReviewsByHotelNo(hotelNo, sort);
+		}
 
-			
-			List<ReviewsDTO> dtoList = new ArrayList<ReviewsDTO>();
-
-			for (Object[] d : results) {
-			
-				ReviewsDTO dto = new ReviewsDTO();
-				dto.setReviewNo((long) d[0]);
-				dto.setReviewRating((double) d[1]);
-				dto.setReviewCreateAt((LocalDateTime) d[2]);
-				dto.setUserNickname((String) d[3]);
-				dto.setRoomName((String) d[4]);
-				dto.setReviewContent((String) d[5]);
-				   // d[6]이 null인지 체크
-			    if (d[6] != null) {
-			        String[] str = d[6].toString().split(",");
-			        dto.setReviewImg(str);
-			    } else {
-			        dto.setReviewImg(new String[0]); // 빈 배열로 설정
-			    }
-				dtoList.add(dto);
-			}
 		
-			hotelInfoDTO.setHotelRoom(roomNames);
+		List<ReviewsDTO> dtoList = new ArrayList<ReviewsDTO>();
 
-			HotelReviewsDTO hotelReviewsDTO = new HotelReviewsDTO(hotelInfoDTO, dtoList);
-
-			return hotelReviewsDTO;
+		for (Object[] d : results) {
+		
+			ReviewsDTO dto = new ReviewsDTO();
+			dto.setReviewNo((long) d[0]);
+			dto.setReviewRating((double) d[1]);
+			dto.setReviewCreateAt((LocalDateTime) d[2]);
+			dto.setUserNickname((String) d[3]);
+			dto.setRoomName((String) d[4]);
+			dto.setReviewContent((String) d[5]);
+			   // d[6]이 null인지 체크
+		    if (d[6] != null) {
+		        String[] str = d[6].toString().split(",");
+		        dto.setReviewImg(str);
+		    } else {
+		        dto.setReviewImg(new String[0]); // 빈 배열로 설정
+		    }
+			dtoList.add(dto);
 		}
-		// 객실 조건 후 정렬 구분을 위한 메서드
-		private List<Object[]> findReviews(Long hotelNo, Long roomNo, String orderByColumn) {
+	
+		hotelInfoDTO.setHotelRoom(roomNames);
 
-			if (orderByColumn == null) {
-				return revRepo.findReviewsByDateDesc(hotelNo, roomNo); //최신작성순 기본정렬
-			}
-			switch (orderByColumn) {
-			case "평점높은순":
-				return revRepo.findReviewsByRatingDesc(hotelNo, roomNo);
-			case "평점낮은순":
-				return revRepo.findReviewsByRatingAsc(hotelNo, roomNo);
-			default:
-				return revRepo.findReviewsByDateDesc(hotelNo, roomNo); //최신작성순 기본정렬
-			}
-		}
-		//객실 조건 없이 정렬 구분을 위한 메서드
-		private List<Object[]> findReviewsByHotelNo(Long hotelNo, String orderByColumn) {
-			
-			if (orderByColumn == null) {
-			
-				return revRepo.findReviewsByDateDesc(hotelNo, null); //최신작성순 기본 정렬
-			}
-			switch (orderByColumn) {
-			case "평점높은순":
-				return revRepo.findReviewsByRatingDesc(hotelNo, null);
-			case "평점낮은순":
-				return revRepo.findReviewsByRatingAsc(hotelNo, null);
-			default:
-				return revRepo.findReviewsByDateDesc(hotelNo, null); //최신작성순 기본 정렬
-			}
-		}
+		HotelReviewsDTO hotelReviewsDTO = new HotelReviewsDTO(hotelInfoDTO, dtoList);
 
+		return hotelReviewsDTO;
 	}
+	// 객실 조건 후 정렬 구분을 위한 메서드
+	private List<Object[]> findReviews(Long hotelNo, Long roomNo, String orderByColumn) {
+
+		if (orderByColumn == null) {
+			return revRepo.findReviewsByDateDesc(hotelNo, roomNo); //최신작성순 기본정렬
+		}
+		switch (orderByColumn) {
+		case "평점높은순":
+			return revRepo.findReviewsByRatingDesc(hotelNo, roomNo);
+		case "평점낮은순":
+			return revRepo.findReviewsByRatingAsc(hotelNo, roomNo);
+		default:
+			return revRepo.findReviewsByDateDesc(hotelNo, roomNo); //최신작성순 기본정렬
+		}
+	}
+	//객실 조건 없이 정렬 구분을 위한 메서드
+	private List<Object[]> findReviewsByHotelNo(Long hotelNo, String orderByColumn) {
+		
+		if (orderByColumn == null) {
+		
+			return revRepo.findReviewsByDateDesc(hotelNo, null); //최신작성순 기본 정렬
+		}
+		switch (orderByColumn) {
+		case "평점높은순":
+			return revRepo.findReviewsByRatingDesc(hotelNo, null);
+		case "평점낮은순":
+			return revRepo.findReviewsByRatingAsc(hotelNo, null);
+		default:
+			return revRepo.findReviewsByDateDesc(hotelNo, null); //최신작성순 기본 정렬
+		}
+	}
+
+}

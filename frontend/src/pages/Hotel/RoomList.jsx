@@ -20,8 +20,6 @@ export default function RoomList() {
   //////////////////////////////////////////////////////////////////////////////JIP1029
   //////////////////////////////////////////////////////////for default parameters
   const parameters = useParams();
-  console.log(parameters);
-  let place = '';/////////////////hotelNo로 sever에 request 날려서 받아온 호텔명 넣기
   let check_in = new Date(parameters.checkIn);
   let check_out = new Date(parameters.checkOut);
   let member = parameters.member;
@@ -52,11 +50,26 @@ export default function RoomList() {
   const [error, setError] = useState(null);        // 에러 핸들링을 위한 state
   const [loading, setLoading] = useState(true);    // 로딩 상태 관리
 
+  // 날짜 형식 변경
+  const convertToLocalDateTime = (dateString) => {
+    const date = new Date(dateString);
+    
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+};
+
+
   // 기본 파라미터
-  const hotelNo = 1;
-  const checkInDate = "2024-10-20T15:00:00";
-  const checkOutDate = "2024-10-22T11:00:00";
-  const peopleMax = 3;
+  const hotelNo = parameters.hotelNo;
+  const checkInDate = convertToLocalDateTime(parameters.checkIn);
+  const checkOutDate = convertToLocalDateTime(parameters.checkOut);
+  const peopleMax = member;
 
   // 룸리스트 가져오기
   const fetchHotelRoomList = async () => {
@@ -110,25 +123,24 @@ export default function RoomList() {
       <CompHeaderGeneral
         where={functionFromWhere}
         callParent={functionSearchPicker}
-        place={place}
+        place={RoomInfos.dto.hotelName}
         check_in={check_in}
         check_out={check_out}
         member={member}
       />
 
       {/* searchBox(Modal) JIP1029 */}
-      <CompSearchBox
+      {RoomInfos.dto.hotelName?.length > 0 && <CompSearchBox
         show={searchBoxShow}
         onHide={() => { setSearchBoxShow(false) }}
-        place={place}
+        place={RoomInfos.dto.hotelName}
         check_in={check_in}
         check_out={check_out}
         member={member}
         focus={focus}
-      />
+      />}
 
 
-      {/* {RoomInfos.dto.hotelImg?.length > 0 && <HotelCarousel images={RoomInfos.dto.hotelImg}/>} */}
       {RoomInfos.dto.hotelImage?.length > 0 && <HotelCarousel images={RoomInfos.dto.hotelImage} />}
 
       <div className='HotelInfo'>
@@ -156,7 +168,7 @@ export default function RoomList() {
       <div className='RLtitle'>객실선택</div>
 
       {displayedRooms.map((rooms, idx) => (
-        <RoomGrid rooms={rooms} key={idx} />
+        <RoomGrid rooms={rooms} checkInDate={checkInDate} checkOutDate={checkOutDate} peopleMax={peopleMax} key={idx} />
       ))}
 
       {RoomInfos.list.length > 10 && !showAll && (
