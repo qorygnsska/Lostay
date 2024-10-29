@@ -6,7 +6,7 @@ import { IoCheckmark } from "react-icons/io5";
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
-export default function HotelFilter({handleShow}) {
+export default function HotelFilter(props) {
 
   // 드롭다운
   const [selectedOption, setSelectedOption] = useState('평점 높은 순');
@@ -23,8 +23,8 @@ export default function HotelFilter({handleShow}) {
     <div className='hotel--filter--container'>
         <div className='HotelFilter'>
         <div className='FilterBox'>
-          <div className='SearchCount'>'제주도' 검색 결과 158개</div>
-          <div onClick={handleShow} className='FilterIcon'>
+          <div className='SearchCount'>'{props.place}' 검색 결과 {props.resultCount}개</div>
+          <div onClick={props.handleShow} className='FilterIcon'>
             <VscSettings /> 필터
           </div>
         </div>
