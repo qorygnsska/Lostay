@@ -17,6 +17,7 @@ export default function HotelFilter(props) {
    
   const handleSelect = (eventKey) => {
    setSelectedOption(eventKey);
+   props.callParent(eventKey);//1029JIP  HotelFilter(Comp) -> HotelList(Page) 값 전달
   };
 
   return (

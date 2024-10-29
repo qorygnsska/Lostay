@@ -7,11 +7,21 @@ import { CiRedo } from "react-icons/ci";
 import Form from 'react-bootstrap/Form';
 import { Range } from 'react-range'; // 슬라이더
 
-export default function HotelModal({props, show, handleClose}) {
+export default function HotelModal({props, show, handleClose, callParent}) {
 
-    // 슬라이더
+
+  // 스위치(매진 숙소 제외)
+  const [isSoldOutExcluded, setIsSoldOutExcluded] = useState(false);
+  // const handleSwitchChange = (e) => {  //1029JIP: 인라인으로 작성
+  //   setIsSoldOutExcluded(e.target.checked);
+  // };
+
+  // 슬라이더(최소-최대 가격)
   const [minValue, setMinValue] = useState(0); // 초기 최소값
   const [maxValue, setMaxValue] = useState(500000); // 초기 최대값
+
+  // 버튼 췍(할인혜택, 등급, 공용시설, 기타시설 한번에)
+  const [activeButtons, setActiveButtons] = useState([]);
 
   // 버튼
   const rankBtn = ['5성급', '4성급', '블랙', '리조트', '가족호텔'];
@@ -29,10 +39,7 @@ export default function HotelModal({props, show, handleClose}) {
     '장애인편의'
   ];
 
-
-  // 버튼 췍
-  const [activeButtons, setActiveButtons] = useState([]);
-
+  //버튼 클릭시 activeButtons 배열에 차곡차곡 담아서,,,
   const handleButtonClick = (name) => {
     if (activeButtons.includes(name)) {
       // 이미 선택된 버튼 클릭 시 비활성화
@@ -43,21 +50,24 @@ export default function HotelModal({props, show, handleClose}) {
     }
   };
 
+
+  // '적용' 버튼
+  const filterHandler = () => {
+    //값들 모두 HotelModal(Comp) -> HotelList(Page) 전달
+    callParent(isSoldOutExcluded, minValue, maxValue, activeButtons);
+
+
+    //모달 닫기
+    handleClose();
+  }
+
   // 초기화
   const handleReset = () => {
     setMinValue(0);
-    setMaxValue(500000);
+    setMaxValue(1000000);
     setActiveButtons([]);
     setIsSoldOutExcluded(false);
   };
-
-  // 스위치
-  const [isSoldOutExcluded, setIsSoldOutExcluded] = useState(false);
-
-  const handleSwitchChange = (e) => {
-    setIsSoldOutExcluded(e.target.checked);
-  };
-
 
 
   return (
@@ -74,7 +84,8 @@ export default function HotelModal({props, show, handleClose}) {
           <Form>
             <div className='SoldOutF border-bottom pb-3 mb-3 d-flex'>
               <span className='RoomExclude'>매진 숙소 제외</span>
-              <Form.Check type="switch" id="custom-switch"  checked={isSoldOutExcluded} onChange={handleSwitchChange}/>
+              <Form.Check type="switch" id="custom-switch" checked={isSoldOutExcluded} onChange={()=>setIsSoldOutExcluded(!isSoldOutExcluded)}/>
+              {/* checked={isSoldOutExcluded} onChange={handleSwitchChange} -> onChange 1029JIP 변경*/}
             </div>
 
             <div className='PriceF border-bottom pb-3 mb-3'>
@@ -198,8 +209,8 @@ export default function HotelModal({props, show, handleClose}) {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>닫기</Button>
-          <Button variant="primary">적용</Button>
-        </Modal.Footer>
+          <Button variant="primary" onClick={filterHandler}>적용</Button>
+        </Modal.Footer>                      
       </Modal>
     </div>
   )

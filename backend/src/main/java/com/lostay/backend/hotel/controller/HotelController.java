@@ -39,10 +39,10 @@ public class HotelController {
 			, @RequestParam(defaultValue = "2") int roomPeopleInfo // 기준인원
 			, @RequestParam(defaultValue="0") Integer minRoomPrice // 객실 최소가격
 			, @RequestParam(defaultValue="1000000") Integer maxRoomPrice// 객실 최대가격
-			,@RequestParam(defaultValue="1")int soldOut //매진 숙소 매진 숙소 버튼을누르면 0값 기본은 1값
-		    ,@RequestParam(defaultValue="0")int roomDiscountState//할인혜택
-			,@RequestParam(required = false)String[] hotelRating//등급
-			,@RequestParam(required = false) String sort)//정렬
+			, @RequestParam(defaultValue="1") int soldOut //매진 숙소 매진 숙소 버튼을누르면 0값 기본은 1값
+		    , @RequestParam(defaultValue="0") int roomDiscountState//할인혜택
+			, @RequestParam(required = false) String[] hotelRating//등급
+			, @RequestParam(required = false) String sort)//정렬
 			
 	{
 		   // 어메니티 문자열을 배열로 변환

@@ -267,7 +267,7 @@ public class ReviewService {
 				dto.setRoomName((String) d[5]);
 				dto.setReviewNo((long) d[6]);
 				dto.setReviewAvg(reviewAvg);
-				dto.setReviewCount(reviewCount);
+				dto.setTotalReviewCount(reviewCount);
 
 				dtos.add(dto);
 			}

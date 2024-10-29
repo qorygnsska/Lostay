@@ -25,8 +25,8 @@ public class ReviewDTO {
 	
 	private String roomName;					// 객실명
 	private double reviewAvg;					// 별점 평균
-	private long reviewCount;					// 리뷰 전체 개수
+	private Long reviewCount;					// 리뷰 전체 개수
 	private String userNickname;				// 리뷰 작성자
-	
+	private Long totalReviewCount;				// 리뷰 전체 개수(객실 상세 roomdetail3) 
 	
 }
