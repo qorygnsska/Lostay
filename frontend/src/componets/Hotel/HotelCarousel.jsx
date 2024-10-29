@@ -22,7 +22,7 @@ export default function HotelCarousel({images}) {
             <Carousel indicators={false}>
                 {images.map((image, idx) => (
                     <Carousel.Item key={idx}>
-                    <img src={'../' + image} alt='호텔이미지' className='HotelImg' onClick={() => handleImageClick(idx)}/>
+                    <img src={'../../../../' + image} alt='호텔이미지' className='HotelImg' onClick={() => handleImageClick(idx)}/>
                     <div className="image--counter">
                         {idx + 1} / {images.length}
                     </div>

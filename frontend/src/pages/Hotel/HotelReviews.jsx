@@ -13,8 +13,32 @@ import RoomFilterModal from '../../componets/HotelReview/RoomFilterModal';
 import RoomOrderModal from '../../componets/HotelReview/RoomOrderModal';
 
 import BackNav from "../../componets/BackNav/BackNav";
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export default function HotelReviews() {
+
+    const [Reviews, setReviews] = useState();  // 객실 정보를 저장할 state
+    const [error, setError] = useState(null);        // 에러 핸들링을 위한 state
+    const [loading, setLoading] = useState(true);    // 로딩 상태 관리
+
+    const {hotelNo} = useParams();
+    const [roomNo, setroomNo] = useState();
+    const [sort, setsort] = useState();
+
+    // 호텔전체리뷰 가져오기
+    const fetchHotelReview = async () => {
+        try {
+          const response = await axios.get('http://localhost:9090/HotelReviews', {
+            params: { hotelNo, roomNo, sort },
+          });
+          setReviews(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
+        } catch (error) {
+          setError(error);  // 오류가 발생한 경우 에러 저장
+        } finally {
+          setLoading(false);  // 로딩 상태 종료
+        }
+    };
 
     const hotelInfo = {
         hotelNo: 1,
