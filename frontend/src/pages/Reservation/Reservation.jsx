@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import BackNav from "../../componets/BackNav/BackNav";
 import Navbar from "../../componets/Navbar/Navbar";
 import { MdOutlineCheckBox } from "react-icons/md";
@@ -6,6 +6,9 @@ import PayType from "../../componets/Reservation/PayType";
 import AgreeInfo from "../../componets/Reservation/AgreeInfo";
 import AgreeChkInfo from "../../componets/Reservation/AgreeChkInfo";
 import { BsExclamationCircle } from "react-icons/bs";
+import axios from "axios";
+import { privateApi } from "../../api/api";
+
 
 const reinfo = {
     hotelName: "서울신라호텔",
@@ -25,9 +28,8 @@ const reinfo = {
 const paymentMethods = [
     { id: 1, name: "카카오페이", imageUrl: "kakaoPay.png", sale: 5 },
     { id: 2, name: "토스페이", imageUrl: "tossPay.png", sale: 3 },
-    { id: 3, name: "네이버페이", imageUrl: "naverPay.png", sale: 6 },
-    { id: 4, name: "페이코페이", imageUrl: "paycoPay.png", sale: 7 },
-    { id: 5, name: "신용카드", sale: 0 },
+    { id: 3, name: "페이코페이", imageUrl: "paycoPay.png", sale: 7 },
+    { id: 4, name: "신용카드", sale: 0 },
 ];
 
 const agreeInfo = [
@@ -69,6 +71,381 @@ const agreeChkInfo = [
 ];
 
 export default function Reservation() {
+
+    const [data, setData] = useState(null);
+    // 첫 화면 데이터 가져오기
+    useEffect(() => {
+        const getData = async () => {
+
+            try {
+                const response = await privateApi.get(`/HotelRoomInfo`, {
+
+                    params: {
+                        roomNo: 1,
+                        checkInDate: "2024-11-05", // 'YYYY-MM-DD' 형식의 날짜 전달
+                        checkOutDate: "2024-11-06",
+                    },
+                }); // API 요청
+                if (response.status === 200) {
+                    setData(response.data)
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        getData();
+    }, [])
+
+
+    // 예약자 정보
+    const [name, setName] = useState('');
+    const nameInputRef = useRef(null);
+    const [nameWarning, setNameWarning] = useState(false);
+
+
+    const getByteLength = (str) => {
+        let byteCount = 0;
+        for (let char of str) {
+            byteCount += /[가-힣]/.test(char) ? 3 : 1; // 한글은 2바이트, 영어는 1바이트
+        }
+        return byteCount;
+    };
+
+    const checkNameValidity = (inputValue) => {
+        const byteLength = getByteLength(inputValue); // 바이트 길이 계산
+        console.log(byteLength)
+        if (inputValue.length === 0) return true; // 아무것도 안 칠 경우
+        else if (/^[가-힣]*$/.test(inputValue)) { // 한글만
+            console.log('한글')
+            if (byteLength < 6) return true; // 6바이트 미만
+            return false; // 6바이트 이상
+        } else if (/^[a-zA-Z]*$/.test(inputValue)) { // 영어만
+            console.log('영어')
+            if (byteLength < 2) return true; // 2바이트 미만
+            return false; // 2바이트 이상
+        } else if (/^[가-힣a-zA-Z]*$/.test(inputValue)) { // 한글 + 영어
+            console.log('한글+영어')
+            if (byteLength < 4) return true; // 4바이트 미만
+            return false; // 4바이트 이상
+        } else if (byteLength < 2) {
+            return true;
+        }
+        return false; // 기타 경우
+    };
+
+
+    // 예약자 수정
+    const handleNameChange = (e) => {
+        const inputValue = e.target.value;
+        const isValid = checkNameValidity(inputValue);
+
+        setNameWarning(isValid);
+
+        const { target: { value }, } = e;
+        if (value.length > 15) e.target.value = value.substr(0, 15);
+        setName(e.target.value);
+    }
+    // 휴대폰번호 수정
+
+    // 입력된 휴대폰 번호
+    const [phone, setPhone] = useState('010-9920-2102');
+
+    // 변경 전 휴대폰 번호
+    const [prePhone, setPrePhone] = useState('010-9920-2101');
+
+    // 휴대폰 수정 On/ Off
+    const [phoneEdit, setPhoneEidt] = useState(false);
+
+    // 휴대폰 Input
+    const phoneInputRef = useRef(null);
+
+    // 휴대폰 번호 수정 안했을 시 활성화
+    const [isVerifiedPhone, setVerifiedPhone] = useState(false);
+
+    // 인증 실패 시 활성화
+    const [isVerified, setIsVerified] = useState(false)
+
+    // 보여줄 메시지
+    const [verificationMessage, setVerificationMessage] = useState('')
+
+    // 첫 인증번호 보냈는지 확인
+    const [verificationSent, setVerificationSent] = useState(false);
+
+    // 인증번호 Input
+    const verificationCodeRef = useRef(null);
+
+    // 입력된 인증 번호
+    const [verificationCode, setVerificationCode] = useState('');
+
+    // 인증번호 확인 버튼 On/Off
+    const [isVerificationBtnEn, setIsVerificationBtnEn] = useState(true)
+
+    // default 타이머 시간
+    const [timer, setTimer] = useState(180);
+
+    // 타이머 시작 On/Off
+    const [isStartTimer, setIsStartTimer] = useState(false);
+
+    // 서버에서 받은 랜덤 6자리
+    const [serverCode, setServerCode] = useState("")
+
+
+    //타이머 함수
+    const formatTime = () => {
+        const minutes = Math.floor(timer / 60);
+        const seconds = timer % 60;
+        return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+    };
+
+    // 인증번호 전송 버튼 활성화 여부
+    const isButtonEnabled = phone.replace(/-/g, "").length === 10 || phone.replace(/-/g, "").length === 11;
+
+    // 인증번호 확인 버튼 활성화
+    const isVerificationCodeBtnEnabled = verificationCode.length === 6 && isVerificationBtnEn;
+
+    // 휴대폰 번호 포맷
+    const formatPhoneNumber = (value) => {
+        const cleaned = value.replace(/\D/g, ""); // 숫자가 아닌 문자 제거
+        let formatted = "";
+
+        // 기본 포맷
+        if (cleaned.length === 10) {
+            // 10자리 포맷: 010-232-2323
+            formatted = `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+        } else if (cleaned.length === 11) {
+            // 11자리 포맷: 010-2323-2323
+            formatted = `${cleaned.slice(0, 3)}-${cleaned.slice(3, 7)}-${cleaned.slice(7)}`;
+        } else {
+            // 기본 포맷
+            if (cleaned.length <= 3) {
+                formatted = cleaned; // 첫 세 자리까지
+            } else if (cleaned.length <= 6) {
+                formatted = `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`; // 3자리-나머지
+            } else if (cleaned.length < 11) {
+                formatted = `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(6)}`; // 3자리-3자리-1자리
+            }
+        }
+
+        return formatted; // 포맷팅된 전화번호 반환
+    }
+
+    useEffect(() => {
+        if (data) {
+            setPhone(data.userPhone || '')
+            setPrePhone(data.userPhone || '')
+        }
+    }, [data]);
+
+    // 휴대폰번호 수정 버튼
+    const handlePhoneEdit = () => {
+        setPhoneEidt(!phoneEdit);
+        if (!phoneEdit) {
+            phoneInputRef.current.focus();
+        }
+    };
+
+    // 휴대폰번호 취소 버튼
+    const handlePhoneEditCancle = () => {
+        setPhoneEidt(!phoneEdit);
+        setVerifiedPhone(true);
+        setIsVerified(false);
+        setVerificationSent(false);
+        setVerificationCode('');
+        setIsVerificationBtnEn(true);
+        setTimer(180);
+        setServerCode('');
+        setPhone(prePhone)
+    };
+
+    // 휴대폰번호 수정된 값
+    const handlePhoneChange = (e) => {
+        const formattedPhone = formatPhoneNumber(e.target.value);
+        setPhone(formattedPhone);
+        setVerifiedPhone(true);
+    };
+
+
+
+    // 인증번호 전송 함수
+    const sendVerification = () => {
+
+        if (phone === prePhone) {
+            setVerifiedPhone(false);
+            setVerificationMessage("이미 등록된 번호입니다.");
+        } else {
+            setVerificationMessage("")
+            setVerificationSent(true);
+            setIsStartTimer(true);
+
+            // 인증번호 전송하는 로직
+            // 서버에 보내는 코드
+            postPhoneNum(phone);
+        }
+
+    };
+
+    // 인증번호 재전송 함수
+    const resendVerification = () => {
+
+
+        if (phone === prePhone) {
+            setVerifiedPhone(false);
+            setVerificationMessage("이미 등록된 번호입니다.");
+        } else {
+            setVerificationMessage("");
+            setTimer(180);
+            setIsStartTimer(true);
+            setVerifiedPhone(true)
+            setIsVerified(true);
+            setIsVerificationBtnEn(true);
+            setVerificationCode('');
+
+            // 인증번호 전송하는 로직
+            // 서버에 보내는 코드
+            postPhoneNum(phone);
+        }
+    };
+
+    // 인증번호 확인
+    const verifyCode = () => {
+        setIsStartTimer(false);
+        setIsVerificationBtnEn(false);
+
+        if (verificationCode === serverCode.certificationCode && timer > 0) {
+            setPhoneEidt(!phoneEdit);
+            setVerifiedPhone(true);
+            setIsVerified(false);
+            setVerificationSent(false);
+            setVerificationCode('');
+            setIsVerificationBtnEn(true);
+            setTimer(180);
+            setServerCode('');
+            postPhoneNumSave(phone)
+            setPrePhone(phone)
+            setPhone(phone);
+        } else {
+            setIsVerified(false);
+            setVerificationMessage("잘못된 인증번호입니다.");
+        }
+    };
+
+
+    // 타이머
+    useEffect(() => {
+        let interval;
+
+        if (isStartTimer) {
+            interval = setInterval(() => {
+                setTimer((prevTimer) => {
+                    if (prevTimer <= 1) {
+                        clearInterval(interval);
+                        setIsStartTimer(false);
+                        return 0;
+                    }
+                    return prevTimer - 1;
+                });
+            }, 1000);
+        }
+
+        return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 클리어
+    }, [isStartTimer]);
+
+    // 인증번호 발송
+    const postPhoneNum = async (phonenum) => {
+
+        try {
+            const response = await axios.post(`http://localhost:9090/loginPhone/${phonenum}`); // API 요청
+            setServerCode(response.data);
+            return response.data;
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
+    // 전화번호 저장
+    const postPhoneNumSave = async (phonenum) => {
+
+        try {
+            const response = await privateApi.post(`http://localhost:9090/mypageUserInfo/phone/${phonenum}`); // API 요청
+            setServerCode(response.data);
+            return response.data;
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // 결제 (아임포트)
+    const { IMP } = window;
+    IMP.init('imp67745024');
+
+    const requestPay = (pg) => {
+        const merchant_uid = "merchant_" + new Date().getTime
+        IMP.request_pay({
+            pg: pg,
+            merchant_uid: merchant_uid,
+            name: "주문명:결제테스트",
+            amount: totalPrice,
+            buyer_name: "구매자이름",
+            buyer_tel: "010-1234-5678",
+
+        }, (rsp) => {
+            if (rsp.success) { // 프론트에서 결제가 완료되면
+
+                axios.post(`http://localhost:9090/api/v1/order/payment/${merchant_uid}`, {
+                    point: inputPoints
+                })
+                    .then((res) => {
+                        // 결제완료 
+                    })
+                    .catch((error) => {
+                        // 에러발생시
+                    });
+            } else {
+                // 에러발생시
+            }
+        });
+    }
+
+    const requestPayType = [
+        { name: "카카오페이", pg: "kakaopay.TC0ONETIME" },
+        { name: "토스페이", pg: "tosspay.tosstest" },
+        { name: "페이코페이", pg: "payco.PARTNERTEST" },
+        { name: "신용카드", pg: "settle.portone1" }
+    ]
+
+    const paymentClick = () => {
+        console.log(checkItems.length)
+        // 이름 작성 여뷰
+
+        if (name.length === 0 || nameWarning === true) {
+            alert('이름을 입력해주세요.')
+            return;
+        } else if (phoneEdit) {
+            alert('전화번호를 저장해주세요.')
+            return;
+        } else if (payType === null) {
+            alert('결제수단을 선택해주세요.')
+            return;
+        }
+
+
+        if (payType.name === requestPayType[0].name) {
+            requestPay(requestPayType[0].pg)
+        } else if (payType.name === requestPayType[1].name) {
+            requestPay(requestPayType[1].pg)
+        } else if (payType.name === requestPayType[2].name) {
+            requestPay(requestPayType[2].pg)
+        } else if (payType.name === requestPayType[3].name) {
+            requestPay(requestPayType[3].pg)
+        }
+
+
+    }
+
     const [useAllPoints, setUseAllPoints] = useState(false); // 포인트 모두 사용
     const [inputPoints, setInputPoints] = useState(0); // 포인트 직접 입력
     const [totalPrice, setTotalPrice] = useState(reinfo.roomOriPrice); // 총 결제 가격
@@ -179,12 +556,89 @@ export default function Reservation() {
                     <span className="section--title">예약자 정보</span>
                     <div className="profile--box">
                         <span>예약자 이름</span>
-                        <span>{reinfo.userName}</span>
+                        <input
+                            ref={nameInputRef}
+                            value={name}
+                            onChange={handleNameChange}
+                            maxLength={15}
+                            className={`input--name`}
+                        />
                     </div>
+
+                    {nameWarning && <div className="name--warning">이름은 2자 ~ 15자 이내로 작성해주세요.</div>}
 
                     <div className="profile--box">
                         <span>휴대폰 번호</span>
-                        <span>{reinfo.userPhone}</span>
+                        <div className="input--phone">
+                            <input
+                                ref={phoneInputRef}
+                                value={phone}
+                                readOnly={!phoneEdit}
+                                onChange={handlePhoneChange}
+                                placeholder="휴대폰번호 입력"
+                                maxLength={13}
+                                className={phoneEdit ? 'phone--enabled' : 'phone--disabled'}
+                            />
+
+                            {phoneEdit &&
+                                <button className={`send--num--btn ${!isButtonEnabled && 'disabled'}`}
+                                    disabled={!isButtonEnabled}
+                                    onClick={!verificationSent ? sendVerification : resendVerification}
+                                >
+                                    {!verificationSent ? "인증번호 전송" : "재전송"}
+                                </button>
+                            }
+
+                            {!phoneEdit &&
+                                <button
+                                    className="phone--edit--btn"
+                                    onClick={!phoneEdit ? handlePhoneEdit : null}
+                                >
+                                    휴대폰 번호 수정
+                                </button>
+                            }
+
+                        </div>
+
+                    </div>
+                    {!isVerifiedPhone && (
+                        <div className={`wraning--message--phone ${!isVerifiedPhone && 'hide'}`}>{verificationMessage}</div> // 인증 실패 메시지
+                    )}
+
+                    {verificationSent && (
+                        <>
+                            <div className='input--box'>
+
+                                <input
+                                    id='verificationCode'
+                                    placeholder="인증번호"
+                                    ref={verificationCodeRef}
+                                    value={verificationCode}
+                                    maxLength={6}
+                                    onChange={(e) => setVerificationCode(e.target.value)}
+                                />
+                                <button onClick={verifyCode} className={`send--num--btn ${!isVerificationCodeBtnEnabled && 'disabled'}`}
+                                    disabled={!isVerificationCodeBtnEnabled}
+                                >
+                                    확인
+                                </button>
+                                <div className='timer'>
+                                    {formatTime()}
+                                </div>
+                                {!isVerified && (
+                                    <div className="wraning--message">{verificationMessage}</div> // 인증 실패 메시지
+                                )}
+                            </div>
+
+                        </>
+                    )}
+                    <div
+                        className={
+                            phoneEdit ? "phone--cancle--btn focus" : "hide"
+                        }
+                        onClick={handlePhoneEditCancle}
+                    >
+                        취소
                     </div>
                 </div>
 
@@ -274,10 +728,10 @@ export default function Reservation() {
                     <AgreeInfo agreeInfo={agreeInfo} />
                     <AgreeChkInfo agreeChkInfo={agreeChkInfo} checkItems={checkItems} handleSingleCheck={handleSingleCheck} handleAllCheck={handleAllCheck} />
                     {/* 결제버튼 */}
-                    <button disabled={checkItems.length !== agreeChkInfo.length}>{totalPrice.toLocaleString()}원 결제하기</button>
+                    <button disabled={checkItems.length !== agreeChkInfo.length} onClick={paymentClick}>{totalPrice.toLocaleString()}원 결제하기</button>
                 </div>
             </div>
             <Navbar />
-        </div>
+        </div >
     );
 }

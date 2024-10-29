@@ -92,6 +92,7 @@ export default function RoomList() {
         params: { hotelNo },
       });
       setRoomReviews(response.data);
+      console.log(response.data)
     } catch (error) {
       setError(error);
     } finally {
@@ -154,7 +155,13 @@ export default function RoomList() {
 
       <div className='RowLine'></div>
 
-      <HotelReview Reviews={RoomReviews} HotelInfo={RoomInfos.dto} />
+      <div className='ReTitle'>호텔 리뷰</div>
+      {RoomReviews.length > 0 ? (
+        <HotelReview Reviews={RoomReviews} HotelInfo={RoomInfos.dto} />
+      ) : (
+        <div>리뷰가 없습니다.</div>
+      )}
+      
 
 
       <div className='HotelLocation'>

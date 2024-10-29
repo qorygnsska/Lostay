@@ -51,17 +51,132 @@
 
             .profile--box {
                 display: flex;
-                gap: 10px;
+                gap: 30px;
                 font-size: 14px;
+                align-items: center;
+                position: relative;
 
                 span:nth-child(1) {
                     color: var(--lightGrayColor);
-                    flex: 1;
+
                 }
 
-                span:nth-child(2) {
-                    flex: 8;
+                .input--phone {
+                    display: flex;
+                    align-items: center;
                 }
+
+                .input--name {
+                    height: 30px;
+                    width: 200px;
+                    border: 1px solid var(--lightGrayColor);
+                    border-radius: 5px;
+                    padding-left: 5px;
+                    outline: none;
+                }
+
+                .phone--enabled {
+                    height: 30px;
+                    width: 200px;
+                    border: 1px solid var(--lightGrayColor);
+                    border-radius: 5px;
+                    padding-left: 5px;
+                    outline: none;
+                }
+
+                .phone--disabled {
+                    outline: none;
+                    border: none;
+                }
+
+                .phone--edit--btn {
+                    border: 1px solid var(--lightGrayColor);
+                    background-color: #fff;
+                    padding: 0px 9px;
+                    height: 30px;
+                    border-radius: 5px;
+                    margin-left: 28px;
+                    position: absolute;
+                    right: 0;
+                }
+
+
+            }
+
+            .input--name.warning {
+                border: 1px solid var(--redColor);
+            }
+
+            .name--warning {
+                color: var(--redColor);
+                margin-left: 94px;
+                font-size: 14px;
+            }
+
+            .phone--cancle--btn {
+                border: 2px solid var(--logoColor);
+                font-weight: bold;
+                width: 50px;
+                border-radius: 10px;
+                height: 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-left: 94px;
+                font-size: 15px;
+                cursor: pointer;
+            }
+
+            .send--num--btn {
+                border: none;
+                color: #fff;
+                background-color: var(--logoColor);
+                padding: 0px 9px;
+                height: 30px;
+                border-radius: 5px;
+                margin-left: 10px;
+            }
+
+            .send--num--btn.disabled {
+                background-color: var(--lightGrayColor3);
+            }
+
+            .input--box {
+                margin-left: 94px;
+
+                input {
+                    height: 30px;
+                    width: 200px;
+                    border: 1px solid var(--lightGrayColor);
+                    border-radius: 5px;
+                    padding-left: 5px;
+                    outline: none;
+                }
+
+                .timer {
+                    margin-top: 5px;
+                    color: var(--regularBlueColor);
+                }
+            }
+
+            .wraning--message--phone {
+                margin-left: 94px;
+                font-size: 14px;
+                color: var(--redColor);
+            }
+
+            .wraning--message {
+                margin-top: 10px;
+                font-size: 14px;
+                color: var(--redColor);
+            }
+
+            .hide {
+                display: none;
+            }
+
+            .focus {
+                cursor: pointer;
             }
         }
 
@@ -111,14 +226,15 @@
                     }
                 }
 
-                &:hover > .sale--info {
+                &:hover>.sale--info {
                     display: block;
                 }
             }
 
             .payType--box {
                 display: grid;
-                grid-template-columns: 1fr 1fr; /* 2열 설정 */
+                grid-template-columns: 1fr 1fr;
+                /* 2열 설정 */
                 gap: 15px 10px;
 
                 .payType {
@@ -162,6 +278,7 @@
                     display: flex;
                     gap: 10px;
                     align-items: center;
+
                     .sale--info {
                         font-size: 12px;
                         color: var(--lightGrayColor);
@@ -191,6 +308,7 @@
                         }
                     }
                 }
+
                 .point--box {
                     flex: 4;
                     display: flex;
@@ -212,12 +330,12 @@
                 }
             }
 
-            .pay--box > span:nth-child(1) {
+            .pay--box>span:nth-child(1) {
                 color: var(--lightGrayColor);
                 flex: 1;
             }
 
-            .pay--box > span:nth-child(2) {
+            .pay--box>span:nth-child(2) {
                 flex: 8;
                 text-align: end;
             }

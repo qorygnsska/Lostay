@@ -260,7 +260,7 @@ export default function Profile() {
             setPhone(phone);
         } else {
             setIsVerified(false);
-            setVerificationMessage("인증번호가 잘못되었습니다.");
+            setVerificationMessage("잘못된 인증번호입니다.");
         }
     };
 

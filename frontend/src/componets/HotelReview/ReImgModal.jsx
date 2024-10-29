@@ -30,7 +30,7 @@ export default function ReImgModal({imgs, ImgIdx, show, handleClose}) {
                 >
                     {imgs.map((img, index) => (
                         <Carousel.Item key={index}>
-                            <img src={'../' + img} alt={index} className='main--image' />
+                            <img src={'../../../../' + img} alt={index} className='main--image' />
                             <div className="image--counter">
                                 {index + 1} / {imgs.length}
                             </div>
@@ -42,7 +42,7 @@ export default function ReImgModal({imgs, ImgIdx, show, handleClose}) {
                 <div className="thumbnail-container">
                     {imgs.map((img, index) => (
                         <div key={index} onClick={() => setImgIdx(index)} className="thumbnail--box" >
-                            <img src={'../' + img} alt={index} className={`thumbnail-image ${Idx === index ? 'sel--border' : ''}`} />
+                            <img src={'../../../../' + img} alt={index} className={`thumbnail-image ${Idx === index ? 'sel--border' : ''}`} />
                         </div>
                     ))}
                 </div>
