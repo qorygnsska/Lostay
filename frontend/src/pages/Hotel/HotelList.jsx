@@ -59,8 +59,6 @@ export default function HotelList(props) {
 
 
 
-
-
   const [sortOption, setSortOption] = useState('평점 높은 순'); //정렬 옵션
   //////////////////////////////////////////////////////////for detail parameters(filter&sort)
   //////////////////////////////////////////////////////////for hidden & focus
@@ -102,6 +100,8 @@ export default function HotelList(props) {
       const response = await axios.get(uri);
 
       if (response.status === 200) {//HttpStatus.OK
+        console.log(response.data[2]);
+        
         setHotels(response.data);
         setResultCount(response.data.length);
       }
