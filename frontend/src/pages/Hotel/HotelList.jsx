@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-
 import Container from 'react-bootstrap/Container';
-
 import { useInView } from 'react-intersection-observer'; // 무한 스크롤
 import 'bootstrap/dist/css/bootstrap.css'
 import BackNav from "../../componets/BackNav/BackNav";
@@ -14,7 +12,6 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import NavTop from '../../componets/NavToTop/NavTop';
 import Navbar from '../../componets/Navbar/Navbar';
-
 
 export default function HotelList(props) {
 
@@ -353,7 +350,7 @@ export default function HotelList(props) {
 
       <HotelModal props={props} show={show} handleClose={handleClose} />
 
-      <HotelGrid hotels={hotels} />
+      <HotelGrid hotels={hotels} check_in={check_in} check_out={check_out} member={member}/>
 
 
       {/* 뷰포트 안에 들어오면 더 많은 데이터를 로드 */}
