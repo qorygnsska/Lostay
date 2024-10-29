@@ -18,7 +18,7 @@ public class RoomListHotelInfoDTO {
 	private String hotelAdress;  		// 호텔 주소
 	private String hotelIntroduction;  // 호텔 소개
 	private String[] hotelAmenities;   // 호텔서비스/시설
-	private String[] hotelImage;  // 호텔썸네일
+	private String[] hotelImage;  // 호텔 이미지
 	
 	
 	public RoomListHotelInfoDTO(Long hotelNo, String hotelRating, String hotelName, double reviewAvg,

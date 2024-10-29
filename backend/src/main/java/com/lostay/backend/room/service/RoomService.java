@@ -101,6 +101,7 @@ public class RoomService {
 		dto.setSearchPeople(peopleMax);
 		String[] str2 = room.getRoomImg().split(",");
 		dto.setRoomImg(str2);
+		dto.setHotelAdress(room.getHotel().getHotelAdress());
 		
 		
 		return dto;
