@@ -276,9 +276,11 @@ public class ReviewService {
 			results = findReviewsByHotelNo(hotelNo, sort);
 		}
 
+		
 		List<ReviewsDTO> dtoList = new ArrayList<ReviewsDTO>();
 
 		for (Object[] d : results) {
+		
 			ReviewsDTO dto = new ReviewsDTO();
 			dto.setReviewNo((long) d[0]);
 			dto.setReviewRating((double) d[1]);
@@ -286,11 +288,16 @@ public class ReviewService {
 			dto.setUserNickname((String) d[3]);
 			dto.setRoomName((String) d[4]);
 			dto.setReviewContent((String) d[5]);
-			String[] str = d[6].toString().split(",");
-			dto.setReviewImg(str);
+			   // d[6]이 null인지 체크
+		    if (d[6] != null) {
+		        String[] str = d[6].toString().split(",");
+		        dto.setReviewImg(str);
+		    } else {
+		        dto.setReviewImg(new String[0]); // 빈 배열로 설정
+		    }
 			dtoList.add(dto);
 		}
-
+		System.out.println("확인2"+dtoList);
 		hotelInfoDTO.setHotelRoom(roomNames);
 
 		HotelReviewsDTO hotelReviewsDTO = new HotelReviewsDTO(hotelInfoDTO, dtoList);
@@ -299,8 +306,9 @@ public class ReviewService {
 	}
 	// 객실 조건 후 정렬 구분을 위한 메서드
 	private List<Object[]> findReviews(Long hotelNo, Long roomNo, String orderByColumn) {
-		
+
 		if (orderByColumn == null) {
+			
 			return revRepo.findReviewsByRoomName(hotelNo, roomNo); // 기본 정렬
 		}
 		switch (orderByColumn) {
@@ -316,7 +324,9 @@ public class ReviewService {
 	}
 	//객실 조건 없이 정렬 구분을 위한 메서드
 	private List<Object[]> findReviewsByHotelNo(Long hotelNo, String orderByColumn) {
+		
 		if (orderByColumn == null) {
+		
 			return revRepo.findReviewsByRoomName(hotelNo, null); // 기본 정렬
 		}
 		switch (orderByColumn) {
