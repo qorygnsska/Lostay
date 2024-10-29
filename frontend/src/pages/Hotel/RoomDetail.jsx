@@ -21,6 +21,7 @@ import axios from 'axios';
 export default function RoomDetail() {
 
     const [RoomDetail, setRoomDetail] = useState();  // 객실 정보를 저장할 state
+    const [RoomReviews, setRoomReviews] = useState([]);  // 리뷰 정보를 저장할 state
     const [error, setError] = useState(null);        // 에러 핸들링을 위한 state
     const [loading, setLoading] = useState(true);    // 로딩 상태 관리
     
@@ -37,7 +38,6 @@ export default function RoomDetail() {
             params: { roomNo, checkInDate, checkOutDate, peopleMax },
           });
           setRoomDetail(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
-          console.log(response.data)
         } catch (error) {
           setError(error);  // 오류가 발생한 경우 에러 저장
         } finally {
@@ -45,8 +45,24 @@ export default function RoomDetail() {
         }
     };
 
+    // 룸디테일 리뷰3개 가져오기
+    const fetchHotelRoomDetailReview3 = async () => {
+        try {
+        const response = await axios.get('http://localhost:9090/RoomDetail3', {
+            params: { roomNo },
+        });
+        setRoomReviews(response.data);
+        console.log(response.data)
+        } catch (error) {
+        setError(error);
+        } finally {
+        setLoading(false);
+        }
+    };
+
     useEffect(() => {
         fetchHotelRoomDetail();  // 함수 호출
+        fetchHotelRoomDetailReview3();
     }, []);  // 컴포넌트가 처음 렌더링될 때 한 번 실행
 
     const RoomInfo = {
@@ -131,7 +147,12 @@ export default function RoomDetail() {
 
 
             <div className='ReTitle'>객실 리뷰</div>
-            <HotelReview HotelInfo={RoomInfo} Reviews={Reviews}/>
+            {RoomReviews.length > 0 ? (
+                <HotelReview HotelInfo={RoomReviews[0]} Reviews={RoomReviews}/>
+            ) : (
+                <div>리뷰가 없습니다.</div>
+            )}
+            
 
 
             <div className='LoTitle'>위치/길찾기</div>
