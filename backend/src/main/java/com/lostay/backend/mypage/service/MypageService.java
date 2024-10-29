@@ -116,6 +116,7 @@ public class MypageService {
 	    cartList.put("totalPage", cartPage.getTotalPages()-1);
 	    cartList.put("page", page);
 	    
+	    System.out.println("확인"+cartList.toString());
 		
 	    return cartList;
 		    

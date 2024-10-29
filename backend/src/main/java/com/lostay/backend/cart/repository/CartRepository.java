@@ -17,7 +17,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 	        "h.hotelRating, ROUND(AVG(re.reviewRating), 1), " +
 	        "COUNT(re.reviewRating), MAX(r.roomDiscount), " +
 	        "MIN(r.roomPrice), " +
-	        "(MIN(r.roomPrice) * (1 - (MAX(r.roomDiscount) * 0.01)))" +
+	        "FLOOR(MIN(r.roomPrice) * (1 - (MAX(r.roomDiscount) * 0.01)))" +
 	        ") " +
 	        "FROM Cart c " + // Cart 엔티티에서 시작
 	        "JOIN c.hotels h " + // Cart에서 호텔로의 관계
