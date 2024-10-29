@@ -20,7 +20,7 @@ public class MypageCartListDTO {
 	private int roomDiscount; // 객실 할인가
 	private int roomPrice; // 객실 가격
 
-	private double roomDcPrice; // 할인된 가격
+	private int roomDcPrice; // 할인된 가격
 //	private int pagesize; // 총 페이지 수
 //
 //	public MypageCartListDTO(Long userNo, Long cartNo, Long hotelNo, String hotelName, String hotelThumbnail,
