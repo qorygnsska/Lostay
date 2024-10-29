@@ -170,15 +170,4 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	    		"ORDER BY rv.reviewRating ASC") // 평점 낮은 순
 	    List<Object[]> findReviewsByRatingAsc(@Param("hotelNo") Long hotelNo, @Param("roomNo") Long roomNo);
 
-	
-	
-	
-	
-	
-	
-
-
-	
-
-
 }

@@ -297,7 +297,7 @@ public class ReviewService {
 		    }
 			dtoList.add(dto);
 		}
-		System.out.println("확인2"+dtoList);
+	
 		hotelInfoDTO.setHotelRoom(roomNames);
 
 		HotelReviewsDTO hotelReviewsDTO = new HotelReviewsDTO(hotelInfoDTO, dtoList);
