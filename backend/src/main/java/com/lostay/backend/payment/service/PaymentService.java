@@ -2,6 +2,7 @@ package com.lostay.backend.payment.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,6 +80,8 @@ public class PaymentService {
 
 		Optional<Room> newRoom = roomRepo.findById(roomNo);
 
+		Period period = Period.between(checkInDate, checkOutDate);
+		
 		Room room = newRoom.get();
 		RoomDTO roomDto = new RoomDTO();
 
@@ -96,7 +99,8 @@ public class PaymentService {
 		int roomPrice = room.getRoomPrice();
 		int roomDiscount = room.getRoomDiscount();
 		int discountPrice = (int)roomPrice - roomPrice * roomDiscount/100;
-		roomDto.setDiscountPrice(discountPrice);
+		int finalPrice = discountPrice * period.getDays();
+		roomDto.setDiscountPrice(finalPrice);
 
 		return roomDto;
 	}
