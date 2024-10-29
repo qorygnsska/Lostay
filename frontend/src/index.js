@@ -70,7 +70,7 @@ const router = createBrowserRouter([
             { path: "/hotelList", element: <HotelList /> },
             { path: "/roomList/:hotelNo/:checkIn/:checkOut/:member", element: <RoomList /> },
             { path: "/hotelMap", element: <HotelMap /> },
-            { path: "/roomDetail/:roomNo/:checkIn/:checkOut", element: <RoomDetail /> },
+            { path: "/roomDetail/:roomNo/:checkIn/:checkOut/:member", element: <RoomDetail /> },
             { path: "/hotelReviews/:hotelNo", element: <HotelReviews /> },
 
             // 정일

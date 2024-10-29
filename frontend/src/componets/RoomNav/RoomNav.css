@@ -36,4 +36,11 @@
         border: none;
         margin-left: 10px;
     }
+
+    .navSBtn{
+        width: 150px;
+        background-color: gray !important;
+        border: none;
+        margin-left: 10px;
+    }
 }

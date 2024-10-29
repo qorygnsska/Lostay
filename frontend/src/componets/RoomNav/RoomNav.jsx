@@ -13,16 +13,21 @@ export default function RoomNav({info}) {
         <div className='roomDiv'>
             <div>
                 <div>{info.hotelName} - {info.roomName}</div>
-                <div className='NavDate'>{info.InDate} ~ {info.OutDate}</div>
+                <div className='NavDate'>{info.checkInDay} ~ {info.checkOutDay}</div>
             </div>
 
             <div className='PriceBox'>
                 {info.discount == 0 ? (
                     <div className='Price'>{info.roomPrice.toLocaleString()}원</div>
                 ) : (
-                    <div className='Price'>{info.roomDcprice.toLocaleString()}원</div>
+                    <div className='Price'>{info.discountPrice.toLocaleString()}원</div>
                 )}
-                <Link><Button className='navBtn'>예약하기</Button></Link>
+                {info.availableRooms == 0 ? (
+                    <Button className='navSBtn' disabled>예약마감</Button>
+                ) : (
+                    <Link><Button className='navBtn'>예약하기</Button></Link>
+                )}
+                
             </div>
         </div>
     </div>

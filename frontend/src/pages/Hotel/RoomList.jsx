@@ -168,7 +168,7 @@ export default function RoomList() {
       <div className='RLtitle'>객실선택</div>
 
       {displayedRooms.map((rooms, idx) => (
-        <RoomGrid rooms={rooms} checkInDate={checkInDate} checkOutDate={checkOutDate} key={idx} />
+        <RoomGrid rooms={rooms} checkInDate={checkInDate} checkOutDate={checkOutDate} peopleMax={peopleMax} key={idx} />
       ))}
 
       {RoomInfos.list.length > 10 && !showAll && (

@@ -25,10 +25,10 @@ export default function RoomDetail() {
     const [loading, setLoading] = useState(true);    // 로딩 상태 관리
     
     // 기본 파라미터
-    const { roomNo, checkIn, checkOut } = useParams();
+    const { roomNo, checkIn, checkOut, member } = useParams();
     const checkInDate = checkIn;
     const checkOutDate = checkOut;
-    const peopleMax = 3;
+    const peopleMax = member;
 
     // 룸디테일 가져오기
     const fetchHotelRoomDetail = async () => {
@@ -107,7 +107,7 @@ export default function RoomDetail() {
 
             <div className='NameBox'>
                 <div className='RoomName'>{RoomDetail?.roomName}</div>
-                <Link className='HotelName'>{RoomDetail?.hotelName}<GrNext/></Link>
+                <Link to={`/RoomList/${RoomDetail?.hotelNo}/${checkInDate}/${checkOutDate}/${peopleMax}`} className='HotelName'>{RoomDetail?.hotelName}<GrNext/></Link>
             </div>
 
             <div className='RowLine'></div>
@@ -140,7 +140,7 @@ export default function RoomDetail() {
                 
             {RoomDetail?.hotelAdress.length > 0 && <KakaoMap Location={RoomDetail.hotelAdress} />}
 
-            <RoomNav info={RoomDetail}/>
+            {RoomDetail && <RoomNav info={RoomDetail}/>}
             <Footer />
         </Container>
 
