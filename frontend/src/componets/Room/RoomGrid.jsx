@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import { IoPersonOutline } from "react-icons/io5";
 import { FaRegClock } from "react-icons/fa";
 
-export default function ({rooms}) {
+export default function ({rooms, checkInDate, checkOutDate}) {
     return (
         <div className='room--grid--container'>
             <div className='RoomList'>
                 <div className='RoomRow'>
-                    <Link to={`/RoomDetail/${rooms.roomNo}`}><img src={'../../../../' + rooms.roomThumbnail} alt='룸이미지' className='RoomImg' /></Link>
+                    <Link to={`/RoomDetail/${rooms.roomNo}/${checkInDate}/${checkOutDate}`}><img src={'../../../../' + rooms.roomThumbnail} alt='룸이미지' className='RoomImg' /></Link>
                     <div>
                         <div className='RoomInfo'>
                             <div className='InfoBox'>

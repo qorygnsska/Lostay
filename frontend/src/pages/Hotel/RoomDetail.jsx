@@ -25,9 +25,9 @@ export default function RoomDetail() {
     const [loading, setLoading] = useState(true);    // 로딩 상태 관리
     
     // 기본 파라미터
-    const {roomNo} = useParams();
-    const checkInDate = "2024-10-20T15:00:00";
-    const checkOutDate = "2024-10-22T11:00:00";
+    const { roomNo, checkIn, checkOut } = useParams();
+    const checkInDate = checkIn;
+    const checkOutDate = checkOut;
     const peopleMax = 3;
 
     // 룸디테일 가져오기
@@ -140,7 +140,7 @@ export default function RoomDetail() {
                 
             {RoomDetail?.hotelAdress.length > 0 && <KakaoMap Location={RoomDetail.hotelAdress} />}
 
-            <RoomNav info={RoomInfo}/>
+            <RoomNav info={RoomDetail}/>
             <Footer />
         </Container>
 
