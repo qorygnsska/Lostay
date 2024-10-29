@@ -11,7 +11,7 @@ export default function RoomNav({info}) {
     <div className='room--nav--container'>
         <div className='roomDiv'>
             <div>
-                <div>{info.hotelName} - {info.roomName}</div>
+                <div className='infoName'>{info.hotelName} - {info.roomName}</div>
                 <div className='NavDate'>{info.checkInDay} ~ {info.checkOutDay} ({info.period}박)</div>
             </div>
 

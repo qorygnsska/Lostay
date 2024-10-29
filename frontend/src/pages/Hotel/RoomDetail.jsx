@@ -52,7 +52,6 @@ export default function RoomDetail() {
             params: { roomNo },
         });
         setRoomReviews(response.data);
-        console.log(response.data)
         } catch (error) {
         setError(error);
         } finally {
