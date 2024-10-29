@@ -251,30 +251,38 @@ public class ReviewService {
 	public List<ReviewDTO> findRoomReview3(long roomNo) {
 
 		Pageable pageable = PageRequest.of(0, 3); // 첫 번째 페이지, 3개 항목
-		List<Object[]> newReview = revRepo.findRoomReview3(roomNo, pageable);
-
 		List<ReviewDTO> dtos = new ArrayList<ReviewDTO>();
+		
+		long num = revRepo.findRoomReviewCount(roomNo);
+		
+		if (num > 0) {
+			List<Object[]> newReview = revRepo.findRoomReview3(roomNo, pageable);
+			
+			double reviewAvg = revRepo.findRoomReviewAvg(roomNo);
+			long reviewCount = revRepo.findRoomReviewCount(roomNo);
 
-		double reviewAvg = revRepo.findRoomReviewAvg(roomNo);
-		long reviewCount = revRepo.findRoomReviewCount(roomNo);
+			for (Object[] d : newReview) {
+				ReviewDTO dto = new ReviewDTO();
+				dto.setReviewContent((String) d[0]);
 
-		for (Object[] d : newReview) {
-			ReviewDTO dto = new ReviewDTO();
-			dto.setReviewContent((String) d[0]);
+				dto.setReviewCreateAt((LocalDateTime) d[1]);
+				dto.setReviewRating((double) d[2]);
+				dto.setRoomNo((long) d[3]);
+				dto.setUserNo((long) d[4]);
+				dto.setRoomName((String) d[5]);
+				dto.setReviewNo((long) d[6]);
+				dto.setReviewAvg(reviewAvg);
+				dto.setReviewCount(reviewCount);
 
-			dto.setReviewCreateAt((LocalDateTime) d[1]);
-			dto.setReviewRating((double) d[2]);
-			dto.setRoomNo((long) d[3]);
-			dto.setUserNo((long) d[4]);
-			dto.setRoomName((String) d[5]);
-			dto.setReviewNo((long) d[6]);
-			dto.setReviewAvg(reviewAvg);
-			dto.setReviewCount(reviewCount);
-
-			dtos.add(dto);
+				dtos.add(dto);
+			}
+			return dtos;
+		}else {
+			return dtos;
 		}
+	
 
-		return dtos;
+	
 	}
 
 	// 호텔 리뷰 조회 (홍정훈)
