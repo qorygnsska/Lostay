@@ -37,6 +37,7 @@ export default function RoomDetail() {
             params: { roomNo, checkInDate, checkOutDate, peopleMax },
           });
           setRoomDetail(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
+          console.log(response.data)
         } catch (error) {
           setError(error);  // 오류가 발생한 경우 에러 저장
         } finally {
