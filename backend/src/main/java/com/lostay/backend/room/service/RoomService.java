@@ -84,6 +84,8 @@ public class RoomService {
 		Optional<Room> newRoom2 = roomRepo.findById(roomNo);
 		Room room2 = newRoom2.get();
 		
+		Period period = Period.between(checkInDate.toLocalDate(), checkOutDate.toLocalDate());
+		
 		Long hotelNo = room2.getHotel().getHotelNo();
 		
 		List<RoomCustomDTO> list = roomRepo.findRoomCumstomList(hotelNo,checkInDate,checkOutDate);
@@ -121,6 +123,7 @@ public class RoomService {
 		dto.setRoomImg(str2);
 		dto.setHotelAdress(room.getHotel().getHotelAdress());
 		dto.setAvailableRooms(avc);
+		dto.setPeriod(period.getDays());
 		
 		
 		return dto;
