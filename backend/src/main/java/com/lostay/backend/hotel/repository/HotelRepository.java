@@ -100,6 +100,9 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
 		Page<HotelInfosDTO> findBYHotelsInfo(Pageable pageable);
 
 
+		Long findByRoom_RoomNo(long roomNo);
+
+
 		
 
 
