@@ -66,46 +66,6 @@ export default function RoomList() {
         fetchHotelRoomList(); 
         fetchHotelRoomListReview3();
       }, []);
-
-  
-    const HotelInfo = {
-        hotelNo: 1,
-        hotelRating: "블랙·5성급·호텔",
-        hotelName : "제주신라호텔",
-        reviewAvg : 4.8,
-        totalReviewCount : 518,
-        hotelAdress: "제주특별자치도 서귀포시 색달동 3039-3",
-        hotelIntroduction: "세계 자연문화유산인 제주의 아름다운 풍광을 담은 리조트로써 그 명성을 쌓아가고 있는 제주신라호텔은 1980년 개관부터 지금까지 품격과 문화가 있는 휴식지로서 수많은 굵직한 국제행사를 성공적으로 치러온 최고의 리조트입니다 이국적인 분위기와 최고의 시설을 선보이며 고객에게 먼저 다가가는 리조트에 특화된 서비스로 호텔에 다녀간 세계의 국가수반을 비롯 많은 VIP들에게 크나큰 찬사를 받아 왔습니다",
-        hotelAmenities: ['피트니스', '수영장', '미니바', '사우나', '무선인터넷', '욕실용품', '레스토랑', '금연', 'TV', '에어컨', '프린터사용', '라운지', '짐보관가능', '샤워실', '욕조', '무료주차', '카페', '공용스파', '다리미', '카드결제', '주차장', '엘리베이터'],
-        hotelThumbnail: ['/HotelList/호텔1.jpg'],
-        checkInDay: "10월 13일",
-        checkOutDay: "10월 14일",
-        period: 1,
-    };
-
-    
-    const Reviews = [
-        {
-            reviewNo: 1,
-            reviewRating: 5,
-            reviewCreateAt: '2024.09.30',
-            reviewContent: '수영장도 좋고 호텔에서 먹은음식들도 만족스럽고 침구도 깨끗하고 너무 좋았어요 와인패키지 했는데 진짜 많이 만족합니다. 연박했는데 객실청소도 잘되서 마음에 들어요 연박하길잘했어요 !'
-        },
-
-        {
-            reviewNo: 2,
-            reviewRating: 4,
-            reviewCreateAt: '2024.09.27',
-            reviewContent: '친절한 접객, 깔끔한 시설. 대한민국 최고의 숙소'
-        },
-
-        {
-            reviewNo: 3,
-            reviewRating: 3,
-            reviewCreateAt: '2024.09.10',
-            reviewContent: '최고의 숙소!!!!'
-        }
-    ];
     
     
     const [showAll, setshowAll] = useState(false);
@@ -123,7 +83,7 @@ export default function RoomList() {
         <Container className='room--list'>
             
             {/* {RoomInfos.dto.hotelImg?.length > 0 && <HotelCarousel images={RoomInfos.dto.hotelImg}/>} */}
-            <HotelCarousel images={HotelInfo.hotelThumbnail}/>
+            {RoomInfos.dto.hotelImage?.length > 0 && <HotelCarousel images={RoomInfos.dto.hotelImage}/>}
 
             <div className='HotelInfo'>
                 <div className='HotelRN'>

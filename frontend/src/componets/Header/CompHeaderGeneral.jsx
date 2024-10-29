@@ -8,30 +8,29 @@ export default function CompHeaderGeneral(props) {
     const whereAmI = useLocation().pathname.toString();
 
     //기간 계산(소수점 나오면 setHours(0,0,0,0) 필요)
-    const period = (props.check_out.getTime()-props.check_in.getTime())/(24*60*60*1000);
+    const period = (props.check_out.getTime() - props.check_in.getTime()) / (24 * 60 * 60 * 1000);
 
 
     // Date() -> "yyyy/MM/dd" (날짜 형식 -> 텍스트 형식 변환 함수)
-    const dateFormatter = (rawDate) => (rawDate.getFullYear().toString()+"/"+(rawDate.getMonth()+1).toString()+"/"+rawDate.getDate().toString());
-        
+    const dateFormatter = (rawDate) => (rawDate.getFullYear().toString() + "/" + (rawDate.getMonth() + 1).toString() + "/" + rawDate.getDate().toString());
+
 
     //클릭이 일어난 input 태그
-    const handleClick = (event) => {    
+    const handleClick = (event) => {
 
         props.where(whereAmI);
         props.callParent(event.target.id.toString())    //상위요소에 input 태그의 id 전달(포커스 주기 위해)
     }
-    
+
 
     return (
         <>
             <Navbar className="comp--header--general--container">
                 <Container id='container_navbar_general'>
 
-                      {/* 로고 필요하면 살리기!!!!!!!!!!! 
                     <div className='logo'>
                         <h1>로스테이</h1>
-                    </div>  */}
+                    </div>
 
                     <Container id='container_search_param'>
                         <Form.Control
@@ -49,7 +48,7 @@ export default function CompHeaderGeneral(props) {
                             type="text"
                             placeholder="Period"
                             readOnly
-                            value={dateFormatter(props.check_in) + ' - ' + dateFormatter(props.check_out) + ' (' + period +'박)'}
+                            value={dateFormatter(props.check_in) + ' - ' + dateFormatter(props.check_out) + ' (' + period + '박)'}
                             onClick={handleClick}
                         />
                         <Form.Control
