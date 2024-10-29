@@ -45,15 +45,19 @@ export default function HotelList(props) {
   //////////////////////////////////////////////////////////for detail parameters(filter&sort)
   const [soldOut, setSoldOut] = useState(1); //1: 전체 보기, 0: 매진 제외
   const [minRoomPrice, setMinRoomPrice] = useState(0);
-  const [maxRoomPrice, setMaxRoomPrice] = useState(500000);
-  const [activeButtons, setActiveButtons] = useState([]);
+  const [maxRoomPrice, setMaxRoomPrice] = useState(1000000);
+  const [viewDiscount, setViewDiscount] = useState(0);//0: 전체 보기, 1: 할인 중만
 
-  const filterModalCallsMe = (isSoldOutExcluded, minValue, maxValue, activeButtons) => {
+  const filterModalCallsMe = (isSoldOutExcluded, minValue, maxValue, onlyDiscount) => {
+
+    
     console.log(isSoldOutExcluded);
     isSoldOutExcluded ? setSoldOut(0) : setSoldOut(1);
     setMinRoomPrice(minValue);
     setMaxRoomPrice(maxValue);
+    onlyDiscount ? setViewDiscount(1) : setViewDiscount(0);
 
+    
   }
 
 
@@ -86,21 +90,21 @@ export default function HotelList(props) {
       const checkIn = check_in.getFullYear().toString() + '-' + (check_in.getMonth() + 1).toString().padStart(2, '0') + '-' + check_in.getDate().toString().padStart(2, '0');
       const checkOut = check_out.getFullYear().toString() + '-' + (check_out.getMonth() + 1).toString().padStart(2, '0') + '-' + check_out.getDate().toString().padStart(2, '0');
 
-      console.log('props: ' + props + '새로 검색');
       console.log(`place: ${place} chIn: ${checkIn} chOut: ${checkOut} mem: ${member} // sort: ${sortOption}`);
-      console.log(`minRoonPrice: ${minRoomPrice} maxRoomPrice: ${maxRoomPrice} soldOut: ${soldOut}`);
-
+      console.log(`minRoonPrice: ${minRoomPrice} maxRoomPrice: ${maxRoomPrice}`);
+      console.log(`soldOut: ${soldOut} viewDisCount: ${viewDiscount}`);
+      
 
       let uri = 'http://localhost:9090/testhotel';
       uri += `?hotelsearch=${place}&checkIn=${checkIn}&checkOut=${checkOut}&roomPeopleInfo=${member}`;
-      uri += `&minRoomPrice=${minRoomPrice}&maxRoomPrice=${maxRoomPrice}&soldOut=${soldOut}`;
-      uri += `&sort=${sortOption}`
+      uri += `&minRoomPrice=${minRoomPrice}&maxRoomPrice=${maxRoomPrice}`;
+      uri += `&soldOut=${soldOut}&roomDiscountState=${viewDiscount}&sort=${sortOption}`
 
       // async&await이나 then()은 같은 것
       const response = await axios.get(uri);
 
       if (response.status === 200) {//HttpStatus.OK
-        console.log(response.data[2]);
+        console.log(response.data[0]);
         
         setHotels(response.data);
         setResultCount(response.data.length);
@@ -113,7 +117,7 @@ export default function HotelList(props) {
 
   useEffect(() => {
     getHotelList();
-  }, [sortOption, soldOut, minRoomPrice, maxRoomPrice]);
+  }, [sortOption, soldOut, minRoomPrice, maxRoomPrice, viewDiscount]);
   //////////////////////////////////////////////////////////////////////////////JIP1028
 
 
