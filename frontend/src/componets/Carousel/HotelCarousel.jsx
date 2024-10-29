@@ -53,7 +53,7 @@ export default function CardCarousel({ hotelList }) {
                                         <div className="review--wrap">
                                             <div className="review--icon--box">
                                                 <FaStar className='star--Icon' />
-                                                <span className="review--avg"><strong>{hotel.reviewRating ? hotel.reviewRating : 0}</strong></span>
+                                                <span className="review--avg"><strong>{hotel.reviewRating ? hotel.reviewRating.toFixed(1) : 0}</strong></span>
                                             </div>
 
                                             <span className="hotel--review--count">{hotel.totalReviewCount}명 평가</span>
