@@ -10,20 +10,6 @@ import axios from "axios";
 import { privateApi } from "../../api/api";
 
 
-const reinfo = {
-    hotelName: "서울신라호텔",
-    hotelImage: "2b9ba01a5cfcd32ac752258732a5a669.webp",
-    roomName: "[오픈런] F&B 크레딧 10만원+신라베이키링 디럭스 더블",
-    checkInDay: "11.18 (월)",
-    checkOutDay: "11.19 (화)",
-    checkInTime: "15:00",
-    checkOutTime: "11:00",
-    defaultPerson: "2인기준, 최대 3인(유료)",
-    userName: "홍길동",
-    userPhone: "010-9920-2121",
-    userPoint: 1000,
-    roomOriPrice: 496220,
-};
 
 const paymentMethods = [
     { id: 1, name: "카카오페이", imageUrl: "kakaoPay.png", sale: 5 },
@@ -87,6 +73,7 @@ export default function Reservation() {
                     },
                 }); // API 요청
                 if (response.status === 200) {
+                    console.log(response.data)
                     setData(response.data)
                 }
             } catch (error) {
@@ -114,7 +101,7 @@ export default function Reservation() {
 
     const checkNameValidity = (inputValue) => {
         const byteLength = getByteLength(inputValue); // 바이트 길이 계산
-        console.log(byteLength)
+
         if (inputValue.length === 0) return true; // 아무것도 안 칠 경우
         else if (/^[가-힣]*$/.test(inputValue)) { // 한글만
             console.log('한글')
@@ -394,9 +381,11 @@ export default function Reservation() {
 
         }, (rsp) => {
             if (rsp.success) { // 프론트에서 결제가 완료되면
-
+                console.log(rsp.data)
                 axios.post(`http://localhost:9090/api/v1/order/payment/${merchant_uid}`, {
-                    point: inputPoints
+                    imp_uid: rsp.imp_uid,            // 결제 고유번호
+                    merchant_uid: rsp.merchant_uid,   // 주문번호
+                    amount: rsp.paid_amount
                 })
                     .then((res) => {
                         // 결제완료 
@@ -448,7 +437,7 @@ export default function Reservation() {
 
     const [useAllPoints, setUseAllPoints] = useState(false); // 포인트 모두 사용
     const [inputPoints, setInputPoints] = useState(0); // 포인트 직접 입력
-    const [totalPrice, setTotalPrice] = useState(reinfo.roomOriPrice); // 총 결제 가격
+    const [totalPrice, setTotalPrice] = useState(data?.roomPrice); // 총 결제 가격
     const [payType, setpayType] = useState(null); // 결제 수단
     const [salePrice, setSalePrice] = useState(0); // 할인 금액
     const [checkItems, setCheckItems] = useState([]); // 체크된 동의 담을 배열
@@ -481,7 +470,7 @@ export default function Reservation() {
         const newUseAllPoints = !useAllPoints;
         setUseAllPoints(newUseAllPoints);
 
-        const points = newUseAllPoints ? reinfo.userPoint : "";
+        const points = newUseAllPoints ? data?.userPoint : 0;
         setInputPoints(points);
         updateTotalPrice(points, payType?.sale);
     };
@@ -494,7 +483,7 @@ export default function Reservation() {
             setUseAllPoints(false);
         }
         // 입력값이 숫자이고, 범위를 초과하지 않는지 확인
-        if (/^\d*$/.test(value) && (value === "" || (parseInt(value, 10) <= reinfo.userPoint && parseInt(value, 10) <= totalPrice))) {
+        if (/^\d*$/.test(value) && (value === "" || (parseInt(value, 10) <= data?.userPoint && parseInt(value, 10) <= totalPrice))) {
             setInputPoints(value);
             updateTotalPrice(value, payType?.sale);
         }
@@ -509,8 +498,8 @@ export default function Reservation() {
     // 총 결제금액 계산
     const updateTotalPrice = (points, sale = 0) => {
         const pointsToUse = parseInt(points, 10) || 0;
-        const discountAmount = Math.floor((reinfo.roomOriPrice * sale) / 100); // sale을 비율로 계산
-        const discountedPrice = reinfo.roomOriPrice - discountAmount;
+        const discountAmount = Math.floor((data.roomPrice * sale) / 100); // sale을 비율로 계산
+        const discountedPrice = data.roomPrice - discountAmount;
         setSalePrice(discountAmount);
         setTotalPrice(discountedPrice - pointsToUse);
     };
@@ -518,6 +507,58 @@ export default function Reservation() {
     // 숫자 포맷팅
     const formatNumber = (num) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
+
+    // 날짜변경
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더합니다.
+        const day = String(date.getDate()).padStart(2, '0');
+
+        return `${year}.${month}.${day}`;
+    };
+
+    // 요일 구하기
+    const getDayName = (dateStr) => {
+        const date = new Date(dateStr);
+        const dayIndex = date.getDay(); // 0(일요일) ~ 6(토요일)
+
+        // 요일 이름 배열
+        const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+
+        return daysOfWeek[dayIndex]; // 요일 이름 반환
+    };
+
+    // 몇 박인지 구하기
+    const calculateNights = (checkInStr, checkOutStr) => {
+        if (!checkInStr || !checkOutStr) return 0;
+
+        const checkInDate = new Date(checkInStr).toISOString().split('T')[0];
+        const checkOutDate = new Date(checkOutStr).toISOString().split('T')[0];
+
+        // Date 객체로 변환
+        const checkIn = new Date(checkInDate);
+        const checkOut = new Date(checkOutDate);
+
+        // 날짜 차이 계산 (밀리초 단위)
+        const timeDiff = checkOut - checkIn;
+
+        // 밀리초를 일 수로 변환
+        const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
+
+        return daysDiff; // 몇 박인지 반환
+    };
+
+
+    // 시간 변환
+    const formatCheckTime = (timeStr) => {
+        if (typeof timeStr === 'string') {
+            return timeStr.substring(0, 5); // "15:00:00" -> "15:00"
+        }
+        return ''
     };
 
     return (
@@ -528,26 +569,26 @@ export default function Reservation() {
                 {/* 예약할 호텔 정보 */}
                 <div className="hotel--info">
                     <div className="hotel--title">
-                        <span>{reinfo.hotelName}</span>
+                        <span>{data?.hotelName}</span>
                     </div>
 
-                    <img src={`HotelList/${reinfo.hotelImage}`} alt="호텔 이미지" />
+                    <img src={data?.hotelThumbnail} alt="호텔 이미지" />
 
                     <div className="hotel--info--box">
                         <span>객실</span>
-                        <span>{reinfo.roomName}</span>
+                        <span>{data?.roomName}</span>
                     </div>
 
                     <div className="hotel--info--box">
                         <span>일정</span>
                         <span>
-                            {reinfo.checkInDay} {reinfo.checkInTime} ~ {reinfo.checkOutDay} {reinfo.checkOutTime}
+                            {formatDate(data?.roomCheckIn)} ({getDayName(data?.roomCheckIn)}) {formatCheckTime(data?.roomCheckinTime)} ~ {formatDate(data?.roomCheckOut)} ({getDayName(data?.roomCheckOut)}) {formatCheckTime(data?.roomCheckoutTime)} | {calculateNights(data?.roomCheckIn, data?.roomCheckOut)}박
                         </span>
                     </div>
 
                     <div className="hotel--info--box">
                         <span>기준인원</span>
-                        <span>{reinfo.defaultPerson}</span>
+                        <span>{data?.roomPeopleInfo}</span>
                     </div>
                 </div>
 
@@ -561,7 +602,7 @@ export default function Reservation() {
                             value={name}
                             onChange={handleNameChange}
                             maxLength={15}
-                            className={`input--name`}
+                            className={`input--name ${nameWarning && 'warning'}`}
                         />
                     </div>
 
@@ -648,9 +689,9 @@ export default function Reservation() {
                         <span className="section--title">결제수단</span>
                         <BsExclamationCircle className="pay--sale--icon" />
                         <div className="sale--info">
-                            {paymentMethods.map((method) =>
+                            {paymentMethods.map((method, index) =>
                                 method.sale > 0 ? (
-                                    <div>
+                                    <div key={index}>
                                         {method.name} : {method.sale}%
                                     </div>
                                 ) : null
@@ -674,7 +715,7 @@ export default function Reservation() {
 
                     <div className="pay--box">
                         <span>상품 금액</span>
-                        <span>{reinfo.roomOriPrice.toLocaleString()}원</span>
+                        <span>{data?.roomPrice.toLocaleString()}원</span>
                     </div>
 
                     <div className="pay--box">
@@ -693,7 +734,7 @@ export default function Reservation() {
                         <span>포인트</span>
                         <div className="point--box">
                             <div className="user--point--box">
-                                <span>보유 포인트 : {reinfo.userPoint}p</span>
+                                <span>보유 포인트 : {data?.userPoint}p</span>
                                 <div>
                                     <input type="checkbox" id="useAllPoints" checked={useAllPoints} onChange={handleCheckboxChange} />
                                     <label htmlFor="useAllPoints">
@@ -719,7 +760,7 @@ export default function Reservation() {
 
                     <div className="totalpay--box">
                         <span>총 결제 금액</span>
-                        <span>{totalPrice.toLocaleString()}원</span>
+                        <span>{totalPrice?.toLocaleString()}원</span>
                     </div>
                 </div>
 
@@ -728,7 +769,7 @@ export default function Reservation() {
                     <AgreeInfo agreeInfo={agreeInfo} />
                     <AgreeChkInfo agreeChkInfo={agreeChkInfo} checkItems={checkItems} handleSingleCheck={handleSingleCheck} handleAllCheck={handleAllCheck} />
                     {/* 결제버튼 */}
-                    <button disabled={checkItems.length !== agreeChkInfo.length} onClick={paymentClick}>{totalPrice.toLocaleString()}원 결제하기</button>
+                    <button disabled={checkItems.length !== agreeChkInfo.length} onClick={paymentClick}>{totalPrice?.toLocaleString()}원 결제하기</button>
                 </div>
             </div>
             <Navbar />

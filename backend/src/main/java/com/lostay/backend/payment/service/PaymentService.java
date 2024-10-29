@@ -89,6 +89,7 @@ public class PaymentService {
 		roomDto.setHotelNo(room.getHotel().getHotelNo());
 		roomDto.setHotelName(room.getHotel().getHotelName());
 		roomDto.setHotelRating(room.getHotel().getHotelRating());
+		roomDto.setHotelThumbnail(room.getHotel().getHotelThumbnail());
 		roomDto.setRoomName(room.getRoomName());
 		roomDto.setRoomCheckIn(checkInDate); // 입실날짜
 		roomDto.setRoomCheckOut(checkOutDate); // 퇴실날짜
