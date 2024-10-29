@@ -323,8 +323,6 @@ export default function HotelList(props) {
   return (
     <Container className='hotel--list'>
 
-      <BackNav />
-
       {/* header w/ searchParams JIP1017 */}
       <CompHeaderGeneral
         where={functionFromWhere}
