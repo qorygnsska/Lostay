@@ -53,7 +53,7 @@
                             border-bottom: 1px solid black;
                         }
 
-                        .icon{
+                        .icon {
                             width: 20px;
                             height: 20px;
                         }
@@ -61,7 +61,7 @@
                 }
             }
 
-        
+
 
             .nickname--edit--btn,
             .phone--edit--btn {
@@ -112,16 +112,17 @@
         cursor: pointer;
     }
 
-    .wraning--message{
+    .wraning--message {
         margin-left: 108px;
         font-size: 12px;
         color: var(--redColor);
     }
 
-    .input--box{
+    .input--box {
         margin-left: 107px;
-        
+
     }
+
     .send--num--btn {
         border: none;
         color: #fff;
