@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 export default function Carousel({ eventList }) {
 
@@ -48,9 +49,9 @@ export default function Carousel({ eventList }) {
             <Slider ref={sliderRef} {...settings}>
                 {eventList.map((data, index) => (
                     <div key={index}>
-                        <a href={`/event-detail/${data.eventNo}`}>
+                        <Link to={`/event-detail/${data.eventNo}`}>
                             <img src={`${data.eventThumbnail}`} alt={`슬라이드 ${index + 1}`} />
-                        </a>
+                        </Link>
                     </div>
                 ))}
             </Slider>
