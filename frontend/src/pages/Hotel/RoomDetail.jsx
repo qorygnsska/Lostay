@@ -94,7 +94,7 @@ export default function RoomDetail() {
 
 
     const handleFindButtonClick = () => {
-        const encodedLocation = encodeURIComponent(RoomInfo.hotelAdress); // 주소를 URL 인코딩
+        const encodedLocation = encodeURIComponent(RoomDetail.hotelAdress); // 주소를 URL 인코딩
         window.location.href = `/HotelMap?location=${encodedLocation}`;
     };
 
@@ -135,10 +135,10 @@ export default function RoomDetail() {
 
 
             <div className='LoTitle'>위치/길찾기</div>
-            <span className='LoContent'>{RoomInfo.hotelAdress}</span>
+            <span className='LoContent'>{RoomDetail?.hotelAdress}</span>
             <Button id='FindBtn' onClick={handleFindButtonClick}>길찾기<IoNavigate /></Button> 
                 
-            <KakaoMap Location={RoomInfo.hotelAdress} />
+            {RoomDetail?.hotelAdress.length > 0 && <KakaoMap Location={RoomDetail.hotelAdress} />}
 
             <RoomNav info={RoomInfo}/>
             <Footer />
