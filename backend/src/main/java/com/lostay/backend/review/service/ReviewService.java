@@ -308,18 +308,15 @@ public class ReviewService {
 	private List<Object[]> findReviews(Long hotelNo, Long roomNo, String orderByColumn) {
 
 		if (orderByColumn == null) {
-			
-			return revRepo.findReviewsByRoomName(hotelNo, roomNo); // 기본 정렬
+			return revRepo.findReviewsByDateDesc(hotelNo, roomNo); //최신작성순 기본정렬
 		}
 		switch (orderByColumn) {
-		case "최신작성순":
-			return revRepo.findReviewsByDateDesc(hotelNo, roomNo);
 		case "평점높은순":
 			return revRepo.findReviewsByRatingDesc(hotelNo, roomNo);
 		case "평점낮은순":
 			return revRepo.findReviewsByRatingAsc(hotelNo, roomNo);
 		default:
-			return revRepo.findReviewsByRoomName(hotelNo, roomNo); // 기본 정렬(객실이름순)
+			return revRepo.findReviewsByDateDesc(hotelNo, roomNo); //최신작성순 기본정렬
 		}
 	}
 	//객실 조건 없이 정렬 구분을 위한 메서드
@@ -327,17 +324,15 @@ public class ReviewService {
 		
 		if (orderByColumn == null) {
 		
-			return revRepo.findReviewsByRoomName(hotelNo, null); // 기본 정렬
+			return revRepo.findReviewsByDateDesc(hotelNo, null); //최신작성순 기본 정렬
 		}
 		switch (orderByColumn) {
-		case "최신작성순":
-			return revRepo.findReviewsByDateDesc(hotelNo, null);
 		case "평점높은순":
 			return revRepo.findReviewsByRatingDesc(hotelNo, null);
 		case "평점낮은순":
 			return revRepo.findReviewsByRatingAsc(hotelNo, null);
 		default:
-			return revRepo.findReviewsByRoomName(hotelNo, null); // 기본 정렬(객실이름순)
+			return revRepo.findReviewsByDateDesc(hotelNo, null); //최신작성순 기본 정렬
 		}
 	}
 
