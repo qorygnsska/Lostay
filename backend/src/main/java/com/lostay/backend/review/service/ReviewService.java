@@ -157,9 +157,15 @@ public class ReviewService {
 		for (Object[] d : ReviewList) {
 			ReviewDTO dto = new ReviewDTO();
 			dto.setReviewContent((String) d[0]);
+			
+			if(d[1] != null) {
+				String[] str = d[1].toString().split(",");
+				dto.setReviewImg(str);	
+			}else {
+				String[] str = new String[0];
+				dto.setReviewImg(str);	
 
-			String[] str = d[1].toString().split(",");
-			dto.setReviewImg(str);
+			}
 			dto.setReviewCreateAt((LocalDateTime) d[2]);
 			dto.setReviewRating((double) d[3]);
 			dto.setRoomNo((long) d[4]);
@@ -221,8 +227,16 @@ public class ReviewService {
 				dto.setUserNickname(r.getUser().getUserNickname());
 				dto.setReviewRating(r.getReviewRating());
 				dto.setReviewCreateAt(r.getReviewCreateAt());
-				String[] str = r.getReviewImg().split(",");
-				dto.setReviewImg(str);
+				
+				if(r.getReviewImg() != null) {
+					
+					String[] str = r.getReviewImg().split(",");
+					dto.setReviewImg(str);
+				}else {
+					String[] str = new String[0];
+					dto.setReviewImg(str);	
+
+				}
 				dto.setRoomName(r.getRoom().getRoomName());
 				dto.setReviewContent(r.getReviewContent());
 				
@@ -286,8 +300,13 @@ public class ReviewService {
 			dto.setUserNickname((String) d[3]);
 			dto.setRoomName((String) d[4]);
 			dto.setReviewContent((String) d[5]);
-			String[] str = d[6].toString().split(",");
-			dto.setReviewImg(str);
+			if(d[6] != null) {
+				String[] str = d[6].toString().split(",");
+				dto.setReviewImg(str);
+			}else {
+				String[] str = new String[0];
+				dto.setReviewImg(str);
+			}
 			dtoList.add(dto);
 		}
 

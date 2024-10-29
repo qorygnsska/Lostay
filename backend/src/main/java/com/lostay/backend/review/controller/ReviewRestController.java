@@ -53,8 +53,7 @@ public class ReviewRestController {
 					if (!uploadDir.exists()) {
 						uploadDir.mkdirs();
 					}
-					List<MultipartFile> list = 
-							files.getFiles("files");
+					List<MultipartFile> list = files.getFiles("files");
 					
 					for(int i=0; i<list.size(); i++) {
 						String img = list.get(i).getOriginalFilename();

@@ -1,5 +1,6 @@
 package com.lostay.backend.payment.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
@@ -12,14 +13,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lostay.backend.oauth2.service.CustomOAuth2User;
-import com.lostay.backend.payment.entity.Payment;
+import com.lostay.backend.payment.dto.PaymentVerificationDTO;
+//import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.payment.repository.PaymentRepository;
 import com.lostay.backend.payment.service.PaymentService;
 import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -73,8 +80,17 @@ public class PaymentController {
 		}
 	
 	
+		
+	// 사후검증	
+	@PostMapping("/Payment/Verification")
+	  private IamportResponse<Payment> paymentByImpUid(@RequestBody PaymentVerificationDTO payDTO) throws IamportResponseException,IOException {
+        System.out.println(payDTO);
+        //paymentByImpUid를 사용하기 위해서는 토큰 발급이 필요하고, 토큰 발급을 하기 위해서는 위에 복사해 두었던 REST API 키 와 REST API secret 가 필요합니다.
+        return iamportClient.paymentByImpUid(payDTO.getImp_uid());
+    }
 	
-	// 결제 시 결제 테이블 데이터 삽입
+	
+	// 사후검증 완료 시 결제 테이블 데이터 삽입
 	@GetMapping("/PaymentInsert")
 	public void paymentinsert(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
 										  ,@RequestParam(defaultValue = "5") long roomNo
@@ -88,8 +104,6 @@ public class PaymentController {
 	   									   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkInDate
 	   									  ,@RequestParam(defaultValue = "2024-11-22T11:00:00") 
 										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkOutDate){
-											
-		// 결제 api 아직 안들어옴
 
 		Long userNo = customOAuth2User.getUserNo();
 		paySer.savePayment(userNo,roomNo,payType,payDay,payStatus,payPrice,payPoint,checkInDate,checkOutDate);
