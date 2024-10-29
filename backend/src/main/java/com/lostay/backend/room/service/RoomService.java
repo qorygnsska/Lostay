@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lostay.backend.hotel.repository.HotelRepository;
 import com.lostay.backend.review.repository.ReviewRepository;
 import com.lostay.backend.room.dto.RoomCustomDTO;
 import com.lostay.backend.room.dto.RoomDTO;
@@ -29,6 +30,9 @@ public class RoomService {
 	@Autowired
 	private ReviewRepository revRepo;
 
+	
+	@Autowired
+	private HotelRepository hotelRepo;
 	
 	// 호텔에 대한 객실 리스트 조회(호텔과 객실 정보)
 	public RoomListDTO findHotelRoomList(Long hotelNo, LocalDateTime checkInDate, LocalDateTime checkOutDate, int peopleMax) {
@@ -77,6 +81,17 @@ public class RoomService {
 	//  해당 객실에 대한 정보 조회
 	public RoomDTO findRoomInfo(long roomNo,LocalDateTime checkInDate, LocalDateTime checkOutDate, int peopleMax) {
 		
+		Long hotelNo = hotelRepo.findByRoom_RoomNo(roomNo);
+		
+		List<RoomCustomDTO> list = roomRepo.findRoomCumstomList(hotelNo,checkInDate,checkOutDate);
+		Long avc = 0L;
+		
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).getRoomNo() == roomNo) {
+				avc = list.get(i).getAvailableRooms();
+			}
+		}
+		
 		Optional<Room> newRoom = roomRepo.findById(roomNo);
 		Room room = newRoom.get();
 		
@@ -102,6 +117,7 @@ public class RoomService {
 		String[] str2 = room.getRoomImg().split(",");
 		dto.setRoomImg(str2);
 		dto.setHotelAdress(room.getHotel().getHotelAdress());
+		dto.setAvailableRooms(avc);
 		
 		
 		return dto;

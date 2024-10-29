@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +37,12 @@ import lombok.extern.slf4j.Slf4j;
 public class PaymentController {
 
 	private IamportClient iamportClient;
-	
-	public PaymentController() {
-		this.iamportClient = new IamportClient("7735864487762668", "5qFJBB44PsuFjiCgxOhnjmMoE3QVxEM4eRbGm49Hb7l8QoUqYyQEt4Bz82ij4qnxJgbWE46GxnlPWWqi");
-	}
+
+    @Value("${imp.api.key}")
+    private String apiKey;
+    
+    @Value("${imp.api.secretKey}")
+    private String secretKey;
 	
 	
 	@Autowired
@@ -56,7 +60,8 @@ public class PaymentController {
 	
 	// 결제 진행 페이지 호텔-객실(투숙) 정보 <결제정보에서 상품금액에서도 사용>
 	@GetMapping("/HotelRoomInfo")
-	public ResponseEntity<?> hotelroominfo(@RequestParam(defaultValue = "1") Long roomNo
+	public ResponseEntity<?> hotelroominfo(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
+										  ,@RequestParam(defaultValue = "1") Long roomNo
 										  ,@RequestParam(defaultValue = "2024-10-15") 
     									   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate
     									  ,@RequestParam(defaultValue = "2024-10-20") 
@@ -84,8 +89,9 @@ public class PaymentController {
 	// 사후검증	
 	@PostMapping("/Payment/Verification")
 	  private IamportResponse<Payment> paymentByImpUid(@RequestBody PaymentVerificationDTO payDTO) throws IamportResponseException,IOException {
-        System.out.println(payDTO);
-        //paymentByImpUid를 사용하기 위해서는 토큰 발급이 필요하고, 토큰 발급을 하기 위해서는 위에 복사해 두었던 REST API 키 와 REST API secret 가 필요합니다.
+		 iamportClient = new IamportClient(apiKey, secretKey);
+		
+		 System.out.println(payDTO);
         return iamportClient.paymentByImpUid(payDTO.getImp_uid());
     }
 	
@@ -98,7 +104,7 @@ public class PaymentController {
 										  ,@RequestParam(defaultValue = "2024-10-20T15:00:00") // ISO 8601 형식
 										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime payDay
 										  ,@RequestParam(defaultValue = "Y") String payStatus
-										  ,@RequestParam(defaultValue = "100000") int payPrice
+										  ,@RequestParam() int payPrice
 										  ,@RequestParam(defaultValue = "0") int payPoint
 										  ,@RequestParam(defaultValue = "2024-11-21T15:00:00") 
 	   									   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkInDate
