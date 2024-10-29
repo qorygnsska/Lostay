@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 
 import { useInView } from 'react-intersection-observer'; // 무한 스크롤
 import 'bootstrap/dist/css/bootstrap.css'
+import BackNav from "../../componets/BackNav/BackNav";
 import HotelFilter from '../../componets/Hotel/HotelFilter';
 import HotelModal from '../../componets/Hotel/HotelModal';
 import HotelGrid from '../../componets/Hotel/HotelGrid';
@@ -12,6 +13,7 @@ import CompSearchBox from '../../componets/Search/CompSearchBox';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import NavTop from '../../componets/NavToTop/NavTop';
+import Navbar from '../../componets/Navbar/Navbar';
 
 
 export default function HotelList(props) {
@@ -28,6 +30,7 @@ export default function HotelList(props) {
   let check_out = new Date(check_in); //오늘 + 1 + 1(the day after tomorrow)
   check_out.setDate(check_in.getDate() + 1);
   let member = 2;
+  const [resultCount, setResultCount] = useState(0);
 
   const location = useLocation(); //uri 가져오기
   //console.log(location);
@@ -40,8 +43,8 @@ export default function HotelList(props) {
     check_out = new Date(parameters[2].split('=')[1]);
     member = parameters[3].split('=')[1];
   } catch (error) {
-    place=''; //try구문에서 place부터 에러가 나서, 미지정 시 place = undefined가 됨
-   }
+    place = ''; //try구문에서 place부터 에러가 나서, 미지정 시 place = undefined가 됨
+  }
   //////////////////////////////////////////////////////////for default parameters
   //////////////////////////////////////////////////////////for hidden & focus
   // searchBox(Modal)이 열렸니?
@@ -64,16 +67,16 @@ export default function HotelList(props) {
   const getHotelList = async () => {
     try {
       //Date -> String 변환
-      const checkIn = check_in.getFullYear().toString()+'-'+(check_in.getMonth()+1).toString().padStart(2, '0')+'-'+check_in.getDate().toString().padStart(2, '0');
-      const checkOut = check_out.getFullYear().toString()+'-'+(check_out.getMonth()+1).toString().padStart(2, '0')+'-'+check_out.getDate().toString().padStart(2, '0');
+      const checkIn = check_in.getFullYear().toString() + '-' + (check_in.getMonth() + 1).toString().padStart(2, '0') + '-' + check_in.getDate().toString().padStart(2, '0');
+      const checkOut = check_out.getFullYear().toString() + '-' + (check_out.getMonth() + 1).toString().padStart(2, '0') + '-' + check_out.getDate().toString().padStart(2, '0');
 
       // async&await이나 then()은 같은 것
       const response = await axios.get(`http://localhost:9090/testhotel?hotelsearch=${place}&checkIn=${checkIn}&checkOut=${checkOut}&roomPeopleInfo=${member}`);
-      console.log('response.status: ' + response.status);
-      console.log('response.data.length: ' + response.data.length);
+      console.log(response.data[0]);
 
-      if(response.status===200) {//HttpStatus.OK
+      if (response.status === 200) {//HttpStatus.OK
         setHotels(response.data);
+        setResultCount(response.data.length);
       }
     } catch (error) {
       console.log(error);
@@ -323,6 +326,8 @@ export default function HotelList(props) {
   return (
     <Container className='hotel--list'>
 
+      <BackNav />
+
       {/* header w/ searchParams JIP1017 */}
       <CompHeaderGeneral
         where={functionFromWhere}
@@ -344,7 +349,7 @@ export default function HotelList(props) {
         focus={focus}
       />
 
-      <HotelFilter handleShow={handleShow} />
+      <HotelFilter place={place} resultCount={resultCount} handleShow={handleShow} />
 
       <HotelModal props={props} show={show} handleClose={handleClose} />
 
@@ -355,6 +360,8 @@ export default function HotelList(props) {
       {hasMore ? <div ref={ref} style={{ height: '1px' }} /> : <p id='NoHotel'>더 이상 호텔이 없습니다.</p>}
 
       <NavTop />
+      <Navbar />
+
     </Container>
   )
 }
