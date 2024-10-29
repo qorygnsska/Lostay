@@ -46,6 +46,8 @@ public class Payment {
     private int payPoint; // 사용한 포인트
     @Column(name = "cancle_day")
     private LocalDateTime cancleDay; // 결제 취소 날짜
+    @Column(name = "imp_uid")
+    private String impUid;		// 결제 고유 id
 
     @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // LAZY 로딩으로 수정
     @ToString.Exclude

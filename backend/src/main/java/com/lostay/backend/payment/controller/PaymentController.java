@@ -19,6 +19,7 @@ import com.lostay.backend.oauth2.service.CustomOAuth2User;
 import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.payment.repository.PaymentRepository;
 import com.lostay.backend.payment.service.PaymentService;
+import com.siot.IamportRestClient.IamportClient;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +27,12 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class PaymentController {
 
+	private IamportClient iamportClient;
+	
+	public PaymentController() {
+		this.iamportClient = new IamportClient("7735864487762668", "5qFJBB44PsuFjiCgxOhnjmMoE3QVxEM4eRbGm49Hb7l8QoUqYyQEt4Bz82ij4qnxJgbWE46GxnlPWWqi");
+	}
+	
 	
 	@Autowired
 	private PaymentService paySer;

@@ -19,8 +19,11 @@ configurations {
 	}
 }
 
+allprojects{
 repositories {
 	mavenCentral()
+	  maven { url 'https://jitpack.io' }
+	}
 }
 
 dependencies {
@@ -38,7 +41,7 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-
+    implementation 'com.github.iamport:iamport-rest-client-java:0.2.21'
 	
 	// oauth2
 	implementation 'org.springframework.security:spring-security-oauth2-client'
