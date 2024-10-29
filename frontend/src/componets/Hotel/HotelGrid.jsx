@@ -8,8 +8,9 @@ export default function HotelGrid(props) {
         <div className='hotel--grid--container'>
             <div className='HotelGrid'>
 
-                {props.hotels.map((hotel) => (
-                    <div className='HotelRow' key={hotel.id}>
+                {props.hotels.map((hotel, index) => (
+                    //1029JIP key재설정: key={hotel.id} -> key={index}
+                    <div className='HotelRow' key={index}>
                         <div className='HotelCol'>
                             <Link className='link_to_roomList' to={`../roomList/${hotel.hotelNo}/${props.check_in}/${props.check_out}/${props.member}`} >
                                 <img src={'../' + hotel.hotelThumbnail} alt='호텔이미지' className='HotelImg' />

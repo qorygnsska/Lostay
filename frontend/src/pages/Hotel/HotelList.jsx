@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container';
 import { useInView } from 'react-intersection-observer'; // 무한 스크롤
 import 'bootstrap/dist/css/bootstrap.css'
-import BackNav from "../../componets/BackNav/BackNav";
 import HotelFilter from '../../componets/Hotel/HotelFilter';
 import HotelModal from '../../componets/Hotel/HotelModal';
 import HotelGrid from '../../componets/Hotel/HotelGrid';
@@ -27,7 +26,6 @@ export default function HotelList(props) {
   let check_out = new Date(check_in); //오늘 + 1 + 1(the day after tomorrow)
   check_out.setDate(check_in.getDate() + 1);
   let member = 2;
-  const [resultCount, setResultCount] = useState(0);
 
   const location = useLocation(); //uri 가져오기
   //console.log(location);
@@ -43,6 +41,26 @@ export default function HotelList(props) {
     place = ''; //try구문에서 place부터 에러가 나서, 미지정 시 place = undefined가 됨
   }
   //////////////////////////////////////////////////////////for default parameters
+  const [resultCount, setResultCount] = useState(0);  //검색 결과
+  //////////////////////////////////////////////////////////for detail parameters(filter&sort)
+  const [soldOut, setSoldOut] = useState(1); //1: 전체 보기, 0: 매진 제외
+  const [minRoomPrice, setMinRoomPrice] = useState(0);
+  const [maxRoomPrice, setMaxRoomPrice] = useState(500000);
+  const [activeButtons, setActiveButtons] = useState([]);
+
+  const filterModalCallsMe = (isSoldOutExcluded, minValue, maxValue, activeButtons) => {
+    console.log(isSoldOutExcluded);
+    isSoldOutExcluded ? setSoldOut(0) : setSoldOut(1);
+    setMinRoomPrice(minValue);
+    setMaxRoomPrice(maxValue);
+
+  }
+
+
+
+
+  const [sortOption, setSortOption] = useState('평점 높은 순'); //정렬 옵션
+  //////////////////////////////////////////////////////////for detail parameters(filter&sort)
   //////////////////////////////////////////////////////////for hidden & focus
   // searchBox(Modal)이 열렸니?
   const [searchBoxShow, setSearchBoxShow] = useState(false);
@@ -62,16 +80,28 @@ export default function HotelList(props) {
   }
   //////////////////////////////////////////////////////////for hidden & focus
   const getHotelList = async () => {
+
     try {
       //Date -> String 변환
       const checkIn = check_in.getFullYear().toString() + '-' + (check_in.getMonth() + 1).toString().padStart(2, '0') + '-' + check_in.getDate().toString().padStart(2, '0');
       const checkOut = check_out.getFullYear().toString() + '-' + (check_out.getMonth() + 1).toString().padStart(2, '0') + '-' + check_out.getDate().toString().padStart(2, '0');
 
+      console.log('props: ' + props + '새로 검색');
+      console.log(`place: ${place} chIn: ${checkIn} chOut: ${checkOut} mem: ${member} // sort: ${sortOption}`);
+      console.log(`minRoonPrice: ${minRoomPrice} maxRoomPrice: ${maxRoomPrice} soldOut: ${soldOut}`);
+
+
+      let uri = 'http://localhost:9090/testhotel';
+      uri += `?hotelsearch=${place}&checkIn=${checkIn}&checkOut=${checkOut}&roomPeopleInfo=${member}`;
+      uri += `&minRoomPrice=${minRoomPrice}&maxRoomPrice=${maxRoomPrice}&soldOut=${soldOut}`;
+      uri += `&sort=${sortOption}`
+
       // async&await이나 then()은 같은 것
-      const response = await axios.get(`http://localhost:9090/testhotel?hotelsearch=${place}&checkIn=${checkIn}&checkOut=${checkOut}&roomPeopleInfo=${member}`);
-      console.log(response.data[0]);
+      const response = await axios.get(uri);
 
       if (response.status === 200) {//HttpStatus.OK
+        console.log(response.data[2]);
+        
         setHotels(response.data);
         setResultCount(response.data.length);
       }
@@ -83,21 +113,8 @@ export default function HotelList(props) {
 
   useEffect(() => {
     getHotelList();
-  }, []);
+  }, [sortOption, soldOut, minRoomPrice, maxRoomPrice]);
   //////////////////////////////////////////////////////////////////////////////JIP1028
-
-
-  // const [hotels, setHotels] = useState([]);
-
-  // useEffect(() => {
-  //   fetch('매핑주소')
-  //     .then(response => response.json())
-  //     .then(data => setHotels(data))
-  //     .then(data => setRooms(data))
-  //     .then(data => setReviews(data))
-  //     .catch(error => console.error('Error fetching hotel data:', error));
-  // }, []);
-
 
 
   // 무한 스크롤
@@ -105,189 +122,6 @@ export default function HotelList(props) {
   const [hotels, setHotels] = useState([]); // 로딩된 호텔 목록
   const [page, setPage] = useState(1); // 현재 페이지
   const [hasMore, setHasMore] = useState(true); // 더 불러올 데이터가 있는지 여부
-
-  const hotel = [
-    {
-      hotelNo: 1,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 0,
-      roomDcprice: 300000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 2,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 10,
-      roomDcprice: 270000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 3,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 0,
-      roomDcprice: 300000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 4,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 10,
-      roomDcprice: 270000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 5,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 10,
-      roomDcprice: 270000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 6,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 10,
-      roomDcprice: 270000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 7,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 10,
-      roomDcprice: 270000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 8,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 10,
-      roomDcprice: 270000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 9,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 0,
-      roomDcprice: 300000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 10,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 10,
-      roomDcprice: 270000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 11,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 10,
-      roomDcprice: 270000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 12,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 10,
-      roomDcprice: 270000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 13,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 10,
-      roomDcprice: 270000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 14,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 10,
-      roomDcprice: 270000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-    {
-      hotelNo: 15,
-      hotelRating: '블랙·5성급·호텔',
-      hotelName: '제주신라호텔',
-      hotelAdress: '서귀포시',
-      ReviewRating: 9.6,
-      totalReviewCount: 901,
-      roomPrice: 300000,
-      roomDiscount: 10,
-      roomDcprice: 270000,
-      hotelThumbnail: '/HotelList/호텔1.jpg'
-    },
-  ];
 
 
   // 페이지별 데이터 로딩 함수
@@ -344,11 +178,11 @@ export default function HotelList(props) {
         focus={focus}
       />
 
-      <HotelFilter place={place} resultCount={resultCount} handleShow={handleShow} />
+      <HotelFilter place={place} resultCount={resultCount} handleShow={handleShow} callParent={(fromFilter) => setSortOption(fromFilter)} />
 
-      <HotelModal props={props} show={show} handleClose={handleClose} />
+      <HotelModal gf={props} show={show} handleClose={handleClose} callParent={filterModalCallsMe} />
 
-      <HotelGrid hotels={hotels} check_in={check_in} check_out={check_out} member={member}/>
+      <HotelGrid hotels={hotels} check_in={check_in} check_out={check_out} member={member} />
 
 
       {/* 뷰포트 안에 들어오면 더 많은 데이터를 로드 */}
