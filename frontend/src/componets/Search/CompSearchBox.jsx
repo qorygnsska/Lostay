@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Container, Form, InputGroup, Modal } from 'react-bootstrap'
 import { GoDash, GoPeople } from 'react-icons/go';
 import CompMemberPicker from './CompMemberPicker';
 import { MdOutlineCalendarMonth, MdOutlinePlace } from 'react-icons/md';
 import { Calendar } from 'primereact/calendar';
-import { useNavigate } from 'react-router-dom';
+import LocationCarousel from '../Carousel/LocationCarousel';
+import axios from 'axios';
 
 export default function CompSearchBox(props) {
 
@@ -23,6 +24,7 @@ export default function CompSearchBox(props) {
 
     //선택 가능한 최대 체크인 날짜(미리 예약 한도 90일)
     const maxDate_check_in = new Date();
+    maxDate_check_in.setHours(0, 0, 0, 0);
     maxDate_check_in.setMonth(monthAfter90d);
     maxDate_check_in.setFullYear(yearAfter90d);
 
@@ -83,9 +85,26 @@ export default function CompSearchBox(props) {
     //CompMemberPickerd에서 '변경' 버튼 클릭 시 반대로
     const [memberPicker, setMemberPicker] = useState(false);
     //////////////////////////////////////////////////////////for hidden
+    //////////////////////////////////////////////////////////for location
+    const [locationList, setLocationList] = useState([]);
 
+    const getLocationList = async() => {
+        try {
+            const response = await axios.get('http://localhost:9090/locationMain');
+            if(response.status===200) {
+                setLocationList(response.data);
+            }
+        } catch(error) {
+            console.log('searchBox locationList: ' + error);
+        }
+    }
+
+    useEffect(()=> {
+        getLocationList();
+    }, []);
+
+    //////////////////////////////////////////////////////////for location
     //////////////////////////////////////////////////////////for eventHandler
-
     //모달이 열릴 때
     const modalOnShow = () => {
         //헤더의 어디(장소, 날짜, 인원 중)를 눌렀는지 확인하여 auto-focusing
@@ -96,12 +115,11 @@ export default function CompSearchBox(props) {
     const modalOnHide = () => {
     }
 
-
     //체크인 날짜를 선택했다
     const checkInHandler = (check_in_selected) => {
 
         //console.log('selected check IN: ' +  check_in_selected);
-        
+
         //'Clear' 버튼을 클릭하면 왜 null이 들어오는지????
         if (check_in_selected === null || check_in_selected === '') {
             check_in_selected = minDate_check_in;
@@ -135,15 +153,15 @@ export default function CompSearchBox(props) {
 
     const keyHandler = (event) => {  //엔터키 누르면 '검색' 클릭 실행
         //console.log(event.target.value);
-        if(event.key === 'Enter') {
-          searchHandler();  
+        if (event.key === 'Enter') {
+            searchHandler();
         }
-      }
+    }
 
     //'검색' 버튼 클릭!
-    const searchHandler = async () => { 
+    const searchHandler = async () => {
         //console.log('@CompSearchBox place: ' + place + '/' + check_in + '-' + check_out + '/' + member);
-        window.location.href=`/hotelList?place=${place}&check_in=${check_in}&check_out=${check_out}&member=${member}`;
+        window.location.href = `/hotelList?place=${place}&check_in=${check_in}&check_out=${check_out}&member=${member}`;
     }
     //////////////////////////////////////////////////////////for eventHandler
 
@@ -231,8 +249,8 @@ export default function CompSearchBox(props) {
                             />
                         </div>
 
-                        <InputGroup className={`${memberPicker ? "trans_hidden" : ""}`}>
-                        {/* hidden={memberPicker ? true : false} */}
+                        <InputGroup className={`${memberPicker ? "trans_hidden" : ""} mb-3`}>
+                            {/* hidden={memberPicker ? true : false} */}
                             <InputGroup.Text ><GoPeople size="24" /></InputGroup.Text>
                             <Form.Control
                                 id="input_member"
@@ -253,13 +271,18 @@ export default function CompSearchBox(props) {
                             callParent={(memberFromChild) => setMember(memberFromChild)}
                             confirmMember={() => setMemberPicker(!memberPicker)}
                         />
+
+                        <div className="w-100">
+                            <LocationCarousel locationList={locationList} check_in={check_in} check_out={check_out} member={member}/>
+                        </div>
                     </Form>
 
-                    <Container id="container_btn_search" className="mt-3">
+                </Modal.Body>
+                <Modal.Footer>
+                    <Container id="container_btn_search">
                         <Button id="btn_search" variant="primary" onClick={searchHandler}>검색</Button>
                     </Container>
-
-                </Modal.Body>
+                </Modal.Footer>
             </Modal>
         </>
     )

@@ -50,17 +50,17 @@ public class HotelController {
 	    	hotelsearch="제주";
 	    }
 	    
-//	    log.info("호텔 주소: " + hotelsearch);
-//	    log.info("체크인: " + checkIn);
-//	    log.info("체크아웃날짜: " + checkOut);
-//	    log.info("기준인원: " + roomPeopleInfo);
-//	    log.info("객실 최소가격: " + minRoomPrice);
-//	    log.info("객실 최대가격: " + maxRoomPrice);
-//	    log.info("매진 숙소: " + soldOut);
-//	    log.info("할인혜택: " + roomDiscountState);
-//	    log.info("등급: " + Arrays.toString(hotelRating));
-//	    log.info("시설: "+Arrays.toString(hotelAmenities));
-//	    log.info("정렬: " + sort);
+	    log.info("호텔주소: " + hotelsearch);
+	    log.info("체크인: " + checkIn);
+	    log.info("체크아웃: " + checkOut);
+	    log.info("기준인원: " + roomPeopleInfo);
+	    log.info("객실 최소가격: " + minRoomPrice);
+	    log.info("객실 최대가격: " + maxRoomPrice);
+	    log.info("매진숙소: " + soldOut);
+	    log.info("할인혜택: " + roomDiscountState);
+	    log.info("등급: " + Arrays.toString(hotelRating));
+	    log.info("시설: "+ Arrays.toString(hotelAmenities));
+	    log.info("정렬: " + sort);
 	    // 호텔 서비스 호출
 	    return new ResponseEntity<>(hotelService.findHotelsFilter(
 	    		hotelAmenities, hotelsearch, minRoomPrice, maxRoomPrice,
