@@ -269,6 +269,7 @@ public class ReviewService {
 				dto.setReviewNo((long) d[6]);
 				dto.setReviewAvg(reviewAvg);
 				dto.setTotalReviewCount(reviewCount);
+				dto.setHotelNo((long)d[7]);
 
 				dtos.add(dto);
 			}
