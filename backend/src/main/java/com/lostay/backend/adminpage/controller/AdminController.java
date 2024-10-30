@@ -157,7 +157,6 @@ public class AdminController {
 	}
 	
 	
-	
 		//홍정훈(관리자 페이지 호텔.객실 텝 정보 조회)
 		@GetMapping("/adminhotelsList")
 		public ResponseEntity<?> adminEventList(@RequestParam(defaultValue = "1") int page) {
@@ -178,13 +177,5 @@ public class AdminController {
 				return ResponseEntity.notFound().build();// code 404
 			}
 		}
-		
-		
-		
-		
-		
-		
-		
-		
 		
 }

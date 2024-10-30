@@ -24,17 +24,16 @@ export default function CompSearchBox(props) {
 
     //선택 가능한 최대 체크인 날짜(미리 예약 한도 90일)
     const maxDate_check_in = new Date();
-    maxDate_check_in.setHours(0, 0, 0, 0);
     maxDate_check_in.setMonth(monthAfter90d);
     maxDate_check_in.setFullYear(yearAfter90d);
+    maxDate_check_in.setHours(0, 0, 0, 0);
 
     //선택 가능한 최소 체크인 날짜(default: 오늘 또는 내일)
     const minDate_check_in = new Date(); //오늘 날짜
-    minDate_check_in.setHours(0, 0, 0, 0); //오늘 날짜의 시간, 분, 초, ms를 모두 0으로 설정
     if (minDate_check_in.getHours() > 17) {   //오늘 18:00 이후
         minDate_check_in.setDate(minDate_check_in.getDate() + 1);
     }
-
+    minDate_check_in.setHours(0, 0, 0, 0); //오늘 날짜의 시간, 분, 초, ms를 모두 0으로 설정
 
     //선택 가능한 최소 체크아웃 날짜(default: 체크인 다음 날==1박)
     const minDate_check_out_origin = new Date(check_in);
@@ -85,25 +84,26 @@ export default function CompSearchBox(props) {
     //CompMemberPickerd에서 '변경' 버튼 클릭 시 반대로
     const [memberPicker, setMemberPicker] = useState(false);
     //////////////////////////////////////////////////////////for hidden
+
     //////////////////////////////////////////////////////////for location
     const [locationList, setLocationList] = useState([]);
 
-    const getLocationList = async() => {
+    const getLocationList = async () => {
         try {
             const response = await axios.get('http://localhost:9090/locationMain');
-            if(response.status===200) {
+            if (response.status === 200) {
                 setLocationList(response.data);
             }
-        } catch(error) {
+        } catch (error) {
             console.log('searchBox locationList: ' + error);
         }
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         getLocationList();
     }, []);
-
     //////////////////////////////////////////////////////////for location
+
     //////////////////////////////////////////////////////////for eventHandler
     //모달이 열릴 때
     const modalOnShow = () => {
@@ -272,9 +272,7 @@ export default function CompSearchBox(props) {
                             confirmMember={() => setMemberPicker(!memberPicker)}
                         />
 
-                        <div className="w-100">
-                            <LocationCarousel locationList={locationList} check_in={check_in} check_out={check_out} member={member}/>
-                        </div>
+                        <LocationCarousel locationList={locationList} check_in={check_in} check_out={check_out} member={member} />
                     </Form>
 
                 </Modal.Body>

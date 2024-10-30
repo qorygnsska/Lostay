@@ -120,21 +120,20 @@
                 }
             }
 
+
             .location--carousel--container {
+                width: 97%;
+                margin: auto;
 
                 .slick-slide {
-                    padding-left: 2px;
+                    padding-left: 0;
 
                     img {
                         width: 140px;
-                        height: 135px;
+                        height: 132px;
                     }
                 }
             }
-
-
-
-
         }
 
 
