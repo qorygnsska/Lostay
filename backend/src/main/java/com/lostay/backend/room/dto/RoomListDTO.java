@@ -17,7 +17,7 @@ public class RoomListDTO {
 	private RoomListHotelInfoDTO dto;
 	private LocalDate checkInDay;         // 체크인 날짜 
 	private LocalDate checkOutDay;		  // 체크아웃 날짜
-	private int period;					 // 몇박인지
+	private long period;					 // 몇박인지
 	private List<RoomCustomDTO> list;     // 객실정보 배열
 	
 

@@ -99,6 +99,15 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
 			       "GROUP BY h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission")
 		Page<HotelInfosDTO> findBYHotelsInfo(Pageable pageable);
 
+
+		//(jh)호텔의 리뷰이미지 전부조회
+		 @Query("SELECT re.reviewImg FROM Hotel h " +
+			       "JOIN h.rooms r " +
+			       "JOIN r.reviews re " +
+			       "WHERE h.hotelNo = :hotelNo AND re.reviewImg IS NOT NULL " +
+			       "ORDER BY re.reviewNo DESC")
+		List<String> findReviewImagesByHotelNo(@Param("hotelNo") Long hotelNo);
+
 		 
 		 
 	
