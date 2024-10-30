@@ -186,11 +186,10 @@ public class HotelService {
             int discountedPrice = ((Number) result[7]).intValue(); // 할인된 가격
             dto.setRoomDcPrice(discountedPrice); // 할인된 가격 설정
             dto.setHotelThumbnail((String) result[8]); // 호텔 썸네일
-            
+           
             // DTO를 리스트에 추가
             hotHotelDTOList.add(dto);
         }
-
         return hotHotelDTOList;
     }
 }
