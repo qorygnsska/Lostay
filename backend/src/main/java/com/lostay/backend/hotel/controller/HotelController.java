@@ -41,12 +41,12 @@ public class HotelController {
 			, @RequestParam(defaultValue="0") int soldOut //매진제외 0:전체보기
 		    , @RequestParam(defaultValue="0") int roomDiscountState //할인혜택 0:전체보기
 			, @RequestParam(required = false) String[] hotelRating //등급
-			, @RequestParam(required = false) String amenities //시설&서비스
+			, @RequestParam(required = false) String[] hotelAmenities //시설&서비스
 			, @RequestParam(required = false) String sort) //정렬 방식
 			
 	{
 		   // 어메니티 문자열을 배열로 변환
-	    String[] hotelAmenities = (amenities != null) ? amenities.split(",") : new String[0];
+	   // String[] hotelAmenities = (amenities != "") ? amenities.split(",") :  new String[] {};
 
 	    if(hotelsearch.equals("제주도")) {
 	    	hotelsearch="제주";
@@ -61,11 +61,11 @@ public class HotelController {
 	    log.info("매진 숙소: " + soldOut);
 	    log.info("할인혜택: " + roomDiscountState);
 	    log.info("등급: " + Arrays.toString(hotelRating));
-	    log.info(Arrays.toString(hotelAmenities));
+	    log.info("시설"+Arrays.toString(hotelAmenities));
 	    log.info("정렬: " + sort);
 	    // 호텔 서비스 호출
 	    return new ResponseEntity<>(hotelService.findHotelsFilter(
-                hotelAmenities, hotelsearch, minRoomPrice, maxRoomPrice,
+	    		hotelAmenities, hotelsearch, minRoomPrice, maxRoomPrice,
                 checkIn, checkOut, roomPeopleInfo, soldOut,roomDiscountState, hotelRating, sort),
                 HttpStatus.OK);
 	}
