@@ -96,7 +96,7 @@ public class HotelService {
             for (int i = 0; i < hotelAmenities.length; i++) {
                 query.append(" FIND_IN_SET(:amenity" + i + ", h.hotelAmenities) > 0");
                 if (i < hotelAmenities.length - 1) {
-                    query.append(" AND "); // 마지막이 아닐 때 AND 추가
+                    query.append(" OR "); // 마지막이 아닐 때 AND 추가
                 }
             }
             query.append(") "); // 조건 끝
