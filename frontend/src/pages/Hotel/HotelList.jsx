@@ -108,8 +108,8 @@ export default function HotelList(props) {
       }
     } catch (error) {
       console.log(error);
-      alert('서버와 통신이 원활하지 않습니다.');
-      window.location.href='/';
+      //alert('서버와 통신이 원활하지 않습니다.');
+      //window.location.href='/';
     }
   }
 
