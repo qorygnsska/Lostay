@@ -94,7 +94,7 @@ export default function Home() {
 
             {/* 국내 인기 여행 리스트 */}
             <h2>국내 인기 여행지</h2>
-            <LocationCarousel locationList={locationList} />
+            <LocationCarousel locationList={locationList} check_in={tomorrow} check_out={tdat}/>{/* JIP1030 check_in check_out 추가 */}
 
             {/* 여행질별 숙소 리스트 */}
             <h2>여행지별 숙소</h2>
