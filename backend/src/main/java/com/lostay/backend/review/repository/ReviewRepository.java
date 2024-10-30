@@ -100,7 +100,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
 	 // 객실에 대한 리뷰 최근 3개
 	 @Query("select rv.reviewContent, rv.reviewCreateAt, rv.reviewRating "
-				+ ", r.roomNo, u.userNo, r.roomName, rv.reviewNo from Review rv "
+				+ ", r.roomNo, u.userNo, r.roomName, rv.reviewNo, h.hotelNo from Review rv "
 				+ "LEFT JOIN rv.room r "
 				+ "LEFT JOIN r.hotel h "
 				+ "LEFT JOIN rv.user u "

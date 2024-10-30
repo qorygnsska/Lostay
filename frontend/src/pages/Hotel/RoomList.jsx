@@ -3,7 +3,7 @@ import { Button, Container } from 'react-bootstrap'
 import { IoIosHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
 import { IoNavigate } from "react-icons/io5";
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import HotelCarousel from '../../componets/Hotel/HotelCarousel';
 import HotelReview from '../../componets/Hotel/HotelReview';
 import KakaoMap from '../../componets/Map/KakaoMap';
@@ -17,12 +17,17 @@ import CompSearchBox from '../../componets/Search/CompSearchBox';
 
 export default function RoomList() {
 
+  const { search } = useLocation();
+  const ucheckInDate = new URLSearchParams(search).get('checkInDate'); // url에서 값 가져오기
+  const ucheckOutDate = new URLSearchParams(search).get('checkOutDate');
+  const upeopleMax = new URLSearchParams(search).get('peopleMax');
+
   //////////////////////////////////////////////////////////////////////////////JIP1029
   //////////////////////////////////////////////////////////for default parameters
   const parameters = useParams();
-  let check_in = new Date(parameters.checkIn);
-  let check_out = new Date(parameters.checkOut);
-  let member = parameters.member;
+  let check_in = new Date(ucheckInDate);
+  let check_out = new Date(ucheckOutDate);
+  let member = upeopleMax;
   //////////////////////////////////////////////////////////for default parameters
   //////////////////////////////////////////////////////////for hidden & focus
   // searchBox(Modal)이 열렸니?
@@ -67,9 +72,9 @@ export default function RoomList() {
 
   // 기본 파라미터
   const hotelNo = parameters.hotelNo;
-  const checkInDate = convertToLocalDateTime(parameters.checkIn);
-  const checkOutDate = convertToLocalDateTime(parameters.checkOut);
-  const peopleMax = member;
+  const checkInDate = convertToLocalDateTime(ucheckInDate);
+  const checkOutDate = convertToLocalDateTime(ucheckOutDate);
+  const peopleMax = upeopleMax;
 
   // 룸리스트 가져오기
   const fetchHotelRoomList = async () => {

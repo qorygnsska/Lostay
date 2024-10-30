@@ -12,13 +12,13 @@ export default function HotelGrid(props) {
                     //1029JIP key재설정: key={hotel.id} -> key={index}
                     <div className='HotelRow' key={index}>
                         <div className='HotelCol'>
-                            <Link className='link_to_roomList' to={`../roomList/${hotel.hotelNo}/${props.check_in}/${props.check_out}/${props.member}`} >
+                            <Link className='link_to_roomList' to={`../roomList/${hotel.hotelNo}?checkInDate=${props.check_in}&checkOutDate=${props.check_out}&peopleMax=${props.member}`} >
                                 <img src={'../' + hotel.hotelThumbnail} alt='호텔이미지' className='HotelImg' />
                             </Link>
 
                             <div className='HotelInfo'>
                                 <div className='HotelRank'>{hotel.hotelRating}</div>
-                                <Link className='link_to_roomList' to={`../roomList/${hotel.hotelNo}/${props.check_in}/${props.check_out}/${props.member}`} >
+                                <Link className='link_to_roomList' to={`../roomList/${hotel.hotelNo}?checkInDate=${props.check_in}&checkOutDate=${props.check_out}&peopleMax=${props.member}`} >
                                 <div className='HotelName'>{hotel.hotelName}</div>
                                 </Link>
                                 <div className='StarDiv'>

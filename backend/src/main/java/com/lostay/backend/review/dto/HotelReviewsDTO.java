@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class HotelReviewsDTO {
 
 	
-	private HotelInfoDTO hotelnfo;
+	private HotelInfoDTO hotelInfo;
 	private List<ReviewsDTO> reviews ;
 }

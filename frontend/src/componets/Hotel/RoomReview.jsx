@@ -4,7 +4,7 @@ import { FaStar } from "react-icons/fa";
 import { GrNext } from "react-icons/gr";
 import { Link } from 'react-router-dom';
 
-export default function HotelReview({Reviews, HotelInfo}) {
+export default function RoomReview({Reviews, HotelInfo}) {
 
     return (
         <div className='hotel--review--container'>
@@ -14,7 +14,7 @@ export default function HotelReview({Reviews, HotelInfo}) {
                         <FaStar className='StarIcon' />
                         <div className='StarNum'>{HotelInfo.reviewAvg?.toFixed(1)}</div>
                     </div>
-                    <Link to={`/hotelReviews/${HotelInfo.hotelNo}/0`} className='StarCount'><span >{HotelInfo.totalReviewCount}명 평가 <GrNext /></span></Link>
+                    <Link to={`/hotelReviews/${HotelInfo.hotelNo}/${HotelInfo.roomNo}`} className='StarCount'><span >{HotelInfo.totalReviewCount}명 평가 <GrNext /></span></Link>
                 </div>
 
                 <div className='ReviewWrap'>
