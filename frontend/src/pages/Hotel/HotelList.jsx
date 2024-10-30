@@ -103,14 +103,13 @@ export default function HotelList(props) {
       const response = await axios.get(uri);
       //response가 오면
       if (response.status === 200) {//HttpStatus.OK
-        console.log(response.data[0]);
         setHotels(response.data);
         setResultCount(response.data.length);
       }
     } catch (error) {
       console.log(error);
-      //alert('서버와 통신이 원활하지 않습니다.');
-      //window.location.href='/';
+      alert('서버와 통신이 원활하지 않습니다.');
+      window.location.href='/';
     }
   }
 

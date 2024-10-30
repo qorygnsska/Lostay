@@ -3,6 +3,7 @@
     height: 100%;
     background-color: white;
     padding-top: 10px;
+    padding-bottom: 86px;
 
     .HotelFilter {
         display: flex;
