@@ -286,7 +286,7 @@ public class ReviewService {
 		HotelInfoDTO hotelInfoDTO = hotelRepo.hoteInfo(hotelNo);
 		List<HotelRoomsDTO> roomNames = hotelRepo.findRoomNames(hotelNo);
 		List<String> images = hotelRepo.findReviewImagesByHotelNo(hotelNo);
-		String imageList = String.join(", ", images);
+		String imageList = String.join(",", images);
 		List<String> reviewImgsList = Arrays.asList(imageList.split(","));
 		List<Object[]> results = new ArrayList<Object[]>();
 
