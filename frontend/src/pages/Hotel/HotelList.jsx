@@ -14,12 +14,11 @@ import Navbar from '../../componets/Navbar/Navbar';
 
 export default function HotelList(props) {
 
-  //////////////////////////////////////////////////////////////////////////////JIP1028
+  //////////////////////////////////////////////////////////////////////////////JIP1030
   const today = new Date(); //오늘 날짜
   //////////////////////////////////////////////////////////for default parameters
-  //hotelList에서 default 값 지정
   //홈에서 검색을 안하고 /hotelList url로 치고 들어올 경우 parameter가 없을 수 있음
-  //useState는 오류남
+  //useState로 설정하니깐 오류남 ???
   let place = '';
   let check_in = new Date(today); //오늘 + 1(tomorrow)
   check_in.setDate(today.getDate() + 1);
@@ -27,7 +26,7 @@ export default function HotelList(props) {
   check_out.setDate(check_in.getDate() + 1);
   let member = 2;
 
-  const location = useLocation(); //uri 가져오기
+  const location = useLocation(); //uri에서 가져오기
   //console.log(location);
   //console.log(location.pathname);
   try {//uri -> parameter 가져와서 decoding -> '&' 구분자로 split
@@ -41,38 +40,33 @@ export default function HotelList(props) {
     place = ''; //try구문에서 place부터 에러가 나서, 미지정 시 place = undefined가 됨
   }
   //////////////////////////////////////////////////////////for default parameters
-  const [resultCount, setResultCount] = useState(0);  //검색 결과
+  const [resultCount, setResultCount] = useState(0);  //검색 결과 개수
   //////////////////////////////////////////////////////////for detail parameters(filter&sort)
   const [excSoldOut, setExcSoldOut] = useState(0); //0: 전체 보기, 1: 매진 제외
   const [minRoomPrice, setMinRoomPrice] = useState(0);
   const [maxRoomPrice, setMaxRoomPrice] = useState(1000000);
   const [viewDiscount, setViewDiscount] = useState(0);//0: 전체 보기, 1: 할인 중만
   const [hotelRating, setHotelRating] = useState([]);
+  const [catchall, setCatchall] = useState('');
+  const [sortOption, setSortOption] = useState('평점 높은 순'); //정렬 옵션
 
-  const filterModalCallsMe = (isSoldOutExcluded, minValue, maxValue, onlyDiscount, ratings) => {
-
+  // 필터 모달에서 '적용' 버튼 클릭 시 호출
+  const filterModalCallsMe = (isSoldOutExcluded, minValue, maxValue, onlyDiscount, ratings, amenities) => {
     isSoldOutExcluded ? setExcSoldOut(1) : setExcSoldOut(0);
     setMinRoomPrice(minValue);
     setMaxRoomPrice(maxValue);
     onlyDiscount ? setViewDiscount(1) : setViewDiscount(0);
-    setHotelRating(ratings);
-    
+    setHotelRating(ratings);//서버에서 Array 타입으로 받음
+    setCatchall(amenities.toString());//서버에서 String 타입으로 받음
   }
-
-
-
-
-  const [sortOption, setSortOption] = useState('평점 높은 순'); //정렬 옵션
   //////////////////////////////////////////////////////////for detail parameters(filter&sort)
   //////////////////////////////////////////////////////////for hidden & focus
   // searchBox(Modal)이 열렸니?
   const [searchBoxShow, setSearchBoxShow] = useState(false);
-
   // 어디서 모달 불렀니?
   const functionFromWhere = (fromWhere) => {
     console.log('where are you?: ' + fromWhere);
   }
-
   // Header에서 어떤 input 눌렀니?
   const [focus, setFocus] = useState('input_place');
   // input(on header) 선택 위치에 따라 focus 변경 -> 하위 모달에 focus 전달 & 모달 열기
@@ -83,42 +77,46 @@ export default function HotelList(props) {
   }
   //////////////////////////////////////////////////////////for hidden & focus
   const getHotelList = async () => {
-
     try {
       //Date -> String 변환
       const checkIn = check_in.getFullYear().toString() + '-' + (check_in.getMonth() + 1).toString().padStart(2, '0') + '-' + check_in.getDate().toString().padStart(2, '0');
       const checkOut = check_out.getFullYear().toString() + '-' + (check_out.getMonth() + 1).toString().padStart(2, '0') + '-' + check_out.getDate().toString().padStart(2, '0');
 
-      console.log(`place: ${place} chIn: ${checkIn} chOut: ${checkOut} mem: ${member} // sort: ${sortOption}`);
+      console.log(`place: ${place} member: ${member}`);
+      console.log(`checkIn: ${checkIn} checkOut: ${checkOut}`);
       console.log(`minRoonPrice: ${minRoomPrice} maxRoomPrice: ${maxRoomPrice}`);
-      console.log(`excSoldOut: ${excSoldOut} viewDisCount: ${viewDiscount}`);
-      console.log(`hotelRating: ${hotelRating} `);
-
-
+      console.log(`excSoldOut: ${excSoldOut}`);
+      console.log(`viewDiscount: ${viewDiscount}`);
+      console.log(`hotelRating: ${hotelRating}`);
+      console.log(`amenities: ${catchall}`);
+      console.log(`sort: ${sortOption}`);
+      
       let uri = 'http://localhost:9090/testhotel';
       uri += `?hotelsearch=${place}&checkIn=${checkIn}&checkOut=${checkOut}&roomPeopleInfo=${member}`;
       uri += `&minRoomPrice=${minRoomPrice}&maxRoomPrice=${maxRoomPrice}`;
-      uri += `&soldOut=${excSoldOut}&roomDiscountState=${viewDiscount}`
-      uri += `&hotelRating=${hotelRating}&sort=${sortOption}`
+      uri += `&soldOut=${excSoldOut}&roomDiscountState=${viewDiscount}`;
+      uri += `&hotelRating=${hotelRating}&amenities=${catchall}`;
+      uri += `&sort=${sortOption}`;
+
       // async&await이나 then()은 같은 것
       const response = await axios.get(uri);
-
+      //response가 오면
       if (response.status === 200) {//HttpStatus.OK
         console.log(response.data[0]);
-        
         setHotels(response.data);
         setResultCount(response.data.length);
       }
     } catch (error) {
       console.log(error);
       alert('서버와 통신이 원활하지 않습니다.');
+      window.location.href='/';
     }
   }
 
-  useEffect(() => {
+  useEffect(() => {//필터&정렬 조건이 바뀔 때마다 server에 다시 request
     getHotelList();
-  }, [sortOption, excSoldOut, minRoomPrice, maxRoomPrice, viewDiscount, hotelRating]);
-  //////////////////////////////////////////////////////////////////////////////JIP1028
+  }, [minRoomPrice, maxRoomPrice, excSoldOut, viewDiscount, hotelRating, catchall, sortOption]);
+  //////////////////////////////////////////////////////////////////////////////JIP1030
 
 
   // 무한 스크롤

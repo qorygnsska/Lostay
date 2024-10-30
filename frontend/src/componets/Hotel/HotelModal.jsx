@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { CiRedo } from "react-icons/ci";
-
 import Form from 'react-bootstrap/Form';
 import { Range } from 'react-range'; // 슬라이더
 
@@ -40,15 +38,12 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
   // 슬라이더(최소-최대 가격)
   const [minValue, setMinValue] = useState(0); // 초기 최소값
   const [maxValue, setMaxValue] = useState(1000000); //1029JIP 초기 최대값 50만 -> 100만
-
   //1029JIP 할인혜택: '할인 중'만 보기
   const [onlyDiscount, setOnlyDiscount] = useState(false);
-
   //1030JIP 호텔등급 array
   const [ratings, setRatings] = useState([]);
-
-
-
+  //1030JIP 시설&서비스(amenities) array
+  const [amenities, setAmenities] = useState([]);
   ///////////////////////////////////////////////////////////////////////////////////넘겨줄 filter 값
 
   //1029JIP 할인혜택: '할인 중' 클릭 시
@@ -68,7 +63,16 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
     }
   }
 
+  //1030JIP 공용&기타시설: 버튼 클릭 시
+  function clickAmenities(param) {
+    handleButtonClick(param);
 
+    if(amenities.includes(param)){
+      setAmenities(amenities.filter(button => button !== param));
+    } else {
+      setAmenities([...amenities, param]);
+    }
+  }
 
   //버튼 클릭시 activeButtons 배열에 차곡차곡 담아서,,,,CSS적용
   const handleButtonClick = (name) => {
@@ -81,26 +85,24 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
     }
   };
 
-
-  //1030JIP '적용' 버튼
+  //1030JIP '적용' 버튼 클릭
   const filterHandler = () => {
     //값들 모두 HotelModal(Comp) -> HotelList(Page) 전달
-    callParent(isSoldOutExcluded, minValue, maxValue, onlyDiscount, ratings);
-
-    console.log(activeButtons);
-
+    callParent(isSoldOutExcluded, minValue, maxValue, onlyDiscount, ratings, amenities);
     //모달 닫기
     handleClose();
   }
 
   // 초기화
   const handleReset = () => {
+    setIsSoldOutExcluded(false);
     setMinValue(0);
     setMaxValue(1000000);
-    setActiveButtons([]);
-    setIsSoldOutExcluded(false);
+    setOnlyDiscount(false);
+    setRatings([]);
+    setAmenities([]);
+    setActiveButtons([]);//CSS초기화
   };
-
 
   return (
     <div className='hotel--modal--container'>
@@ -216,7 +218,8 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
               <p>공용시설</p>
               {publicBtn.map(name => (
                 <input type='button' value={name} key={name} name={name} className='BtnF' id={name}
-                  onClick={() => handleButtonClick(name)}
+                  //onClick={() => handleButtonClick(name)  1030JIP 수정}
+                  onClick={(e) => clickAmenities(e.target.name)}
                   style={{
                     backgroundColor: activeButtons.includes(name) ? 'rgb(237, 247, 255)' : '',
                     color: activeButtons.includes(name) ? 'rgb(0, 83, 192)' : '',
@@ -227,10 +230,11 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
             </div>
 
             <div className='OtherF'>
-              <p>기타 시설</p>
+              <p>기타시설</p>
               {otherBtn.map(name => (
                 <input type='button' value={name} key={name} name={name} className='BtnF' id={name}
-                  onClick={() => handleButtonClick(name)}
+                  //onClick={() => handleButtonClick(name) 1030JIP 수정}
+                  onClick={(e) => clickAmenities(e.target.name)}
                   style={{
                     backgroundColor: activeButtons.includes(name) ? 'rgb(237, 247, 255)' : '',
                     color: activeButtons.includes(name) ? 'rgb(0, 83, 192)' : '',
