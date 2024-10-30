@@ -17,7 +17,7 @@ export default function RoomFilterModal({show, handleClose, rooms, ChoiceRoom, C
                     {ChoiceRoom === '객실 전체' ? (
                         <span className='allRoomContent'  style={{ color: 'red' }}>객실 전체 <IoCheckmark/></span>
                     ) : (
-                        <span className='allRoomContent' onClick={() => ClickRoom('객실 전체', 0)}>객실 전체</span>
+                        <span className='allRoomContent' onClick={() => ClickRoom('객실 전체', '0')}>객실 전체</span>
                     )}
                     
                 </div>
@@ -26,7 +26,7 @@ export default function RoomFilterModal({show, handleClose, rooms, ChoiceRoom, C
                         {ChoiceRoom === room.roomName ? (
                             <span className='RoomsContent'  style={{ color: 'red' }}>{room.roomName} <IoCheckmark/></span>
                         ) : (
-                            <span className='RoomsContent' onClick={() => ClickRoom(room.roomName, idx + 1)}>{room.roomName}</span>
+                            <span className='RoomsContent' onClick={() => ClickRoom(room.roomName, String(idx + 1))}>{room.roomName}</span>
                         )}
                         
                     </div>

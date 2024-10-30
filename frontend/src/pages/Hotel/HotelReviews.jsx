@@ -45,7 +45,7 @@ export default function HotelReviews() {
         fetchHotelReview();  // 함수 호출
     }, [roomNo, sort]);
 
-    const allImages = Reviews ? Reviews.reviews.flatMap(review => review.reviewImg) : [];
+    const allImages = Reviews?.hotelInfo.reviewImgs;
 
     const [ImgIdx, setImgIdx] = useState(0); // 이미지 인덱스
 
@@ -77,15 +77,14 @@ export default function HotelReviews() {
     const filterClick = () => {
         setShow3(true);
     }
-
     const [ChoiceRoom, setChoiceRoom] = useState();
-    
     useEffect(() => {
-        setChoiceRoom(roomNo === '0' ? '객실 전체' : Reviews?.hotelInfo.hotelRoom[3].roomName);
-    }, [roomNo])
-
-
-
+        if (Reviews) {
+            const roomName = roomNo === '0' ? '객실 전체' : Reviews.hotelInfo.hotelRoom[Number(roomNo) - 1].roomName;
+            setChoiceRoom(roomName);
+        }
+    }, [Reviews, roomNo]);
+    
     const ClickRoom = (roomName, roomNo) => {
         setChoiceRoom(roomName);
         SetroomNo(roomNo);
