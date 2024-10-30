@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.annotations.Parameter;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -99,39 +100,60 @@ public class PaymentController {
 			                               ,@RequestParam() int point
 			                               ,@RequestParam() Long roomNo
 			                               ,@RequestParam() Long disNo
-			                               ,@RequestParam() String merchant_uid) throws IOException, InterruptedException{
+			                               ,@RequestParam() String merchant_uid){
 		
-	  long userNo = customOAuth2User.getUserNo();
 		
-	  int amount = paySer.compareAmount(userNo,point,roomNo,disNo);
-	  
-	
-		HttpRequest request = HttpRequest.newBuilder()
-			    .uri(URI.create("https://api.iamport.kr/users/getToken"))
-			    .header("Content-Type", "application/json")
-			    .method("POST", HttpRequest.BodyPublishers.ofString(String.format("{\"imp_key\":\"%s\",\"imp_secret\":\"%s\"}", apiKey, secretKey)))
-			    .build();
-			HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+		try {
+			 long userNo = customOAuth2User.getUserNo();
+				
+			 int amount = paySer.compareAmount(userNo,point,roomNo,disNo);
+			  
 			
-	      
-	        JSONObject jsonResponse = new JSONObject(response.body());
-	        
-	        // jsonObject에서 response 안에 있는 access토큰 문자열로 받아오기
-	        String accessToken = jsonResponse.getJSONObject("response").getString("access_token");
-
-	        
-	        // 사전검증 api
-	        HttpRequest request2 = HttpRequest.newBuilder()
-	        	    .uri(URI.create("https://api.iamport.kr/payments/prepare"))
-	        	    .header("Content-Type", "application/json")
-	        	    .header("Authorization", "Bearer " + accessToken)
-	        	    .method("POST", HttpRequest.BodyPublishers.ofString(String.format("{\"merchant_uid\":\"%s\",\"amount\":%d}", merchant_uid, amount)))
-	        	    .build();
-	        	HttpResponse<String> response2 = HttpClient.newHttpClient().send(request2, HttpResponse.BodyHandlers.ofString());
-	        
-	        
-		
-		return  new ResponseEntity<>(response2,HttpStatus.OK);
+			 HttpRequest request = HttpRequest.newBuilder()
+					    .uri(URI.create("https://api.iamport.kr/users/getToken"))
+					    .header("Content-Type", "application/json")
+					    .method("POST", HttpRequest.BodyPublishers.ofString(String.format("{\"imp_key\":\"%s\",\"imp_secret\":\"%s\"}", apiKey, secretKey)))
+					    .build();
+			
+			 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+			 
+			 if(response.statusCode() != 200) {
+				 return ResponseEntity.status(response.statusCode())
+						 			  .body("토큰 발급 실패 : " + response.body());
+			 }
+			 
+			 JSONObject jsonResponse = new JSONObject(response.body());
+			 
+			 // jsonObject에서 response 안에 있는 access토큰 문자열로 받아오기
+			 String accessToken = jsonResponse.getJSONObject("response").getString("access_token");
+					
+			 // 사전검증 api
+			 HttpRequest request2 = HttpRequest.newBuilder()
+					 .uri(URI.create("https://api.iamport.kr/payments/prepare"))
+					 .header("Content-Type", "application/json")
+					 .header("Authorization", "Bearer " + accessToken)
+					 .method("POST", HttpRequest.BodyPublishers.ofString(String.format("{\"merchant_uid\":\"%s\",\"amount\":%d}", merchant_uid, amount)))
+					 .build();
+			 HttpResponse<String> response2 = HttpClient.newHttpClient().send(request2, HttpResponse.BodyHandlers.ofString());
+			 
+			 if(response2.statusCode() != 200) {
+				 return ResponseEntity.status(response2.statusCode())
+						 		      .body("사전검증 실패: " + response2.body());
+			 }
+			 
+			 return new ResponseEntity<>(response2,HttpStatus.OK);
+			 
+		} catch (JSONException e) {
+	        return ResponseEntity
+	                .status(HttpStatus.BAD_REQUEST)
+	                .body("JSON 파싱 오류: " + e.getMessage());
+	                
+	        } catch (IOException | InterruptedException e) {
+	            return ResponseEntity
+	                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body("API 호출 중 오류 발생: " + e.getMessage());
+	        }
+	
 	}
 		
 		
