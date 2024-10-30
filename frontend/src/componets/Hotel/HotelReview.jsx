@@ -14,7 +14,7 @@ export default function HotelReview({Reviews, HotelInfo}) {
                         <FaStar className='StarIcon' />
                         <div className='StarNum'>{HotelInfo.reviewAvg?.toFixed(1)}</div>
                     </div>
-                    <Link className='StarCount'><span >{HotelInfo.totalReviewCount}명 평가 <GrNext /></span></Link>
+                    <Link to={`/hotelReviews/${HotelInfo.hotelNo}/0`} className='StarCount'><span >{HotelInfo.totalReviewCount}명 평가 <GrNext /></span></Link>
                 </div>
 
                 <div className='ReviewWrap'>

@@ -287,7 +287,7 @@ public class ReviewService {
 		List<Object[]> results = new ArrayList<Object[]>();
 
 		// roomNo가 있을 경우와 없을 경우에 따라 쿼리 실행
-		if (roomNo != null) {
+		if (roomNo != 0) {
 			results = findReviews(hotelNo, roomNo, sort);
 		} else {
 			results = findReviewsByHotelNo(hotelNo, sort);
@@ -328,9 +328,9 @@ public class ReviewService {
 			return revRepo.findReviewsByDateDesc(hotelNo, roomNo); //최신작성순 기본정렬
 		}
 		switch (orderByColumn) {
-		case "평점높은순":
+		case "평점 높은 순":
 			return revRepo.findReviewsByRatingDesc(hotelNo, roomNo);
-		case "평점낮은순":
+		case "평점 낮은 순":
 			return revRepo.findReviewsByRatingAsc(hotelNo, roomNo);
 		default:
 			return revRepo.findReviewsByDateDesc(hotelNo, roomNo); //최신작성순 기본정렬
@@ -344,9 +344,9 @@ public class ReviewService {
 			return revRepo.findReviewsByDateDesc(hotelNo, null); //최신작성순 기본 정렬
 		}
 		switch (orderByColumn) {
-		case "평점높은순":
+		case "평점 높은 순":
 			return revRepo.findReviewsByRatingDesc(hotelNo, null);
-		case "평점낮은순":
+		case "평점 낮은 순":
 			return revRepo.findReviewsByRatingAsc(hotelNo, null);
 		default:
 			return revRepo.findReviewsByDateDesc(hotelNo, null); //최신작성순 기본 정렬

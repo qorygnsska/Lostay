@@ -3,15 +3,10 @@ import { Modal } from 'react-bootstrap'
 
 import { IoCheckmark } from "react-icons/io5";
 
-export default function RoomFilterModal({show, handleClose, rooms, basicRoom}) {
+export default function RoomFilterModal({show, handleClose, rooms, ChoiceRoom, ClickRoom}) {
 
-    const [select, Setselect] = useState(basicRoom)
 
-    const click = (room) => {
-        Setselect(room);
-    }
     
-
   return (
     
     <Modal show={show} onHide={handleClose} keyboard={false} fullscreen={true} className='room--filter--modal'>
@@ -19,19 +14,19 @@ export default function RoomFilterModal({show, handleClose, rooms, basicRoom}) {
         <Modal.Body scrollable={true} >
             <div className='roomDiv'>
                 <div className='allRoom'>
-                    {select === '객실전체' ? (
-                        <span className='allRoomContent'  style={{ color: 'red' }}>객실전체 <IoCheckmark/></span>
+                    {ChoiceRoom === '객실 전체' ? (
+                        <span className='allRoomContent'  style={{ color: 'red' }}>객실 전체 <IoCheckmark/></span>
                     ) : (
-                        <span className='allRoomContent' onClick={() => click('객실전체')}>객실전체</span>
+                        <span className='allRoomContent' onClick={() => ClickRoom('객실 전체', 0)}>객실 전체</span>
                     )}
                     
                 </div>
                 {rooms.map((room,idx) => (
-                    <div className='Rooms'>
-                        {select === idx ? (
-                            <span className='RoomsContent'  style={{ color: 'red' }}>{room} <IoCheckmark/></span>
+                    <div className='Rooms' key={idx}>
+                        {ChoiceRoom === room.roomName ? (
+                            <span className='RoomsContent'  style={{ color: 'red' }}>{room.roomName} <IoCheckmark/></span>
                         ) : (
-                            <span className='RoomsContent' onClick={() => click(idx)}>{room}</span>
+                            <span className='RoomsContent' onClick={() => ClickRoom(room.roomName, idx + 1)}>{room.roomName}</span>
                         )}
                         
                     </div>

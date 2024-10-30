@@ -4,7 +4,7 @@ import { Button, Container } from 'react-bootstrap'
 import HotelCarousel from '../../componets/Hotel/HotelCarousel';
 
 import { GrNext } from "react-icons/gr";
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import Footer from '../../componets/Footer/Footer';
 
 import { IoCheckmark } from "react-icons/io5";
@@ -24,12 +24,14 @@ export default function RoomDetail() {
     const [RoomReviews, setRoomReviews] = useState([]);  // 리뷰 정보를 저장할 state
     const [error, setError] = useState(null);        // 에러 핸들링을 위한 state
     const [loading, setLoading] = useState(true);    // 로딩 상태 관리
+
     
     // 기본 파라미터
-    const { roomNo, checkIn, checkOut, member } = useParams();
-    const checkInDate = checkIn;
-    const checkOutDate = checkOut;
-    const peopleMax = member;
+    const { roomNo } = useParams();
+    const { search } = useLocation();
+    const checkInDate = new URLSearchParams(search).get('checkInDate'); // url에서 값 가져오기
+    const checkOutDate = new URLSearchParams(search).get('checkOutDate');
+    const peopleMax = new URLSearchParams(search).get('peopleMax');
 
     // 룸디테일 가져오기
     const fetchHotelRoomDetail = async () => {
@@ -122,7 +124,7 @@ export default function RoomDetail() {
 
             <div className='NameBox'>
                 <div className='RoomName'>{RoomDetail?.roomName}</div>
-                <Link to={`/RoomList/${RoomDetail?.hotelNo}/${checkInDate}/${checkOutDate}/${peopleMax}`} className='HotelName'>{RoomDetail?.hotelName}<GrNext/></Link>
+                <Link to={`/RoomList/${RoomDetail?.hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`} className='HotelName'>{RoomDetail?.hotelName}<GrNext/></Link>
             </div>
 
             <div className='RowLine'></div>
