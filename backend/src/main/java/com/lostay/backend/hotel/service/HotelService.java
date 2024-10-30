@@ -85,58 +85,50 @@ public class HotelService {
                 "        JOIN Payment p ON p.payNo = rs.payment.payNo " +
                 "        WHERE rs.checkIn < :checkOut " +
                 "          AND rs.checkOut > :checkIn " +
-                "    ) " +
-            "GROUP BY " +
-                "    h.hotelNo, h.hotelName, h.hotelRating, h.hotelThumbnail "
+                "    ) "
         );
-
+        
         // 어메니티 조건 추가
-        if (hotelAmenities != null && hotelAmenities.length > 0) {
+        if (hotelAmenities.length > 0) {
+        	
+        	System.out.println("머메니티 실행"+hotelAmenities.toString());
             query.append(" AND (");
             for (int i = 0; i < hotelAmenities.length; i++) {
                 query.append(" FIND_IN_SET(:amenity" + i + ", h.hotelAmenities) > 0");
                 if (i < hotelAmenities.length - 1) {
-                    query.append(" OR "); // 마지막이 아닐 때 AND 추가
+                    query.append(" AND "); // 마지막이 아닐 때 AND 추가
                 }
             }
             query.append(") "); // 조건 끝
         }
 
+        // GROUP BY 절 추가
+        query.append(" GROUP BY h.hotelNo, h.hotelName, h.hotelRating, h.hotelThumbnail ");
+
         // HAVING 절을 위한 StringBuilder 생성
-        StringBuilder havingClause = new StringBuilder("HAVING ");
+        StringBuilder havingClause = new StringBuilder("HAVING 1=1 "); // 기본 조건 추가
 
         // soldOut 조건 추가
         if (soldOut == 1) {
-            havingClause.append("COUNT(r.roomNo) > 0 "); // 매진되지 않은 호텔만 포함
+            havingClause.append("AND COUNT(r.roomNo) > 0 "); // 매진되지 않은 호텔만 포함
         } else if (soldOut == 0) {
-            havingClause.append("COUNT(r.roomNo) >= 0 "); // 전부 포함
+            havingClause.append("AND COUNT(r.roomNo) >= 0 "); // 전부 포함
         }
 
         // roomDiscountState 조건 추가
         if (roomDiscountState == 1) {
-            if (havingClause.length() > 7) {
-                havingClause.append(" AND "); // 기존 HAVING 절이 있으면 AND 추가
-            }
-            havingClause.append("MAX(r.roomDiscount) > 0 "); // 할인율이 1보다 큰 경우
+            havingClause.append("AND MAX(r.roomDiscount) > 0 "); // 할인율이 1보다 큰 경우
         } else if (roomDiscountState == 0) {
-            if (havingClause.length() > 7) {
-                havingClause.append(" AND "); // 기존 HAVING 절이 있으면 AND 추가
-            }
-            havingClause.append("MAX(r.roomDiscount) >= 0 "); // 할인율이 0 이상인 경우
+            havingClause.append("AND MAX(r.roomDiscount) >= 0 "); // 할인율이 0 이상인 경우
         }
 
         // hotelRating 조건 추가
         if (hotelRating != null && hotelRating.length > 0) {
-            if (havingClause.length() > 7) {
-                havingClause.append(" AND "); // 기존 HAVING 절이 있으면 AND 추가
-            }
-            havingClause.append("h.hotelRating IN (:hotelRating) "); // 호텔 등급 조건
+            havingClause.append("AND h.hotelRating IN (:hotelRating) "); // 호텔 등급 조건
         }
 
         // HAVING 절이 존재하면 쿼리에 추가
-        if (havingClause.length() > 7) {
-            query.append(havingClause.toString());
-        }
+        query.append(havingClause.toString());
 
         // 할인된 가격 범위 추가
         query.append(" AND MAX(r.roomPrice * (1 - (r.roomDiscount * 0.01))) BETWEEN :minDiscountedPrice AND :maxDiscountedPrice ");
@@ -203,4 +195,3 @@ public class HotelService {
         return hotHotelDTOList;
     }
 }
-
