@@ -8,7 +8,7 @@ import { Range } from 'react-range'; // 슬라이더
 export default function HotelModal({ props, show, handleClose, callParent }) {
 
   // 버튼(고정값)
-  const rankBtn = ['5성급', '4성급', '블랙', '리조트', '가족호텔'];
+  const rankBtn = ['특1급', '특급', '5성급', '4성급', '가족호텔', '리조트'];
   const publicBtn = [
     '사우나', '수영장', '레스토랑', '라운지', '피트니스',
     '골프장', '엘리베이터', '공용PC', '바베큐', '카페',

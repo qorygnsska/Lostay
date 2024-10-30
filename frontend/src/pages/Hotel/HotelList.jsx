@@ -36,6 +36,7 @@ export default function HotelList(props) {
     check_in = new Date(parameters[1].split('=')[1]);
     check_out = new Date(parameters[2].split('=')[1]);
     member = parameters[3].split('=')[1];
+
   } catch (error) {
     place = ''; //try구문에서 place부터 에러가 나서, 미지정 시 place = undefined가 됨
   }

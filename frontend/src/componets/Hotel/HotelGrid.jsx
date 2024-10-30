@@ -22,9 +22,9 @@ export default function HotelGrid(props) {
                                 <div className='HotelName'>{hotel.hotelName}</div>
                                 </Link>
                                 <div className='StarDiv'>
-                                    <div className='Star'>
+                                    <div className='Star justify-content-evenly'>
                                         <FaStar className='StarIcon' />
-                                        <div className='StarNum'>{hotel.reviewRating?.toFixed(1)}</div>
+                                        <div className='StarNum me-2'>{hotel.reviewRating===null?'0':hotel.reviewRating.toFixed(1)}</div>
                                     </div>
                                     <span className='StarCount'>{hotel.totalReviewCount}명 평가</span>
                                 </div>
