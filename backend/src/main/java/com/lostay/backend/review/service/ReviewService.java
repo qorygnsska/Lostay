@@ -3,6 +3,7 @@ package com.lostay.backend.review.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -286,8 +287,13 @@ public class ReviewService {
 		HotelInfoDTO hotelInfoDTO = hotelRepo.hoteInfo(hotelNo);
 		List<HotelRoomsDTO> roomNames = hotelRepo.findRoomNames(hotelNo);
 		List<String> images = hotelRepo.findReviewImagesByHotelNo(hotelNo);
-		String imageList = String.join(",", images);
-		List<String> reviewImgsList = Arrays.asList(imageList.split(","));
+		List<String> reviewImgsList;
+		if (images.isEmpty()) {
+		    reviewImgsList = Collections.emptyList(); 
+		} else {
+		    String imageList = String.join(",", images);
+		    reviewImgsList = Arrays.asList(imageList.split(","));
+		}
 		List<Object[]> results = new ArrayList<Object[]>();
 
 		// roomNo가 있을 경우와 없을 경우에 따라 쿼리 실행
