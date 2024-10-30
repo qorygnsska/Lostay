@@ -43,20 +43,19 @@ export default function HotelList(props) {
   //////////////////////////////////////////////////////////for default parameters
   const [resultCount, setResultCount] = useState(0);  //검색 결과
   //////////////////////////////////////////////////////////for detail parameters(filter&sort)
-  const [soldOut, setSoldOut] = useState(1); //1: 전체 보기, 0: 매진 제외
+  const [excSoldOut, setExcSoldOut] = useState(0); //0: 전체 보기, 1: 매진 제외
   const [minRoomPrice, setMinRoomPrice] = useState(0);
   const [maxRoomPrice, setMaxRoomPrice] = useState(1000000);
   const [viewDiscount, setViewDiscount] = useState(0);//0: 전체 보기, 1: 할인 중만
+  const [hotelRating, setHotelRating] = useState([]);
 
-  const filterModalCallsMe = (isSoldOutExcluded, minValue, maxValue, onlyDiscount) => {
+  const filterModalCallsMe = (isSoldOutExcluded, minValue, maxValue, onlyDiscount, ratings) => {
 
-    
-    console.log(isSoldOutExcluded);
-    isSoldOutExcluded ? setSoldOut(0) : setSoldOut(1);
+    isSoldOutExcluded ? setExcSoldOut(1) : setExcSoldOut(0);
     setMinRoomPrice(minValue);
     setMaxRoomPrice(maxValue);
     onlyDiscount ? setViewDiscount(1) : setViewDiscount(0);
-
+    setHotelRating(ratings);
     
   }
 
@@ -92,14 +91,15 @@ export default function HotelList(props) {
 
       console.log(`place: ${place} chIn: ${checkIn} chOut: ${checkOut} mem: ${member} // sort: ${sortOption}`);
       console.log(`minRoonPrice: ${minRoomPrice} maxRoomPrice: ${maxRoomPrice}`);
-      console.log(`soldOut: ${soldOut} viewDisCount: ${viewDiscount}`);
-      
+      console.log(`excSoldOut: ${excSoldOut} viewDisCount: ${viewDiscount}`);
+      console.log(`hotelRating: ${hotelRating} `);
+
 
       let uri = 'http://localhost:9090/testhotel';
       uri += `?hotelsearch=${place}&checkIn=${checkIn}&checkOut=${checkOut}&roomPeopleInfo=${member}`;
       uri += `&minRoomPrice=${minRoomPrice}&maxRoomPrice=${maxRoomPrice}`;
-      uri += `&soldOut=${soldOut}&roomDiscountState=${viewDiscount}&sort=${sortOption}`
-
+      uri += `&soldOut=${excSoldOut}&roomDiscountState=${viewDiscount}`
+      uri += `&hotelRating=${hotelRating}&sort=${sortOption}`
       // async&await이나 then()은 같은 것
       const response = await axios.get(uri);
 
@@ -117,7 +117,7 @@ export default function HotelList(props) {
 
   useEffect(() => {
     getHotelList();
-  }, [sortOption, soldOut, minRoomPrice, maxRoomPrice, viewDiscount]);
+  }, [sortOption, excSoldOut, minRoomPrice, maxRoomPrice, viewDiscount, hotelRating]);
   //////////////////////////////////////////////////////////////////////////////JIP1028
 
 

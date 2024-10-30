@@ -9,7 +9,6 @@ import { Range } from 'react-range'; // 슬라이더
 
 export default function HotelModal({ props, show, handleClose, callParent }) {
 
-
   // 버튼(고정값)
   const rankBtn = ['5성급', '4성급', '블랙', '리조트', '가족호텔'];
   const publicBtn = [
@@ -26,7 +25,12 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
     '장애인편의'
   ];
 
+  // 버튼 췍 (활성 버튼 css 변경 용도로 담는걸로,,,)
+  // [할인혜택, 등급, 공용시설, 기타시설] 한 바구니 : activeButtons
+  // 1029JIP : 할인혜택 // [등급] // [공용시설, 기타시설] 분리
+  const [activeButtons, setActiveButtons] = useState([]);
 
+  ///////////////////////////////////////////////////////////////////////////////////넘겨줄 filter 값
   // 스위치(매진 숙소 제외)
   const [isSoldOutExcluded, setIsSoldOutExcluded] = useState(false);
   // const handleSwitchChange = (e) => {  //1029JIP: 인라인으로 작성
@@ -37,26 +41,36 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
   const [minValue, setMinValue] = useState(0); // 초기 최소값
   const [maxValue, setMaxValue] = useState(1000000); //1029JIP 초기 최대값 50만 -> 100만
 
-
-
   //1029JIP 할인혜택: '할인 중'만 보기
   const [onlyDiscount, setOnlyDiscount] = useState(false);
 
+  //1030JIP 호텔등급 array
+  const [ratings, setRatings] = useState([]);
+
+
+
+  ///////////////////////////////////////////////////////////////////////////////////넘겨줄 filter 값
+
+  //1029JIP 할인혜택: '할인 중' 클릭 시
   function clickOnlySale(param) {
+    handleButtonClick(param);//CSS 변경 적용
+    setOnlyDiscount(!onlyDiscount);//넘겨줄 parameter 적용
+  }
+
+  //1030JIP 호텔등급: 버튼 클릭 시
+  function clickRatings(param) {
     handleButtonClick(param);
-    setOnlyDiscount(!onlyDiscount);
+
+    if (ratings.includes(param)) {
+      setRatings(ratings.filter(button => button !== param));
+    } else {
+      setRatings([...ratings, param]);
+    }
   }
 
 
 
-
-
-  // 버튼 췍 (활성 버튼 css만 담는걸로,,,)
-  // [할인혜택, 등급, 공용시설, 기타시설] 한 바구니 : activeButtons
-  // 1029JIP : 할인혜택 // [등급] // [공용시설, 기타시설] 분리
-  const [activeButtons, setActiveButtons] = useState([]);
-
-  //버튼 클릭시 activeButtons 배열에 차곡차곡 담아서,,,,
+  //버튼 클릭시 activeButtons 배열에 차곡차곡 담아서,,,,CSS적용
   const handleButtonClick = (name) => {
     if (activeButtons.includes(name)) {
       // 이미 선택된 버튼 클릭 시 비활성화
@@ -68,10 +82,10 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
   };
 
 
-  // '적용' 버튼
+  //1030JIP '적용' 버튼
   const filterHandler = () => {
     //값들 모두 HotelModal(Comp) -> HotelList(Page) 전달
-    callParent(isSoldOutExcluded, minValue, maxValue, onlyDiscount);
+    callParent(isSoldOutExcluded, minValue, maxValue, onlyDiscount, ratings);
 
     console.log(activeButtons);
 
@@ -173,7 +187,7 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
             <div className='EventF border-bottom pb-3 mb-3'>
               <p>할인혜택</p>
               <input type='button' value='할인 중' key='할인 중' name='할인 중' className='BtnF' id='할인 중'
-                //onClick={() => handleButtonClick('할인 중')}
+                //onClick={() => handleButtonClick('할인 중')  1029JIP 수정}
                 onClick={(e) => clickOnlySale(e.target.name)}
                 style={{
                   backgroundColor: activeButtons.includes('할인 중') ? 'rgb(237, 247, 255)' : '',
@@ -187,7 +201,8 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
               <p>등급</p>
               {rankBtn.map(name => (
                 <input type='button' value={name} key={name} name={name} className='BtnF' id={name}
-                  onClick={() => handleButtonClick(name)}
+                  //onClick={() => handleButtonClick(name) 1030JIP 수정}
+                  onClick={(e) => clickRatings(e.target.name)}
                   style={{
                     backgroundColor: activeButtons.includes(name) ? 'rgb(237, 247, 255)' : '',
                     color: activeButtons.includes(name) ? 'rgb(0, 83, 192)' : '',
