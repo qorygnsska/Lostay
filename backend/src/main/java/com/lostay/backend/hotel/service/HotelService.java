@@ -30,8 +30,8 @@ public class HotelService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate checkInDate = LocalDate.parse(checkIn, formatter);
         LocalDate checkOutDate = LocalDate.parse(checkOut, formatter);
-        LocalDateTime checkInDateTime = checkInDate.atStartOfDay(); 
-        LocalDateTime checkOutDateTime = checkOutDate.atStartOfDay(); 
+        LocalDateTime checkInDateTime = checkInDate.atStartOfDay();
+        LocalDateTime checkOutDateTime = checkOutDate.atStartOfDay();
 
         String orderByColumn = "";
         String orderDirection = "DESC"; // 기본 정렬 방향
@@ -64,14 +64,14 @@ public class HotelService {
                 "    ROUND(AVG(re.reviewRating), 1) AS overallAverageReviewRating, " +
                 "    COUNT(re.reviewNo) AS totalReviewCount, " +
                 "    MAX(r.roomDiscount) AS roomDiscount, " +
-                "    MAX(r.roomPrice) AS roomPrice, " + // 원래 가격 가져오기
-                "    MAX(r.roomPrice * (1 - (r.roomDiscount * 0.01))) AS discountedPrice, " + // 할인된 가격 계산
+                "    MAX(r.roomPrice) AS roomPrice, " +
+                "    MAX(r.roomPrice * (1 - (r.roomDiscount * 0.01))) AS discountedPrice, " +
                 "    h.hotelThumbnail " +
-                "FROM " +
+            "FROM " +
                 "    Hotel h " +
-            "JOIN " +
+                "JOIN " +
                 "    Room r ON h.hotelNo = r.hotel.hotelNo " +
-            "LEFT JOIN " +
+                "LEFT JOIN " +
                 "    Review re ON r.roomNo = re.room.roomNo " +
             "WHERE " +
                 "    (h.hotelAdress LIKE :hotelsearch " +
@@ -87,7 +87,7 @@ public class HotelService {
                 "          AND rs.checkOut > :checkIn " +
                 "    ) " +
             "GROUP BY " +
-                "    h.hotelNo, h.hotelName, h.hotelRating "
+                "    h.hotelNo, h.hotelName, h.hotelRating, h.hotelThumbnail "
         );
 
         // 어메니티 조건 추가
@@ -102,16 +102,11 @@ public class HotelService {
             query.append(") "); // 조건 끝
         }
 
-        // hotelRating 조건 추가
-        if (hotelRating != null && hotelRating.length > 0) {
-            query.append(" AND h.hotelRating IN (:hotelRating) ");
-        }
-
-        // HAVING 조건을 위한 StringBuilder 생성
-        StringBuilder havingClause = new StringBuilder();
+        // HAVING 절을 위한 StringBuilder 생성
+        StringBuilder havingClause = new StringBuilder("HAVING ");
 
         // soldOut 조건 추가
-        if (soldOut == 1) {  
+        if (soldOut == 1) {
             havingClause.append("COUNT(r.roomNo) > 0 "); // 매진되지 않은 호텔만 포함
         } else if (soldOut == 0) {
             havingClause.append("COUNT(r.roomNo) >= 0 "); // 전부 포함
@@ -119,26 +114,34 @@ public class HotelService {
 
         // roomDiscountState 조건 추가
         if (roomDiscountState == 1) {
-            if (havingClause.length() > 0) {
+            if (havingClause.length() > 7) {
                 havingClause.append(" AND "); // 기존 HAVING 절이 있으면 AND 추가
             }
             havingClause.append("MAX(r.roomDiscount) > 0 "); // 할인율이 1보다 큰 경우
         } else if (roomDiscountState == 0) {
-            if (havingClause.length() > 0) {
+            if (havingClause.length() > 7) {
                 havingClause.append(" AND "); // 기존 HAVING 절이 있으면 AND 추가
             }
             havingClause.append("MAX(r.roomDiscount) >= 0 "); // 할인율이 0 이상인 경우
         }
 
+        // hotelRating 조건 추가
+        if (hotelRating != null && hotelRating.length > 0) {
+            if (havingClause.length() > 7) {
+                havingClause.append(" AND "); // 기존 HAVING 절이 있으면 AND 추가
+            }
+            havingClause.append("h.hotelRating IN (:hotelRating) "); // 호텔 등급 조건
+        }
+
         // HAVING 절이 존재하면 쿼리에 추가
-        if (havingClause.length() > 0) {
-            query.append(" HAVING " + havingClause.toString());
+        if (havingClause.length() > 7) {
+            query.append(havingClause.toString());
         }
 
         // 할인된 가격 범위 추가
         query.append(" AND MAX(r.roomPrice * (1 - (r.roomDiscount * 0.01))) BETWEEN :minDiscountedPrice AND :maxDiscountedPrice ");
 
-        query.append("ORDER BY " + orderByColumn + " " + orderDirection); // 정렬 방향 추가
+        query.append(" ORDER BY " + orderByColumn + " " + orderDirection); // 정렬 방향 추가
 
         TypedQuery<Object[]> typedQuery = entityManager.createQuery(query.toString(), Object[].class);
         typedQuery.setParameter("hotelsearch", "%" + hotelsearch + "%");
@@ -161,8 +164,8 @@ public class HotelService {
         }
 
         // 할인된 가격 범위 설정
-        double minDiscountedPrice = minRoomPrice ; // 예시 값
-        double maxDiscountedPrice = maxRoomPrice ; // 예시 값
+        double minDiscountedPrice = minRoomPrice; // 예시 값
+        double maxDiscountedPrice = maxRoomPrice; // 예시 값
 
         typedQuery.setParameter("minDiscountedPrice", minDiscountedPrice);
         typedQuery.setParameter("maxDiscountedPrice", maxDiscountedPrice);
@@ -192,6 +195,7 @@ public class HotelService {
             int discountedPrice = ((Number) result[7]).intValue(); // 할인된 가격
             dto.setRoomDcPrice(discountedPrice); // 할인된 가격 설정
             dto.setHotelThumbnail((String) result[8]); // 호텔 썸네일
+            
             // DTO를 리스트에 추가
             hotHotelDTOList.add(dto);
         }
@@ -199,3 +203,4 @@ public class HotelService {
         return hotHotelDTOList;
     }
 }
+
