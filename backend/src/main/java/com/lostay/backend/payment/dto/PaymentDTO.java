@@ -45,7 +45,8 @@ public class PaymentDTO {
 	private String hotelThumbnail;  // 호텔 썸네일 이미지
 	private int status;      // 적립인지 사용인지 판단하는 컬럼 
 							//  0이면 적립, 1이면 사용
-	
+	private long disNo;			// 결제수단 넘버
+	private String imp_uid;		// 결제 고유 번호
 
 }
 
