@@ -65,8 +65,9 @@ public class HotelService {
                 "    COUNT(re.reviewNo) AS totalReviewCount, " +
                 "    MAX(r.roomDiscount) AS roomDiscount, " +
                 "    MAX(r.roomPrice) AS roomPrice, " + // 원래 가격 가져오기
-                "    MAX(r.roomPrice * (1 - (r.roomDiscount * 0.01))) AS discountedPrice " + // 할인된 가격 계산
-            "FROM " +
+                "    MAX(r.roomPrice * (1 - (r.roomDiscount * 0.01))) AS discountedPrice, " + // 할인된 가격 계산
+                "    h.hotelThumbnail " +
+                "FROM " +
                 "    Hotel h " +
             "JOIN " +
                 "    Room r ON h.hotelNo = r.hotel.hotelNo " +
@@ -190,7 +191,7 @@ public class HotelService {
             // 할인된 가격을 그대로 사용
             int discountedPrice = ((Number) result[7]).intValue(); // 할인된 가격
             dto.setRoomDcPrice(discountedPrice); // 할인된 가격 설정
-
+            dto.setHotelThumbnail((String) result[8]); // 호텔 썸네일
             // DTO를 리스트에 추가
             hotHotelDTOList.add(dto);
         }
