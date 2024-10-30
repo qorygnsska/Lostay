@@ -47,7 +47,9 @@
 
     .carousel-control-prev,
     .carousel-control-next {
-        background-color: rgba(76, 76, 76, 0.7);; /* 버튼 배경색 */
+        background-color: rgba(76, 76, 76, 0.7);
+        ;
+        /* 버튼 배경색 */
         text-align: center;
         width: 60px;
         height: 100px;
@@ -60,11 +62,11 @@
         }
     }
 
-    .carousel-control-prev{
+    .carousel-control-prev {
         margin-left: 10px;
     }
 
-    .carousel-control-next{
+    .carousel-control-next {
         margin-right: 10px;
     }
 
@@ -95,26 +97,6 @@
         .thumbnail-container {
             margin-top: 50px;
             margin-left: 10px;
-            /* display: flex;
-            margin-top: 20px;
-            overflow-x: auto;
-
-            .thumbnail--box {
-                cursor: pointer;
-                margin-left: 10px;
-                padding-bottom: 10px;
-
-                .thumbnail-image {
-                    height: 100px;
-                    width: 100px;
-                    cursor: pointer;
-                    border-radius: 10px;
-                }
-
-                .sel--border {
-                    border: 3px solid var(--regularBlueColor);
-                }
-            } */
         }
 
         .thumbnail-container::-webkit-scrollbar {
@@ -129,7 +111,7 @@
     }
 
     @media screen and (max-width: 768px) {
-        .modal-content{
+        .modal-content {
             width: 100%;
 
         }

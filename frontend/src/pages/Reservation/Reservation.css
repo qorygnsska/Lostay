@@ -98,6 +98,7 @@
                     margin-left: 28px;
                     position: absolute;
                     right: 0;
+                    color: var(--lightGrayColor2);
                 }
 
 
@@ -321,11 +322,12 @@
                     align-items: center;
 
                     input {
-                        width: 65px;
+                        width: 80px;
                         border: 1px solid var(--lightGrayColor);
                         border-radius: 5px;
-                        padding-left: 5px;
+                        padding-right: 5px;
                         outline: none;
+                        text-align: right;
                     }
                 }
             }

@@ -3,12 +3,13 @@ import BackNav from "../../../componets/BackNav/BackNav";
 import Navbar from "../../../componets/Navbar/Navbar";
 import { FaPencil } from "react-icons/fa6";
 import { FaChevronRight } from "react-icons/fa";
-import { privateApi } from "../../../api/api";
+
 import axios from "axios";
 import OkCancleModal from "../../../componets/MyPage/BookingHistory/OkCancleModal";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../store/userSlice";
+import { privateApi } from "../../../api/api";
 
 
 export default function Profile() {

@@ -58,24 +58,29 @@ const agreeChkInfo = [
 
 export default function Reservation() {
 
-    const [data, setData] = useState(null);
+    const [hotelRoomInfo, setHotelRoomInfo] = useState(null);
+    const [userInfo, setUserInfo] = useState(null);
     // 첫 화면 데이터 가져오기
     useEffect(() => {
         const getData = async () => {
 
             try {
-                const response = await privateApi.get(`/HotelRoomInfo`, {
+                const [hotelRoomInfoResp, userInfoResp] = await Promise.all([
+                    privateApi.get('/HotelRoomInfo', {
+                        params: {
+                            roomNo: 1,
+                            checkInDate: "2024-11-05", // 'YYYY-MM-DD' 형식의 날짜 전달
+                            checkOutDate: "2024-11-06",
+                        },
+                    }),
+                    privateApi.get('/UserInfo'),
+                ]);
 
-                    params: {
-                        roomNo: 1,
-                        checkInDate: "2024-11-05", // 'YYYY-MM-DD' 형식의 날짜 전달
-                        checkOutDate: "2024-11-06",
-                    },
-                }); // API 요청
-                if (response.status === 200) {
-                    console.log(response.data)
-                    setData(response.data)
-                }
+
+                setHotelRoomInfo(hotelRoomInfoResp.data)
+                setUserInfo(userInfoResp.data)
+
+
             } catch (error) {
                 console.error(error);
             }
@@ -218,11 +223,11 @@ export default function Reservation() {
     }
 
     useEffect(() => {
-        if (data) {
-            setPhone(data.userPhone || '')
-            setPrePhone(data.userPhone || '')
+        if (userInfo) {
+            setPhone(userInfo.userPhone || '')
+            setPrePhone(userInfo.userPhone || '')
         }
-    }, [data]);
+    }, [userInfo]);
 
     // 휴대폰번호 수정 버튼
     const handlePhoneEdit = () => {
@@ -436,8 +441,8 @@ export default function Reservation() {
     }
 
     const [useAllPoints, setUseAllPoints] = useState(false); // 포인트 모두 사용
-    const [inputPoints, setInputPoints] = useState(0); // 포인트 직접 입력
-    const [totalPrice, setTotalPrice] = useState(data?.roomPrice); // 총 결제 가격
+    const [inputPoint, setInputPoint] = useState(0); // 포인트 직접 입력
+    const [totalPrice, setTotalPrice] = useState(hotelRoomInfo?.roomPrice); // 총 결제 가격
     const [payType, setpayType] = useState(null); // 결제 수단
     const [salePrice, setSalePrice] = useState(0); // 할인 금액
     const [checkItems, setCheckItems] = useState([]); // 체크된 동의 담을 배열
@@ -470,9 +475,9 @@ export default function Reservation() {
         const newUseAllPoints = !useAllPoints;
         setUseAllPoints(newUseAllPoints);
 
-        const points = newUseAllPoints ? data?.userPoint : 0;
-        setInputPoints(points);
-        updateTotalPrice(points, payType?.sale);
+        const point = newUseAllPoints ? hotelRoomInfo.roomPrice - salePrice : 0;
+        setInputPoint(point);
+        updateTotalPrice(point, payType?.sale);
     };
 
     // 포인트 직접 입력
@@ -483,8 +488,8 @@ export default function Reservation() {
             setUseAllPoints(false);
         }
         // 입력값이 숫자이고, 범위를 초과하지 않는지 확인
-        if (/^\d*$/.test(value) && (value === "" || (parseInt(value, 10) <= data?.userPoint && parseInt(value, 10) <= totalPrice))) {
-            setInputPoints(value);
+        if (/^\d*$/.test(value) && (value === "" || (parseInt(value, 10) <= userInfo?.userPoint && parseInt(value, 10) <= hotelRoomInfo.roomPrice - salePrice))) {
+            setInputPoint(value);
             updateTotalPrice(value, payType?.sale);
         }
     };
@@ -492,14 +497,14 @@ export default function Reservation() {
     // 결제 수단 선택 시 할인
     const handlePayTypeChange = (method) => {
         setpayType(method);
-        updateTotalPrice(inputPoints, method.sale);
+        updateTotalPrice(inputPoint, method.sale);
     };
 
     // 총 결제금액 계산
     const updateTotalPrice = (points, sale = 0) => {
         const pointsToUse = parseInt(points, 10) || 0;
-        const discountAmount = Math.floor((data.roomPrice * sale) / 100); // sale을 비율로 계산
-        const discountedPrice = data.roomPrice - discountAmount;
+        const discountAmount = Math.floor((hotelRoomInfo.roomPrice * sale) / 100); // sale을 비율로 계산
+        const discountedPrice = hotelRoomInfo.roomPrice - discountAmount;
         setSalePrice(discountAmount);
         setTotalPrice(discountedPrice - pointsToUse);
     };
@@ -569,26 +574,26 @@ export default function Reservation() {
                 {/* 예약할 호텔 정보 */}
                 <div className="hotel--info">
                     <div className="hotel--title">
-                        <span>{data?.hotelName}</span>
+                        <span>{hotelRoomInfo?.hotelName}</span>
                     </div>
 
-                    <img src={data?.hotelThumbnail} alt="호텔 이미지" />
+                    <img src={hotelRoomInfo?.hotelThumbnail} alt="호텔 이미지" />
 
                     <div className="hotel--info--box">
                         <span>객실</span>
-                        <span>{data?.roomName}</span>
+                        <span>{hotelRoomInfo?.roomName}</span>
                     </div>
 
                     <div className="hotel--info--box">
                         <span>일정</span>
                         <span>
-                            {formatDate(data?.roomCheckIn)} ({getDayName(data?.roomCheckIn)}) {formatCheckTime(data?.roomCheckinTime)} ~ {formatDate(data?.roomCheckOut)} ({getDayName(data?.roomCheckOut)}) {formatCheckTime(data?.roomCheckoutTime)} | {calculateNights(data?.roomCheckIn, data?.roomCheckOut)}박
+                            {formatDate(hotelRoomInfo?.roomCheckIn)} ({getDayName(hotelRoomInfo?.roomCheckIn)}) {formatCheckTime(hotelRoomInfo?.roomCheckinTime)} ~ {formatDate(hotelRoomInfo?.roomCheckOut)} ({getDayName(hotelRoomInfo?.roomCheckOut)}) {formatCheckTime(hotelRoomInfo?.roomCheckoutTime)} | {calculateNights(hotelRoomInfo?.roomCheckIn, hotelRoomInfo?.roomCheckOut)}박
                         </span>
                     </div>
 
                     <div className="hotel--info--box">
                         <span>기준인원</span>
-                        <span>{data?.roomPeopleInfo}</span>
+                        <span>{hotelRoomInfo?.roomPeopleInfo}</span>
                     </div>
                 </div>
 
@@ -715,7 +720,7 @@ export default function Reservation() {
 
                     <div className="pay--box">
                         <span>상품 금액</span>
-                        <span>{data?.roomPrice.toLocaleString()}원</span>
+                        <span>{hotelRoomInfo?.roomPrice.toLocaleString()}원</span>
                     </div>
 
                     <div className="pay--box">
@@ -734,7 +739,7 @@ export default function Reservation() {
                         <span>포인트</span>
                         <div className="point--box">
                             <div className="user--point--box">
-                                <span>보유 포인트 : {data?.userPoint}p</span>
+                                <span>보유 포인트 : {userInfo?.userPoint.toLocaleString()}p</span>
                                 <div>
                                     <input type="checkbox" id="useAllPoints" checked={useAllPoints} onChange={handleCheckboxChange} />
                                     <label htmlFor="useAllPoints">
@@ -750,7 +755,7 @@ export default function Reservation() {
                         <div className="use--point--box">
                             <span>-</span>
                             <div>
-                                <input type="text" value={inputPoints ? formatNumber(inputPoints) : ""} onChange={handleInputChange} />
+                                <input type="text" value={inputPoint ? formatNumber(inputPoint) : ""} onChange={handleInputChange} />
                                 <span>원</span>
                             </div>
                         </div>
