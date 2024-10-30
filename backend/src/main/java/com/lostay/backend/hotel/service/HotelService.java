@@ -91,7 +91,6 @@ public class HotelService {
         // 어메니티 조건 추가
         if (hotelAmenities.length > 0) {
         	
-        	System.out.println("머메니티 실행"+hotelAmenities.toString());
             query.append(" AND (");
             for (int i = 0; i < hotelAmenities.length; i++) {
                 query.append(" FIND_IN_SET(:amenity" + i + ", h.hotelAmenities) > 0");

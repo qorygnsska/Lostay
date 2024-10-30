@@ -47,7 +47,7 @@ export default function HotelList(props) {
   const [maxRoomPrice, setMaxRoomPrice] = useState(1000000);
   const [viewDiscount, setViewDiscount] = useState(0);//0: 전체 보기, 1: 할인 중만
   const [hotelRating, setHotelRating] = useState([]);
-  const [catchall, setCatchall] = useState('');
+  const [catchall, setCatchall] = useState([]);
   const [sortOption, setSortOption] = useState('평점 높은 순'); //정렬 옵션
 
   // 필터 모달에서 '적용' 버튼 클릭 시 호출
@@ -57,7 +57,7 @@ export default function HotelList(props) {
     setMaxRoomPrice(maxValue);
     onlyDiscount ? setViewDiscount(1) : setViewDiscount(0);
     setHotelRating(ratings);//서버에서 Array 타입으로 받음
-    setCatchall(amenities.toString());//서버에서 String 타입으로 받음
+    setCatchall(amenities);//서버에서 Array 타입으로 받음
   }
   //////////////////////////////////////////////////////////for detail parameters(filter&sort)
   //////////////////////////////////////////////////////////for hidden & focus
@@ -95,7 +95,7 @@ export default function HotelList(props) {
       uri += `?hotelsearch=${place}&checkIn=${checkIn}&checkOut=${checkOut}&roomPeopleInfo=${member}`;
       uri += `&minRoomPrice=${minRoomPrice}&maxRoomPrice=${maxRoomPrice}`;
       uri += `&soldOut=${excSoldOut}&roomDiscountState=${viewDiscount}`;
-      uri += `&hotelRating=${hotelRating}&amenities=${catchall}`;
+      uri += `&hotelRating=${hotelRating}&hotelAmenities=${catchall}`;
       uri += `&sort=${sortOption}`;
 
       // async&await이나 then()은 같은 것
