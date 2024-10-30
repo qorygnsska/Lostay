@@ -153,13 +153,12 @@ public class AdminController {
 		// if (page == null) {
 		// page = 0; // 기본값 설정
 		// }
-
 		return new ResponseEntity<>(adminService.getUserList(inactive, userName, page - 1), HttpStatus.OK);
 	}
 	
 	
 	
-	//홍정훈(관리자 페이지 호텔.객실 텝 정보 조회)
+		//홍정훈(관리자 페이지 호텔.객실 텝 정보 조회)
 		@GetMapping("/adminhotelsList")
 		public ResponseEntity<?> adminEventList(@RequestParam(defaultValue = "1") int page) {
 			
@@ -179,7 +178,13 @@ public class AdminController {
 				return ResponseEntity.notFound().build();// code 404
 			}
 		}
-	
-	
-
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }

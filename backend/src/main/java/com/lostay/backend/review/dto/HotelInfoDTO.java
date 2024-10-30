@@ -16,7 +16,7 @@ public class HotelInfoDTO {
 	private Double ReviewRating; 			//객실리뷰평점 종합 평균
 	private Long totalReviewCount; 			//객실리뷰 총 갯수 
 	private List<HotelRoomsDTO> hotelRoom;   // 객실 목록 (roomNo 포함)
-	
+	private List<String> reviewImgs;   //호탤 리뷰 이미지 전체
 	public HotelInfoDTO(Long hotelNo, String hotelName, Double reviewRating, Long totalReviewCount) {
 		super();
 		this.hotelNo = hotelNo;
