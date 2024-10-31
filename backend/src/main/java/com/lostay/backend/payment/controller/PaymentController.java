@@ -105,11 +105,9 @@ public class PaymentController {
 			 long userNo = customOAuth2User.getUserNo();
 				
 			 int amount = paySer.compareAmount(userNo,paymentBeforeDTO.getPoint(),paymentBeforeDTO.getRoomNo(),paymentBeforeDTO.getDisNo());
-			 System.out.println("서버에서계산한 데이터" + amount);
+		
 			 if(amount < 0) {
-				 return ResponseEntity
-			                .status(HttpStatus.BAD_REQUEST)
-			                .body("결제금액 장난질");
+				 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			 }
 			
 			 HttpRequest request = HttpRequest.newBuilder()
@@ -121,8 +119,7 @@ public class PaymentController {
 			 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 			 
 			 if(response.statusCode() != 200) {
-				 return ResponseEntity.status(response.statusCode())
-						 			  .body("토큰 발급 실패 : " + response.body());
+				 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			 }else {
 				 System.out.println("토큰 발급 성공");
 			 }
@@ -131,7 +128,7 @@ public class PaymentController {
 			 
 			 // jsonObject에서 response 안에 있는 access토큰 문자열로 받아오기
 			 String accessToken = jsonResponse.getJSONObject("response").getString("access_token");
-					
+			 System.out.println("accessToken" + accessToken);
 			 // 사전검증 api
 			 HttpRequest request2 = HttpRequest.newBuilder()
 					 .uri(URI.create("https://api.iamport.kr/payments/prepare"))
@@ -140,13 +137,14 @@ public class PaymentController {
 					 .method("POST", HttpRequest.BodyPublishers.ofString(String.format("{\"merchant_uid\":\"%s\",\"amount\":%d}", paymentBeforeDTO.getMerchant_uid(), amount)))
 					 .build();
 			 HttpResponse<String> response2 = HttpClient.newHttpClient().send(request2, HttpResponse.BodyHandlers.ofString());
+
+			 JSONObject jsonResponse2 = new JSONObject(response2.body());
 			 
+			 System.out.println(response2.statusCode());
 			 if(response2.statusCode() != 200) {
-				 return ResponseEntity.status(response2.statusCode())
-						 		      .body("사전검증 실패: " + response2.body());
+				 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			 }
-			 
-			 return new ResponseEntity<>(response2,HttpStatus.OK);
+			 return new ResponseEntity<>(HttpStatus.OK);
 			 
 		} catch (JSONException e) {
 	        return ResponseEntity
@@ -166,8 +164,8 @@ public class PaymentController {
 	@PostMapping("/Payment/Verification")
 	  private IamportResponse<Payment> paymentByImpUid(@RequestBody PaymentVerificationDTO payDTO) throws IamportResponseException,IOException {
 		 iamportClient = new IamportClient(apiKey, secretKey);
-		
-		 System.out.println(payDTO);
+		 
+		 System.out.println("payDTO" + payDTO);
         return iamportClient.paymentByImpUid(payDTO.getImp_uid());
     }
 	
@@ -177,10 +175,8 @@ public class PaymentController {
 	public void paymentinsert(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
 							 ,@RequestBody PaymentDTO dto){
 
-//		Long userNo = customOAuth2User.getUserNo();
-		Long userNo = 1L;
+		Long userNo = customOAuth2User.getUserNo();
 		paySer.savePayment(userNo,dto);
-		
 	}
 	
 	
