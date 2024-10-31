@@ -94,13 +94,5 @@ public class CartService {
  			 System.out.println("false실행");
  			 return false;
  		 }
- 		
-// 		 if (optionalRoom.isPresent()) { // 방이 존재하면
-//		        Room room = optionalRoom.get(); // 방 객체 가져오기
-//		        room.setRoomDiscount(roomDiscount); // 할인율 업데이트
-//		        return true; 
-//		    } else {
-//		        return false; 
-//		    }
 	}
 }
