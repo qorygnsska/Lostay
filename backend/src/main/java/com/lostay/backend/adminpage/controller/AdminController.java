@@ -157,6 +157,7 @@ public class AdminController {
 	}
 	
 	
+
 		//홍정훈(관리자 페이지 호텔.객실 텝 정보 조회)
 		@GetMapping("/adminhotelsList")
 		public ResponseEntity<?> adminEventList(@RequestParam(defaultValue = "1") int page) {
@@ -165,7 +166,7 @@ public class AdminController {
 		}
 
 		//홍정훈(관리자 페이지 호텔.객실 텝 객실 할인율 수정)
-		@PutMapping("/adminhotelsListUpdate")
+		@PostMapping("/adminhotelsListUpdate")
 		public ResponseEntity<?> adminhotelsListUpdate(Long roomNo,int roomDiscount) {
 
 	
@@ -177,5 +178,19 @@ public class AdminController {
 				return ResponseEntity.notFound().build();// code 404
 			}
 		}
-		
+
+	
+		//관리자 페이지 년도별 매출액 조회(jh)
+		@GetMapping("/admin/RevenueYearChart")
+		public ResponseEntity<?> RevenueChart(){
+			
+			return new ResponseEntity<>(adminService.RevenueChart(),HttpStatus.OK);
+			
+		}
+		  // 관리자 페이지 월별 매출액 조회
+	    @GetMapping("/admin/RevenueMonthChart")
+	    public ResponseEntity<?> RevenueMonthChart(@RequestParam int year) {
+	        return new ResponseEntity<>(adminService.RevenueMonthChart(year), HttpStatus.OK);
+	    }
+
 }
