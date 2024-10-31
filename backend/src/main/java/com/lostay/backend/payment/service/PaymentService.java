@@ -87,6 +87,8 @@ public class PaymentService {
 
 		Period period = Period.between(checkInDate, checkOutDate);
 		
+		List<Discount> disList = disRepo.findAll();
+		
 		Room room = newRoom.get();
 		RoomDTO roomDto = new RoomDTO();
 
@@ -107,6 +109,7 @@ public class PaymentService {
 		int discountPrice = (int)roomPrice - roomPrice * roomDiscount/100;
 		int finalPrice = discountPrice * period.getDays();
 		roomDto.setDiscountPrice(finalPrice);
+		roomDto.setDisList(disList);
 
 		return roomDto;
 	}
@@ -229,7 +232,7 @@ public class PaymentService {
 	public int compareAmount(long userNo, int point, Long roomNo, Long disNo) {
 		
 		User user = userRepo.findById(userNo).get();
-		int amount = 0;
+		int amount = -1;
 		int totalPoint = user.getUserPoint();
 		
 		if(totalPoint < point) {
