@@ -1,19 +1,19 @@
 import React from "react";
 
-export default function PayType({ method }) {
+export default function PayType({ payType }) {
     return (
         <>
-            {method?.imageUrl ? (
+            {payType?.disImage ? (
                 <div>
-                    <img src={`eventList/${method.imageUrl}`} alt={method.name} className="icon" />
+                    <img src={payType.disImage} alt={payType.disCategory} className="icon" />
                 </div>
             ) : (
                 <div>
-                    <span>{method.name}</span>
+                    <span>{payType.disCategory}</span>
                 </div>
             )}
-            {method?.sale ? (
-                method.sale > 0 ? (
+            {payType?.disRate ? (
+                payType.disRate > 0 ? (
                     <span className="platform--site--sale--box">
                         <span className="platform-site-sale--icon">혜택</span>
                     </span>

@@ -1,5 +1,7 @@
 package com.lostay.backend.cart.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,4 +30,13 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 	        "GROUP BY h.hotelNo, h.hotelName, h.hotelRating, h.hotelThumbnail, c.cartNo " +
 	        "ORDER BY MAX(r.roomDiscount) DESC, ROUND(AVG(re.reviewRating), 1) DESC")
 	Page<MypageCartListDTO> findTop10CartPage(@Param("userNo") Long userNo, Pageable pageable);
+
+	
+	
+	//jh 호텔에서 유저가 찜한 호텔인지 확인 조회
+	 @Query("SELECT c FROM Cart c " +
+	           "JOIN c.user u " +
+	           "JOIN c.hotels h " +
+	           "WHERE u.userNo = :userNo AND h.hotelNo = :hotelNo")
+	Optional<Cart> findCartByUserAndHotel(@Param("userNo") Long userNo,@Param("hotelNo") Long hotelNo);
 }

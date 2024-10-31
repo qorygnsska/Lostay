@@ -10,14 +10,6 @@ import axios from "axios";
 import { privateApi } from "../../api/api";
 
 
-
-const paymentMethods = [
-    { id: 1, name: "카카오페이", imageUrl: "kakaoPay.png", sale: 5 },
-    { id: 2, name: "토스페이", imageUrl: "tossPay.png", sale: 3 },
-    { id: 3, name: "페이코페이", imageUrl: "paycoPay.png", sale: 7 },
-    { id: 4, name: "신용카드", sale: 0 },
-];
-
 const agreeInfo = [
     { id: 1, title: "현장결제", content: "추가인원 비용등의 현장결제 발생 상품을 확인하세요." },
     { id: 2, title: "취소불가 및 환불", content: "예약취소는 체크인 하루 전 까지만 가능하며, 환불 금액은 100% 환불됩니다." },
@@ -76,7 +68,8 @@ export default function Reservation() {
                     privateApi.get('/UserInfo'),
                 ]);
 
-
+                console.log(hotelRoomInfoResp.data)
+                console.log(userInfoResp.data)
                 setHotelRoomInfo(hotelRoomInfoResp.data)
                 setUserInfo(userInfoResp.data)
 
@@ -109,15 +102,12 @@ export default function Reservation() {
 
         if (inputValue.length === 0) return true; // 아무것도 안 칠 경우
         else if (/^[가-힣]*$/.test(inputValue)) { // 한글만
-            console.log('한글')
             if (byteLength < 6) return true; // 6바이트 미만
             return false; // 6바이트 이상
         } else if (/^[a-zA-Z]*$/.test(inputValue)) { // 영어만
-            console.log('영어')
             if (byteLength < 2) return true; // 2바이트 미만
             return false; // 2바이트 이상
         } else if (/^[가-힣a-zA-Z]*$/.test(inputValue)) { // 한글 + 영어
-            console.log('한글+영어')
             if (byteLength < 4) return true; // 4바이트 미만
             return false; // 4바이트 이상
         } else if (byteLength < 2) {
@@ -374,8 +364,7 @@ export default function Reservation() {
     const { IMP } = window;
     IMP.init('imp67745024');
 
-    const requestPay = (pg) => {
-        const merchant_uid = "merchant_" + new Date().getTime
+    const requestPay = (pg, merchant_uid) => {
         IMP.request_pay({
             pg: pg,
             merchant_uid: merchant_uid,
@@ -387,7 +376,7 @@ export default function Reservation() {
         }, (rsp) => {
             if (rsp.success) { // 프론트에서 결제가 완료되면
                 console.log(rsp.data)
-                axios.post(`http://localhost:9090/api/v1/order/payment/${merchant_uid}`, {
+                privateApi.post(`http://localhost:9090/api/v1/order/payment/${merchant_uid}`, {
                     imp_uid: rsp.imp_uid,            // 결제 고유번호
                     merchant_uid: rsp.merchant_uid,   // 주문번호
                     amount: rsp.paid_amount
@@ -412,7 +401,6 @@ export default function Reservation() {
     ]
 
     const paymentClick = () => {
-        console.log(checkItems.length)
         // 이름 작성 여뷰
 
         if (name.length === 0 || nameWarning === true) {
@@ -426,18 +414,20 @@ export default function Reservation() {
             return;
         }
 
-
-        if (payType.name === requestPayType[0].name) {
-            requestPay(requestPayType[0].pg)
-        } else if (payType.name === requestPayType[1].name) {
-            requestPay(requestPayType[1].pg)
-        } else if (payType.name === requestPayType[2].name) {
-            requestPay(requestPayType[2].pg)
-        } else if (payType.name === requestPayType[3].name) {
-            requestPay(requestPayType[3].pg)
-        }
-
-
+        const merchant_uid = "merchant_" + new Date().getTime()
+        privateApi.post('http://localhost:9090/Payment/Before', {
+            point: Number(inputPoint),
+            roomNo: hotelRoomInfo.roomNo,
+            disNo: payType.disNo,
+            merchant_uid: merchant_uid,
+        })
+            .then((res) => {
+                console.log("res:", res)
+                requestPay(payType.disPg, merchant_uid)
+            })
+            .catch((error) => {
+                alert("결제에 실패했습니다.")
+            });
     }
 
     const [useAllPoints, setUseAllPoints] = useState(false); // 포인트 모두 사용
@@ -490,14 +480,14 @@ export default function Reservation() {
         // 입력값이 숫자이고, 범위를 초과하지 않는지 확인
         if (/^\d*$/.test(value) && (value === "" || (parseInt(value, 10) <= userInfo?.userPoint && parseInt(value, 10) <= hotelRoomInfo.roomPrice - salePrice))) {
             setInputPoint(value);
-            updateTotalPrice(value, payType?.sale);
+            updateTotalPrice(value, payType?.disRate);
         }
     };
 
     // 결제 수단 선택 시 할인
-    const handlePayTypeChange = (method) => {
-        setpayType(method);
-        updateTotalPrice(inputPoint, method.sale);
+    const handlePayTypeChange = (dis) => {
+        setpayType(dis);
+        updateTotalPrice(inputPoint, dis.disRate);
     };
 
     // 총 결제금액 계산
@@ -694,10 +684,10 @@ export default function Reservation() {
                         <span className="section--title">결제수단</span>
                         <BsExclamationCircle className="pay--sale--icon" />
                         <div className="sale--info">
-                            {paymentMethods.map((method, index) =>
-                                method.sale > 0 ? (
+                            {hotelRoomInfo?.disList.map((dis, index) =>
+                                dis.disRate > 0 ? (
                                     <div key={index}>
-                                        {method.name} : {method.sale}%
+                                        {dis.disCategory} : {dis.disRate}%
                                     </div>
                                 ) : null
                             )}
@@ -705,9 +695,9 @@ export default function Reservation() {
                     </div>
                     <div>
                         <ul className="payType--box">
-                            {paymentMethods.map((method) => (
-                                <li className={`payType ${payType?.id === method.id ? "selected" : ""}`} key={method.id} onClick={() => handlePayTypeChange(method)}>
-                                    <PayType method={method} />
+                            {hotelRoomInfo?.disList.map((dis) => (
+                                <li className={`payType ${payType?.disNo === dis.disNo ? "selected" : ""}`} key={dis.disNo} onClick={() => handlePayTypeChange(dis)}>
+                                    <PayType payType={dis} />
                                 </li>
                             ))}
                         </ul>
@@ -726,9 +716,9 @@ export default function Reservation() {
                     <div className="pay--box">
                         <span>할인 금액</span>
                         <div className="pay--discount--box">
-                            {payType?.sale > 0 ? (
+                            {payType?.disRate > 0 ? (
                                 <span className="sale--info">
-                                    ({payType.name} : {payType.sale}%)
+                                    ({payType.disCategory} : {payType.disRate}%)
                                 </span>
                             ) : null}
                             <span>{salePrice.toLocaleString()}원</span>
