@@ -76,7 +76,7 @@ export default function Reservation() {
                     privateApi.get('/UserInfo'),
                 ]);
 
-
+                console.log(hotelRoomInfoResp.data)
                 setHotelRoomInfo(hotelRoomInfoResp.data)
                 setUserInfo(userInfoResp.data)
 
@@ -109,15 +109,12 @@ export default function Reservation() {
 
         if (inputValue.length === 0) return true; // 아무것도 안 칠 경우
         else if (/^[가-힣]*$/.test(inputValue)) { // 한글만
-            console.log('한글')
             if (byteLength < 6) return true; // 6바이트 미만
             return false; // 6바이트 이상
         } else if (/^[a-zA-Z]*$/.test(inputValue)) { // 영어만
-            console.log('영어')
             if (byteLength < 2) return true; // 2바이트 미만
             return false; // 2바이트 이상
         } else if (/^[가-힣a-zA-Z]*$/.test(inputValue)) { // 한글 + 영어
-            console.log('한글+영어')
             if (byteLength < 4) return true; // 4바이트 미만
             return false; // 4바이트 이상
         } else if (byteLength < 2) {
@@ -374,8 +371,7 @@ export default function Reservation() {
     const { IMP } = window;
     IMP.init('imp67745024');
 
-    const requestPay = (pg) => {
-        const merchant_uid = "merchant_" + new Date().getTime
+    const requestPay = (pg, merchant_uid) => {
         IMP.request_pay({
             pg: pg,
             merchant_uid: merchant_uid,
@@ -412,7 +408,6 @@ export default function Reservation() {
     ]
 
     const paymentClick = () => {
-        console.log(checkItems.length)
         // 이름 작성 여뷰
 
         if (name.length === 0 || nameWarning === true) {
@@ -426,16 +421,30 @@ export default function Reservation() {
             return;
         }
 
+        const merchant_uid = "merchant_" + new Date().getTime
+        axios.post('http://localhost:9090/Payment/Before', {
+            point: Number(inputPoint),
+            roomNo: hotelRoomInfo.roomNo,
+            disNo: hotelRoomInfo.roomNo,
+            merchant_uid: merchant_uid,
+        })
+            .then((res) => {
+                console.log("res:", res)
+                if (payType.name === requestPayType[0].name) {
+                    requestPay(requestPayType[0].pg, merchant_uid)
+                } else if (payType.name === requestPayType[1].name) {
+                    requestPay(requestPayType[1].pg, merchant_uid)
+                } else if (payType.name === requestPayType[2].name) {
+                    requestPay(requestPayType[2].pg, merchant_uid)
+                } else if (payType.name === requestPayType[3].name) {
+                    requestPay(requestPayType[3].pg, merchant_uid)
+                }
+            })
+            .catch((error) => {
+                alert("결제에 실패했습니다.")
+            });
 
-        if (payType.name === requestPayType[0].name) {
-            requestPay(requestPayType[0].pg)
-        } else if (payType.name === requestPayType[1].name) {
-            requestPay(requestPayType[1].pg)
-        } else if (payType.name === requestPayType[2].name) {
-            requestPay(requestPayType[2].pg)
-        } else if (payType.name === requestPayType[3].name) {
-            requestPay(requestPayType[3].pg)
-        }
+
 
 
     }
