@@ -63,12 +63,12 @@ export default function LocationHotelCarousel({ locationHotelList }) {
                                             </div>
                                             <div>
                                                 <div className="review--wrap">
-                                                    <div className="review--icon--box">
+                                                    <div className="review--icon--box justify-content-evenly">
                                                         <span>
-                                                            <FaStar className="star--Icon" />
+                                                            <FaStar className="star--Icon " />
                                                         </span>
-                                                        <span className="review--avg">
-                                                            <strong>{hotel.reviewRating ? hotel.reviewRating : 0}</strong>
+                                                        <span className="review--avg me-2">
+                                                            <strong>{hotel.reviewRating ? hotel.reviewRating.toFixed(1) : 0}</strong>
                                                         </span>
                                                     </div>
 

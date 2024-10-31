@@ -3,7 +3,7 @@ import { Button, Container } from 'react-bootstrap'
 import { IoIosHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
 import { IoNavigate } from "react-icons/io5";
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import HotelCarousel from '../../componets/Hotel/HotelCarousel';
 import HotelReview from '../../componets/Hotel/HotelReview';
 import KakaoMap from '../../componets/Map/KakaoMap';
@@ -14,15 +14,21 @@ import HotelIntroduce from '../../componets/Hotel/HotelIntroduce';
 import axios from 'axios';
 import CompHeaderGeneral from '../../componets/Header/CompHeaderGeneral';
 import CompSearchBox from '../../componets/Search/CompSearchBox';
+import { useSelector } from 'react-redux';
 
 export default function RoomList() {
+
+  const { search } = useLocation();
+  const ucheckInDate = new URLSearchParams(search).get('checkInDate'); // url에서 값 가져오기
+  const ucheckOutDate = new URLSearchParams(search).get('checkOutDate');
+  const upeopleMax = new URLSearchParams(search).get('peopleMax');
 
   //////////////////////////////////////////////////////////////////////////////JIP1029
   //////////////////////////////////////////////////////////for default parameters
   const parameters = useParams();
-  let check_in = new Date(parameters.checkIn);
-  let check_out = new Date(parameters.checkOut);
-  let member = parameters.member;
+  let check_in = new Date(ucheckInDate);
+  let check_out = new Date(ucheckOutDate);
+  let member = upeopleMax;
   //////////////////////////////////////////////////////////for default parameters
   //////////////////////////////////////////////////////////for hidden & focus
   // searchBox(Modal)이 열렸니?
@@ -67,9 +73,9 @@ export default function RoomList() {
 
   // 기본 파라미터
   const hotelNo = parameters.hotelNo;
-  const checkInDate = convertToLocalDateTime(parameters.checkIn);
-  const checkOutDate = convertToLocalDateTime(parameters.checkOut);
-  const peopleMax = member;
+  const checkInDate = convertToLocalDateTime(ucheckInDate);
+  const checkOutDate = convertToLocalDateTime(ucheckOutDate);
+  const peopleMax = upeopleMax;
 
   // 룸리스트 가져오기
   const fetchHotelRoomList = async () => {
@@ -103,6 +109,7 @@ export default function RoomList() {
   useEffect(() => {
     fetchHotelRoomList();
     fetchHotelRoomListReview3();
+    window.scrollTo(0, 0);
   }, []);
 
 
@@ -116,6 +123,88 @@ export default function RoomList() {
     const encodedLocation = encodeURIComponent(RoomInfos.dto.hotelAdress); // 주소를 URL 인코딩
     window.location.href = `/HotelMap?location=${encodedLocation}`;
   };
+
+  // 찜
+  const user = useSelector((state) => state.user.userState);
+  const navigate = useNavigate();
+
+  const [Heart, SetHeart] = useState(false); // 하트 상태
+  const [cartNo, SetcartNo] = useState(); // 카트넘버 저장
+
+  // 찜 했는 지 안 했는 지 확인
+  const fetchCart = async () => {
+    try {
+      const response = await axios.get('http://localhost:9090/HotelCheckCart', {
+        params: { hotelNo },
+      });
+      if (response.status === 200) {
+        SetHeart(true);
+      }else{
+        SetHeart(false);
+      }
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if(user === true){
+      fetchCart();
+    }
+  },[])
+
+  // 찜 추가
+  let hotelId = hotelNo;
+  const AddCart = async () => {
+    try {
+      const response = await axios.post('http://localhost:9090/cartsave', {
+        params: { hotelId },
+      });
+      if (response.status === 200) {
+        SetHeart(true);
+      }else{
+        SetHeart(false);
+      }
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 찜 삭제
+  const DeleteCart = async () => {
+    try {
+      const response = await axios.post('http://localhost:9090/cartdelete', {
+        params: { cartNo },
+      });
+      if (response.status === 200) {
+        SetHeart(false);
+      }else{
+        SetHeart(true);
+      }
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 찜 눌렀을 때
+  const handlerCart = () => {
+      if (user === true) {
+          if(Heart){
+            DeleteCart();
+          }else{
+            AddCart();
+          }
+      } else {
+          alert("로그인 후 이용해주세요.");
+          navigate("/login", {replace : true});
+      }
+    };
 
   return (
     <Container className='room--list'>
@@ -150,7 +239,7 @@ export default function RoomList() {
           <div className='HotelName'>{RoomInfos.dto.hotelName}</div>
         </div>
 
-        <IoIosHeartEmpty className='HeartIcon' />
+        {Heart ? <IoMdHeart className='FullHeartIcon' onClick={handlerCart}/> : <IoIosHeartEmpty className='HeartIcon' onClick={handlerCart}/>}
       </div>
 
       <div className='RowLine'></div>

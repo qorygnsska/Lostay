@@ -23,7 +23,7 @@ export default function AllImgModal({imgs, show, handleClose}) {
             <div className='RowLine'></div>
             <div className='ImgGrid'>
                 {imgs.map((img, idx) => (
-                    <img src={img} key={idx} alt='이미지' className='imgs' onClick={() => click(idx)} />
+                    <img src={'../../' + img} key={idx} alt='이미지' className='imgs' onClick={() => click(idx)} />
                 ))}
             </div>
 

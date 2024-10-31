@@ -9,11 +9,11 @@ export default function ({rooms, checkInDate, checkOutDate, peopleMax}) {
         <div className='room--grid--container'>
             <div className='RoomList'>
                 <div className='RoomRow'>
-                    <Link to={`/RoomDetail/${rooms.roomNo}/${checkInDate}/${checkOutDate}/${peopleMax}`}><img src={'../../../../' + rooms.roomThumbnail} alt='룸이미지' className='RoomImg' /></Link>
+                    <Link to={`/RoomDetail/${rooms.roomNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`}><img src={'../' + rooms.roomThumbnail} alt='룸이미지' className='RoomImg' /></Link>
                     <div>
                         <div className='RoomInfo'>
                             <div className='InfoBox'>
-                                <div className='RoomName'><Link to={`/RoomDetail/${rooms.roomNo}/${checkInDate}/${checkOutDate}/${peopleMax}`} id='nameLink'>{rooms.roomName}</Link></div>
+                                <div className='RoomName'><Link to={`/RoomDetail/${rooms.roomNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`} id='nameLink'>{rooms.roomName}</Link></div>
                                 <div className='PTBox'>
                                     <div className='PersonCount'><IoPersonOutline /> {rooms.roomPeopleInfo}</div>
                                     <div className='RoomTime'><FaRegClock /> 체크인 {rooms.roomCheckinTime.slice(0, 5)} ~ 체크아웃 {rooms.roomCheckoutTime.slice(0, 5)}</div>

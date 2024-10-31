@@ -11,7 +11,7 @@ export const adminPrivateApi = axios.create({
 adminPrivateApi.interceptors.request.use(
     (config) => {
         const state = store.getState();
-        const accessToken = state.admin.aT; // Redux에서 accessToken 가져오기
+        const accessToken = state.admin.adminAT; // Redux에서 accessToken 가져오기
         console.log(accessToken);
         if (accessToken) {
             config.headers["Authorization"] = `${accessToken}`;
@@ -43,18 +43,18 @@ adminPrivateApi.interceptors.response.use(
                 if (res.status === 200) {
                     // Redux에 새로운 access token 저장
                     const newAccessToken = res.headers["authorization"];
-                    
-                    if(newAccessToken === null){
+
+                    if (newAccessToken === null) {
                         console.log('로그아웃한다잉3')
                         store.dispatch(adminLogout());
                     }
 
-                    store.dispatch(adminLogin({ adminState: true, aT: newAccessToken }));
-                    
+                    store.dispatch(adminLogin({ adminState: true, adminAT: newAccessToken }));
+
                     // 원래 요청을 새로운 access token으로 재시도
                     error.config.headers["Authorization"] = `${newAccessToken}`;
-                    return privateApi(error.config);
-                }else{
+                    return adminPrivateApi(error.config);
+                } else {
                     console.log('로그아웃한다잉2')
                     store.dispatch(adminLogout());
                 }

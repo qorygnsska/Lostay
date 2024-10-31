@@ -68,10 +68,10 @@ const router = createBrowserRouter([
 
             // 교훈
             { path: "/hotelList", element: <HotelList /> },
-            { path: "/roomList/:hotelNo/:checkIn/:checkOut/:member", element: <RoomList /> },
+            { path: "/roomList/:hotelNo", element: <RoomList /> },
             { path: "/hotelMap", element: <HotelMap /> },
-            { path: "/roomDetail/:roomNo/:checkIn/:checkOut/:member", element: <RoomDetail /> },
-            { path: "/hotelReviews/:hotelNo", element: <HotelReviews /> },
+            { path: "/roomDetail/:roomNo", element: <RoomDetail /> },
+            { path: "/hotelReviews/:hotelNo/:roomNoo", element: <HotelReviews /> },
 
             // 정일
             { path: "/event-list", element: <PageEventList /> },

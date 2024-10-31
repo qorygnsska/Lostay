@@ -4,21 +4,21 @@ import Navbar from "../../../componets/Navbar/Navbar";
 import WishListComponent from "../../../componets/MyPage/WishList/WishList";
 import { FaRegHeart } from "react-icons/fa";
 import useGetWishs from "../../../hooks/wishInfiniteLoading";
-import {useInView} from "react-intersection-observer";
+import { useInView } from "react-intersection-observer";
 import Toast from "../../../componets/Toast/Toast";
 import { useQueryClient } from "@tanstack/react-query";
 
 
 export default function WishList() {
-    const{data, isLoading, error, fetchNextPage, hasNextPage, isFetchNextPage} = useGetWishs();
+    const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchNextPage } = useGetWishs();
     const [toast, setToast] = useState(false);
     const [toastText, setToastText] = useState('');
 
-    const {ref,inView} = useInView()
+    const { ref, inView } = useInView()
 
     // 스크롤 초기화
     const queryClient = useQueryClient();
-    
+
     function handleRefresh() {
         const cachedData = queryClient.getQueryData(['wishs']);
 
@@ -28,19 +28,19 @@ export default function WishList() {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         handleRefresh()
-    },[])
+    }, [])
 
     // 무한 스클롤 설정
-    useEffect(() =>{
-        
-        if(inView && hasNextPage && !isFetchNextPage){
+    useEffect(() => {
+
+        if (inView && hasNextPage && !isFetchNextPage) {
             fetchNextPage()
         }
-    },[inView])
+    }, [inView])
 
-    
+
     return (
         <div className="wishlist--container">
             <BackNav title={"찜"} />
@@ -48,11 +48,11 @@ export default function WishList() {
             {isLoading ? null : data?.pages[0].totalPage > -1 ? (
                 // 찜이 있을 떄
                 <div className="wishlist--card">
-                    {data?.pages.map((page) => 
-                        page.wishList.map((wish,index)=>(
-                            <WishListComponent key={index} wishList={wish} setToast={setToast} setToastText={setToastText} index={index}/>
+                    {data?.pages.map((page) =>
+                        page.wishList.map((wish, index) => (
+                            <WishListComponent key={index} wishList={wish} setToast={setToast} setToastText={setToastText} index={index} />
                         )))}
-                        
+
                 </div>
             ) : (
                 // 찜이 없을 때

@@ -28,5 +28,5 @@ public class ReviewDTO {
 	private Long reviewCount;					// 리뷰 전체 개수
 	private String userNickname;				// 리뷰 작성자
 	private Long totalReviewCount;				// 리뷰 전체 개수(객실 상세 roomdetail3) 
-	
+	private Long hotelNo;						// 해당 리뷰의 호텔 넘버
 }

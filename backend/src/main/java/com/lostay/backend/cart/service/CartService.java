@@ -1,6 +1,7 @@
 package com.lostay.backend.cart.service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -19,6 +20,7 @@ import com.lostay.backend.cart.entity.Cart;
 import com.lostay.backend.cart.repository.CartRepository;
 import com.lostay.backend.hotel.entity.Hotel;
 import com.lostay.backend.hotel.repository.HotelRepository;
+import com.lostay.backend.room.entity.Room;
 import com.lostay.backend.user.entity.User;
 import com.lostay.backend.user.repository.UserRepository;
 
@@ -78,5 +80,19 @@ public class CartService {
         // Cart 삭제
         cartRepo.delete(cart); // 해당 카트만 삭제
 
+	}
+
+	//(jh) 호텔상세에서 내가 찜한 호텔인지 확인 조회
+ 	public CartDTO HotelCheckCart(long userNo, Long hotelNo) {
+ 		 System.out.println("CartService HotelCheckCart 실행");
+ 		Optional<Cart> cartEntity=cartRepo.findCartByUserAndHotel(userNo, hotelNo);
+ 		 if (cartEntity.isPresent()) {
+ 	        CartDTO cartdto = new CartDTO();
+ 	        cartdto.setCartNo(cartEntity.get().getCartNo());
+ 	        return cartdto;
+ 	    } else {
+ 	    return null;   
+ 	    }
+ 	   
 	}
 }

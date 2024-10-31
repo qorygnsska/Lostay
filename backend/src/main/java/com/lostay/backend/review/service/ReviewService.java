@@ -2,6 +2,8 @@ package com.lostay.backend.review.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -268,6 +270,7 @@ public class ReviewService {
 				dto.setReviewNo((long) d[6]);
 				dto.setReviewAvg(reviewAvg);
 				dto.setTotalReviewCount(reviewCount);
+				dto.setHotelNo((long)d[7]);
 
 				dtos.add(dto);
 			}
@@ -284,10 +287,18 @@ public class ReviewService {
 	public Object findHotelReviews(Long hotelNo, Long roomNo, String sort) {
 		HotelInfoDTO hotelInfoDTO = hotelRepo.hoteInfo(hotelNo);
 		List<HotelRoomsDTO> roomNames = hotelRepo.findRoomNames(hotelNo);
+		List<String> images = hotelRepo.findReviewImagesByHotelNo(hotelNo);
+		List<String> reviewImgsList;
+		if (images.isEmpty()) {
+		    reviewImgsList = Collections.emptyList(); 
+		} else {
+		    String imageList = String.join(",", images);
+		    reviewImgsList = Arrays.asList(imageList.split(","));
+		}
 		List<Object[]> results = new ArrayList<Object[]>();
 
 		// roomNo가 있을 경우와 없을 경우에 따라 쿼리 실행
-		if (roomNo != null) {
+		if (roomNo != 0) {
 			results = findReviews(hotelNo, roomNo, sort);
 		} else {
 			results = findReviewsByHotelNo(hotelNo, sort);
@@ -316,7 +327,7 @@ public class ReviewService {
 		}
 	
 		hotelInfoDTO.setHotelRoom(roomNames);
-
+		hotelInfoDTO.setReviewImgs(reviewImgsList);
 		HotelReviewsDTO hotelReviewsDTO = new HotelReviewsDTO(hotelInfoDTO, dtoList);
 
 		return hotelReviewsDTO;
@@ -328,9 +339,9 @@ public class ReviewService {
 			return revRepo.findReviewsByDateDesc(hotelNo, roomNo); //최신작성순 기본정렬
 		}
 		switch (orderByColumn) {
-		case "평점높은순":
+		case "평점 높은 순":
 			return revRepo.findReviewsByRatingDesc(hotelNo, roomNo);
-		case "평점낮은순":
+		case "평점 낮은 순":
 			return revRepo.findReviewsByRatingAsc(hotelNo, roomNo);
 		default:
 			return revRepo.findReviewsByDateDesc(hotelNo, roomNo); //최신작성순 기본정렬
@@ -344,9 +355,9 @@ public class ReviewService {
 			return revRepo.findReviewsByDateDesc(hotelNo, null); //최신작성순 기본 정렬
 		}
 		switch (orderByColumn) {
-		case "평점높은순":
+		case "평점 높은 순":
 			return revRepo.findReviewsByRatingDesc(hotelNo, null);
-		case "평점낮은순":
+		case "평점 낮은 순":
 			return revRepo.findReviewsByRatingAsc(hotelNo, null);
 		default:
 			return revRepo.findReviewsByDateDesc(hotelNo, null); //최신작성순 기본 정렬

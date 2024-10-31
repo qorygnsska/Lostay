@@ -36,6 +36,7 @@ export default function Home() {
             setLocationList(locationResp.data);
             setLocationHotelList(locationHotelResp.data);
             setDCHotelList(DCHotelResp.data)
+            console.log(hotelResp.data)
         } catch (error) {
             console.error(error);
         }
@@ -49,6 +50,7 @@ export default function Home() {
     ////////////////////////////////////////JIP1028
     ////////////////////////////////////////////////////////////////////////////////////datePicker(calendar)
     const today = new Date(); //오늘 날짜
+    today.setHours(0, 0, 0, 0);//오늘 날짜의 시간, 분, 초, ms를 모두 0으로 설정
 
     const tomorrow = new Date(today); //오늘 + 1(tomorrow)
     tomorrow.setDate(today.getDate() + 1);
@@ -94,7 +96,7 @@ export default function Home() {
 
             {/* 국내 인기 여행 리스트 */}
             <h2>국내 인기 여행지</h2>
-            <LocationCarousel locationList={locationList} />
+            <LocationCarousel locationList={locationList} check_in={tomorrow} check_out={tdat} member={2}/>{/* JIP1030 check_in check_out 추가 */}
 
             {/* 여행질별 숙소 리스트 */}
             <h2>여행지별 숙소</h2>
@@ -113,7 +115,7 @@ export default function Home() {
             {/* searchBox(Modal) JIP1028 */}
             <CompSearchBox
                 show={searchBoxShow}
-                onHide={() => {setSearchBoxShow(false)}}
+                onHide={() => { setSearchBoxShow(false) }}
                 place={''} //default
                 check_in={tomorrow} //default
                 check_out={tdat} //default

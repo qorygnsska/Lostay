@@ -1,12 +1,18 @@
 package com.lostay.backend.payment.controller;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.annotations.Parameter;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -15,12 +21,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lostay.backend.oauth2.service.CustomOAuth2User;
+import com.lostay.backend.payment.dto.PaymentBeforeDTO;
+import com.lostay.backend.payment.dto.PaymentDTO;
 import com.lostay.backend.payment.dto.PaymentVerificationDTO;
 //import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.payment.repository.PaymentRepository;
@@ -86,6 +95,73 @@ public class PaymentController {
 	
 	
 		
+	// 사전검증
+	@PostMapping("/Payment/Before")
+	private ResponseEntity<?> paymentbefore(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
+			                               ,@RequestBody PaymentBeforeDTO paymentBeforeDTO){
+		
+		System.out.println("before 데이터 보기" + paymentBeforeDTO.toString());
+		try {
+			 long userNo = customOAuth2User.getUserNo();
+				
+			 int amount = paySer.compareAmount(userNo,paymentBeforeDTO.getPoint(),paymentBeforeDTO.getRoomNo(),paymentBeforeDTO.getDisNo());
+			 System.out.println("서버에서계산한 데이터" + amount);
+			 if(amount < 0) {
+				 return ResponseEntity
+			                .status(HttpStatus.BAD_REQUEST)
+			                .body("결제금액 장난질");
+			 }
+			
+			 HttpRequest request = HttpRequest.newBuilder()
+					    .uri(URI.create("https://api.iamport.kr/users/getToken"))
+					    .header("Content-Type", "application/json")
+					    .method("POST", HttpRequest.BodyPublishers.ofString(String.format("{\"imp_key\":\"%s\",\"imp_secret\":\"%s\"}", apiKey, secretKey)))
+					    .build();
+			
+			 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+			 
+			 if(response.statusCode() != 200) {
+				 return ResponseEntity.status(response.statusCode())
+						 			  .body("토큰 발급 실패 : " + response.body());
+			 }else {
+				 System.out.println("토큰 발급 성공");
+			 }
+			 
+			 JSONObject jsonResponse = new JSONObject(response.body());
+			 
+			 // jsonObject에서 response 안에 있는 access토큰 문자열로 받아오기
+			 String accessToken = jsonResponse.getJSONObject("response").getString("access_token");
+					
+			 // 사전검증 api
+			 HttpRequest request2 = HttpRequest.newBuilder()
+					 .uri(URI.create("https://api.iamport.kr/payments/prepare"))
+					 .header("Content-Type", "application/json")
+					 .header("Authorization", "Bearer " + accessToken)
+					 .method("POST", HttpRequest.BodyPublishers.ofString(String.format("{\"merchant_uid\":\"%s\",\"amount\":%d}", paymentBeforeDTO.getMerchant_uid(), amount)))
+					 .build();
+			 HttpResponse<String> response2 = HttpClient.newHttpClient().send(request2, HttpResponse.BodyHandlers.ofString());
+			 
+			 if(response2.statusCode() != 200) {
+				 return ResponseEntity.status(response2.statusCode())
+						 		      .body("사전검증 실패: " + response2.body());
+			 }
+			 
+			 return new ResponseEntity<>(response2,HttpStatus.OK);
+			 
+		} catch (JSONException e) {
+	        return ResponseEntity
+	                .status(HttpStatus.BAD_REQUEST)
+	                .body("JSON 파싱 오류: " + e.getMessage());
+	                
+	        } catch (IOException | InterruptedException e) {
+	            return ResponseEntity
+	                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body("API 호출 중 오류 발생: " + e.getMessage());
+	        }
+	
+	}
+		
+		
 	// 사후검증	
 	@PostMapping("/Payment/Verification")
 	  private IamportResponse<Payment> paymentByImpUid(@RequestBody PaymentVerificationDTO payDTO) throws IamportResponseException,IOException {
@@ -97,22 +173,13 @@ public class PaymentController {
 	
 	
 	// 사후검증 완료 시 결제 테이블 데이터 삽입
-	@GetMapping("/PaymentInsert")
+	@PostMapping("/PaymentInsert")
 	public void paymentinsert(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
-										  ,@RequestParam(defaultValue = "5") long roomNo
-										  ,@RequestParam(defaultValue = "Naver") String payType
-										  ,@RequestParam(defaultValue = "2024-10-20T15:00:00") // ISO 8601 형식
-										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime payDay
-										  ,@RequestParam(defaultValue = "Y") String payStatus
-										  ,@RequestParam() int payPrice
-										  ,@RequestParam(defaultValue = "0") int payPoint
-										  ,@RequestParam(defaultValue = "2024-11-21T15:00:00") 
-	   									   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkInDate
-	   									  ,@RequestParam(defaultValue = "2024-11-22T11:00:00") 
-										   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkOutDate){
+							 ,@RequestBody PaymentDTO dto){
 
-		Long userNo = customOAuth2User.getUserNo();
-		paySer.savePayment(userNo,roomNo,payType,payDay,payStatus,payPrice,payPoint,checkInDate,checkOutDate);
+//		Long userNo = customOAuth2User.getUserNo();
+		Long userNo = 1L;
+		paySer.savePayment(userNo,dto);
 		
 	}
 	

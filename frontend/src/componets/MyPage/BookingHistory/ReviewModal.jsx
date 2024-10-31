@@ -140,10 +140,7 @@ export default function ReviewModal({ show, onClose, hotelName, userNickname, up
                 <div className='image--add--wrap'>
 
                     <div className='preview--image--box'>
-                        {
-                            previewImg.map((img, idx) => (
-                                <PreviewImg key={idx} img={img} handleDeleteImage={handleDeleteImage} idx={idx} />))
-                        }
+                        <PreviewImg images={previewImg} handleDeleteImage={handleDeleteImage} />
                     </div>
 
 

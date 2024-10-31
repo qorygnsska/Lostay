@@ -3,15 +3,7 @@ import { Modal } from 'react-bootstrap'
 
 import { IoCheckmark } from "react-icons/io5";
 
-export default function RoomOrderModal({ show, handleClose, Orders, Basicorder }) {
-
-  const [orders, Setorders] = useState(Basicorder)
-
-  const click = (order) => {
-    Setorders(order);
-  }
-
-
+export default function RoomOrderModal({ show, handleClose, Orders, sort, ClickOrder }) {
 
 
   return (
@@ -20,12 +12,12 @@ export default function RoomOrderModal({ show, handleClose, Orders, Basicorder }
       <Modal.Header closeButton>정렬</Modal.Header>
 
       <div className='orderDiv'>
-        {Orders.map(order => (
-          <div className='Orders'>
-            {orders === order ? (
+        {Orders.map((order, idx) => (
+          <div className='Orders' key={idx}>
+            {sort === order ? (
               <span className='OrdersContent' style={{ color: 'red' }}>{order} <IoCheckmark /></span>
             ) : (
-              <span className='OrdersContent' onClick={() => click(order)}>{order}</span>
+              <span className='OrdersContent' onClick={() => ClickOrder(order)}>{order}</span>
             )}
 
           </div>

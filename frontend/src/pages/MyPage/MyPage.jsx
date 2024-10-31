@@ -4,10 +4,11 @@ import Navbar from "../../componets/Navbar/Navbar";
 import { BsChatText } from "react-icons/bs";
 import { FaRegHeart, FaChevronRight } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { privateApi } from '../../api/api'
+
 import { useDispatch } from "react-redux";
 import OkCancleModal from "../../componets/MyPage/BookingHistory/OkCancleModal";
 import { logout } from "../../store/userSlice";
+import { privateApi } from "../../api/api";
 export default function MyPage() {
 
     // 로그아웃
@@ -25,17 +26,13 @@ export default function MyPage() {
             return response.data;
 
         } catch (error) {
-            console.error(error);
+            console.log(error)
         }
     };
 
     useEffect(() => {
         getData();
     }, []);
-
-
-
-
 
 
     const showModalToggle = () => {

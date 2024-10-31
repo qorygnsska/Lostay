@@ -27,26 +27,8 @@
             }
     
             .thumbnail-container {
-                display: flex;
-                margin-top: 20px;
-                overflow-x: auto;
-    
-                .thumbnail--box {
-                    cursor: pointer;
-                    margin-left: 10px;
-                    padding-bottom: 10px;
-    
-                    .thumbnail-image {
-                        height: 100px;
-                        width: 100px;
-                        cursor: pointer;
-                        border-radius: 10px;
-                    }
-    
-                    .sel--border {
-                        border: 3px solid var(--regularBlueColor);
-                    }
-                }
+                margin-top: 50px;
+                margin-left: 10px;
             }
     
             .thumbnail-container::-webkit-scrollbar {
@@ -56,6 +38,8 @@
             .thumbnail-container::-webkit-scrollbar-thumb {
                 background-color: hsla(0, 0%, 42%, 0.49);
             }
+    
+    
         }
     
         @media screen and (max-width: 768px) {

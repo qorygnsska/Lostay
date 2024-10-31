@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,8 @@ public class RoomService {
 		LocalDateTime in = checkInDate.toLocalDate().atTime(15,0);
 		LocalDateTime out = checkOutDate.toLocalDate().atTime(11,0);
 		
-		Period period = Period.between(checkInDate.toLocalDate(), checkOutDate.toLocalDate());
+		long period = ChronoUnit.DAYS.between(checkInDate.toLocalDate(), checkOutDate.toLocalDate());
+//		Period period = Period.between(checkInDate.toLocalDate(), checkOutDate.toLocalDate());
 		
 //		List<Object[]> newRoom = roomRepo.findHotelRoomList(hotelNo, in, out);
 		RoomListHotelInfoDTO Hoteldto = roomRepo.findHotelInfo(hotelNo);
@@ -60,7 +62,7 @@ public class RoomService {
 				Hoteldto
 			   ,in.toLocalDate()
 			   ,out.toLocalDate()
-			   ,period.getDays()
+			   ,period
 			   ,list	
 				);
 ////		
@@ -84,7 +86,7 @@ public class RoomService {
 		Optional<Room> newRoom2 = roomRepo.findById(roomNo);
 		Room room2 = newRoom2.get();
 		
-		Period period = Period.between(checkInDate.toLocalDate(), checkOutDate.toLocalDate());
+		long period = ChronoUnit.DAYS.between(checkInDate.toLocalDate(), checkOutDate.toLocalDate());
 		
 		Long hotelNo = room2.getHotel().getHotelNo();
 		
@@ -123,7 +125,7 @@ public class RoomService {
 		dto.setRoomImg(str2);
 		dto.setHotelAdress(room.getHotel().getHotelAdress());
 		dto.setAvailableRooms(avc);
-		dto.setPeriod(period.getDays());
+		dto.setPeriod(period);
 		
 		
 		return dto;

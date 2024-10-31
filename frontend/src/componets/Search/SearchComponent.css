@@ -96,7 +96,7 @@
                         opacity: 0.9;
                     }
 
-                
+
                     .p-highlight {
                         /* selected Date */
                         background-color: lightskyblue;
@@ -121,25 +121,39 @@
             }
 
 
+            .location--carousel--container {
+                width: 97%;
+                margin: auto;
 
-            #container_btn_search {
-                /* position: absolute;
-                bottom: 20px;
-                left: 0; */
+                .slick-slide {
+                    padding-left: 0;
 
-                margin: 0;
-                padding: 0;
-                max-width: 100%;
-                width: 100%;
+                    img {
 
-
-                #btn_search {
-                    /* '검색' 버튼 */
-                    width: 100%;
+                        width: 140px;
+                        height: 132px;
+                    }
                 }
             }
-
         }
+
+
+        #container_btn_search {
+            /* position: absolute;
+            bottom: 20px;
+            left: 0; */
+
+            margin: 0;
+            padding: 0;
+            max-width: 100%;
+            width: 100%;
+
+            #btn_search {
+                /* '검색' 버튼 */
+                width: 100%;
+            }
+        }
+
 
         .trans_hidden {
             display: none;
@@ -163,7 +177,8 @@
 .comp--member--picker--container {
     /* MemberPicker 컴포넌트 */
 
-    clear: both;/* calendar의 float 속성 영향 제거 */
+    clear: both;
+    /* calendar의 float 속성 영향 제거 */
     padding: 12px;
     border-style: solid;
     border-width: 2px;

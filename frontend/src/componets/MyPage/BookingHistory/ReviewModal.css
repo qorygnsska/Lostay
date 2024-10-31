@@ -153,22 +153,11 @@
             margin-top: 20px;
 
             .preview--image--box {
-                display: flex;
-                gap: 10px;
-                height: 110px;
-                width: 80%;
+                height: 100px;
+                width: 79%;
                 margin: auto;
-                overflow: hidden;
-                overflow-x: auto;
             }
 
-            .preview--image--box::-webkit-scrollbar {
-                height: 6px;
-            }
-
-            .preview--image--box::-webkit-scrollbar-thumb {
-                background-color: hsla(0, 0%, 42%, 0.49);
-            }
 
             .image--max-count {
                 width: 80%;
