@@ -88,18 +88,18 @@ export default function CompSearchBox(props) {
     //////////////////////////////////////////////////////////for location
     const [locationList, setLocationList] = useState([]);
 
-    const getLocationList = async() => {
+    const getLocationList = async () => {
         try {
             const response = await axios.get('http://localhost:9090/locationMain');
-            if(response.status===200) {
+            if (response.status === 200) {
                 setLocationList(response.data);
             }
-        } catch(error) {
+        } catch (error) {
             console.log('searchBox locationList: ' + error);
         }
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         getLocationList();
     }, []);
 
@@ -272,8 +272,8 @@ export default function CompSearchBox(props) {
                             confirmMember={() => setMemberPicker(!memberPicker)}
                         />
 
-                        <div className="w-100">
-                            <LocationCarousel locationList={locationList} check_in={check_in} check_out={check_out} member={member}/>
+                        <div id="container_locarousel">
+                            <LocationCarousel locationList={locationList} check_in={check_in} check_out={check_out} member={member} />
                         </div>
                     </Form>
 

@@ -120,16 +120,21 @@
                 }
             }
 
-            .location--carousel--container {
+            #container_locarousel {
+                width: 98%;
+                padding-left: 2%;
 
                 .slick-slide {
                     padding-left: 2px;
 
                     img {
-                        width: 140px;
+                        width: 135px;
                         height: 135px;
                     }
                 }
+            }
+            .location--carousel--container {
+
             }
 
 
