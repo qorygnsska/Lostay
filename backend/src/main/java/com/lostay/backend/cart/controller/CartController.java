@@ -43,13 +43,12 @@ public class CartController {
 } 
 	 
 	 
-	 //호텔 찜 선택 체크 조회
+	 //호텔 찜 선택 체크 조회(jh)
 	 @GetMapping("/HotelCheckCart")
 		public ResponseEntity<?> HotelCheckCart(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @RequestParam Long hotelNo) {
 		 long userNo = customOAuth2User.getUserNo();
 
 			boolean result = cartService.HotelCheckCart(userNo,hotelNo);
-
 			if (result) {
 				return new ResponseEntity<>("Hotel Cart True", HttpStatus.OK);
 			} else {
