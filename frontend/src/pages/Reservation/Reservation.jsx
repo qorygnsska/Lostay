@@ -8,6 +8,7 @@ import AgreeChkInfo from "../../componets/Reservation/AgreeChkInfo";
 import { BsExclamationCircle } from "react-icons/bs";
 import axios from "axios";
 import { privateApi } from "../../api/api";
+import { useNavigate } from "react-router-dom";
 
 
 const agreeInfo = [
@@ -52,6 +53,8 @@ export default function Reservation() {
 
     const [hotelRoomInfo, setHotelRoomInfo] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
+    const navigate = useNavigate();
+
     // 첫 화면 데이터 가져오기
     useEffect(() => {
         const getData = async () => {
@@ -60,7 +63,7 @@ export default function Reservation() {
                 const [hotelRoomInfoResp, userInfoResp] = await Promise.all([
                     privateApi.get('/HotelRoomInfo', {
                         params: {
-                            roomNo: 1,
+                            roomNo: 10,
                             checkInDate: "2024-11-05", // 'YYYY-MM-DD' 형식의 날짜 전달
                             checkOutDate: "2024-11-06",
                         },
@@ -68,8 +71,6 @@ export default function Reservation() {
                     privateApi.get('/UserInfo'),
                 ]);
 
-                console.log(hotelRoomInfoResp.data)
-                console.log(userInfoResp.data)
                 setHotelRoomInfo(hotelRoomInfoResp.data)
                 setUserInfo(userInfoResp.data)
 
@@ -364,42 +365,6 @@ export default function Reservation() {
     const { IMP } = window;
     IMP.init('imp67745024');
 
-    const requestPay = (pg, merchant_uid) => {
-        IMP.request_pay({
-            pg: pg,
-            merchant_uid: merchant_uid,
-            name: "주문명:결제테스트",
-            amount: totalPrice,
-            buyer_name: "구매자이름",
-            buyer_tel: "010-1234-5678",
-
-        }, (rsp) => {
-            if (rsp.success) { // 프론트에서 결제가 완료되면
-                console.log(rsp.data)
-                privateApi.post(`http://localhost:9090/api/v1/order/payment/${merchant_uid}`, {
-                    imp_uid: rsp.imp_uid,            // 결제 고유번호
-                    merchant_uid: rsp.merchant_uid,   // 주문번호
-                    amount: rsp.paid_amount
-                })
-                    .then((res) => {
-                        // 결제완료 
-                    })
-                    .catch((error) => {
-                        // 에러발생시
-                    });
-            } else {
-                // 에러발생시
-            }
-        });
-    }
-
-    const requestPayType = [
-        { name: "카카오페이", pg: "kakaopay.TC0ONETIME" },
-        { name: "토스페이", pg: "tosspay.tosstest" },
-        { name: "페이코페이", pg: "payco.PARTNERTEST" },
-        { name: "신용카드", pg: "settle.portone1" }
-    ]
-
     const paymentClick = () => {
         // 이름 작성 여뷰
 
@@ -422,17 +387,149 @@ export default function Reservation() {
             merchant_uid: merchant_uid,
         })
             .then((res) => {
-                console.log("res:", res)
-                requestPay(payType.disPg, merchant_uid)
+                if (res.status === 200) {
+                    // 사전검증 성공
+                    requestPay(payType.disPg, merchant_uid)
+                } else {
+                    // accessToken 발급 실패 or 사전검증 요청 실패
+                    alert('결제에 실패했습니다.')
+                }
+
             })
             .catch((error) => {
+                // accessToken 발급 실패 or 사전검증 요청 실패
                 alert("결제에 실패했습니다.")
             });
     }
 
+    const requestPay = (pg, merchant_uid) => {
+        console.log('pg사에 요청보내기.')
+        IMP.request_pay({
+            pg: pg,
+            merchant_uid: merchant_uid,
+            name: "주문명:결제테스트",
+            amount: totalPrice,
+            buyer_name: "구매자이름",
+            buyer_tel: "010-1234-5678",
+
+        }, (rsp) => {
+            if (rsp.success) { // 프론트에서 결제가 완료되면
+                privateApi.post(`http://localhost:9090/Payment/Verification`, {
+                    imp_uid: rsp.imp_uid,            // 결제 고유번호
+                    merchant_uid: rsp.merchant_uid,   // 주문번호
+                    amount: rsp.paid_amount
+                })
+                    .then((res) => {
+                        if (res.status === 200) {
+                            if (rsp.paid_amount === res.data.response.amount) {
+
+                                const originalDateTime = res.data.response.paidAt;
+                                const payDay = originalDateTime.split('+')[0];
+
+                                const putData = async () => {
+                                    try {
+                                        const result = await privateApi.post('http://localhost:9090/PaymentInsert', {
+                                            roomNo: hotelRoomInfo.roomNo,
+                                            disNo: payType.disNo,
+                                            payPrice: hotelRoomInfo.discountPrice,
+                                            payPoint: Number(inputPoint),
+                                            payDay: payDay,
+                                            checkIn: `${hotelRoomInfo.roomCheckIn}T${hotelRoomInfo.roomCheckinTime}`,
+                                            checkOut: `${hotelRoomInfo.roomCheckOut}T${hotelRoomInfo.roomCheckoutTime}`,
+                                            imp_uid: rsp.imp_uid,
+                                        });
+                                        console.log('result', result)
+                                        console.log('result', result.status)
+                                        if (result.status === 200) {
+                                            alert('결제 완료되었습니다.')
+                                            navigate('/', { replace: true });
+                                        } else {
+                                            // 데이터 삽입 실패 환불해야함..
+                                            alert("결제에 실패했습니다.")
+                                            const response = async () => {
+                                                try {
+                                                    // 성공적인 응답 처리
+                                                    const res = await privateApi.post('http://localhost:9090/PaymentCancle', {});
+
+                                                } catch (error) {
+                                                    // 에러 처리
+
+                                                }
+                                            }
+                                        }
+                                    } catch (error) {
+                                        // 환불해야함...
+                                        alert("결제에 실패했습니다.")
+                                        const response = async () => {
+                                            try {
+                                                // 성공적인 응답 처리
+                                                const res = await privateApi.post('http://localhost:9090/PaymentCancle', {});
+
+                                            } catch (error) {
+                                                // 에러 처리
+
+                                            }
+                                        }
+                                    }
+                                }
+
+                                putData();
+                            } else {
+                                // 금액 불일치 환불해야함
+                                alert("결제에 실패했습니다.")
+                                const response = async () => {
+                                    try {
+                                        // 성공적인 응답 처리
+                                        const res = await privateApi.post('http://localhost:9090/PaymentCancle', {});
+
+                                    } catch (error) {
+                                        // 에러 처리
+
+                                    }
+                                }
+                            }
+                        } else {
+                            // 금액 불일치 환불해야함
+                            alert("결제에 실패했습니다.")
+                            const response = async () => {
+                                try {
+                                    // 성공적인 응답 처리
+                                    const res = await privateApi.post('http://localhost:9090/PaymentCancle', {});
+
+                                } catch (error) {
+                                    // 에러 처리
+
+                                }
+                            }
+                        }
+
+                    })
+                    .catch((error) => {
+                        // 사후 검증 실패 환불해야함
+                        alert("결제에 실패했습니다.")
+                        const response = async () => {
+                            try {
+                                // 성공적인 응답 처리
+                                const res = await privateApi.post('http://localhost:9090/PaymentCancle', {});
+
+                            } catch (error) {
+                                // 에러 처리
+
+                            }
+                        }
+                    });
+            } else {
+                // 결제 실패 했을 때
+                alert("결제에 실패했습니다.")
+            }
+        });
+    }
+
+
+
     const [useAllPoints, setUseAllPoints] = useState(false); // 포인트 모두 사용
     const [inputPoint, setInputPoint] = useState(0); // 포인트 직접 입력
-    const [totalPrice, setTotalPrice] = useState(hotelRoomInfo?.roomPrice); // 총 결제 가격
+    const [totalPrice, setTotalPrice] = useState(hotelRoomInfo?.discountPrice); // 총 결제 가격
     const [payType, setpayType] = useState(null); // 결제 수단
     const [salePrice, setSalePrice] = useState(0); // 할인 금액
     const [checkItems, setCheckItems] = useState([]); // 체크된 동의 담을 배열
@@ -465,9 +562,9 @@ export default function Reservation() {
         const newUseAllPoints = !useAllPoints;
         setUseAllPoints(newUseAllPoints);
 
-        const point = newUseAllPoints ? hotelRoomInfo.roomPrice - salePrice : 0;
+        const point = newUseAllPoints ? hotelRoomInfo.discountPrice - salePrice : 0;
         setInputPoint(point);
-        updateTotalPrice(point, payType?.sale);
+        updateTotalPrice(point, payType.sale);
     };
 
     // 포인트 직접 입력
@@ -478,7 +575,7 @@ export default function Reservation() {
             setUseAllPoints(false);
         }
         // 입력값이 숫자이고, 범위를 초과하지 않는지 확인
-        if (/^\d*$/.test(value) && (value === "" || (parseInt(value, 10) <= userInfo?.userPoint && parseInt(value, 10) <= hotelRoomInfo.roomPrice - salePrice))) {
+        if (/^\d*$/.test(value) && (value === "" || (parseInt(value, 10) <= userInfo?.userPoint && parseInt(value, 10) <= hotelRoomInfo.discountPrice - salePrice))) {
             setInputPoint(value);
             updateTotalPrice(value, payType?.disRate);
         }
@@ -493,10 +590,11 @@ export default function Reservation() {
     // 총 결제금액 계산
     const updateTotalPrice = (points, sale = 0) => {
         const pointsToUse = parseInt(points, 10) || 0;
-        const discountAmount = Math.floor((hotelRoomInfo.roomPrice * sale) / 100); // sale을 비율로 계산
-        const discountedPrice = hotelRoomInfo.roomPrice - discountAmount;
-        setSalePrice(discountAmount);
-        setTotalPrice(discountedPrice - pointsToUse);
+        const discountAmount = Math.floor((hotelRoomInfo.discountPrice * sale) / 100); // sale을 비율로 계산
+        const discountedPrice = hotelRoomInfo.discountPrice - discountAmount;
+        setSalePrice(discountAmount); // type 선택 할인 가격
+
+        setTotalPrice(discountedPrice - pointsToUse); // 객실 가격에 포인트를 뺀거
     };
 
     // 숫자 포맷팅
@@ -710,7 +808,7 @@ export default function Reservation() {
 
                     <div className="pay--box">
                         <span>상품 금액</span>
-                        <span>{hotelRoomInfo?.roomPrice.toLocaleString()}원</span>
+                        <span>{hotelRoomInfo?.discountPrice.toLocaleString()}원</span>
                     </div>
 
                     <div className="pay--box">
