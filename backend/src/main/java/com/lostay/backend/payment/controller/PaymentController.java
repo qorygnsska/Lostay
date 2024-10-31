@@ -108,6 +108,11 @@ public class PaymentController {
 				
 			 int amount = paySer.compareAmount(userNo,point,roomNo,disNo);
 			  
+			 if(amount < 0) {
+				 return ResponseEntity
+			                .status(HttpStatus.BAD_REQUEST)
+			                .body("결제금액 장난질");
+			 }
 			
 			 HttpRequest request = HttpRequest.newBuilder()
 					    .uri(URI.create("https://api.iamport.kr/users/getToken"))
