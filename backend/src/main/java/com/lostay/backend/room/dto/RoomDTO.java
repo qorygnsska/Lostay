@@ -4,6 +4,9 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
+
+import com.lostay.backend.discount.entity.Discount;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -59,4 +62,5 @@ public class RoomDTO {
 	private LocalDate checkOutDay;		  // 체크아웃 날짜
 	private Long period;					 // 몇박인지
 	private int searchPeople;           // 검색 시 인원 몇명인지
+	private List<Discount> disList;		// 할인율 테이블
 }
