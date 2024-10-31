@@ -24,4 +24,8 @@ public class Discount {
 	private String disCategory;	// 결제유형
 	@Column(name = "dis_rate")
 	private double disRate;		// 할인율(pay에 관한 할인)
+	@Column(name = "dis_image")
+	private String disImage;
+	@Column(name = "dis_pg")
+	private String disPg;
 }

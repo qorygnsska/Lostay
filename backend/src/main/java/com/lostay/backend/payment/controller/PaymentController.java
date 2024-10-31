@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lostay.backend.oauth2.service.CustomOAuth2User;
+import com.lostay.backend.payment.dto.PaymentBeforeDTO;
 import com.lostay.backend.payment.dto.PaymentDTO;
 import com.lostay.backend.payment.dto.PaymentVerificationDTO;
 //import com.lostay.backend.payment.entity.Payment;
@@ -97,17 +98,14 @@ public class PaymentController {
 	// 사전검증
 	@PostMapping("/Payment/Before")
 	private ResponseEntity<?> paymentbefore(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
-			                               ,@RequestParam() int point
-			                               ,@RequestParam() Long roomNo
-			                               ,@RequestParam() Long disNo
-			                               ,@RequestParam() String merchant_uid){
+			                               ,@RequestBody PaymentBeforeDTO paymentBeforeDTO){
 		
-		
+		System.out.println("before 데이터 보기" + paymentBeforeDTO.toString());
 		try {
 			 long userNo = customOAuth2User.getUserNo();
 				
-			 int amount = paySer.compareAmount(userNo,point,roomNo,disNo);
-			  
+			 int amount = paySer.compareAmount(userNo,paymentBeforeDTO.getPoint(),paymentBeforeDTO.getRoomNo(),paymentBeforeDTO.getDisNo());
+			 System.out.println("서버에서계산한 데이터" + amount);
 			 if(amount < 0) {
 				 return ResponseEntity
 			                .status(HttpStatus.BAD_REQUEST)
@@ -125,6 +123,8 @@ public class PaymentController {
 			 if(response.statusCode() != 200) {
 				 return ResponseEntity.status(response.statusCode())
 						 			  .body("토큰 발급 실패 : " + response.body());
+			 }else {
+				 System.out.println("토큰 발급 성공");
 			 }
 			 
 			 JSONObject jsonResponse = new JSONObject(response.body());
@@ -137,7 +137,7 @@ public class PaymentController {
 					 .uri(URI.create("https://api.iamport.kr/payments/prepare"))
 					 .header("Content-Type", "application/json")
 					 .header("Authorization", "Bearer " + accessToken)
-					 .method("POST", HttpRequest.BodyPublishers.ofString(String.format("{\"merchant_uid\":\"%s\",\"amount\":%d}", merchant_uid, amount)))
+					 .method("POST", HttpRequest.BodyPublishers.ofString(String.format("{\"merchant_uid\":\"%s\",\"amount\":%d}", paymentBeforeDTO.getMerchant_uid(), amount)))
 					 .build();
 			 HttpResponse<String> response2 = HttpClient.newHttpClient().send(request2, HttpResponse.BodyHandlers.ofString());
 			 
