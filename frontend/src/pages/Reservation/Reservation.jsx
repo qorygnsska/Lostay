@@ -63,7 +63,7 @@ export default function Reservation() {
                 const [hotelRoomInfoResp, userInfoResp] = await Promise.all([
                     privateApi.get('/HotelRoomInfo', {
                         params: {
-                            roomNo: 10,
+                            roomNo: 8,
                             checkInDate: "2024-11-05", // 'YYYY-MM-DD' 형식의 날짜 전달
                             checkOutDate: "2024-11-06",
                         },
@@ -89,41 +89,16 @@ export default function Reservation() {
     const nameInputRef = useRef(null);
     const [nameWarning, setNameWarning] = useState(false);
 
-
-    const getByteLength = (str) => {
-        let byteCount = 0;
-        for (let char of str) {
-            byteCount += /[가-힣]/.test(char) ? 3 : 1; // 한글은 2바이트, 영어는 1바이트
-        }
-        return byteCount;
-    };
-
-    const checkNameValidity = (inputValue) => {
-        const byteLength = getByteLength(inputValue); // 바이트 길이 계산
-
-        if (inputValue.length === 0) return true; // 아무것도 안 칠 경우
-        else if (/^[가-힣]*$/.test(inputValue)) { // 한글만
-            if (byteLength < 6) return true; // 6바이트 미만
-            return false; // 6바이트 이상
-        } else if (/^[a-zA-Z]*$/.test(inputValue)) { // 영어만
-            if (byteLength < 2) return true; // 2바이트 미만
-            return false; // 2바이트 이상
-        } else if (/^[가-힣a-zA-Z]*$/.test(inputValue)) { // 한글 + 영어
-            if (byteLength < 4) return true; // 4바이트 미만
-            return false; // 4바이트 이상
-        } else if (byteLength < 2) {
-            return true;
-        }
-        return false; // 기타 경우
-    };
-
-
-    // 예약자 수정
+    // 예약자 이름 수정
     const handleNameChange = (e) => {
         const inputValue = e.target.value;
-        const isValid = checkNameValidity(inputValue);
 
-        setNameWarning(isValid);
+        if (inputValue.trim().length < 2) {
+            setNameWarning(true)
+        } else {
+            setNameWarning(false)
+        }
+
 
         const { target: { value }, } = e;
         if (value.length > 15) e.target.value = value.substr(0, 15);
@@ -144,7 +119,7 @@ export default function Reservation() {
     const phoneInputRef = useRef(null);
 
     // 휴대폰 번호 수정 안했을 시 활성화
-    const [isVerifiedPhone, setVerifiedPhone] = useState(false);
+    const [isVerifiedPhone, setVerifiedPhone] = useState(true);
 
     // 인증 실패 시 활성화
     const [isVerified, setIsVerified] = useState(false)
@@ -248,11 +223,8 @@ export default function Reservation() {
         setVerifiedPhone(true);
     };
 
-
-
     // 인증번호 전송 함수
     const sendVerification = () => {
-
         if (phone === prePhone) {
             setVerifiedPhone(false);
             setVerificationMessage("이미 등록된 번호입니다.");
@@ -260,6 +232,7 @@ export default function Reservation() {
             setVerificationMessage("")
             setVerificationSent(true);
             setIsStartTimer(true);
+            setVerifiedPhone(true);
 
             // 인증번호 전송하는 로직
             // 서버에 보내는 코드
@@ -270,8 +243,6 @@ export default function Reservation() {
 
     // 인증번호 재전송 함수
     const resendVerification = () => {
-
-
         if (phone === prePhone) {
             setVerifiedPhone(false);
             setVerificationMessage("이미 등록된 번호입니다.");
@@ -529,7 +500,7 @@ export default function Reservation() {
 
     const [useAllPoints, setUseAllPoints] = useState(false); // 포인트 모두 사용
     const [inputPoint, setInputPoint] = useState(0); // 포인트 직접 입력
-    const [totalPrice, setTotalPrice] = useState(hotelRoomInfo?.discountPrice); // 총 결제 가격
+    const [totalPrice, setTotalPrice] = useState(hotelRoomInfo ? hotelRoomInfo.discountPrice : 0); // 총 결제 가격
     const [payType, setpayType] = useState(null); // 결제 수단
     const [salePrice, setSalePrice] = useState(0); // 할인 금액
     const [checkItems, setCheckItems] = useState([]); // 체크된 동의 담을 배열
@@ -562,9 +533,11 @@ export default function Reservation() {
         const newUseAllPoints = !useAllPoints;
         setUseAllPoints(newUseAllPoints);
 
-        const point = newUseAllPoints ? hotelRoomInfo.discountPrice - salePrice : 0;
+        const point = newUseAllPoints ? (hotelRoomInfo.discountPrice - salePrice > userInfo.userPoint ? userInfo.userPoint
+            : hotelRoomInfo.discountPrice - salePrice) : 0
+
         setInputPoint(point);
-        updateTotalPrice(point, payType.sale);
+        updateTotalPrice(point, payType?.disRate, newUseAllPoints);
     };
 
     // 포인트 직접 입력
@@ -584,17 +557,29 @@ export default function Reservation() {
     // 결제 수단 선택 시 할인
     const handlePayTypeChange = (dis) => {
         setpayType(dis);
-        updateTotalPrice(inputPoint, dis.disRate);
+        updateTotalPrice(inputPoint, dis.disRate, useAllPoints);
     };
 
     // 총 결제금액 계산
-    const updateTotalPrice = (points, sale = 0) => {
+    const updateTotalPrice = (points, sale = 0, selectAllPoint) => {
         const pointsToUse = parseInt(points, 10) || 0;
         const discountAmount = Math.floor((hotelRoomInfo.discountPrice * sale) / 100); // sale을 비율로 계산
         const discountedPrice = hotelRoomInfo.discountPrice - discountAmount;
-        setSalePrice(discountAmount); // type 선택 할인 가격
 
-        setTotalPrice(discountedPrice - pointsToUse); // 객실 가격에 포인트를 뺀거
+        if (discountedPrice - pointsToUse < 0) {
+
+            setInputPoint(inputPoint - (pointsToUse - discountedPrice))
+            setTotalPrice(0)
+        } else if (selectAllPoint) {
+
+            const allPoint = userInfo.userPoint > discountedPrice ? discountedPrice : userInfo.userPoint
+            setInputPoint(allPoint)
+            setTotalPrice(discountedPrice - allPoint)
+        } else {
+            setTotalPrice(discountedPrice - pointsToUse);
+        }
+
+        setSalePrice(discountAmount); // type 선택 할인 가격
     };
 
     // 숫자 포맷팅
@@ -691,6 +676,7 @@ export default function Reservation() {
                     <div className="profile--box">
                         <span>예약자 이름</span>
                         <input
+                            type="text"
                             ref={nameInputRef}
                             value={name}
                             onChange={handleNameChange}
@@ -736,7 +722,7 @@ export default function Reservation() {
 
                     </div>
                     {!isVerifiedPhone && (
-                        <div className={`wraning--message--phone ${!isVerifiedPhone && 'hide'}`}>{verificationMessage}</div> // 인증 실패 메시지
+                        <div className={`wraning--message--phone ${isVerifiedPhone && 'hide'}`}>{verificationMessage}</div> // 인증 실패 메시지
                     )}
 
                     {verificationSent && (

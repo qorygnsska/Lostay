@@ -106,7 +106,7 @@ public class MypageService {
 	public Object mypageCartList(Long userNo, int page) {
 	    log.info("MypageService mypageCartList 실행");
 	    System.out.println("p[age" + page);
-	    PageRequest pageable = PageRequest.of(page, 10); // 페이지 요청
+	    PageRequest pageable = PageRequest.of(page, 20); // 페이지 요청
 	    Page<MypageCartListDTO> cartPage = cartRepo.findTop10CartPage(userNo, pageable);
 
 	    List<MypageCartListDTO> cartpageDTOList = cartPage.getContent();

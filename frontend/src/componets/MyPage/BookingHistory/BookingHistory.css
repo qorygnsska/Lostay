@@ -15,22 +15,21 @@
             padding: 20px 15px;
             border-bottom: 1px solid var(--lightGrayColor);
 
-            a {
-                text-decoration: none;
+
+
+            .booking--payment {
+                display: flex;
+                gap: 10px;
+                justify-content: space-between;
+                align-items: center;
                 color: var(--regularBlueColor);
-                font-weight: bold;
-
-                .booking--payment {
-                    display: flex;
-                    gap: 10px;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-
-                .cancle {
-                    color: red;
-                }
+                cursor: pointer;
             }
+
+            .cancle {
+                color: red;
+            }
+
         }
 
         .booking--info--hotel {
