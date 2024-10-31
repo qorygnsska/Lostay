@@ -62,7 +62,6 @@ export default function PageEventManager() {
 
     //Server에 eventList 요청
     const getEventList = (onGoing, eventTitle, requestedPage) => {
-
         console.log(`getEvent ViewOnGoing: ${viewOngoing} eventTitle: ${eventTitle} page: ${requestedPage}`);
 
         // fetch() : (default) request 'GET', 'async' // async&await이나 then()은 같은 것
