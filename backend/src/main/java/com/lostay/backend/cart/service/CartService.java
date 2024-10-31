@@ -83,16 +83,16 @@ public class CartService {
 	}
 
 	//(jh) 호텔상세에서 내가 찜한 호텔인지 확인 조회
- 	public boolean HotelCheckCart(long userNo, Long hotelNo) {
+ 	public CartDTO HotelCheckCart(long userNo, Long hotelNo) {
  		 System.out.println("CartService HotelCheckCart 실행");
- 	   Optional<Cart> optionalCart= cartRepo.findCartByUserAndHotel(userNo, hotelNo);
- 		 if(optionalCart.isPresent()) {
- 			 System.out.println("true실행");
- 			 return true;
- 		 }
- 		 else {
- 			 System.out.println("false실행");
- 			 return false;
- 		 }
+ 		Optional<Cart> cartEntity=cartRepo.findCartByUserAndHotel(userNo, hotelNo);
+ 		 if (cartEntity.isPresent()) {
+ 	        CartDTO cartdto = new CartDTO();
+ 	        cartdto.setCartNo(cartEntity.get().getCartNo());
+ 	        return cartdto;
+ 	    } else {
+ 	    return null;   
+ 	    }
+ 	   
 	}
 }
