@@ -157,10 +157,7 @@ public class AdminController {
 	}
 	
 	
-<<<<<<< HEAD
-	
-=======
->>>>>>> 569752b1c4304290391077ee42992fe8fda29b10
+
 		//홍정훈(관리자 페이지 호텔.객실 텝 정보 조회)
 		@GetMapping("/adminhotelsList")
 		public ResponseEntity<?> adminEventList(@RequestParam(defaultValue = "1") int page) {
@@ -181,7 +178,7 @@ public class AdminController {
 				return ResponseEntity.notFound().build();// code 404
 			}
 		}
-<<<<<<< HEAD
+
 	
 		//관리자 페이지 년도별 매출액 조회(jh)
 		@GetMapping("/admin/RevenueYearChart")
@@ -195,7 +192,5 @@ public class AdminController {
 	    public ResponseEntity<?> RevenueMonthChart(@RequestParam int year) {
 	        return new ResponseEntity<>(adminService.RevenueMonthChart(year), HttpStatus.OK);
 	    }
-=======
-		
->>>>>>> 569752b1c4304290391077ee42992fe8fda29b10
+
 }
