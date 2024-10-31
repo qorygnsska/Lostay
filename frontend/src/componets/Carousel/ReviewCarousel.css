@@ -14,7 +14,7 @@
                 height: 80px;
             }
 
-            img.isSelect{
+            img.isSelect {
                 border: 3px solid var(--regularBlueColor);
             }
         }
@@ -65,11 +65,11 @@
         }
     }
 
-    .right--move--btn.isModal--btn{
+    .right--move--btn.isModal--btn {
         transform: translateX(2px);
     }
 
-    .default--image--wrap{
+    .default--image--wrap {
 
         display: flex;
         gap: 7px;
@@ -84,7 +84,7 @@
                 height: 80px;
             }
 
-            img.isSelect{
+            img.isSelect {
                 border: 3px solid var(--regularBlueColor);
             }
         }
@@ -92,6 +92,6 @@
 
 }
 
-.review--carousel--container:hover .move--btn{
+.review--carousel--container:hover .move--btn {
     display: block;
 }

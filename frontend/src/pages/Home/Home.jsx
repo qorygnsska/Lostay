@@ -36,6 +36,7 @@ export default function Home() {
             setLocationList(locationResp.data);
             setLocationHotelList(locationHotelResp.data);
             setDCHotelList(DCHotelResp.data)
+            console.log(hotelResp.data)
         } catch (error) {
             console.error(error);
         }
@@ -114,7 +115,7 @@ export default function Home() {
             {/* searchBox(Modal) JIP1028 */}
             <CompSearchBox
                 show={searchBoxShow}
-                onHide={() => {setSearchBoxShow(false)}}
+                onHide={() => { setSearchBoxShow(false) }}
                 place={''} //default
                 check_in={tomorrow} //default
                 check_out={tdat} //default

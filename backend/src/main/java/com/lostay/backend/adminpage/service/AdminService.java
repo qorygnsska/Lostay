@@ -46,24 +46,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdminService {
 
-	 @Autowired 
-	 private HotelRepository hotelRepo;
+	@Autowired 
+	private HotelRepository hotelRepo;
 	    
-     @Autowired
-	 private RoomRepository roomRepo;
-	
+    @Autowired
+	private RoomRepository roomRepo;
 	
 	@Autowired
-	EventRepository eventRepo;
+	private EventRepository eventRepo;
 	
 	//이벤트 이미지 파일 저장 경로
-	String eventDirPath = "C:\\Lostay\\frontend\\public\\event\\";
+	private String eventDirPath = "C:\\Lostay\\frontend\\public\\event\\";
 
 	@Autowired
-	ReviewRepository reviewRepo;
+	private ReviewRepository reviewRepo;
 
 	@Autowired
-	UserRepository userRepo;
+	private UserRepository userRepo;
 
 	// 관리자 페이지 이벤트리스트(1024 JIP)
 	public Object getEventList(boolean onGoing, String eventTitle, int pageIndex) {
