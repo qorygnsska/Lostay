@@ -64,6 +64,7 @@ export default function RoomDetail() {
     useEffect(() => {
         fetchHotelRoomDetail();  // 함수 호출
         fetchHotelRoomDetailReview3();
+        window.scrollTo(0, 0);
     }, []);  // 컴포넌트가 처음 렌더링될 때 한 번 실행
 
 

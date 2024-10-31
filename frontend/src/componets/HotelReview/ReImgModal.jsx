@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Carousel, Modal } from 'react-bootstrap';
+import ReviewCarousel2 from './ReviewCarousel2';
 
 export default function ReImgModal({imgs, ImgIdx, show, handleClose}) {
 
   
-  const [Idx, setImgIdx] = useState(); // 이미지 인덱스
+  const [Idx, setImgIdx] = useState(ImgIdx); // 이미지 인덱스
 
   useEffect(() => {
       setImgIdx(ImgIdx); // 모달이 열릴 때 초기 인덱스 설정
@@ -40,12 +41,15 @@ export default function ReImgModal({imgs, ImgIdx, show, handleClose}) {
 
                 {/* 썸네일 이미지 리스트 */}
                 <div className="thumbnail-container">
+                    <ReviewCarousel2 images={imgs} handleImageSelect={handleSelect} isModal={true} propIndex={Idx} />
+                </div>
+                {/* <div className="thumbnail-container">
                     {imgs.map((img, index) => (
                         <div key={index} onClick={() => setImgIdx(index)} className="thumbnail--box" >
                             <img src={'../../' + img} alt={index} className={`thumbnail-image ${Idx === index ? 'sel--border' : ''}`} />
                         </div>
                     ))}
-                </div>
+                </div> */}
             </Modal>
     
   )
