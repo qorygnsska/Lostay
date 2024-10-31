@@ -98,6 +98,20 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 			                               ,@Param("checkOutDate") LocalDateTime out);
 
 
+	
+	@Query("SELECT "
+			  + "(r.roomCount - (SELECT COUNT(rs.reservationNo) FROM Reservation rs " 
+			  + "JOIN rs.payment p " 
+			  + "WHERE p.room.roomNo = r.roomNo " 
+			  +	"AND rs.checkIn >= :checkInDate " 
+			  +	"AND rs.checkOut <= :checkOutDate)) " 
+			  +	"FROM Room r " 
+			  + "WHERE roomNo = :roomNo ") 
+	Long findAvailableCount(@Param("roomNo")Long roomNo
+			               ,@Param("checkInDate")LocalDateTime in
+			               ,@Param("checkOutDate")LocalDateTime out);
+
+
 
 	
 
