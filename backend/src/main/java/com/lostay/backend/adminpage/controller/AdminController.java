@@ -168,11 +168,11 @@ public class AdminController {
 		@PutMapping("/adminhotelsListUpdate")
 		public ResponseEntity<?> adminhotelsListUpdate(Long roomNo,int roomDiscount) {
 
-		
+	
 			boolean result = adminService.updateRoomDiscount(roomNo,roomDiscount);
 
 			if (result) {
-				return new ResponseEntity<>("room has been modified", HttpStatus.OK);
+				return new ResponseEntity<>("room has been modified", HttpStatus.OK); 
 			} else {
 				return ResponseEntity.notFound().build();// code 404
 			}
