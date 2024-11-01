@@ -2,8 +2,9 @@
     width: 768px;
     height: 100%;
     background-color: white;
-    padding-top: 10px;
-    padding-bottom: 86px;
+    /* padding-top: 10px;
+    padding-bottom: 86px; */
+    padding: 0 !important;
 
     .HotelFilter {
         display: flex;
@@ -84,7 +85,7 @@
     .HotelCol {
         display: flex;
         width: 100%;
-        justify-content: space-around;
+        justify-content: space-between;
     }
 
     .HotelImg {
@@ -95,6 +96,7 @@
 
     .HotelInfo {
         width: 350px;
+        /* margin-right: 10px; */
     }
 
     .HotelRank {
@@ -149,6 +151,7 @@
     .HotelPrice {
         text-align: right;
         align-self: end;
+        width: 150px;
 
     }
 
@@ -163,6 +166,7 @@
     .HotelDiscount {
         display: flex;
         align-items: center;
+        justify-content: right;
 
     }
 
@@ -176,6 +180,12 @@
         font-size: 17px;
         font-weight: bold;
         margin-left: 3px;
+    }
+
+    #bak{
+        font-weight: 100;
+        font-size: 13px;
+        color: rgb(73, 73, 73);
     }
 
     .RowLine {

@@ -1,4 +1,5 @@
 .room--list {
+     padding: 0 !important;
 
      .HotelInfo {
           margin-top: 30px;

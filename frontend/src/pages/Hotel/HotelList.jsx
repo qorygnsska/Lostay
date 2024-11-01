@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import NavTop from '../../componets/NavToTop/NavTop';
 import Navbar from '../../componets/Navbar/Navbar';
+import Footer from '../../componets/Footer/Footer';
 
 export default function HotelList(props) {
 
@@ -91,8 +92,8 @@ export default function HotelList(props) {
       console.log(`hotelRating: ${hotelRating}`);
       console.log(`amenities: ${catchall}`);
       console.log(`sort: ${sortOption}`);
-      
-      let uri = 'http://localhost:9090/testhotel';
+
+      let uri = 'http://localhost:9090/hotel/search';
       uri += `?hotelsearch=${place}&checkIn=${checkIn}&checkOut=${checkOut}&roomPeopleInfo=${member}`;
       uri += `&minRoomPrice=${minRoomPrice}&maxRoomPrice=${maxRoomPrice}`;
       uri += `&soldOut=${excSoldOut}&roomDiscountState=${viewDiscount}`;
@@ -109,7 +110,7 @@ export default function HotelList(props) {
     } catch (error) {
       console.log(error);
       alert('서버와 통신이 원활하지 않습니다.');
-      window.location.href='/';
+      window.location.href = '/';
     }
   }
 
@@ -124,6 +125,7 @@ export default function HotelList(props) {
   const [hotels, setHotels] = useState([]); // 로딩된 호텔 목록
   const [page, setPage] = useState(1); // 현재 페이지
   const [hasMore, setHasMore] = useState(true); // 더 불러올 데이터가 있는지 여부
+  const [RealHotel, setRealHotel] = useState([]);
 
 
   // 페이지별 데이터 로딩 함수
@@ -131,11 +133,13 @@ export default function HotelList(props) {
     //////////////////////////////////////////////////1028JIP: hotel -> hotels로 바꿈!
     const newHotels = hotels.slice((page - 1) * 5, page * 5); // 5개씩 가져오기
 
-    if (newHotels.length === 0) {
-      setHasMore(false); // 더 이상 데이터가 없으면 종료
-    } else {
-      setHotels((prevHotels) => [...prevHotels, ...newHotels]); // 기존 데이터에 추가
-      setPage((prevPage) => prevPage + 1); // 다음 페이지로 증가
+    if(hotels.length > 0){
+      if (newHotels.length === 0) {
+        setHasMore(false); // 더 이상 데이터가 없으면 종료
+      } else {
+        setRealHotel((prevHotels) => [...prevHotels, ...newHotels]); // 기존 데이터에 추가
+        setPage((prevPage) => prevPage + 1); // 다음 페이지로 증가
+      }
     }
   };
 
@@ -144,7 +148,7 @@ export default function HotelList(props) {
     if (inView && hasMore) {
       loadMoreHotels();
     }
-  }, [inView, hasMore]);
+  }, [inView, hasMore,hotels]);
 
 
   // 모달
@@ -184,7 +188,7 @@ export default function HotelList(props) {
 
       <HotelModal gf={props} show={show} handleClose={handleClose} callParent={filterModalCallsMe} />
 
-      <HotelGrid hotels={hotels} check_in={check_in} check_out={check_out} member={member} />
+      <HotelGrid hotels={RealHotel} check_in={check_in} check_out={check_out} member={member} />
 
 
       {/* 뷰포트 안에 들어오면 더 많은 데이터를 로드 */}
@@ -192,6 +196,7 @@ export default function HotelList(props) {
 
       <NavTop />
       <Navbar />
+      <Footer />
 
     </Container>
   )

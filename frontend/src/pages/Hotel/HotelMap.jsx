@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Container, FormControl, InputGroup, ListGroup, Modal } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom';
+import Navbar from '../../componets/Navbar/Navbar';
 
 const {kakao} = window;
 
@@ -349,6 +350,8 @@ export default function HotelMap() {
                     </div>
                 </div>
             </div>
+
+            <Navbar />
         </Container>
 
 
