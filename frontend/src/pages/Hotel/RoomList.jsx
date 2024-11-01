@@ -139,6 +139,7 @@ export default function RoomList() {
       const response = await axios.get('http://localhost:9090/cart/HotelCheck', {
         params: { hotelNo },
       });
+      console(response.data);
       if (response.status === 200) {
         SetHeart(true);
         SetcartNo(response.data);
@@ -160,14 +161,13 @@ export default function RoomList() {
 
   // 찜 추가
   let hotelId = hotelNo;
-  console.log(typeof(hotelNo));
-  console.log(typeof(hotelId));
   
   const AddCart = async () => {
     try {
       const response = await axios.post('http://localhost:9090/cart/save', {
         params: { hotelId },
       });
+      console(response.data);
       if (response.status === 200) {
         SetHeart(true);
       }else{
@@ -186,6 +186,7 @@ export default function RoomList() {
       const response = await axios.post('http://localhost:9090/cart/delete', {
         params: { cartNo },
       });
+      console(response.data);
       if (response.status === 200) {
         SetHeart(false);
       }else{
