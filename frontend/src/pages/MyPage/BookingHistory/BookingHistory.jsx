@@ -48,7 +48,7 @@ export default function BookingHistory() {
         formData.append('text', reviewContent); // 리뷰 텍스트 추가
         formData.append('payNo', payNo); // 결제 번호 추가
         try {
-            const response = await privateApi.post('/UploadReviewImg', formData, {
+            const response = await privateApi.post('/mypage/UploadReviewImg', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

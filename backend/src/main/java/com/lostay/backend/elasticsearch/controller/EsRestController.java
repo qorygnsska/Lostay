@@ -18,16 +18,23 @@ public class EsRestController {
 
 	@Autowired
 	private EsService ess;
-	
-	//https://www.skyer9.pe.kr/wordpress/?p=5655
-	
-	@GetMapping("/search")
-	public ResponseEntity<?> search(@RequestParam String searchVal) {
 		
-		System.out.println("esController.search: " + searchVal);
+	@GetMapping("/searchIndex")
+	public ResponseEntity<?> searchIndex(@RequestParam String searchVal) {
 		
-		return new ResponseEntity<>(ess.search(searchVal), HttpStatus.OK);
+		System.out.println("esController.searchIndex: " + searchVal);
+		
+		return new ResponseEntity<>(ess.searchIndex(searchVal), HttpStatus.OK);
 	}
+	
+	
+	@GetMapping("/searchToken")
+	public ResponseEntity<?> searchToken(@RequestParam String searchVal) {
+		System.out.println("esController.searchToken: " + searchVal);
+		
+		return new ResponseEntity<>(ess.searchToken(searchVal), HttpStatus.OK);
+	}
+	
 	
 	
 	
