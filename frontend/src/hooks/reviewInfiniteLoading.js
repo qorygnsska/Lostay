@@ -3,7 +3,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 const axiosReviews = async (page) => {
     try {
-        const response = await privateApi.get(`/mypageReview?page=${page}`); // API 요청
+        const response = await privateApi.get(`/mypage/Review?page=${page}`); // API 요청
         return response.data;
     } catch (error) {
         throw error;

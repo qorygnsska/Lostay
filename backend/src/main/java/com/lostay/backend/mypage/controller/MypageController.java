@@ -43,7 +43,7 @@ public class MypageController {
 	MypageService mypageService;
 
 	// mypage 조회
-	@GetMapping("")//변경전: /mypage 
+	@GetMapping("")//변경전: /mypage 변경후: / 
 	public ResponseEntity<?> mypage(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
 		log.info("mypage실행");
 

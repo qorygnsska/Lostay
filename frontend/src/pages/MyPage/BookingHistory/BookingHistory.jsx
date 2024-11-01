@@ -29,7 +29,7 @@ export default function BookingHistory() {
 
     const payCancle = async (payNo) => {  // async 키워드 추가
         try {
-            const response = await privateApi.get(`/PaymentCancle?payNo=${payNo}`); // API 요청
+            const response = await privateApi.get(`/payment/Cancle?payNo=${payNo}`); // API 요청
             console.log(response.data);
             getData(activeTab)
             return response.data;

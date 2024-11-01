@@ -14,7 +14,7 @@ export default function PaymentModal({ show, onClose, bookData, checkInDayOfWeek
     const getDatas = async () => {
 
         try {
-            const response = await privateApi.get(`/PaymentHistory?payNo=${bookData.payNo}`); // API 요청
+            const response = await privateApi.get(`/payment/History?payNo=${bookData.payNo}`); // API 요청
             console.log(response.data)
             setPaymentData(response.data)
             return response.data;

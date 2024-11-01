@@ -33,7 +33,7 @@ adminPrivateApi.interceptors.response.use(
         if (error.config && error.response.data.message === "expired" && error.response.status === 401) {
             try {
                 const res = await axios.post(
-                    "http://localhost:9090/reissue",
+                    "http://localhost:9090/adminReissue",
                     {},
                     {
                         withCredentials: true,

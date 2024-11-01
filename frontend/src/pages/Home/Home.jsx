@@ -24,11 +24,11 @@ export default function Home() {
     const getData = async () => {
         try {
             const [eventResp, hotelResp, locationResp, locationHotelResp, DCHotelResp] = await Promise.all([
-                axios.get('http://localhost:9090/eventMain'),
-                axios.get('http://localhost:9090/hotHotelsMain'),
-                axios.get('http://localhost:9090/locationMain'),
-                axios.get('http://localhost:9090/triphotelsMain'),
-                axios.get('http://localhost:9090/discountHotelMain')
+                axios.get('http://localhost:9090/main/event'),
+                axios.get('http://localhost:9090/main/hotHotels'),
+                axios.get('http://localhost:9090/main/location'),
+                axios.get('http://localhost:9090/main/triphotels'),
+                axios.get('http://localhost:9090/main/discountHotel')
             ]);
 
             setEventList(eventResp.data);
@@ -96,7 +96,7 @@ export default function Home() {
 
             {/* 국내 인기 여행 리스트 */}
             <h2>국내 인기 여행지</h2>
-            <LocationCarousel locationList={locationList} check_in={tomorrow} check_out={tdat} member={2}/>{/* JIP1030 check_in check_out 추가 */}
+            <LocationCarousel locationList={locationList} check_in={tomorrow} check_out={tdat} member={2} />{/* JIP1030 check_in check_out 추가 */}
 
             {/* 여행질별 숙소 리스트 */}
             <h2>여행지별 숙소</h2>

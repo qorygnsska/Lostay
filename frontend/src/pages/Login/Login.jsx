@@ -43,7 +43,7 @@ export default function Login() {
         <div className="login--container">
             <div className="login--wrap">
                 <div className="logo">
-                    <img src="Logo/logo.png" />
+                    <img src="Logo/logo.png" alt="로고 이미지" />
                 </div>
 
                 <div className="login--title">

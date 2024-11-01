@@ -3,7 +3,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 const axiosWishs = async (page) => {
     try {
-        const response = await privateApi.get(`/mypageCartList?page=${page}`); // API 요청
+        const response = await privateApi.get(`/mypage/CartList?page=${page}`); // API 요청
         return response.data;
     } catch (error) {
         throw error;

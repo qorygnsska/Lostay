@@ -37,7 +37,7 @@ export default function LoginAdmin() {
     const axiosAccessToken = async () => {
         try {
             const response = await axios.post(
-                "http://localhost:9090/adminNewAccess",
+                "http://localhost:9090/adminReissue/adminNewAccess",
                 {},
                 {
                     withCredentials: true,
