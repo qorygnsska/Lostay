@@ -195,4 +195,13 @@ public class AdminController {
 	        return new ResponseEntity<>(adminService.RevenueMonthChart(year), HttpStatus.OK);
 	    }
 
+	    
+	    // 관리자 페이지 분기별 매출액 조회
+	    @GetMapping("/RevenuebranchChart")
+	    public ResponseEntity<?> RevenuebranchChart(@RequestParam int year) {
+	    	System.out.println("RevenuebranchChart 실행");
+	        return new ResponseEntity<>(adminService.RevenuebranchChart(year), HttpStatus.OK);
+	    }
+	    
+	    
 }

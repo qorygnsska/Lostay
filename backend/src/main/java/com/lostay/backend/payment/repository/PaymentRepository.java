@@ -17,4 +17,8 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 	@Query("SELECT p FROM Payment p WHERE p.payStatus = 'Y' AND YEAR(p.payDay) = :year")
 	List<Payment> findSuccessfulPaymentsByYear(@Param("year") int year);
 
+	// 관리자 페이지 매출액(중계료) 분기별(jh)
+	@Query("SELECT p FROM Payment p WHERE p.payStatus = 'Y' AND YEAR(p.payDay) = :year AND QUARTER(p.payDay) = :quarter")
+	List<Payment> findSuccessfulPaymentsByQuarter(@Param("year") int year, @Param("quarter") int quarter);
+
 }

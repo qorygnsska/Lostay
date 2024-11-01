@@ -349,51 +349,69 @@ public class AdminService {
 		}
 	}
 	
-	 //관리자 페이지 년도별 매출액 조회(jh)
-    public List<AdminRevenueChartDTO> RevenueChart() {
-        List<Payment> payments = paymentRepo.findAllSuccessfulPayments();
+	// 관리자 페이지 년도별 매출액 조회(jh)
+	public List<AdminRevenueChartDTO> RevenueChart() {
+	    List<Payment> payments = paymentRepo.findAllSuccessfulPayments();
 
-        return payments.stream()
-                .collect(Collectors.groupingBy(payment -> payment.getPayDay().getYear())) // 연도별 그룹화
-                .entrySet().stream()
-                .map(entry -> convertToYearDto(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
-    }
+	    return payments.stream()
+	            .collect(Collectors.groupingBy(payment -> payment.getPayDay().getYear())) // 연도별 그룹화
+	            .entrySet().stream()
+	            .map(entry -> convertToYearDto(entry.getKey(), entry.getValue()))
+	            .collect(Collectors.toList());
+	}
 
-    private AdminRevenueChartDTO convertToYearDto(int year, List<Payment> payments) {
-        int totalCommission = payments.stream()
-                .mapToInt(this::calculateCommission)
-                .sum();
-        int totalReservations = payments.size(); // 예약 수
+	private AdminRevenueChartDTO convertToYearDto(int year, List<Payment> payments) {
+	    int totalCommission = payments.stream()
+	            .mapToInt(this::calculateCommission)
+	            .sum();
+	    int totalReservations = payments.size(); // 예약 수
 
-        return new AdminRevenueChartDTO(null, year, totalCommission, totalReservations);
-    }
+	
+	    return new AdminRevenueChartDTO(year, totalCommission, totalReservations);
+	}
 
-    //관리자 페이지 월별 매출액 조회(jh)
-    public List<AdminRevenueChartDTO> RevenueMonthChart(int year) {
-        List<Payment> payments = paymentRepo.findSuccessfulPaymentsByYear(year);
+	// 관리자 페이지 월별 매출액 조회(jh)
+	public List<AdminRevenueChartDTO> RevenueMonthChart(int year) {
+	    List<Payment> payments = paymentRepo.findSuccessfulPaymentsByYear(year);
 
-        return payments.stream()
-                .collect(Collectors.groupingBy(payment -> 
-                    String.format("%d-%02d", payment.getPayDay().getYear(), payment.getPayDay().getMonthValue()))) // 월별 그룹화
-                .entrySet().stream()
-                .sorted(Map.Entry.comparingByKey()) // 월 순서로 정렬
-                .map(entry -> convertToMonthDto(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
-    }
+	    return payments.stream()
+	            .collect(Collectors.groupingBy(payment -> 
+	                String.format("%d-%02d", payment.getPayDay().getYear(), payment.getPayDay().getMonthValue()))) // 월별 그룹화
+	            .entrySet().stream()
+	            .sorted(Map.Entry.comparingByKey()) // 월 순서로 정렬
+	            .map(entry -> convertToMonthDto(entry.getKey(), entry.getValue()))
+	            .collect(Collectors.toList());
+	}
 
-    private AdminRevenueChartDTO convertToMonthDto(String month, List<Payment> payments) {
-        int totalCommission = payments.stream()
-                .mapToInt(this::calculateCommission)
-                .sum();
-        int totalReservations = payments.size(); // 예약 수
+	private AdminRevenueChartDTO convertToMonthDto(String month, List<Payment> payments) {
+	    int totalCommission = payments.stream()
+	            .mapToInt(this::calculateCommission)
+	            .sum();
+	    int totalReservations = payments.size(); // 예약 수
 
-        return new AdminRevenueChartDTO(month, Integer.parseInt(month.substring(0, 4)), totalCommission, totalReservations);
-    }
 
-    private int calculateCommission(Payment payment) {
-        double commissionRate = payment.getRoom().getHotel().getHotelCommission() / 100.0; // 부동소수점으로 변환
-        return (int) (payment.getPayPrice() * commissionRate); // 계산 후 정수형으로 변환
-    }
+	    return new AdminRevenueChartDTO(month, Integer.parseInt(month.substring(0, 4)), totalCommission, totalReservations);
+	}
 
+	private int calculateCommission(Payment payment) {
+	    double commissionRate = payment.getRoom().getHotel().getHotelCommission() / 100.0; // 부동소수점으로 변환
+	    return (int) (payment.getPayPrice() * commissionRate); // 계산 후 정수형으로 변환
+	}
+	
+	// // 관리자 페이지 분기별 매출액 조회(jh)
+	public List<AdminRevenueChartDTO> RevenuebranchChart(int year) {
+	    List<AdminRevenueChartDTO> result = new ArrayList<>();
+	    for (int quarter = 1; quarter <= 4; quarter++) {
+	        List<Payment> payments = paymentRepo.findSuccessfulPaymentsByQuarter(year, quarter);
+	        
+	        int totalCommission = payments.stream()
+	                .mapToInt(this::calculateCommission)
+	                .sum();
+	        int totalReservations = payments.size(); // 예약 수
+
+	        result.add(new AdminRevenueChartDTO(year, totalCommission, totalReservations, quarter));
+	    }
+	    System.out.println("result:"+ result);
+	    return result;
+	}
 }
