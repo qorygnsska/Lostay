@@ -89,21 +89,22 @@
 
                                 .review--icon--box {
                                     display: flex;
-                                    align-items: center;
-                                    padding-left: 8px;
-                                    width: 40px;
-                                    height: 20px;
-                                    border-radius: 7px;
+                                    width: 43px;
+                                    height: 22px;
                                     background-color: var(--starColor);
-                                    margin-right: 4px;
+                                    border-radius: 7px;
+                                    margin-right: 7px;
+                                    align-items: center;
+        
 
                                     .star--Icon {
-                                        width: 11px;
-                                        height: 11px;
-                                        margin-right: 5px;
+                                        font-size: 10px;
+                                        margin-left: 5px;
+                                        margin-right: 3px;
                                     }
 
                                     .review--avg {
+                                        font-size: 12px;
                                         padding-top: 2px;
                                     }
 

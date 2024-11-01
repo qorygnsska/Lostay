@@ -104,6 +104,31 @@ export default function HotelReviews() {
         handleClose4();
     }
 
+
+    // 사진 후기만 보기
+    const [OnlyImg, setOnlyImg] = useState(false);
+
+    const ClickOnlyImg = () => {
+        OnlyImg ? setOnlyImg(false) : setOnlyImg(true);
+        
+    }
+    // 사진만 담거나 전체 담기
+    const [CustomImg, SetCustomImg] = useState();
+
+    useEffect(() => {
+        if(OnlyImg){
+            if(Reviews){
+                const custom = Reviews.reviews.filter(review => review.reviewImg.length > 0);
+                SetCustomImg(custom);
+            }
+        }else{
+            if(Reviews){
+                const custom = Reviews.reviews;
+                SetCustomImg(custom);
+            }
+        }  
+    }, [OnlyImg, Reviews])
+
     
     if(!Reviews){
         <div>없어</div>
@@ -141,7 +166,7 @@ export default function HotelReviews() {
     
     
                 <div className='RoomFilter2'>
-                    <div><input type='checkbox' className='ImgCheck'/> 사진후기만 보기</div>
+                    <div><input type='checkbox' className='ImgCheck' onClick={ClickOnlyImg}/> 사진후기만 보기</div>
                     <div className='RoomFilterName2' onClick={orderClick}>{sort} <GrDown/></div>
                 </div>
     
@@ -149,7 +174,7 @@ export default function HotelReviews() {
     
                 <div className='ReviewGrid'>
     
-                    {Reviews.reviews.map((review, idx) => (
+                    {CustomImg?.map((review, idx) => (
                         <div key={idx}>
                             <div className='SDBox'>
                                 <div className='StarDiv'><FaStar className='ReviewStar'/>{review.reviewRating.toFixed(1)}</div>

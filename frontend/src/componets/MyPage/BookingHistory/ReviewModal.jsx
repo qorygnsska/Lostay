@@ -16,6 +16,11 @@ export default function ReviewModal({ show, onClose, hotelName, userNickname, up
     // 이미지 미리보기
     const [previewImg, setPreviewImg] = useState([])
 
+    // 후기 길이
+    const [reviewLen, setReviewLen] = useState(0);
+    // 후기 경고
+    const [contentWarning, setContentWarning] = useState(false)
+
     // 파일 업로드 시 함수
     const uploadFiles = (e) => {
 
@@ -51,10 +56,37 @@ export default function ReviewModal({ show, onClose, hotelName, userNickname, up
         setUploadImg(uploadImg.filter((_, index) => index !== idx));
     };
 
+
     // 후기 텍스트 함수
     const handleSetValue = (e) => {
+        const inputValue = e.target.value;
+
+        if (inputValue.trim().length < 10) {
+            setContentWarning(true);
+        } else {
+            setContentWarning(false);
+        }
+
+
+        const { target: { value }, } = e;
+        if (value.length > 200) e.target.value = value.substr(0, 200);
+
         setReviewContent(e.target.value);
+        setReviewLen(e.target.value.trim().length)
+
     };
+
+    // 작성하기 클릭 함수
+    const writeClick = () => {
+        if (reviewRating === 0) {
+            alert('별점을 선택해주세요.')
+        } else if (reviewLen < 10) {
+            alert('후기는 10자 이상 입력해주세요.')
+        } else {
+            updateReview(uploadImg, reviewRating, reviewContent.trim())
+        }
+
+    }
 
     useEffect(() => {
         // 모달이 열릴 때마다 상태 초기화
@@ -63,6 +95,8 @@ export default function ReviewModal({ show, onClose, hotelName, userNickname, up
             setReviewContent("");
             setUploadImg([]);
             setPreviewImg([]);
+            setContentWarning(false);
+            setReviewLen(0);
         }
     }, [show]);
 
@@ -127,14 +161,18 @@ export default function ReviewModal({ show, onClose, hotelName, userNickname, up
                     </div>
                 </div>
 
+                {/* 후기 설정 */}
                 <div className='review--write--wrap'>
+                    <div className='review--len'>({reviewLen}/200)</div>
                     <div className='review--write--box'>
-                        <textarea className='review--write'
+                        <textarea className={`review--write ${contentWarning && 'warning'}`}
                             placeholder='소중한 후기를 남겨주세요'
                             value={reviewContent}
                             onChange={(e) => handleSetValue(e)}
+                            maxLength={200}
                         />
                     </div>
+                    {contentWarning && <div className='content--warning'>10자 이상 입력해주세요.</div>}
                 </div>
 
                 <div className='image--add--wrap'>
@@ -169,7 +207,7 @@ export default function ReviewModal({ show, onClose, hotelName, userNickname, up
             </div>
 
 
-            <div className='review--write--btn' onClick={() => updateReview(uploadImg, reviewRating, reviewContent)}>
+            <div className='review--write--btn' onClick={writeClick}>
                 <span>작성하기</span>
             </div>
         </div>

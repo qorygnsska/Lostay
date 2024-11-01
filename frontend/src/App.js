@@ -37,6 +37,9 @@ import "../src/componets/HotelReview/AllImgModal.css";
 import "../src/componets/HotelReview/RoomFilterModal.css";
 import "../src/componets/HotelReview/RoomOrderModal.css";
 import "../src/componets/Carousel/ReviewCarousel.css"
+import "../src/componets/HotelReview/ReviewCarousel2.css"
+import "../src/componets/MyPage/BookingHistory/PaymentModal.css"
+import "../src/pages/Login/LoginAdmin.css"
 
 
 // CustomCSS for pages
@@ -52,7 +55,6 @@ import "../src/pages/MyPage/Profile/Profile.css";
 import "../src/pages/Hotel/RoomList.css";
 import "../src/pages/MyPage/BookingHistory/BookingHistory.css";
 import "../src/pages/Hotel/HotelMap.css";
-import "../src/pages/MyPage/BookingHistory/Payment/Payment.css";
 import "../src/pages/MyPage/MyReview/MyReview.css";
 import "../src/pages/MyPage/MyPoint/MyPoint.css";
 import "../src/pages/Reservation/Reservation.css";

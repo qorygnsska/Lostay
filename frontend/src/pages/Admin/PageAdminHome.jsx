@@ -1,36 +1,44 @@
 import React, { useEffect, useState } from 'react'
 import CompHeaderAdmin from '../../componets/Header/CompHeaderAdmin'
 import { Container } from 'react-bootstrap'
+import axios from 'axios';
+import CompAdminSearch from '../../componets/Admin/CompAdminSearch';
 
 
 export default function PageAdminHome() {
 
-  ////////////////////////////////////////
-  // const place = '제주도';
-  // const today = new Date(); //오늘 날짜
-  // const check_in = new Date(today.setDate(today.getDate() + 1)); //오늘 + 1
-  // const check_out = new Date(today.setDate(today.getDate() + 1)); //오늘 + 1 + 1
-  // const member = 4;
-  ////////////////////////////////////////
+  //하위요소(검색창)가 넘겨줄 값을 담을 변수
+  const [text_fromChild, setText_fromChild] = useState('');
 
-  // searchBox(Modal)이 열렸니?
-  // const [searchBoxShow, setSearchBoxShow] = useState(false);
+  //하위요소(검색창)가 값을 넘겨주면 실행할 함수
+  const functionForMyChild = (fromMyChild) => {
+    //fromMyChild: 하위요소가 넘겨준 변수(text_search)의 매개변수
+    //console.log('text_fromChild: ' + text_fromChild);   //previousState
+    //console.log('fromChild: ' + fromMyChild);
+    setText_fromChild(fromMyChild);
+  }
 
-  // 어디서 모달 불렀니?
-  // const functionFromWhere = (fromWhere) => {
-  //   console.log('where are you?: ' + fromWhere);
-  // }
+  const [txt_result, setTxt_result] = useState('');
 
-  // Header에서 어떤 input 눌렀니?
-  // const [focus, setFocus] = useState('input_place');
 
-  // const functionSearchPicker = (fromMyChild) => {
-  //   console.log(fromMyChild + ' is picked at headerGeneral');
-  //   //선택 위치에 따라 focus 변경 -> 하위 모달에 focus 전달
-  //   setFocus(fromMyChild);
-  //   setSearchBoxShow(true);
-  // }
-  ////////////////////////////////////////
+  const getSearchFilter = async () => {
+
+    await axios.get(`http://localhost:9090/es/search?searchVal=${text_fromChild}`)
+      .then(response => {
+        console.log('response: ' + response);
+        console.log('response.ok: ' + response.ok);
+        console.log('response.status: ' + response.status);        
+        setTxt_result(response.data.toString());
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
+
+  useEffect(() => {
+    getSearchFilter();
+  }, [text_fromChild]);
+
 
   return (
     <>
@@ -39,28 +47,10 @@ export default function PageAdminHome() {
 
         <Container id='section_container'>
 
-{/* 
+          <CompAdminSearch where={'admin-event'} callParent={functionForMyChild} />
 
-          <CompHeaderGeneral
-            where={functionFromWhere}
-            callParent={functionSearchPicker}
-            place={place}
-            check_in={check_in}
-            check_out={check_out}
-            member={member}
-          />
-         
-          <CompSearchBox
-            show={searchBoxShow}
-            onHide={() => { setSearchBoxShow(false) }}
-            place={place}
-            check_in={check_in}
-            check_out={check_out}
-            member={member}
-            focus={focus}
-          /> 
+          <p>{txt_result}</p>
 
-*/}
         </Container>
       </div>
     </>

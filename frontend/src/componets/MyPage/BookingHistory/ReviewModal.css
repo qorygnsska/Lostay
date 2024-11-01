@@ -116,16 +116,29 @@
                         /* 기본 색상 */
                     }
                 }
-
-
             }
+        }
 
 
+
+        .content--warning {
+            margin-left: 75px;
+            color: var(--redColor);
+            font-size: 18px;
+            padding-top: 10px;
         }
 
         .review--write--wrap {
 
             margin-top: 20px;
+
+            .review--len {
+                width: 80%;
+                margin: auto;
+                text-align: right;
+                margin-bottom: 4px;
+                font-size: 16px;
+            }
 
             .review--write--box {
 
@@ -141,6 +154,10 @@
                     border-radius: 10px;
                     border: 1px solid var(--lightGrayColor);
                     outline: none;
+                }
+
+                .review--write.warning {
+                    border: 1px solid var(--redColor);
                 }
             }
 

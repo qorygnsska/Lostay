@@ -1,8 +1,41 @@
-.payment--container {
+.payment--modal--container {
+    .modal-fullscreen {
+        width: auto;
+    }
+
+    .modal-content {
+        width: 768px;
+        margin: auto;
+    }
+
+    .header {
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 23px;
+        font-weight: bold;
+        position: relative;
+        width: 100%;
+        padding: 15px 0px;
+        border-bottom: 1px solid rgba(161, 161, 161, 0.5);
+        ;
+
+
+        .xmark {
+            position: absolute;
+            right: 10px;
+            width: 38px;
+            height: 37px;
+            cursor: pointer;
+        }
+    }
+
     .payment--wrap {
         background-color: var(--lightGrayColor4);
-        height: 120vh;
+        height: 102vh;
         position: relative;
+
 
         .booking--hotel--info {
             position: absolute;

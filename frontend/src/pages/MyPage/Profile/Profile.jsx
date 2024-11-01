@@ -70,22 +70,35 @@ export default function Profile() {
 
 
     // 닉네임 수정
-    const [nicknameEdit, setNicknameEidt] = useState(false);
+    const [nicknameEdit, setNicknameEdit] = useState(false);
     const [nickname, setNickname] = useState('');
     const nicknameInputRef = useRef(null);
     const [failNicknameEdit, setFailNicknameEdit] = useState(false);
+    const [nameWarning, setNameWarning] = useState(false);
 
     // 닉네임 수정 버튼
     const handleNicknameEdit = () => {
-        setNicknameEidt(!nicknameEdit);
+        setNicknameEdit(!nicknameEdit);
 
         if (!nicknameEdit) {
             nicknameInputRef.current.focus();
         }
     };
 
+
     // 닉네임 수정된 값 저장
     const handleNicknameChange = (e) => {
+        const inputValue = e.target.value;
+
+        if (inputValue.trim().length < 2) {
+            setNameWarning(true)
+        } else {
+            setNameWarning(false)
+        }
+
+        const { target: { value }, } = e;
+        if (value.length > 12) e.target.value = value.substr(0, 12);
+
         setNickname(e.target.value);
         setFailNicknameEdit(false);
     };
@@ -93,25 +106,29 @@ export default function Profile() {
     // 닉네임 수정하기 확인버튼 누를 시
     const postNicknameEdit = async () => {
 
-        if (profile.userNickname === nickname) {
-            setNicknameEidt(false);
-        } else {
-            try {
-                const response = await privateApi.put(`http://localhost:9090/mypageUserInfo/nickname/${nickname}`); // API 요청
+        if (nickname.length > 1) {
+            if (profile.userNickname === nickname) {
+                setNicknameEdit(false);
+            } else {
+                try {
+                    const response = await privateApi.put(`http://localhost:9090/mypageUserInfo/nickname/${nickname.trim()}`); // API 요청
 
-                if (response.status === 200) {
-                    setNicknameEidt(false);
-                    setFailNicknameEdit(false);
-                } else {
+                    if (response.status === 200) {
+                        setNickname(nickname.trim())
+                        setNicknameEdit(false);
+                        setFailNicknameEdit(false);
+                    } else {
+                        setFailNicknameEdit(true);
+                    }
+
+                    return response.data;
+
+                } catch (error) {
                     setFailNicknameEdit(true);
                 }
-
-                return response.data;
-
-            } catch (error) {
-                setFailNicknameEdit(true);
             }
         }
+
     };
 
     // 휴대폰번호 수정
@@ -360,8 +377,9 @@ export default function Profile() {
                                     value={nickname}
                                     onChange={handleNicknameChange}
                                     readOnly={!nicknameEdit}
-                                    maxLength={15}
-                                    placeholder="최대 15자까지만 입력 가능합니다."
+                                    maxLength={12}
+                                    placeholder="최대 12자까지만 입력 가능합니다."
+                                    className={nameWarning && 'warning'}
                                 />
                                 <FaPencil
                                     className="icon focus"
@@ -373,7 +391,7 @@ export default function Profile() {
                                 />
                             </div>
                         </div>
-
+                        {nameWarning && <div className="name--warning">이름은 2자 ~ 12자 이내로 작성해주세요.</div>}
                         {failNicknameEdit && <div className="wraning--message">이미 존재하는 닉네임 입니다.</div>}
 
                         <div
