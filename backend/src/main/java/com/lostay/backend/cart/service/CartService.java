@@ -71,14 +71,20 @@ public class CartService {
 
 	//내가 선택한 호텔찜 삭제
 
-	public void deleteById(Long cartNo) {
+	public Boolean deleteById(Long cartNo) {
 		log.info("CartService deleteById 실행");
-		  // 카트 조회: 존재하지 않으면 예외 발생
-        Cart cart = cartRepo.findById(cartNo)
-            .orElseThrow(() -> new EntityNotFoundException("Cart not found"));
+		try {
+	        // 카트 조회: 존재하지 않으면 예외 발생
+	        Cart cart = cartRepo.findById(cartNo)
+	            .orElseThrow(() -> new EntityNotFoundException("Cart not found"));
 
-        // Cart 삭제
-        cartRepo.delete(cart); // 해당 카트만 삭제
+	        // Cart 삭제
+	        cartRepo.delete(cart); // 해당 카트만 삭제
+	        return true; // 삭제 성공 시 true 반환
+	    } catch (Exception e) {
+	       System.out.println("Cart삭제 에러 발생");
+	        return false; // 삭제 실패 시 false 반환
+	    }
 
 	}
 
