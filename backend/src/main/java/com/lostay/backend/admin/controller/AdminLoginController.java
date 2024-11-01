@@ -30,7 +30,15 @@ public class AdminLoginController {
 		Map<String, Object> map = data;
 		String id = (String) map.get("id");
 		String pw = (String) map.get("pw");
-		System.out.println(id+pw);
-		return new ResponseEntity<>(adminService.loginAdmin(id, pw, response ), HttpStatus.OK);
+
+		boolean result = adminService.loginAdmin(id, pw, response);
+		
+		if(result) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
+		
+		
 }
