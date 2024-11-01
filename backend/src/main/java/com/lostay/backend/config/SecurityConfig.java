@@ -78,8 +78,9 @@ public class SecurityConfig {
 				.authorizeHttpRequests((auth) -> 
 						auth
 							.antMatchers("/cart/*/","/mypage/*/","/payment/*/","/point/*/","/user/*/","/bookhistory/*/").hasAnyRole("ROLE_USER")
+							.antMatchers( "/event/*", "/main/*","/hotel/*","/review/*","/room/*","/sms/**","/userReissue/**","/adminReissue/**","/admin/login").permitAll()
 							.antMatchers("/admin/**").hasAnyRole("ADMIN")
-							.antMatchers( "/event/**", "/main/*","/hotel/*/","/review/*","/room/*","/sms/**","/userReissue/**","/adminReissue/**").permitAll() 
+
 							.anyRequest().authenticated())
 
 
