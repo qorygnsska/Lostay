@@ -17,6 +17,7 @@ import CompSearchBox from '../../componets/Search/CompSearchBox';
 import { useSelector } from 'react-redux';
 import Navbar from '../../componets/Navbar/Navbar';
 import NavTop from '../../componets/NavToTop/NavTop';
+import { privateApi } from '../../api/api';
 
 export default function RoomList() {
 
@@ -100,7 +101,6 @@ export default function RoomList() {
         params: { hotelNo },
       });
       setRoomReviews(response.data);
-      console.log(response.data)
     } catch (error) {
       setError(error);
     } finally {
@@ -136,18 +136,14 @@ export default function RoomList() {
   // 찜 했는 지 안 했는 지 확인
   const fetchCart = async () => {
     try {
-      const response = await axios.get('http://localhost:9090/cart/HotelCheck', {
-        params: { hotelNo },
-      });
-      console(response.data);
+      const response = await privateApi.get(`/cart/HotelCheck?hotelNo=${hotelNo}`);
       if (response.status === 200) {
         SetHeart(true);
         SetcartNo(response.data);
-      }else{
-        SetHeart(false);
       }
+      
     } catch (error) {
-      setError(error);
+       setError(error);
     } finally {
       setLoading(false);
     }
@@ -160,16 +156,12 @@ export default function RoomList() {
   },[])
 
   // 찜 추가
-  let hotelId = hotelNo;
-  
   const AddCart = async () => {
     try {
-      const response = await axios.post('http://localhost:9090/cart/save', {
-        params: { hotelId },
-      });
-      console(response.data);
+      const response = await privateApi.post(`/cart/save?hotelId=${hotelNo}`);
       if (response.status === 200) {
         SetHeart(true);
+        SetcartNo(response.data.cartNo);
       }else{
         SetHeart(false);
       }
@@ -183,10 +175,7 @@ export default function RoomList() {
   // 찜 삭제
   const DeleteCart = async () => {
     try {
-      const response = await axios.post('http://localhost:9090/cart/delete', {
-        params: { cartNo },
-      });
-      console(response.data);
+      const response = await privateApi.post(`/cart/delete?cartNo=${cartNo}`);
       if (response.status === 200) {
         SetHeart(false);
       }else{
@@ -201,8 +190,6 @@ export default function RoomList() {
 
   // 찜 눌렀을 때
   const handlerCart = () => {
-    console.log(Heart);
-    
       if (user === true) {
           if(Heart){
             DeleteCart();
