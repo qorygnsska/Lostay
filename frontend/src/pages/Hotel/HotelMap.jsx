@@ -3,8 +3,12 @@ import { Button, Container, FormControl, InputGroup, ListGroup, Modal } from 're
 import { useLocation } from 'react-router-dom';
 import Navbar from '../../componets/Navbar/Navbar';
 
-const {kakao} = window;
+import { FaCar } from "react-icons/fa6";
+import { FaBus } from "react-icons/fa";
+import { FaWalking } from "react-icons/fa";
 
+
+const {kakao} = window;
 
 export default function HotelMap() {
 
@@ -14,6 +18,29 @@ export default function HotelMap() {
     const Location = '서초동 1330-3'; // 기본주소
 
     const geocoder = new kakao.maps.services.Geocoder();
+
+    // 이동수단 선택
+    const [car, setCar] = useState(false);
+    const [bus, setBus] = useState(false);
+    const [walk, setWalk] = useState(false);
+
+    const clickVehicle = (vehicle) => {
+        if(vehicle === 'car'){
+            setCar(true);
+            setBus(false);
+            setWalk(false);
+        }else if(vehicle === 'bus'){
+            setCar(false);
+            setBus(true);
+            setWalk(false);
+        }else{
+            setCar(false);
+            setBus(false);
+            setWalk(true);
+        }
+        handleSubmit(new Event('submit')); 
+        
+    }
 
     // 마커
     const [map, setMap] = useState(null);
@@ -83,7 +110,7 @@ export default function HotelMap() {
     const handleSelectAddress = async (address, inputRef, closeModal) => {
         inputRef.current.value = address; 
         closeModal(); 
-        await handleSubmit(new Event('submit')); 
+        
     };
 
     // 폼에서 주소 받아오기
@@ -256,57 +283,66 @@ export default function HotelMap() {
         const startAddress = startRef.current.value;
         const endAddress = endRef.current.value;
 
+        if (!startAddress || !endAddress || (!car && !bus && !walk)) {
+            alert('출발지와 도착지를 입력하고, 교통 수단을 선택해주세요.'); // 사용자에게 알림
+            return; // 조건이 충족되지 않으면 함수 종료
+        }
+
         try {
             // 출발지와 도착지의 위도, 경도 구하기
             const startCoords = await getLatLngFromAddress2(startAddress);
             const endCoords = await getLatLngFromAddress2(endAddress);
 
-            // 길찾기 API 호출
-            const routeData = await getRoute(startCoords.longitude, startCoords.latitude, endCoords.longitude, endCoords.latitude);
-            console.log('길찾기 데이터:', routeData);
+            // 이동수단이 차일 때
+            if(car === true){
+                // 길찾기 API 호출
+                const routeData = await getRoute(startCoords.longitude, startCoords.latitude, endCoords.longitude, endCoords.latitude);
+                console.log('길찾기 데이터:', routeData);
 
-            // div css 변경
-            setIsVisible(true);
+                // div css 변경
+                setIsVisible(true);
 
-            // 마커 지우고
-            removeMarkers();
+                // 마커 지우고
+                removeMarkers();
 
-            // 마커 찍기
-            const newStartMarker = addMarker(startCoords);
-            const newEndMarker = addMarker(endCoords);
+                // 마커 찍기
+                const newStartMarker = addMarker(startCoords);
+                const newEndMarker = addMarker(endCoords);
 
-            setStartMarker(newStartMarker);
-            setEndMarker(newEndMarker);
+                setStartMarker(newStartMarker);
+                setEndMarker(newEndMarker);
 
-            // 두 마커의 위치를 포함하는 경계 계산
-            const bounds = new kakao.maps.LatLngBounds();
-            bounds.extend(new kakao.maps.LatLng(startCoords.latitude, startCoords.longitude));
-            bounds.extend(new kakao.maps.LatLng(endCoords.latitude, endCoords.longitude));
+                // 두 마커의 위치를 포함하는 경계 계산
+                const bounds = new kakao.maps.LatLngBounds();
+                bounds.extend(new kakao.maps.LatLng(startCoords.latitude, startCoords.longitude));
+                bounds.extend(new kakao.maps.LatLng(endCoords.latitude, endCoords.longitude));
 
-            // 지도의 중심을 경계에 맞추고 줌 레벨 조정
-            map.setBounds(bounds);
+                // 지도의 중심을 경계에 맞추고 줌 레벨 조정
+                map.setBounds(bounds);
 
-            // 거리(미터) → 거리(킬로미터)
-            const distanceInKm = (routeData.routes[0].summary.distance / 1000).toFixed(2); // 소수점 둘째 자리까지
-            setDistance(distanceInKm);
+                // 거리(미터) → 거리(킬로미터)
+                const distanceInKm = (routeData.routes[0].summary.distance / 1000).toFixed(2); // 소수점 둘째 자리까지
+                setDistance(distanceInKm);
 
-            // 소요시간(초) → 시간 및 분
-            const durationInSec = routeData.routes[0].summary.duration;
-            const hours = Math.floor(durationInSec / 3600);
-            const minutes = Math.floor((durationInSec % 3600) / 60);
-            const formattedDuration = `${hours}시간 ${minutes}분`;
-            setDuration(formattedDuration);
+                // 소요시간(초) → 시간 및 분
+                const durationInSec = routeData.routes[0].summary.duration;
+                const hours = Math.floor(durationInSec / 3600);
+                const minutes = Math.floor((durationInSec % 3600) / 60);
+                const formattedDuration = `${hours}시간 ${minutes}분`;
+                setDuration(formattedDuration);
 
-            // 통행료
-            setFare(routeData.routes[0].summary.fare);
+                // 통행료
+                setFare(routeData.routes[0].summary.fare);
 
-            const road = (routeData.routes[0].sections[0].roads);
+                const road = (routeData.routes[0].sections[0].roads);
 
-            // 선 지우기
-            clearRoads();
+                // 선 지우기
+                clearRoads();
 
-            // 선 그리기
-            drawRoads(road);
+                // 선 그리기
+                drawRoads(road);
+            }
+            
 
         } catch (error) {
             console.error(error);
@@ -331,6 +367,12 @@ export default function HotelMap() {
                         <div>
                             <input type='text' name='end' id='end' placeholder='도착지를 입력하세요.' ref={endRef} onClick={() => setIsEndModalOpen(true)} readOnly required/>
                             {renderModal(isEndModalOpen, () => setIsEndModalOpen(false), endRef)}
+                        </div>
+                        <div className='IconBox'>
+                            {car ? <div className='car' onClick={() => clickVehicle('car')} style={{ background: 'rgb(129, 173, 255)', color: 'white' }}><FaCar /></div> : <div className='car' onClick={() => clickVehicle('car')}><FaCar /></div>}
+                            {bus ? <div className='bus' onClick={() => clickVehicle('bus')} style={{ background: 'rgb(129, 173, 255)', color: 'white' }}><FaBus /></div> : <div className='bus' onClick={() => clickVehicle('bus')}><FaBus /></div>}
+                            {walk ? <div className='walk' onClick={() => clickVehicle('walk')} style={{ background: 'rgb(129, 173, 255)', color: 'white' }}><FaWalking /></div> : <div className='walk' onClick={() => clickVehicle('walk')}><FaWalking /></div>}
+                            
                         </div>
                       
                         <input type='submit' value="길찾기" id='searchBtn' hidden/>

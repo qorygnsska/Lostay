@@ -69,7 +69,7 @@ public class CartController {
 		if (cartno != null) {
 			return new ResponseEntity<>(cartno.getCartNo(), HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(HttpStatus.ACCEPTED);// code 404
+			return new ResponseEntity<>(HttpStatus.ACCEPTED);
 		}
 	}
 
