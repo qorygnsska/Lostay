@@ -23,7 +23,7 @@ export default function PageAdminHome() {
 
   const getSearchFilter = async () => {
 
-    await axios.get(`http://localhost:9090/es/search?searchVal=${text_fromChild}`)
+    await axios.get(`http://localhost:9090/es/searchToken?searchVal=${text_fromChild}`)
       .then(response => {
         console.log('response: ' + response);
         console.log('response.ok: ' + response.ok);
