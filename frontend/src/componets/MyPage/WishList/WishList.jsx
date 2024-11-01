@@ -12,14 +12,14 @@ export default function WishList({ wishList, setToast, setToastText, index }) {
         event.preventDefault();
         try {
             if (wishState) {
-                const response = await privateApi.post(`/cartdelete?cartNo=${cartNo}`); // API 요청
+                const response = await privateApi.post(`/cart/delete?cartNo=${cartNo}`); // API 요청
                 if (response.status === 200) {
                     setWishState(!wishState)
                     setToast(true)
                     setToastText('찜 해제')
                 }
             } else {
-                const response = await privateApi.post(`/cartsave?hotelId=${wishList.hotelNo}`); // API 요청
+                const response = await privateApi.post(`/cart/save?hotelId=${wishList.hotelNo}`); // API 요청
                 if (response.status === 200) {
                     console.log(response)
                     setWishState(!wishState)
