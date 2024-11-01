@@ -11,33 +11,33 @@ export default function LoginAdmin() {
     let navigate = useNavigate();
 
 
-    // useEffect(() => {
-    //     const Login = async () => {
-    //         try {
-    //             const response = await axios.post('http://localhost:9090/login-admin', {
-    //                 id: username,
-    //                 pw: password,
-    //             },
-    //                 {
-    //                     withCredentials: true,
-    //                 });
-    //             if (response.status === 200) {
-    //                 console.log(response)
-    //                 axiosAccessToken()
-    //             }
-    //         } catch (error) {
-    //             console.error('Login failed:', error);
-    //             alert('Login failed: ' + (error.response?.data || 'Unknown error'));
-    //         }
-    //     }
+    useEffect(() => {
+        const Login = async () => {
+            try {
+                const response = await axios.post('http://localhost:9090/login-admin', {
+                    id: username,
+                    pw: password,
+                },
+                    {
+                        withCredentials: true,
+                    });
+                if (response.status === 200) {
+                    console.log(response)
+                    axiosAccessToken()
+                }
+            } catch (error) {
+                console.error('Login failed:', error);
+                alert('Login failed: ' + (error.response?.data || 'Unknown error'));
+            }
+        }
 
-    //     Login()
-    // }, [Login()])
+        Login()
+    }, [])
 
     const axiosAccessToken = async () => {
         try {
             const response = await axios.post(
-                "http://localhost:9090/adminReissue/adminNewAccess",
+                "http://localhost:9090/adminReissue/NewAccess",
                 {},
                 {
                     withCredentials: true,
@@ -49,7 +49,8 @@ export default function LoginAdmin() {
 
                 // 액세스 토큰 가져오기
                 const accessToken = response.headers["authorization"];
-                dispatch(adminLogin({ adminState: true, aT: accessToken }));
+                console.log(accessToken)
+                dispatch(adminLogin({ adminState: true, adminAT: accessToken }));
                 navigate("/admin-home");
 
             } else {
