@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lostay.backend.jwt.JWTUtil;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @Transactional
 @RequiredArgsConstructor
+@RequestMapping("/admin")
 public class AdminReissueController {
 	private final JWTUtil jwtUtil;
 	
@@ -28,7 +30,7 @@ public class AdminReissueController {
 	private Long refreshTkExpired = 24 * 60 * 60 * 1000L; // 1일
 	private Long accessTkExpired = 60 * 60 * 1000L; // 1시간
 	
-	@PostMapping("/adminReissue")
+	@PostMapping("/Reissue")//변경전: /adminReissue 변경후:/admin/Reissue
 	public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
 
 		// 쿠키에서 리프레쉬토큰 가져오기
@@ -94,7 +96,7 @@ public class AdminReissueController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PostMapping("/adminNewAccess")
+	@PostMapping("/NewAccess")//변경전: /adminNewAccess 변경후:/admin/NewAccess
 	public ResponseEntity<?> newAccess(HttpServletRequest request, HttpServletResponse response) {
 
 		// 쿠키에서 리프레쉬토큰 가져오기
