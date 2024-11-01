@@ -41,14 +41,19 @@ public class AdminLoginService {
 
 			Long adminNo = adminEntity.getAdminNo();
 
-			String refreshToken = jwtutil.createJwt("refresh", "admin", "ROLE_ADMIN", adminNo, refreshTkExpired);
+			if (adminEntity.getAdminId().equals(id) && adminEntity.getAdminPw().equals(pw)) {
 
-			addRefreshEntity(adminEntity.getAdminId(), refreshToken);
+				String refreshToken = jwtutil.createJwt("refresh", "admin", "ROLE_ADMIN", adminNo, refreshTkExpired);
 
-			response.addCookie(createCookie("refresh", refreshToken));
-			
-			return true;
-		}catch (Exception e) {
+				addRefreshEntity(adminEntity.getAdminId(), refreshToken);
+
+				response.addCookie(createCookie("refresh", refreshToken));
+
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
 			return false;
 		}
 
