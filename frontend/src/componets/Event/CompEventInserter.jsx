@@ -88,7 +88,7 @@ export default function CompEventInserter(props) {
 
             try {
                 // async function & await fetch : 'synchronous' request-response pair
-                const response = await fetch('http://localhost:9090/adminEvent', {
+                const response = await fetch('http://localhost:9090/admin/event', {
                     method: 'POST',
                     headers: {},
                     body: formData

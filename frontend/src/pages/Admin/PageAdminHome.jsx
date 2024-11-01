@@ -18,8 +18,8 @@ export default function PageAdminHome() {
     setText_fromChild(fromMyChild);
   }
 
+  //검색어 필터 결과
   const [txt_result, setTxt_result] = useState('');
-
 
   const getSearchFilter = async () => {
 
@@ -38,7 +38,6 @@ export default function PageAdminHome() {
   useEffect(() => {
     getSearchFilter();
   }, [text_fromChild]);
-
 
   return (
     <>
