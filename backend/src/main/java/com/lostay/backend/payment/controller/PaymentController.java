@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,6 +44,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
+@RequestMapping("/payment")
 public class PaymentController {
 
 	private IamportClient iamportClient;
@@ -59,7 +61,7 @@ public class PaymentController {
 	
 
 	// 결제 내역
-	@GetMapping("/PaymentHistory")
+	@GetMapping("/History")//변경전: PaymentHistory 변경후:/payment/History
 	public ResponseEntity<?> paymenthistory(@RequestParam(defaultValue = "3") Long payNo){
 
 		
@@ -68,7 +70,7 @@ public class PaymentController {
 	
 	
 	// 결제 진행 페이지 호텔-객실(투숙) 정보 <결제정보에서 상품금액에서도 사용>
-	@GetMapping("/HotelRoomInfo")
+	@GetMapping("/HotelRoomInfo")//변경전: HotelRoomInfo 변경후:/payment/HotelRoomInfo
 	public ResponseEntity<?> hotelroominfo(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
 										  ,@RequestParam(defaultValue = "1") Long roomNo
 										  ,@RequestParam(defaultValue = "2024-10-15") 
@@ -84,7 +86,7 @@ public class PaymentController {
 	
 	
 	// 결제 진행 페이지 유저 정보 <결제정보에서 보유 포인트에서도 사용>
-		@GetMapping("/UserInfo")
+		@GetMapping("/UserInfo")//변경전: UserInfo 변경후:/payment/UserInfo
 		public ResponseEntity<?> userinfo(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
 				
 			Long userNo = customOAuth2User.getUserNo();
@@ -96,7 +98,7 @@ public class PaymentController {
 	
 		
 	// 사전검증
-	@PostMapping("/Payment/Before")
+	@PostMapping("/Before")//변경전: /Payment/Before 변경후:/payment/Before
 	private ResponseEntity<?> paymentbefore(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
 			                               ,@RequestBody PaymentBeforeDTO paymentBeforeDTO){
 		
@@ -161,7 +163,7 @@ public class PaymentController {
 		
 		
 	// 사후검증	
-	@PostMapping("/Payment/Verification")
+	@PostMapping("/Verification")//변경전: /Payment/Verification 변경후:/payment/Verification
 	  private IamportResponse<Payment> paymentByImpUid(@RequestBody PaymentVerificationDTO payDTO) throws IamportResponseException,IOException {
 		 iamportClient = new IamportClient(apiKey, secretKey);
 		 
@@ -171,7 +173,7 @@ public class PaymentController {
 	
 	
 	// 사후검증 완료 시 결제 테이블 데이터 삽입
-	@PostMapping("/PaymentInsert")
+	@PostMapping("/Insert")//변경전: /PaymentInsert 변경후:/payment/Insert
 	public void paymentinsert(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
 							 ,@RequestBody PaymentDTO dto){
 
@@ -181,7 +183,7 @@ public class PaymentController {
 	
 	
 	// 결제 취소
-	@GetMapping("/PaymentCancle")
+	@GetMapping("/Cancle")//변경전: /PaymentCancle 변경후:/payment/Cancle
 	public void paymentcancle(@RequestParam(defaultValue = "2") Long payNo,@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
 		
 		Long userNo = 1L;

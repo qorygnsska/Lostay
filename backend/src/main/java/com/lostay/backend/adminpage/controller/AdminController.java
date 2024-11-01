@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,13 +25,14 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Slf4j
 @CrossOrigin
+@RequestMapping("/admin")
 public class AdminController {
 
 	@Autowired
 	AdminService adminService;
 
 	// 이벤트 전체 조회(1024 JIP)
-	@GetMapping("/adminEventList")
+	@GetMapping("/EventList") //변경전: /adminEventList 변경후:/admin/EventList
 	public ResponseEntity<?> adminEventList(boolean onGoing, 
 			@RequestParam(defaultValue = "") String eventTitle,
 			@RequestParam(defaultValue = "1") int page) {
@@ -42,14 +44,14 @@ public class AdminController {
 	}
 
 	// 이벤트 단일 조회_이벤트 수정 모달(1024 JIP)
-	@GetMapping("/adminEventDetail")
+	@GetMapping("/EventDetail") //변경전: /adminEventDetail 변경후:/admin/EventDetail
 	public ResponseEntity<?> adminEventDetail(Long eventNo) {
 
 		return new ResponseEntity<>(adminService.getEventDetail(eventNo), HttpStatus.OK);
 	}
 
 	// 이벤트 등록(1026 JIP)
-	@PostMapping("/adminEvent")
+	@PostMapping("/Event")//변경전: /adminEvent 변경후:/admin/Event
 	public ResponseEntity<?> postAdminEvent(String eventTitle,
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime eventCreateAt, // ISO 8601 형식
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime eventEndAt, 
@@ -72,7 +74,7 @@ public class AdminController {
 	}
 
 	// 이벤트 수정(1026 JIP)
-	@PutMapping("/adminEvent")
+	@PutMapping("/Event")//변경전: /adminEvent 변경후:/admin/Event
 	public ResponseEntity<?> putAdminEvent(Long eventNo, String eventTitle,
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime eventCreateAt, // ISO 8601 형식
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime eventEndAt,
@@ -95,7 +97,7 @@ public class AdminController {
 	}
 
 	// 이벤트 삭제(1026 JIP)
-	@DeleteMapping("/adminEvent/{eventNo}")
+	@DeleteMapping("/Event/{eventNo}")//변경전: /adminEvent/{eventNo} 변경후:/Event/{eventNo}
 	public ResponseEntity<?> deleteAdminEvent(@PathVariable Long eventNo) {
 
 		boolean result = adminService.deleteEvent(eventNo);
@@ -108,7 +110,7 @@ public class AdminController {
 	}
 
 	// 유저가 작성한 리뷰 조회//(1027 JIP 수정)
-	@GetMapping("/adminReviewList")
+	@GetMapping("/ReviewList")//변경전: /adminReviewList 변경후:/admin/ReviewList
 	public ResponseEntity<?> adminReviewList(boolean underSanction, 
 			@RequestParam(defaultValue = "") String userName, // 기본값																		// 설정
 			@RequestParam(defaultValue = "1") int page) {// 기본값 설정
@@ -122,7 +124,7 @@ public class AdminController {
 	}
 
 	// 유저가 작성한 리뷰 제재//(1028 JIP 수정)
-	@PutMapping("/adminReview/{reviewNo}") 
+	@PutMapping("/Review/{reviewNo}") //변경전: //adminReview/{reviewNo} 변경후:/admin/Review/{reviewNo}
 	// POST->PUT, 날짜를 받아오지 말고 백에서 생성
 	// return type: void -> ResponseEntity<?>
 	public ResponseEntity<?> putAdminReview(@PathVariable Long reviewNo) {
@@ -140,7 +142,7 @@ public class AdminController {
 	}
 
 	// 유저 조회//(1027 JIP 수정)
-	@GetMapping("/adminUserList")
+	@GetMapping("/UserList")//변경전: /adminUserList 변경후:/admin/UserList
 	public ResponseEntity<?> adminUserList(boolean inactive,
 			@RequestParam(defaultValue = "") String userName, // 기본값 설정
 			@RequestParam(defaultValue = "1") int page) {// 기본값 설정
@@ -159,14 +161,14 @@ public class AdminController {
 	
 
 		//홍정훈(관리자 페이지 호텔.객실 텝 정보 조회)
-		@GetMapping("/adminhotelsList")
+		@GetMapping("/hotelsList")//변경전: /adminhotelsList 변경후:/admin/hotelsList
 		public ResponseEntity<?> adminEventList(@RequestParam(defaultValue = "1") int page) {
 			
 			return new ResponseEntity<>(adminService.getHotels(page-1), HttpStatus.OK);
 		}
 
 		//홍정훈(관리자 페이지 호텔.객실 텝 객실 할인율 수정)
-		@PostMapping("/adminhotelsListUpdate")
+		@PostMapping("/hotelsListUpdate")//변경전: /adminhotelsListUpdate 변경후:/admin/hotelsListUpdate
 		public ResponseEntity<?> adminhotelsListUpdate(Long roomNo,int roomDiscount) {
 
 	
@@ -181,14 +183,14 @@ public class AdminController {
 
 	
 		//관리자 페이지 년도별 매출액 조회(jh)
-		@GetMapping("/admin/RevenueYearChart")
+		@GetMapping("/RevenueYearChart")
 		public ResponseEntity<?> RevenueChart(){
 			
 			return new ResponseEntity<>(adminService.RevenueChart(),HttpStatus.OK);
 			
 		}
 		  // 관리자 페이지 월별 매출액 조회
-	    @GetMapping("/admin/RevenueMonthChart")
+	    @GetMapping("/RevenueMonthChart")
 	    public ResponseEntity<?> RevenueMonthChart(@RequestParam int year) {
 	        return new ResponseEntity<>(adminService.RevenueMonthChart(year), HttpStatus.OK);
 	    }

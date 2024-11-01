@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lostay.backend.hotel.controller.HotelController;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 @CrossOrigin
+@RequestMapping("/point")
 public class PointController {
 
 	
@@ -27,7 +29,7 @@ public class PointController {
 	private PointService pointService;
 	
 
-	@GetMapping("/pointList") //유저 포인트 내역 조회
+	@GetMapping("/List") //유저 포인트 내역 조회 //변경전: /pointList 변경후:/point/List
 	public ResponseEntity<?>pointList(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,@RequestParam() int monthNum){
 		//@PathVariable("userNo") Long userNo
 		Long userNo = customOAuth2User.getUserNo();
