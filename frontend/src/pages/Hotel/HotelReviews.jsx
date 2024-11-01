@@ -32,7 +32,7 @@ export default function HotelReviews() {
     // 호텔전체리뷰 가져오기
     const fetchHotelReview = async () => {
         try {
-          const response = await axios.get('http://localhost:9090/HotelReviews', {
+          const response = await axios.get('http://localhost:9090/review/HotelReviews', {
             params: { hotelNo, roomNo, sort },
           });
           setReviews(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장

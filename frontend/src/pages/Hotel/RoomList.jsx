@@ -82,7 +82,7 @@ export default function RoomList() {
   // 룸리스트 가져오기
   const fetchHotelRoomList = async () => {
     try {
-      const response = await axios.get('http://localhost:9090/HotelRoomList', {
+      const response = await axios.get('http://localhost:9090/room/HotelRoomList', {
         params: { hotelNo, checkInDate, checkOutDate, peopleMax },
       });
       setRoomInfos(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
@@ -96,7 +96,7 @@ export default function RoomList() {
   // 룸리스트 리뷰3개 가져오기
   const fetchHotelRoomListReview3 = async () => {
     try {
-      const response = await axios.get('http://localhost:9090/InquireRoom3', {
+      const response = await axios.get('http://localhost:9090/review/InquireRoom3', {
         params: { hotelNo },
       });
       setRoomReviews(response.data);
@@ -136,7 +136,7 @@ export default function RoomList() {
   // 찜 했는 지 안 했는 지 확인
   const fetchCart = async () => {
     try {
-      const response = await axios.get('http://localhost:9090/HotelCheckCart', {
+      const response = await axios.get('http://localhost:9090/cart/HotelCheck', {
         params: { hotelNo },
       });
       if (response.status === 200) {
@@ -165,7 +165,7 @@ export default function RoomList() {
   
   const AddCart = async () => {
     try {
-      const response = await axios.post('http://localhost:9090/cartsave', {
+      const response = await axios.post('http://localhost:9090/cart/save', {
         params: { hotelId },
       });
       if (response.status === 200) {
@@ -183,7 +183,7 @@ export default function RoomList() {
   // 찜 삭제
   const DeleteCart = async () => {
     try {
-      const response = await axios.post('http://localhost:9090/cartdelete', {
+      const response = await axios.post('http://localhost:9090/cart/delete', {
         params: { cartNo },
       });
       if (response.status === 200) {

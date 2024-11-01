@@ -93,7 +93,7 @@ export default function HotelList(props) {
       console.log(`amenities: ${catchall}`);
       console.log(`sort: ${sortOption}`);
 
-      let uri = 'http://localhost:9090/testhotel';
+      let uri = 'http://localhost:9090/hotel/search';
       uri += `?hotelsearch=${place}&checkIn=${checkIn}&checkOut=${checkOut}&roomPeopleInfo=${member}`;
       uri += `&minRoomPrice=${minRoomPrice}&maxRoomPrice=${maxRoomPrice}`;
       uri += `&soldOut=${excSoldOut}&roomDiscountState=${viewDiscount}`;
