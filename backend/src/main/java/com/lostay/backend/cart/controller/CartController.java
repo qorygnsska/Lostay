@@ -41,9 +41,18 @@ public class CartController {
 	 
 		//내가 선택한 찜 호텔 삭제
 	 @PostMapping("/cartdelete")
-	 public void cartdelete(@RequestParam Long cartNo) {
+	 public ResponseEntity<?> cartdelete(@RequestParam Long cartNo) {
 		 System.out.println("CartController cartdelete실행");
-	        cartService.deleteById(cartNo);
+	      Boolean result= cartService.deleteById(cartNo);
+	        
+	        if(result) {
+	        	return new ResponseEntity<>(HttpStatus.OK);
+	        } else {
+				return ResponseEntity.notFound().build();// code 404
+			}
+	        
+	        
+	        
 } 
 	 
 	 
