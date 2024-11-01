@@ -11,28 +11,28 @@ export default function LoginAdmin() {
     let navigate = useNavigate();
 
 
-    useEffect(() => {
-        const Login = async () => {
-            try {
-                const response = await axios.post('http://localhost:9090/login-admin', {
-                    id: username,
-                    pw: password,
-                },
-                    {
-                        withCredentials: true,
-                    });
-                if (response.status === 200) {
-                    console.log(response)
-                    axiosAccessToken()
-                }
-            } catch (error) {
-                console.error('Login failed:', error);
-                alert('Login failed: ' + (error.response?.data || 'Unknown error'));
-            }
-        }
+    // useEffect(() => {
+    //     const Login = async () => {
+    //         try {
+    //             const response = await axios.post('http://localhost:9090/login-admin', {
+    //                 id: username,
+    //                 pw: password,
+    //             },
+    //                 {
+    //                     withCredentials: true,
+    //                 });
+    //             if (response.status === 200) {
+    //                 console.log(response)
+    //                 axiosAccessToken()
+    //             }
+    //         } catch (error) {
+    //             console.error('Login failed:', error);
+    //             alert('Login failed: ' + (error.response?.data || 'Unknown error'));
+    //         }
+    //     }
 
-        Login()
-    }, [])
+    //     Login()
+    // }, [Login()])
 
     const axiosAccessToken = async () => {
         try {
@@ -61,6 +61,16 @@ export default function LoginAdmin() {
     };
 
     return (
-        <div>LoginAdmin</div>
+        <div className='login--admin--container'>
+            <div className='login--wrap'>
+                <img src='Logo/logo.png' alt='로고이미지' />
+                <div>
+                    <img />
+                    <div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }
