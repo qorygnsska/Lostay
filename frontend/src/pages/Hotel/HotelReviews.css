@@ -1,5 +1,7 @@
 .hotel--reviews--container{
 
+    padding: 0 !important;
+
     .starTitle{
         font-size: 18px;
         font-weight: bold;
@@ -38,20 +40,12 @@
         font-weight: bold;
     }
 
-    .AllImgDiv{
-        position: relative;
-        overflow: hidden;
-        align-items: center;
-        margin-bottom: 30px;
-        display: flex;
-        gap: 5px;
-    }
-
-    .AllImgDiv:hover{
-        .nextBtn, .prevBtn{
-            opacity: 1;
+    .ReviewImgDiv:hover, .AllImgDiv:hover{
+        .move--btn{
+            display: block;
         }
     }
+
 
     .AllImg{
         width: 90px;
@@ -132,23 +126,6 @@
 
 
 
-
-
-
-    .ReviewImgDiv{
-        position: relative;
-        overflow: hidden;
-        align-items: center;
-        margin-bottom: 30px;
-        display: flex;
-        gap: 5px;
-    }
-
-    .ReviewImgDiv:hover{
-        .rnextBtn, .rprevBtn{
-            opacity: 1;
-        }
-    }
 
     .ReviewImg{
         width: 120px;
