@@ -75,11 +75,12 @@ public class SecurityConfig {
 						.successHandler(customSuccessHandler).failureHandler(customFailureHandler))
 
 				
-//				.authorizeHttpRequests((auth) -> 
-//						auth.antMatchers("/*", "/reissue", "/hotelList/*", "/event/*", "/locationMain").permitAll()
-//							.antMatchers("/mypage/*", "/whislist/*").hasAnyRole("USER")
-//							.antMatchers("/admin/*").hasAnyRole("ADMIN")
-//							.anyRequest().authenticated())
+				.authorizeHttpRequests((auth) -> 
+						auth
+							.antMatchers("/cart/*","/mypage/*","/payment/*","/point/*","/user/*","/bookhistory/*").hasAnyRole("ROLE_USER")
+							.antMatchers("/admin/*").hasAnyRole("ADMIN")
+							.antMatchers("/*", "/event/*", "/Main/*","/hotel/*","/review/*","/room/*","/sms/*").permitAll() 
+							.anyRequest().authenticated())
 
 
 				.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

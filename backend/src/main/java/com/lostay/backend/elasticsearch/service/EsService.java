@@ -1,5 +1,9 @@
 package com.lostay.backend.elasticsearch.service;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -8,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.ElasticsearchException;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
 
 @Service
 public class EsService {
@@ -41,11 +48,41 @@ public class EsService {
 		}
 	}
 
-	public Map<String, Object> getDocument(String searchVal) {
+	public List<String> search(String searchVal) {
 
-
+		//서버주소/Index명/_search
+		//GET http://localhost:9200/kibana_sample_data_ecommerce/_search
 		
-		return null;
+		//HTTP Response로 돌려줄 결과물
+		List<String> resultList= new ArrayList<String>();
+		
+		//Elasticsearch에 요청하여 받을 response
+		SearchResponse<Map> response;
+		try {
+			response = esc.search(s -> s
+									.index("kibana_sample_data_ecommerce")
+									.query(q -> q
+										.wildcard(w -> w
+											.field("customer_full_name")
+											.value(searchVal)
+												)
+									),
+									Map.class);
+			
+			List<Hit<Map>> hits = response.hits().hits();
+			
+			for (Hit<Map> hit : hits) {
+				Map<String, Object> source = hit.source();
+				System.out.println("KeySet: " + source.keySet().toString());
+				resultList.add(source.toString());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultList.add("catchError");
+		}
+		
+		return resultList;
 	}
 	
 	
