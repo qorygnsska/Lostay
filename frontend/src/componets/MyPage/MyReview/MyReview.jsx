@@ -52,11 +52,13 @@ export default function MyReview({ review }) {
 
 
                 {
+                    // 리뷰
                     review.reviewImg ? (<ReviewCarousel images={review.reviewImg} handleImageSelect={handleImageSelect} />) : null
                 }
             </div>
 
             {
+                // 모달
                 review.reviewImg ? <ImageModal imageModalShow={imageModalShow} onClose={() => setImageModalShow(false)} images={review.reviewImg} initialIndex={selImgIdx} />
                     : null
             }

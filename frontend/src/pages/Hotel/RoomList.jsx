@@ -135,10 +135,11 @@ export default function RoomList() {
   const fetchCart = async () => {
     try {
       const response = await axios.get('http://localhost:9090/HotelCheckCart', {
-        params: { hotelNo },
+        params: {  hotelNo },
       });
       if (response.status === 200) {
         SetHeart(true);
+        SetcartNo(response.data);
       }else{
         SetHeart(false);
       }

@@ -40,7 +40,7 @@ export default function ReviewCarousel2({ images, handleImageSelect, isModal, pr
                     {/* 슬라이드 실행 */}
                     <Slider ref={sliderRef} {...settings}>
                         {images.map((image, index) => (
-                            <div className="image--box" onClick={() => handleImageSelect(index)}>
+                            <div className="image--box" onClick={() => handleImageSelect(index,images)}>
                                 <img src={'../../' + image} alt={`슬라이드 ${index + 1}`} className={`${isModal && propIndex === index && "isSelect"}`} />
                             </div>
                         ))}
@@ -67,7 +67,7 @@ export default function ReviewCarousel2({ images, handleImageSelect, isModal, pr
                 <div className='default--image--wrap'>
                     {
                         images.map((image, index) => (
-                            <div className="image--box" onClick={() => handleImageSelect(index)}>
+                            <div className="image--box" onClick={() => handleImageSelect(index,images)}>
                                 <img src={'../../' + image} alt={`슬라이드 ${index + 1}`} className={`${isModal && propIndex === index && "isSelect"}`} />
                             </div>
                         ))
