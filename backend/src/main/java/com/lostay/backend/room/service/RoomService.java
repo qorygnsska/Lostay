@@ -139,70 +139,60 @@ public class RoomService {
 
 
 
-//	public Long findAvailableCount(RoomCheckDTO dto) {
-//		
-//		LocalDateTime in = dto.getCheckInDay().atTime(15,0,0);
-//	    LocalDateTime out = dto.getCheckOutDay().atTime(11,0,0);
-//	    Long roomNo = dto.getRoomNo();
-//	    Long count = roomRepo.findAvailableCount(roomNo,in,out);
-//
-//	    return count;
-//	}
+	
+	public Long findAvailableCount(RoomCheckDTO dto) {
+		
+		LocalDateTime in = dto.getCheckInDay().atTime(15,0,0);
+	    LocalDateTime out = dto.getCheckOutDay().atTime(11,0,0);
+	    Long roomNo = dto.getRoomNo();
+	    Long count = roomRepo.findAvailableCount(roomNo,in,out);
+
+	    return count;
+	}
 
 
-
-//	// 레디스에 값이 있는지 찾아오는거
+//    // 레디스에 값이 있는지 찾아오는거
 //	public RoomCheckDTO findRedisInfo(Long roomNo,LocalDateTime in,LocalDateTime out) {
 //		
-//		Optional<RoomCheck> newRoom = roomRedisRepo.findByRoomNoAndCheckInDayAndCheckOutDay
-//										(roomNo, in.toLocalDate(), out.toLocalDate());
+//		List<RoomCheck> newRoom = roomRedisRepo.findByRoomNoAndCheckInDayLessThanAndCheckOutDayGreaterThan
+//				(roomNo,in,out);
 //		
-//	    return newRoom.map(room -> {
-//	        RoomCheckDTO dto = new RoomCheckDTO();
-//	        dto.setRid(room.getRid());
-//	        dto.setCount(room.getCount());
-//	        dto.setRoomNo(room.getRoomNo());
-//	        dto.setCheckInDay(room.getCheckInDay());
-//	        dto.setCheckOutDay(room.getCheckOutDay());
-//	        return dto;
-//	    }).orElse(new RoomCheckDTO()); // Optional이 비어있을 때 기본값 제공
+//	    
 //
 //		
 //	}
-//
-//
-//
-//	// 업데이트 및 저장
-//	public RoomCheckDTO RedisSave(Long rid, Long count, Long roomNo, LocalDateTime in, LocalDateTime out) {
-//
-//		
-//		RoomCheck ch = new RoomCheck(); 
-//		
-//		if(rid == null) {
-//			
-//			ch.setCount(count);
-//			ch.setRoomNo(roomNo);
-//			ch.setCheckInDay(in.toLocalDate());
-//			ch.setCheckOutDay(out.toLocalDate());
-//			
-//			roomRedisRepo.save(ch);
-//				
-//		}else {
-//	
-//			ch.setRid(rid);
-//			ch.setCount(count);
-//			ch.setRoomNo(roomNo);
-//			ch.setCheckInDay(in.toLocalDate());
-//			ch.setCheckOutDay(out.toLocalDate());
-//			
-//			roomRedisRepo.save(ch);
-//			
-//		}
-//
-//		RoomCheckDTO c1 = new RoomCheckDTO(ch.getRid(),ch.getCount()
-//						,ch.getRoomNo(),ch.getCheckInDay(),ch.getCheckOutDay());
-//		
-//		return c1;
-//	}
+
+
+
+	// 업데이트 및 저장
+	public RoomCheckDTO RedisSave(Long roomNo, LocalDate in, LocalDate out) {
+
+		
+		RoomCheck ch = new RoomCheck(); 
+			
+			ch.setRoomNo(roomNo);
+			ch.setCheckInDay(in);
+			ch.setCheckOutDay(out);
+			
+			roomRedisRepo.save(ch);
+			
+
+
+		RoomCheckDTO c1 = new RoomCheckDTO(ch.getRid()
+						,ch.getRoomNo(),ch.getCheckInDay(),ch.getCheckOutDay());
+		
+		return c1;
+	}
+
+
+	// redis에 해당하는 값을 가진 사람이 몇명 있는지
+	public int findRedisHumanCount(RoomCheckDTO dto) {
+		List<RoomCheck> newRoom = roomRedisRepo.findByRoomNoAndCheckInDayLessThanAndCheckOutDayGreaterThan
+				(dto.getRoomNo(), dto.getCheckInDay(), dto.getCheckOutDay());
+		
+		int totalCount = newRoom.size();
+		
+		return totalCount;
+	}
 	
 }
