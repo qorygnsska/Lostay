@@ -76,6 +76,7 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 	RoomListHotelInfoDTO findHotelInfo(@Param("hotelNo") Long hotelNo);
 
 
+	// 객실 디테일에서 이용 가능한 객실에 대한 정보
 	@Query("SELECT new com.lostay.backend.room.dto.RoomCustomDTO( "
 			  + "r.roomNo, r.roomName, r.roomThumbnail, r.roomPeopleInfo, r.roomPeopleMax "
 			  + ",r.roomCheckinTime, r.roomCheckoutTime, r.roomPrice, r.roomDiscount, "
@@ -83,15 +84,15 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 			  + "(r.roomCount - (SELECT COUNT(rs.reservationNo) FROM Reservation rs " 
 			  + "JOIN rs.payment p " 
 			  + "WHERE p.room.roomNo = r.roomNo " 
-			  +	"AND rs.checkIn >= :checkInDate " 
-			  +	"AND rs.checkOut <= :checkOutDate))) " 
+			  +	"AND rs.checkIn <= :checkOutDate " 
+			  +	"AND rs.checkOut >= :checkInDate))) " 
 			  +	"FROM Room r " 
 			  +	"JOIN r.hotel h " 
 			  +	"WHERE r.roomCount <> (SELECT COUNT(rs.reservationNo) FROM Reservation rs " 
 			  +	"JOIN rs.payment p " 
 			  +	"WHERE p.room.roomNo = r.roomNo " 
-			  +	"AND rs.checkIn >= :checkInDate " 
-			  +	"AND rs.checkOut <= :checkOutDate) " 
+			  +	"AND rs.checkIn <= :checkOutDate " 
+			  +	"AND rs.checkOut >= :checkInDate) " 
 			  +	"AND h.hotelNo = :hotelNo") 
 	List<RoomCustomDTO> findRoomCumstomList(@Param("hotelNo") Long hotelNo
 			                               ,@Param("checkInDate") LocalDateTime in
@@ -103,8 +104,8 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 			  + "(r.roomCount - (SELECT COUNT(rs.reservationNo) FROM Reservation rs " 
 			  + "JOIN rs.payment p " 
 			  + "WHERE p.room.roomNo = r.roomNo " 
-			  +	"AND rs.checkIn >= :checkInDate " 
-			  +	"AND rs.checkOut <= :checkOutDate)) " 
+			  +	"AND rs.checkIn <= :checkOutDate " 
+			  +	"AND rs.checkOut >= :checkInDate)) " 
 			  +	"FROM Room r " 
 			  + "WHERE roomNo = :roomNo ") 
 	Long findAvailableCount(@Param("roomNo")Long roomNo

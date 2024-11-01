@@ -89,6 +89,7 @@ public class RoomService {
 	//  해당 객실에 대한 정보 조회
 	public RoomDTO findRoomInfo(long roomNo,LocalDateTime checkInDate, LocalDateTime checkOutDate, int peopleMax) {
 		
+		
 		Optional<Room> newRoom2 = roomRepo.findById(roomNo);
 		Room room2 = newRoom2.get();
 		
@@ -104,8 +105,8 @@ public class RoomService {
 				avc = list.get(i).getAvailableRooms();
 			}
 		}
-		
 		Optional<Room> newRoom = roomRepo.findById(roomNo);
+		
 		Room room = newRoom.get();
 		
 		RoomDTO dto = new RoomDTO();
@@ -132,7 +133,6 @@ public class RoomService {
 		dto.setHotelAdress(room.getHotel().getHotelAdress());
 		dto.setAvailableRooms(avc);
 		dto.setPeriod(period);
-		
 		
 		return dto;
 	}
