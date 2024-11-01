@@ -15,6 +15,8 @@ import axios from 'axios';
 import CompHeaderGeneral from '../../componets/Header/CompHeaderGeneral';
 import CompSearchBox from '../../componets/Search/CompSearchBox';
 import { useSelector } from 'react-redux';
+import Navbar from '../../componets/Navbar/Navbar';
+import NavTop from '../../componets/NavToTop/NavTop';
 
 export default function RoomList() {
 
@@ -135,7 +137,7 @@ export default function RoomList() {
   const fetchCart = async () => {
     try {
       const response = await axios.get('http://localhost:9090/HotelCheckCart', {
-        params: {  hotelNo },
+        params: { hotelNo },
       });
       if (response.status === 200) {
         SetHeart(true);
@@ -158,6 +160,9 @@ export default function RoomList() {
 
   // 찜 추가
   let hotelId = hotelNo;
+  console.log(typeof(hotelNo));
+  console.log(typeof(hotelId));
+  
   const AddCart = async () => {
     try {
       const response = await axios.post('http://localhost:9090/cartsave', {
@@ -195,6 +200,8 @@ export default function RoomList() {
 
   // 찜 눌렀을 때
   const handlerCart = () => {
+    console.log(Heart);
+    
       if (user === true) {
           if(Heart){
             DeleteCart();
@@ -284,7 +291,8 @@ export default function RoomList() {
 
 
 
-
+      <NavTop />
+      <Navbar />
       <Footer />
     </Container>
 

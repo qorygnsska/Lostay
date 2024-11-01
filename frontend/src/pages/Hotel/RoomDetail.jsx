@@ -122,6 +122,7 @@ export default function RoomDetail() {
             {RoomDetail?.hotelAdress.length > 0 && <KakaoMap Location={RoomDetail.hotelAdress} />}
 
             {RoomDetail && <RoomNav info={RoomDetail}/>}
+
             <Footer />
         </Container>
 

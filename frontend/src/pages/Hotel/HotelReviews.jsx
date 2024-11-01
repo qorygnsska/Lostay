@@ -16,6 +16,8 @@ import BackNav from "../../componets/BackNav/BackNav";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import ReviewCarousel2 from '../../componets/HotelReview/ReviewCarousel2';
+import NavTop from '../../componets/NavToTop/NavTop';
+import Navbar from '../../componets/Navbar/Navbar';
 
 export default function HotelReviews() {
 
@@ -215,6 +217,9 @@ export default function HotelReviews() {
     
                 <RoomOrderModal show={show4} handleClose={handleClose4} Orders={Orders} sort={sort} ClickOrder={ClickOrder}/>
     
+
+                <NavTop />
+                <Navbar />
                 <Footer />
             </Container>
         )

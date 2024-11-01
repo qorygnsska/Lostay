@@ -35,14 +35,14 @@ export default function HotelGrid(props) {
                                         <div className='RealPrice'>{hotel.roomPrice.toLocaleString()}원</div>
                                         <div className='HotelDiscount'>
                                             <div className='Discount'>{hotel.roomDiscount}%</div>
-                                            <div className='DiscountPrice'>{hotel.roomDcPrice.toLocaleString()}원</div>
+                                            <div className='DiscountPrice'>{hotel.roomDcPrice.toLocaleString()}원<span id='bak'>/1박</span></div>
                                         </div>
                                     </>
                                 ) : (
                                     <>
                                         <div className='HotelDiscount'>
                                             <div className='Discount' style={{ visibility: 'hidden' }}>{hotel.roomDiscount}%</div>
-                                            <div className='DiscountPrice'>{hotel.roomDcPrice.toLocaleString()}원</div>
+                                            <div className='DiscountPrice'>{hotel.roomDcPrice.toLocaleString()}원<span id='bak'>/1박</span></div>
                                         </div>
                                     </>
                                 )}

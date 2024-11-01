@@ -26,7 +26,7 @@ export default function ({rooms, checkInDate, checkOutDate, peopleMax}) {
                                         <div className='RealPrice'>{rooms.roomPrice.toLocaleString()}원</div>
                                         <div className='RoomDiscount'>
                                             <div className='Discount'>{rooms.roomDiscount}%</div>
-                                            <div className='DiscountPrice'>{rooms.discountPrice.toLocaleString()}원</div>
+                                            <div className='DiscountPrice'>{rooms.discountPrice.toLocaleString()}원<span id='bak'>/1박</span></div>
                                         </div>
                                         <div className='RoomCount'>남은 객실 {rooms.availableRooms}개</div>
                                         <div className='RoomBtn'>
@@ -36,7 +36,7 @@ export default function ({rooms, checkInDate, checkOutDate, peopleMax}) {
                                     ) : (
                                         <>
                                         <div className='RoomDiscount'>
-                                            <div className='DiscountPrice'>{rooms.discountPrice.toLocaleString()}원</div>
+                                            <div className='DiscountPrice'>{rooms.discountPrice.toLocaleString()}원<span id='bak'>/1박</span></div>
                                         </div>
                                         <div className='RoomCount'>남은 객실 {rooms.availableRooms}개</div>
                                         <div className='RoomBtn'>
@@ -50,7 +50,7 @@ export default function ({rooms, checkInDate, checkOutDate, peopleMax}) {
                                         <div className='RealPrice'>{rooms.roomPrice.toLocaleString()}원</div>
                                         <div className='RoomDiscount'>
                                             <div className='sDiscount'>{rooms.roomDiscount}%</div>
-                                            <div className='sDiscountPrice'>{rooms.roomDcprice.toLocaleString()}원</div>
+                                            <div className='sDiscountPrice'>{rooms.roomDcprice.toLocaleString()}원<span id='bak'>/1박</span></div>
                                         </div>
                                         <div className='RoomBtn'>
                                             <button disabled className='srBtn'>예약마감</button>
@@ -59,7 +59,7 @@ export default function ({rooms, checkInDate, checkOutDate, peopleMax}) {
                                  ) : (
                                     <>  
                                         <div className='RoomDiscount'>
-                                            <div className='sDiscountPrice'>{rooms.roomDcprice.toLocaleString()}원</div>
+                                            <div className='sDiscountPrice'>{rooms.roomDcprice.toLocaleString()}원<span id='bak'>/1박</span></div>
                                         </div>
                                         <div className='RoomBtn'>
                                             <button disabled className='srBtn'>예약마감</button>

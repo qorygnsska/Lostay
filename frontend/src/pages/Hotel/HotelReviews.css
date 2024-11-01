@@ -1,5 +1,7 @@
 .hotel--reviews--container{
 
+    padding: 0 !important;
+
     .starTitle{
         font-size: 18px;
         font-weight: bold;
