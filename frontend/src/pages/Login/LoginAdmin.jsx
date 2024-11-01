@@ -63,12 +63,13 @@ export default function LoginAdmin() {
     return (
         <div className='login--admin--container'>
             <div className='login--wrap'>
-                <img src='Logo/logo.png' alt='로고이미지' />
-                <div>
-                    <img />
-                    <div>
 
-                    </div>
+                <img src='Logo/logo.png' alt='로고이미지' className='logo' />
+
+
+
+                <div className='login--box'>
+
                 </div>
             </div>
         </div>

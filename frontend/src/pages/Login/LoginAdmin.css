@@ -1,3 +1,37 @@
 .login--admin--container {
-    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: absolute;
+    width: 100%;
+    left: 0;
+
+    .login--wrap {
+        width: 600px;
+        height: 300px;
+        border: 1px solid var(--lightGrayColor);
+        border-radius: 20px;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+
+
+        .logo {
+            margin-top: 10px;
+            width: 150px;
+            height: 60px;
+            margin-left: 20px;
+        }
+
+
+        .login--box {
+            border: 1px solid black;
+            width: 300px;
+            height: 200px;
+
+        }
+    }
 }
