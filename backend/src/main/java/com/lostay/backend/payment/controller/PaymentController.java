@@ -173,14 +173,23 @@ public class PaymentController {
 	
 	
 	// 사후검증 완료 시 결제 테이블 데이터 삽입
+
 	@PostMapping("/Insert")//변경전: /PaymentInsert 변경후:/payment/Insert
-	public void paymentinsert(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
+	public ResponseEntity<?> paymentinsert(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
 							 ,@RequestBody PaymentDTO dto){
 
-		Long userNo = customOAuth2User.getUserNo();
-		paySer.savePayment(userNo,dto);
-	}
-	
+//			Long userNo = customOAuth2User.getUserNo();
+			Long userNo = 1L;
+			Boolean result = paySer.savePayment(userNo,dto);
+
+			if(result) {
+				
+				return new ResponseEntity<>(HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			
+		}
 	
 	// 결제 취소
 	@GetMapping("/Cancle")//변경전: /PaymentCancle 변경후:/payment/Cancle

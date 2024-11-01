@@ -131,7 +131,7 @@ public class PaymentService {
 	}
 
 	// 결제 테이블 데이터 삽입, 유저 총 포인트 업데이트, 예약 테이블 데이터 삽입, 포인트 내역 테이블 데이터 삽입
-	public void savePayment(long userNo, PaymentDTO dto) {
+	public Boolean savePayment(long userNo, PaymentDTO dto) {
 
 		Optional<User> newUser = userRepo.findById(userNo);
 		User user = newUser.get();
@@ -140,9 +140,11 @@ public class PaymentService {
 		int userPoint = user.getUserPoint();
 		int totalPoint = userPoint - dto.getPayPoint();
 		user.setUserPoint(totalPoint);
-		userRepo.save(user);
+		User u = userRepo.save(user);
 		
+			
 		// 포인트 테이블에 포인트 내역 추가해야 함
+		 Point po = new Point();
 		if(dto.getPayPoint() > 0) {
 			LocalDateTime now = LocalDateTime.now();
 			Point newPoint = new Point();
@@ -151,7 +153,8 @@ public class PaymentService {
 			
 			newPoint.setPointPlusMinus(-1 * dto.getPayPoint());
 			newPoint.setPointTitle("숙박 예약 사용");
-			poRepo.save(newPoint);
+			
+		    po = poRepo.save(newPoint);
 		}
 		//  0이면 적립, 1이면 사용
 //		newPoint.setStatus(1);
@@ -179,7 +182,7 @@ public class PaymentService {
 		savePay.setPayStatus("Y");
 		savePay.setImpUid(dto.getImp_uid());
 
-		payRepo.save(savePay);
+		Payment p = payRepo.save(savePay);
 
 		// 결제 테이블에 들어온 정보 예약 테이블에 넣어주기
 		Reservation reservation = new Reservation();
@@ -191,7 +194,14 @@ public class PaymentService {
 		reservation.setCheckOut(out);
 		reservation.setPayment(savePay);
 
-		resRepo.save(reservation);
+		Reservation r = resRepo.save(reservation);
+		
+		if(p.getPayNo() != null & r.getReservationNo() != null 
+			&u.getUserNo() != null & po.getPointNo() !=null) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	// 결제/예약 취소(status N으로 업데이트)

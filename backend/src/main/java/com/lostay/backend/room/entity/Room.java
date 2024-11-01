@@ -72,9 +72,9 @@ public class Room {
 	@Column(name="room_checkout_time")
 	private LocalTime roomCheckoutTime;	// 객실체크아웃시간
 	
-	@OneToOne(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
+	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // room 엔티티와의 관계 설정
 	@ToString.Exclude  // 순환 참조 방지
-	private Payment payments; // 예약 목록
+	private Set<Payment> payments; // 예약 목록
 	
 	@OneToMany(mappedBy = "room",cascade = CascadeType.ALL, fetch = FetchType.LAZY ) // room 엔티티와의 관계 설정
 	@ToString.Exclude  // 순환 참조 방지
