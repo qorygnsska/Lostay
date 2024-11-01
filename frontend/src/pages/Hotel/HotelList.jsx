@@ -148,7 +148,7 @@ export default function HotelList(props) {
     if (inView && hasMore) {
       loadMoreHotels();
     }
-  }, [inView, hasMore,hotels]);
+  }, [inView, hasMore, hotels]);
 
 
   // 모달
