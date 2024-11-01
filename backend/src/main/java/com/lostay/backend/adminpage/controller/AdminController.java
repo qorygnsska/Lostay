@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lostay.backend.adminpage.dto.AdminEventDTO;
+import com.lostay.backend.adminpage.dto.RevenueDataDTO;
 import com.lostay.backend.adminpage.service.AdminService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -185,7 +186,7 @@ public class AdminController {
 		//관리자 페이지 년도별 매출액 조회(jh)
 		@GetMapping("/revenueYearChart")
 		public ResponseEntity<?> RevenueChart(){
-			
+			System.out.println("RevenueYearChart 실행");
 			return new ResponseEntity<>(adminService.RevenueChart(),HttpStatus.OK);
 			
 		}
@@ -201,6 +202,18 @@ public class AdminController {
 	    public ResponseEntity<?> RevenuebranchChart(@RequestParam int year) {
 	    	System.out.println("RevenuebranchChart 실행");
 	        return new ResponseEntity<>(adminService.RevenuebranchChart(year), HttpStatus.OK);
+	    }
+	    
+	    // 관리자 페이지 호텔별 분기 조회
+	    @GetMapping("/revenueData")
+	    public ResponseEntity<RevenueDataDTO> getRevenueData(@RequestParam String hotelName,@RequestParam int year) {
+	        System.out.println("revenueData 실행");
+	    	RevenueDataDTO revenueData = adminService.getRevenueDataByHotelName(hotelName,year);
+	    	 // revenueData가 비어있는지 확인
+	        if (revenueData.getRevenueData() == null || revenueData.getRevenueData().isEmpty()) {
+	          return ResponseEntity.notFound().build(); // 404 Not Found
+	        }
+	        return new ResponseEntity<>(revenueData, HttpStatus.OK); // 200 OK
 	    }
 	    
 	    

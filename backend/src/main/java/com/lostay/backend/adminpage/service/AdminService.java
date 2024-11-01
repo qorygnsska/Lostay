@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.lostay.backend.adminpage.dto.AdminEventDTO;
 import com.lostay.backend.adminpage.dto.AdminRevenueChartDTO;
 import com.lostay.backend.adminpage.dto.HotelInfosDTO;
+import com.lostay.backend.adminpage.dto.QuarterlyRevenueDTO;
+import com.lostay.backend.adminpage.dto.RevenueDataDTO;
 import com.lostay.backend.adminpage.dto.roomsDTO;
 
 import com.lostay.backend.event.entity.Event;
@@ -398,7 +400,7 @@ public class AdminService {
 	    return (int) (payment.getPayPrice() * commissionRate); // 계산 후 정수형으로 변환
 	}
 	
-	// // 관리자 페이지 분기별 매출액 조회(jh)
+	 // 관리자 페이지 분기별 매출액 조회(jh)
 	public List<AdminRevenueChartDTO> RevenuebranchChart(int year) {
 	    List<AdminRevenueChartDTO> result = new ArrayList<>();
 	    for (int quarter = 1; quarter <= 4; quarter++) {
@@ -413,5 +415,29 @@ public class AdminService {
 	    }
 	    System.out.println("result:"+ result);
 	    return result;
+	}
+
+	
+	// 관리자 페이지 호텔별 분기 조회
+	public RevenueDataDTO getRevenueDataByHotelName(String hotelName, int year) {
+        // JPA 리포지토리에서 데이터 조회
+        List<Object[]> results = paymentRepo.findRevenueDataByHotelName(hotelName,year);
+        List<QuarterlyRevenueDTO> revenueDataList = new ArrayList<>();
+        
+        // 쿼리 결과를 DTO로 변환
+        for (Object[] result : results) {
+            int resultsyear = (Integer) result[0];
+            int quarter = (Integer) result[1];
+            Long totalCommission = ((Number) result[2]).longValue(); 
+            Long totalReservations = ((Number) result[3]).longValue(); 
+
+            revenueDataList.add(new QuarterlyRevenueDTO(resultsyear, quarter, totalCommission, totalReservations));
+        }
+        // 최종 DTO 구성
+        RevenueDataDTO revenueData = new RevenueDataDTO();
+        revenueData.setHotelName(hotelName);
+        revenueData.setRevenueData(revenueDataList);
+
+        return revenueData;
 	}
 }

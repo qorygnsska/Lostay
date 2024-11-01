@@ -21,4 +21,19 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 	@Query("SELECT p FROM Payment p WHERE p.payStatus = 'Y' AND YEAR(p.payDay) = :year AND QUARTER(p.payDay) = :quarter")
 	List<Payment> findSuccessfulPaymentsByQuarter(@Param("year") int year, @Param("quarter") int quarter);
 
+	// 관리자 페이지 호텔별 분기 조회
+	@Query("SELECT " +
+		       "YEAR(p.payDay) AS year, " +
+		       "QUARTER(p.payDay) AS quarter, " +
+		       "SUM(ROUND(p.payPrice * h.hotelCommission / 100)) AS totalCommission, " +
+		       "COUNT(p) AS totalReservations " + // COUNT를 p로 수정
+		       "FROM Hotel h " +
+		       "JOIN h.rooms r " + // Join 방식 변경
+		       "JOIN r.payments p " + // Join 방식 변경
+		       "WHERE p.payStatus = 'Y' " +
+		       "AND YEAR(p.payDay) = :year " +
+		       "AND h.hotelName = :hotelName " +
+		       "GROUP BY YEAR(p.payDay), QUARTER(p.payDay)")
+	List<Object[]> findRevenueDataByHotelName(@Param("hotelName") String hotelName,@Param("year") int year);
+
 }
