@@ -15,6 +15,9 @@ import RoomOrderModal from '../../componets/HotelReview/RoomOrderModal';
 import BackNav from "../../componets/BackNav/BackNav";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import ReviewCarousel2 from '../../componets/HotelReview/ReviewCarousel2';
+import NavTop from '../../componets/NavToTop/NavTop';
+import Navbar from '../../componets/Navbar/Navbar';
 
 export default function HotelReviews() {
 
@@ -29,7 +32,7 @@ export default function HotelReviews() {
     // 호텔전체리뷰 가져오기
     const fetchHotelReview = async () => {
         try {
-          const response = await axios.get('http://localhost:9090/HotelReviews', {
+          const response = await axios.get('http://localhost:9090/review/HotelReviews', {
             params: { hotelNo, roomNo, sort },
           });
           setReviews(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
@@ -148,13 +151,15 @@ export default function HotelReviews() {
                 </div>
     
                 <div className='AllImgDiv'>
-                    <div className='prevBtn'><GrPrevious/></div>
+                    {/* <div className='prevBtn'><GrPrevious/></div> */}
+
+                    <ReviewCarousel2 images={allImages} handleImageSelect={handleImageClick} />
             
-                    {allImages.map((img, idx) => (
+                    {/* {allImages.map((img, idx) => (
                         <img src={'../../' + img} key={idx} alt='리뷰총이미지' className='AllImg' onClick={() => handleImageClick(idx, allImages)}/>
-                    ))}
+                    ))} */}
                
-                    <div className='nextBtn'><GrNext/></div>
+                    {/* <div className='nextBtn'><GrNext/></div> */}
                 </div>
     
                 <div className='RowLine'></div>
@@ -193,11 +198,7 @@ export default function HotelReviews() {
                                 <div></div>
                             ) : (
                                 <div className='ReviewImgDiv'>
-                                    <div className='rprevBtn'><GrPrevious/></div>
-                                    {review.reviewImg.map((img, idx) => (
-                                        <img src={'../../' + img} key={idx} alt='리뷰이미지' className='ReviewImg' onClick={() => handleImageClick(idx, review.reviewImg)}/>
-                                    ))}
-                                    <div className='rnextBtn'><GrNext/></div>
+                                    <ReviewCarousel2 images={review.reviewImg} handleImageSelect={handleImageClick} />
                                 </div>
                             )}
                             
@@ -216,6 +217,9 @@ export default function HotelReviews() {
     
                 <RoomOrderModal show={show4} handleClose={handleClose4} Orders={Orders} sort={sort} ClickOrder={ClickOrder}/>
     
+
+                <NavTop />
+                <Navbar />
                 <Footer />
             </Container>
         )

@@ -30,6 +30,12 @@
                 margin-top: 50px;
                 margin-left: 10px;
             }
+
+            .thumbnail-container:hover {
+                .move--btn{
+                    display: block;
+                }
+            }
     
             .thumbnail-container::-webkit-scrollbar {
                 height: 8px;
