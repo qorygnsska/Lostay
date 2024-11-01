@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lostay.backend.jwt.JWTUtil;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @Transactional
 @RequiredArgsConstructor
+@RequestMapping("user")
 public class ReissueController {
 
 	private final JWTUtil jwtUtil;
@@ -34,7 +36,7 @@ public class ReissueController {
 	private Long refreshTkExpired = 24 * 60 * 60 * 1000L; // 1일
 	private Long accessTkExpired = 60 * 60 * 1000L; // 1시간
 
-	@PostMapping("/reissue")
+	@PostMapping("/reissue")//변경전: /reissue 변경후:/user/reissue
 	public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
 
 		// 쿠키에서 리프레쉬토큰 가져오기
@@ -110,7 +112,7 @@ public class ReissueController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@PostMapping("/newAccess")
+	@PostMapping("/newAccess")//변경전: /newAccess 변경후:/user/newAccess
 	public ResponseEntity<?> newAccess(HttpServletRequest request, HttpServletResponse response) {
 
 		// 쿠키에서 리프레쉬토큰 가져오기
@@ -131,7 +133,7 @@ public class ReissueController {
 		return createAccess(request, response, refresh);
 	}
 
-	@PostMapping("/newAccess/{phonenum}")
+	@PostMapping("/newAccess/{phonenum}")//변경전: /newAccess/{phonenum} 변경후:/user/newAccess/{phonenum}
 	public ResponseEntity<?> newAccessFirst(HttpServletRequest request, HttpServletResponse response,@PathVariable("phonenum") String phoneNum) {
 		// 쿠키에서 리프레쉬토큰 가져오기
 		String refresh = null;

@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lostay.backend.room.service.RoomService;
 
 @RestController
+@CrossOrigin
+@RequestMapping("/room")
 public class RoomRestController {
 
 	
@@ -22,7 +26,7 @@ public class RoomRestController {
 	
 	
 	// 해당 호텔의 객실 전부 조회 / 호텔 정보도 가져오기 / 기준인원
-	@GetMapping("/HotelRoomList")
+	@GetMapping("/HotelRoomList")//변경전: /HotelRoomList 변경후:/room/HotelRoomList
 	public ResponseEntity<?> hotelroomlist(@RequestParam(defaultValue = "1") Long hotelNo
 										 ,@RequestParam(defaultValue = "2024-10-20T15:00:00") 
 										  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkInDate
@@ -36,7 +40,7 @@ public class RoomRestController {
 	
 
 	// 해당 객실에 대한 정보 조회
-	@GetMapping("/RoomDetail")
+	@GetMapping("/RoomDetail")//변경전: /RoomDetail 변경후:/room/RoomDetail
 	public ResponseEntity<?> roomdetail(@RequestParam(defaultValue = "1") Long roomNo
 			,@RequestParam(defaultValue = "2024-10-20T15:00:00") 
 	  		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkInDate
