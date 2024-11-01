@@ -49,7 +49,7 @@ export default function PageUserManager() {
 
         //인증 토큰 연계한 Axios 'GET' request by privateApi(Customized Comp)
         // async&await이나 then()은 같은 것
-        axios.get(`http://localhost:9090/adminUserList?inactive=${inactive}&userName=${userName}&page=${requestedPage}`)
+        axios.get(`http://localhost:9090/admin/userList?inactive=${inactive}&userName=${userName}&page=${requestedPage}`)
             .then(response => {
                 //console.log(response);
                 console.log(response.data);

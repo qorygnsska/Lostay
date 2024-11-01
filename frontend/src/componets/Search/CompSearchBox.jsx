@@ -90,7 +90,7 @@ export default function CompSearchBox(props) {
 
     const getLocationList = async () => {
         try {
-            const response = await axios.get('http://localhost:9090/locationMain');
+            const response = await axios.get('http://localhost:9090/main/location');
             if (response.status === 200) {
                 setLocationList(response.data);
             }

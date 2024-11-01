@@ -37,7 +37,7 @@ export default function CompAdminBtn(props) {
   async function deleteEvent() {
     try {
       // async function & await fetch : 'synchronous' request-response pair
-      const response = await fetch(`http://localhost:9090/adminEvent/${props.no}`, { method: 'DELETE' });
+      const response = await fetch(`http://localhost:9090/admin/event/${props.no}`, { method: 'DELETE' });
       //console.log(response.ok);
       
       if (response.ok) {
@@ -57,7 +57,7 @@ export default function CompAdminBtn(props) {
   // 리뷰 '제재' 버튼 클릭 시
   function hideReview() {
     //axios&then으로 처리 // async&await이나 then()은 같은 것
-    axios.put(`http://localhost:9090/adminReview/${props.no}`)
+    axios.put(`http://localhost:9090/admin/review/${props.no}`)
       .then(response => {
         //console.log('response: ' + response);
         //console.log('response.ok: ' + response.ok);

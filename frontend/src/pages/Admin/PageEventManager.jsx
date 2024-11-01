@@ -65,7 +65,7 @@ export default function PageEventManager() {
         console.log(`getEvent ViewOnGoing: ${viewOngoing} eventTitle: ${eventTitle} page: ${requestedPage}`);
 
         // fetch() : (default) request 'GET', 'async' // async&await이나 then()은 같은 것
-        fetch(`http://localhost:9090/adminEventList?onGoing=${onGoing}&eventTitle=${eventTitle}&page=${requestedPage}`)    
+        fetch(`http://localhost:9090/admin/eventList?onGoing=${onGoing}&eventTitle=${eventTitle}&page=${requestedPage}`)    
             .then(response => response.json())  // response가 오면 json 변환
             .then(data => {
                 console.log(data);

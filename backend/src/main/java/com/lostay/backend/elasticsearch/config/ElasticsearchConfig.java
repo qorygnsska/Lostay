@@ -27,7 +27,6 @@ public class ElasticsearchConfig {
 		// w/ java class <-> json mapper
 		RestClientTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
 		
-		
 		return new ElasticsearchClient(transport);
 	}
 	

@@ -76,6 +76,7 @@ public class HotelService {
             "WHERE " +
                 "    (h.hotelAdress LIKE :hotelsearch " +
                 "    OR h.hotelName LIKE :hotelsearch " +
+                "    OR h.hotelTouristAttraction LIKE :hotelsearch " +
                 "    OR h.hotelIntroduction LIKE :hotelsearch) " +
                 "    AND r.roomPrice BETWEEN :minRoomPrice AND :maxRoomPrice " +
                 "    AND r.roomPeopleMax >= :roomPeopleInfo " +

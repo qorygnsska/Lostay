@@ -29,46 +29,48 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin
 @RequestMapping("/cart")
 public class CartController {
-   
+
 	@Autowired
 	private CartService cartService;
-	//내가 선택한 찜 호텔 저장
-	 @PostMapping("/save")//변경전: /cartsave 변경후:/cart/save
-	 public ResponseEntity<?> createCart(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @RequestParam Long hotelId) {
-		 
-		 	long userNo = customOAuth2User.getUserNo();
-//		 	long userId = 1L;        
-	 return new ResponseEntity<>(cartService.cartsave(userNo, hotelId), HttpStatus.OK);
-}
-	 
-		//내가 선택한 찜 호텔 삭제
-	 @PostMapping("/delete")//변경전: /cartdelete 변경후:/cart/delete
-	 public ResponseEntity<?> cartdelete(@RequestParam Long cartNo) {
-		 System.out.println("CartController cartdelete실행");
-	      Boolean result= cartService.deleteById(cartNo);
-	        
-	        if(result) {
-	        	return new ResponseEntity<>(HttpStatus.OK);
-	        } else {
-				return ResponseEntity.notFound().build();// code 404
-			}
-	        
-	        
-	        
-}   
-	 //호텔 찜 선택 체크 조회(jh)
-	 @GetMapping("/HotelCheck")//변경전: /HotelCheckCart 변경후:/cart/HotelCheck
-		public ResponseEntity<?> HotelCheckCart(@RequestParam Long userNo, @RequestParam Long hotelNo) {
-		 //@AuthenticationPrincipal CustomOAuth2User customOAuth2User
-		 //long userNo = customOAuth2User.getUserNo();
 
-		CartDTO cartno = cartService.HotelCheckCart(userNo,hotelNo);
-			if (cartno !=null) {
-				return new ResponseEntity<>(cartno.getCartNo(), HttpStatus.OK);
-			} else {
-				return ResponseEntity.notFound().build();// code 404
-			}
-		} 
-	 
-	 
+	// 내가 선택한 찜 호텔 저장
+	@PostMapping("/save") // 변경전: /cartsave 변경후:/cart/save
+	public ResponseEntity<?> createCart(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+			@RequestParam Long hotelId) {
+
+		long userNo = customOAuth2User.getUserNo();
+//		 	long userId = 1L;        
+		return new ResponseEntity<>(cartService.cartsave(userNo, hotelId), HttpStatus.OK);
+	}
+
+	// 내가 선택한 찜 호텔 삭제
+	@PostMapping("/delete") // 변경전: /cartdelete 변경후:/cart/delete
+	public ResponseEntity<?> cartdelete(@RequestParam Long cartNo) {
+		System.out.println("CartController cartdelete실행");
+		Boolean result = cartService.deleteById(cartNo);
+
+		if (result) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return ResponseEntity.notFound().build();// code 404
+		}
+
+	}
+
+	// 호텔 찜 선택 체크 조회(jh)
+	@GetMapping("/HotelCheck") // 변경전: /HotelCheckCart 변경후:/cart/HotelCheck
+	public ResponseEntity<?> HotelCheckCart(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+			@RequestParam Long hotelNo) {
+		long userNo = customOAuth2User.getUserNo();
+		System.out.println("hotelNo" + hotelNo);
+		System.out.println("userNo " + userNo);
+		CartDTO cartno = cartService.HotelCheckCart(userNo, hotelNo);
+		
+		if (cartno != null) {
+			return new ResponseEntity<>(cartno.getCartNo(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.ACCEPTED);// code 404
+		}
+	}
+
 }

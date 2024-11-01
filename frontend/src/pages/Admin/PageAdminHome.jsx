@@ -18,12 +18,12 @@ export default function PageAdminHome() {
     setText_fromChild(fromMyChild);
   }
 
+  //검색어 필터 결과
   const [txt_result, setTxt_result] = useState('');
-
 
   const getSearchFilter = async () => {
 
-    await axios.get(`http://localhost:9090/es/search?searchVal=${text_fromChild}`)
+    await axios.get(`http://localhost:9090/es/searchToken?searchVal=${text_fromChild}`)
       .then(response => {
         console.log('response: ' + response);
         console.log('response.ok: ' + response.ok);
@@ -38,7 +38,6 @@ export default function PageAdminHome() {
   useEffect(() => {
     getSearchFilter();
   }, [text_fromChild]);
-
 
   return (
     <>
