@@ -22,17 +22,12 @@ public class EsRestController {
 	//https://www.skyer9.pe.kr/wordpress/?p=5655
 	
 	@GetMapping("/search")
-	public ResponseEntity<?> getDocument(@RequestParam String searchVal) {
+	public ResponseEntity<?> search(@RequestParam String searchVal) {
 		
-		System.out.println("esController.getDocumentSearch: " + searchVal);
+		System.out.println("esController.search: " + searchVal);
 		
-		Map<String, Object> docu = ess.getDocument(searchVal);
-		
-		return new ResponseEntity<>(docu, HttpStatus.OK);
+		return new ResponseEntity<>(ess.search(searchVal), HttpStatus.OK);
 	}
-	
-	
-	
 	
 	
 	
