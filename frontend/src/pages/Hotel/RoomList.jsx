@@ -17,12 +17,11 @@ import CompSearchBox from '../../componets/Search/CompSearchBox';
 import { useSelector } from 'react-redux';
 import Navbar from '../../componets/Navbar/Navbar';
 import NavTop from '../../componets/NavToTop/NavTop';
-<<<<<<< HEAD
+
 import KakaoApiShare from '../../componets/KakaoApi/KakaoApishare';
-=======
+
 import { privateApi } from '../../api/api';
 
->>>>>>> master
 export default function RoomList() {
 
   const { search } = useLocation();
