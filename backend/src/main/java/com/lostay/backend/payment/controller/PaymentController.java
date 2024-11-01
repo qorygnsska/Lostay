@@ -174,12 +174,19 @@ public class PaymentController {
 	
 	// 사후검증 완료 시 결제 테이블 데이터 삽입
 	@PostMapping("/PaymentInsert")
-	public void paymentinsert(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
+	public ResponseEntity<?> paymentinsert(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
 							 ,@RequestBody PaymentDTO dto){
 
 //		Long userNo = customOAuth2User.getUserNo();
 		Long userNo = 1L;
-		paySer.savePayment(userNo,dto);
+		Boolean result = paySer.savePayment(userNo,dto);
+
+		if(result) {
+			
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		
 	}
 	

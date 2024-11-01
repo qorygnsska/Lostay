@@ -38,8 +38,8 @@ public class RoomRestController {
 	// 해당 객실에 대한 정보 조회
 	@GetMapping("/RoomDetail")
 	public ResponseEntity<?> roomdetail(@RequestParam(defaultValue = "1") Long roomNo,
-			@RequestParam(defaultValue = "2024-10-20T15:00:00") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkInDate,
-			@RequestParam(defaultValue = "2024-10-22T11:00:00") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkOutDate,
+			@RequestParam(defaultValue = "2024-11-02T15:00:00") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkInDate,
+			@RequestParam(defaultValue = "2024-11-03T11:00:00") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime checkOutDate,
 			@RequestParam(defaultValue = "3") int peopleMax) {
 
 		return new ResponseEntity<>(roomSer.findRoomInfo(roomNo, checkInDate, checkOutDate, peopleMax), HttpStatus.OK);
@@ -63,16 +63,18 @@ public class RoomRestController {
 
 		JSONObject Body = new JSONObject();
 
-		if (result == null) {
-
-			roomdto = roomSer.RedisSave(--count, roomNo, in, out);
+		if (result.getRid() == null) {
+			System.out.println("if:"+result);
+			roomdto = roomSer.RedisSave(null, --count, roomNo, in, out);
 			Body.put("message", "예약이 가능합니다.");
 			Body.put("status", true);
 			return new ResponseEntity<>(Body, HttpStatus.OK);
 
 		} else {
+			
+			System.out.println("else:"+result);
 			if (result.getCount() >= 1) {
-				roomdto = roomSer.RedisSave(result.getCount() - 1, roomNo, in, out);
+				roomdto = roomSer.RedisSave(result.getRid(),result.getCount() - 1, roomNo, in, out);
 
 				Body.put("message", "예약이 가능합니다.");
 				Body.put("status", true);

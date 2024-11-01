@@ -151,6 +151,7 @@ public class RoomService {
 
 
 
+	// 레디스에 값이 있는지 찾아오는거
 	public RoomCheckDTO findRedisInfo(Long roomNo,LocalDateTime in,LocalDateTime out) {
 		
 		Optional<RoomCheck> newRoom = roomRedisRepo.findByRoomNoAndCheckInDayAndCheckOutDay
@@ -171,16 +172,33 @@ public class RoomService {
 
 
 
-	public RoomCheckDTO RedisSave(Long count, Long roomNo, LocalDateTime in, LocalDateTime out) {
+	// 업데이트 및 저장
+	public RoomCheckDTO RedisSave(Long rid, Long count, Long roomNo, LocalDateTime in, LocalDateTime out) {
 
+		
 		RoomCheck ch = new RoomCheck(); 
-		ch.setCount(count);
-		ch.setRoomNo(roomNo);
-		ch.setCheckInDay(in.toLocalDate());
-		ch.setCheckOutDay(out.toLocalDate());
 		
-		roomRedisRepo.save(ch);
-		
+		if(rid == null) {
+			
+			ch.setCount(count);
+			ch.setRoomNo(roomNo);
+			ch.setCheckInDay(in.toLocalDate());
+			ch.setCheckOutDay(out.toLocalDate());
+			
+			roomRedisRepo.save(ch);
+				
+		}else {
+	
+			ch.setRid(rid);
+			ch.setCount(count);
+			ch.setRoomNo(roomNo);
+			ch.setCheckInDay(in.toLocalDate());
+			ch.setCheckOutDay(out.toLocalDate());
+			
+			roomRedisRepo.save(ch);
+			
+		}
+
 		RoomCheckDTO c1 = new RoomCheckDTO(ch.getRid(),ch.getCount()
 						,ch.getRoomNo(),ch.getCheckInDay(),ch.getCheckOutDay());
 		

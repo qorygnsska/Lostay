@@ -21,7 +21,7 @@ public class RoomCheck {
 	
 	@Id
 	private Long Rid;
-	@Indexed
+
 	private Long count;  // 체크아웃 날짜
 	@Indexed
 	private Long roomNo;			// 객실번호
