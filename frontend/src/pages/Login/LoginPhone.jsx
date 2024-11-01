@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
+import { privateApi } from '../../api/api';
 
 export default function LoginPhone() {
 
@@ -15,7 +16,7 @@ export default function LoginPhone() {
     const postPhoneNum = async (phonenum) => {
 
         try {
-            const response = await axios.post(`http://localhost:9090/loginPhone/${phonenum}`); // API 요청
+            const response = await axios.post(`http://localhost:9090/sms/loginPhone/${phonenum}`); // API 요청
             setServerCode(response.data);
             return response.data;
 
@@ -28,7 +29,7 @@ export default function LoginPhone() {
     const axiosAccessToken = async (phonenum) => {
         try {
             const response = await axios.post(
-                `http://localhost:9090/newAccess/${phonenum}`,
+                `http://localhost:9090/userReissue/newAccess/${phonenum}`,
                 {},
                 {
                     withCredentials: true,
@@ -152,10 +153,24 @@ export default function LoginPhone() {
 
         if (verificationCode === serverCode.certificationCode && timer > 0) {
             setIsVerified(true);
+            postPhoneNumSave(phone)
             axiosAccessToken(phone);
         } else {
             setIsVerified(false);
             setVerificationMessage("인증번호가 잘못되었습니다.");
+        }
+    };
+
+    // 전화번호 저장
+    const postPhoneNumSave = async (phonenum) => {
+
+        try {
+            const response = await privateApi.post(`http://localhost:9090/mypage/UserInfo/phone/${phonenum}`); // API 요청
+            setServerCode(response.data);
+            return response.data;
+
+        } catch (error) {
+            console.error(error);
         }
     };
 

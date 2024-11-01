@@ -19,7 +19,7 @@ export default function Profile() {
     const getData = async () => {
 
         try {
-            const response = await privateApi.get('/mypageEdit'); // API 요청
+            const response = await privateApi.get('/mypage/Edit'); // API 요청
             console.log(response.data)
             setProfile(response.data)
             return response.data;
@@ -111,7 +111,7 @@ export default function Profile() {
                 setNicknameEdit(false);
             } else {
                 try {
-                    const response = await privateApi.put(`http://localhost:9090/mypageUserInfo/nickname/${nickname.trim()}`); // API 요청
+                    const response = await privateApi.put(`http://localhost:9090/mypage/UserInfo/nickname/${nickname.trim()}`); // API 요청
 
                     if (response.status === 200) {
                         setNickname(nickname.trim())
@@ -307,7 +307,7 @@ export default function Profile() {
     const postPhoneNum = async (phonenum) => {
 
         try {
-            const response = await axios.post(`http://localhost:9090/loginPhone/${phonenum}`); // API 요청
+            const response = await axios.post(`http://localhost:9090/sms/loginPhone/${phonenum}`); // API 요청
             setServerCode(response.data);
             return response.data;
 
@@ -320,7 +320,7 @@ export default function Profile() {
     const postPhoneNumSave = async (phonenum) => {
 
         try {
-            const response = await privateApi.post(`http://localhost:9090/mypageUserInfo/phone/${phonenum}`); // API 요청
+            const response = await privateApi.post(`http://localhost:9090/mypage/UserInfo/phone/${phonenum}`); // API 요청
             setServerCode(response.data);
             return response.data;
 
@@ -347,7 +347,7 @@ export default function Profile() {
 
     const userUnsubscript = async () => {
         try {
-            const response = await privateApi.post('http://localhost:9090/mypageUser/unsubscribe'); // API 요청
+            const response = await privateApi.post('http://localhost:9090/mypage/User/unsubscribe'); // API 요청
 
             if (response.status === 200) {
                 dispatch(logout());

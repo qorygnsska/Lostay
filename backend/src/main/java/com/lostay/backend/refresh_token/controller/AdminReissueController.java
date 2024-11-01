@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @Transactional
 @RequiredArgsConstructor
-@RequestMapping("/admin")
+@RequestMapping("/adminReissue")
 public class AdminReissueController {
 	private final JWTUtil jwtUtil;
 	
@@ -30,7 +30,7 @@ public class AdminReissueController {
 	private Long refreshTkExpired = 24 * 60 * 60 * 1000L; // 1일
 	private Long accessTkExpired = 60 * 60 * 1000L; // 1시간
 	
-	@PostMapping("/Reissue")//변경전: /adminReissue 변경후:/admin/Reissue
+	@PostMapping("")//변경전: /adminReissue 변경후:/admin/Reissue
 	public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
 
 		// 쿠키에서 리프레쉬토큰 가져오기

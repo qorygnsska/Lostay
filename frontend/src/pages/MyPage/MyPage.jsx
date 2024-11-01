@@ -48,7 +48,7 @@ export default function MyPage() {
 
     const userLogout = async () => {
         try {
-            const ef = await privateApi.post('http://localhost:9090/mypageUser/userLogout'); // API 요청
+            const ef = await privateApi.post('http://localhost:9090/mypage/User/userLogout'); // API 요청
 
             if (ef.status === 200) {
                 dispatch(logout());

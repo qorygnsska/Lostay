@@ -33,7 +33,7 @@ privateApi.interceptors.response.use(
         if (error.config && error.response.data.message === "expired" && error.response.status === 401) {
             try {
                 const res = await axios.post(
-                    "http://localhost:9090/reissue",
+                    "http://localhost:9090/userReissue",
                     {},
                     {
                         withCredentials: true,
@@ -43,18 +43,18 @@ privateApi.interceptors.response.use(
                 if (res.status === 200) {
                     // Redux에 새로운 access token 저장
                     const newAccessToken = res.headers["authorization"];
-                    
-                    if(newAccessToken === null){
+
+                    if (newAccessToken === null) {
                         console.log('로그아웃한다잉3')
                         store.dispatch(logout());
                     }
 
                     store.dispatch(login({ userState: true, aT: newAccessToken }));
-                    
+
                     // 원래 요청을 새로운 access token으로 재시도
                     error.config.headers["Authorization"] = `${newAccessToken}`;
                     return privateApi(error.config);
-                }else{
+                } else {
                     console.log('로그아웃한다잉2')
                     store.dispatch(logout());
                 }

@@ -16,7 +16,7 @@ export default function MyPoint() {
 
     const getData = async () => {
         try {
-            const response = await privateApi.get(`/pointList?monthNum=${monthNum}`); // API 요청
+            const response = await privateApi.get(`/point/List?monthNum=${monthNum}`); // API 요청
             setPointDatas(response.data)
             return response.data;
 

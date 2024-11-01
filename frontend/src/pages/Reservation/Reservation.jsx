@@ -61,14 +61,14 @@ export default function Reservation() {
 
             try {
                 const [hotelRoomInfoResp, userInfoResp] = await Promise.all([
-                    privateApi.get('/HotelRoomInfo', {
+                    privateApi.get('/payment/HotelRoomInfo', {
                         params: {
                             roomNo: 8,
                             checkInDate: "2024-11-05", // 'YYYY-MM-DD' 형식의 날짜 전달
                             checkOutDate: "2024-11-06",
                         },
                     }),
-                    privateApi.get('/UserInfo'),
+                    privateApi.get('payment/UserInfo'),
                 ]);
 
                 setHotelRoomInfo(hotelRoomInfoResp.data)
@@ -309,7 +309,7 @@ export default function Reservation() {
     const postPhoneNum = async (phonenum) => {
 
         try {
-            const response = await axios.post(`http://localhost:9090/loginPhone/${phonenum}`); // API 요청
+            const response = await axios.post(`http://localhost:9090/sms/loginPhone/${phonenum}`); // API 요청
             setServerCode(response.data);
             return response.data;
 
@@ -323,7 +323,7 @@ export default function Reservation() {
     const postPhoneNumSave = async (phonenum) => {
 
         try {
-            const response = await privateApi.post(`http://localhost:9090/mypageUserInfo/phone/${phonenum}`); // API 요청
+            const response = await privateApi.post(`http://localhost:9090/mypage/UserInfo/phone/${phonenum}`); // API 요청
             setServerCode(response.data);
             return response.data;
 
@@ -351,7 +351,7 @@ export default function Reservation() {
         }
 
         const merchant_uid = "merchant_" + new Date().getTime()
-        privateApi.post('http://localhost:9090/Payment/Before', {
+        privateApi.post('http://localhost:9090/payment/Before', {
             point: Number(inputPoint),
             roomNo: hotelRoomInfo.roomNo,
             disNo: payType.disNo,
@@ -385,7 +385,7 @@ export default function Reservation() {
 
         }, (rsp) => {
             if (rsp.success) { // 프론트에서 결제가 완료되면
-                privateApi.post(`http://localhost:9090/Payment/Verification`, {
+                privateApi.post(`http://localhost:9090/payment/Verification`, {
                     imp_uid: rsp.imp_uid,            // 결제 고유번호
                     merchant_uid: rsp.merchant_uid,   // 주문번호
                     amount: rsp.paid_amount
@@ -399,7 +399,7 @@ export default function Reservation() {
 
                                 const putData = async () => {
                                     try {
-                                        const result = await privateApi.post('http://localhost:9090/PaymentInsert', {
+                                        const result = await privateApi.post('http://localhost:9090/payment/Insert', {
                                             roomNo: hotelRoomInfo.roomNo,
                                             disNo: payType.disNo,
                                             payPrice: hotelRoomInfo.discountPrice,
@@ -420,7 +420,7 @@ export default function Reservation() {
                                             const response = async () => {
                                                 try {
                                                     // 성공적인 응답 처리
-                                                    const res = await privateApi.post('http://localhost:9090/PaymentCancle', {});
+                                                    const res = await privateApi.post('http://localhost:9090/payment/Cancle', {});
 
                                                 } catch (error) {
                                                     // 에러 처리
@@ -434,7 +434,7 @@ export default function Reservation() {
                                         const response = async () => {
                                             try {
                                                 // 성공적인 응답 처리
-                                                const res = await privateApi.post('http://localhost:9090/PaymentCancle', {});
+                                                const res = await privateApi.post('http://localhost:9090/payment/Cancle', {});
 
                                             } catch (error) {
                                                 // 에러 처리
@@ -451,7 +451,7 @@ export default function Reservation() {
                                 const response = async () => {
                                     try {
                                         // 성공적인 응답 처리
-                                        const res = await privateApi.post('http://localhost:9090/PaymentCancle', {});
+                                        const res = await privateApi.post('http://localhost:9090/payment/Cancle', {});
 
                                     } catch (error) {
                                         // 에러 처리
@@ -465,7 +465,7 @@ export default function Reservation() {
                             const response = async () => {
                                 try {
                                     // 성공적인 응답 처리
-                                    const res = await privateApi.post('http://localhost:9090/PaymentCancle', {});
+                                    const res = await privateApi.post('http://localhost:9090/payment/Cancle', {});
 
                                 } catch (error) {
                                     // 에러 처리
@@ -481,7 +481,7 @@ export default function Reservation() {
                         const response = async () => {
                             try {
                                 // 성공적인 응답 처리
-                                const res = await privateApi.post('http://localhost:9090/PaymentCancle', {});
+                                const res = await privateApi.post('http://localhost:9090/payment/Cancle', {});
 
                             } catch (error) {
                                 // 에러 처리
