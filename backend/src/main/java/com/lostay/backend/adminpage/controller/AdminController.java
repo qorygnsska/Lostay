@@ -1,6 +1,7 @@
 package com.lostay.backend.adminpage.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,9 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.lostay.backend.adminpage.dto.AdminEventDTO;
 import com.lostay.backend.adminpage.dto.RevenueDataDTO;
+import com.lostay.backend.adminpage.dto.AdminHotelUpdateDTO;
+import com.lostay.backend.adminpage.dto.AdminRoomUpdateDTO;
 import com.lostay.backend.adminpage.service.AdminService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -167,6 +172,37 @@ public class AdminController {
 			
 			return new ResponseEntity<>(adminService.getHotels(page-1), HttpStatus.OK);
 		}
+		
+		// 효준(호텔 업데이트)
+		@PutMapping("/hotelUpdate")
+		public ResponseEntity<?> adminHotelUpdate(@ModelAttribute AdminHotelUpdateDTO adminHotelUpdateDTO,
+				@RequestParam(required = false) MultipartFile uploadThumbnail,
+				@RequestParam(required = false) List<MultipartFile> uploadImages){
+			
+			System.out.println(adminHotelUpdateDTO.toString());
+			
+			return new ResponseEntity<>(adminService.hotelUpdate(adminHotelUpdateDTO,uploadThumbnail,uploadImages),HttpStatus.OK);
+		}
+		
+		// 효준(정해진 호텔에 룸 리스트 가져오기)
+		@GetMapping("/roomsList")
+		public ResponseEntity<?> adminRoomsList(@RequestParam Long hotelNo,@RequestParam int page){
+			
+			return new ResponseEntity<>(adminService.roomsList(hotelNo, page-1),HttpStatus.OK);
+		}
+		
+		// 효준(룸 업데이트)
+		@PutMapping("/roomUpdate")
+		public ResponseEntity<?> adminHotelUpdate(@ModelAttribute AdminRoomUpdateDTO adminRoomUpdateDTO,
+				@RequestParam(required = false) MultipartFile uploadThumbnail,
+				@RequestParam(required = false) List<MultipartFile> uploadImages){
+			
+			System.out.println(adminRoomUpdateDTO.toString());
+			
+			return new ResponseEntity<>(adminService.roomUpdate(adminRoomUpdateDTO,uploadThumbnail,uploadImages),HttpStatus.OK);
+		}
+		
+		
 
 		//홍정훈(관리자 페이지 호텔.객실 텝 객실 할인율 수정)
 		@PostMapping("/hotelsListUpdate")//변경전: /adminhotelsListUpdate 변경후:/admin/hotelsListUpdate

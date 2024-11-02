@@ -58,8 +58,18 @@
 
 
 .page--hotel--manager--container {
-    /* 관리자 호텔 객실 페이지 */
+    height: 100%;
 
+    /* 관리자 호텔 객실 페이지 */
+    .page--wrap {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+
+        #container_section {
+            flex: 5;
+        }
+    }
 }
 
 
