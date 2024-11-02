@@ -94,10 +94,10 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
 
 		 
 		//관리자 페이지 호텔 정보 가져오기(홍정훈)10-28
-		 @Query("SELECT new com.lostay.backend.adminpage.dto.HotelInfosDTO(h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission, h.hotelAmenities, h.hotelImage, h.hotelIntroduction, h.hotelTouristAttraction, h.hotelThumbnail, SUM(r.roomCount)) " +
-			       "FROM Hotel h LEFT JOIN h.rooms r " +
-			       "GROUP BY h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission, h.hotelAmenities, h.hotelImage, h.hotelIntroduction, h.hotelTouristAttraction, h.hotelThumbnail")
-		Page<HotelInfosDTO> findBYHotelsInfo(Pageable pageable);
+//		 @Query("SELECT new com.lostay.backend.adminpage.dto.HotelInfosDTO(h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission, h.hotelAmenities, h.hotelImage, h.hotelIntroduction, h.hotelTouristAttraction, h.hotelThumbnail, SUM(r.roomCount)) " +
+//			       "FROM Hotel h LEFT JOIN h.rooms r " +
+//			       "GROUP BY h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission, h.hotelAmenities, h.hotelImage, h.hotelIntroduction, h.hotelTouristAttraction, h.hotelThumbnail")
+//		Page<HotelInfosDTO> findBYHotelsInfo(Pageable pageable);
 
 
 		//(jh)호텔의 리뷰이미지 전부조회
@@ -111,7 +111,10 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
 
 		Hotel getByHotelNo(Long hotelNo);
 
-		 
+		@Query("SELECT new com.lostay.backend.adminpage.dto.HotelInfosDTO(h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission, h.hotelAmenities, h.hotelImage, h.hotelIntroduction, h.hotelTouristAttraction, h.hotelThumbnail) " +
+			       "FROM Hotel h LEFT JOIN h.rooms r " +
+			       "GROUP BY h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission, h.hotelAmenities, h.hotelImage, h.hotelIntroduction, h.hotelTouristAttraction, h.hotelThumbnail")
+		Page<HotelInfosDTO> findByHotelInfo(Pageable pageable);
 		 
 	
 //	@Query("SELECT " +

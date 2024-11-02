@@ -22,7 +22,6 @@ public class HotelInfosDTO {
 	private String hotelRating; // 호텔등급
 	private String hotelAdress; // 호텔주소
 	private int hotelCommission; // 호텔 중개료
-	private Long totalRoomCount; // 객실 종류 객실개수 총합
 	private String hotelAmenities;
 	private String hotelImage;
 	private String hotelIntroduction;
@@ -32,23 +31,21 @@ public class HotelInfosDTO {
 	private List<String> hotelAmenitiesList;
 	private List<roomsDTO> rooms; // 객실 정보 리스트
 	private List<String> hotelTouristAttractionList;
-	
 
 	public HotelInfosDTO(Long hotelNo, String hotelName, String hotelRating, String hotelAdress, int hotelCommission,
-            String hotelAmenities, String hotelImage, String hotelIntroduction,
-            String hotelTouristAttraction, String hotelThumbnail, Long totalRoomCount) {
-this.hotelNo = hotelNo;
-this.hotelName = hotelName;
-this.hotelRating = hotelRating;
-this.hotelAdress = hotelAdress;
-this.hotelCommission = hotelCommission;
-this.hotelAmenities = hotelAmenities;
-this.hotelImage = hotelImage;
-this.hotelIntroduction = hotelIntroduction;
-this.hotelTouristAttraction = hotelTouristAttraction;
-this.hotelThumbnail = hotelThumbnail;
-this.totalRoomCount = totalRoomCount;
-}
+			String hotelAmenities, String hotelImage, String hotelIntroduction, String hotelTouristAttraction,
+			String hotelThumbnail) {
+		this.hotelNo = hotelNo;
+		this.hotelName = hotelName;
+		this.hotelRating = hotelRating;
+		this.hotelAdress = hotelAdress;
+		this.hotelCommission = hotelCommission;
+		this.hotelAmenities = hotelAmenities;
+		this.hotelImage = hotelImage;
+		this.hotelIntroduction = hotelIntroduction;
+		this.hotelTouristAttraction = hotelTouristAttraction;
+		this.hotelThumbnail = hotelThumbnail;
+	}
 //    public HotelInfosDTO(Long hotelNo, String hotelName, String hotelRating, String hotelAdress, int hotelCommission,
 //			Long totalRoomCount) {
 //		super();

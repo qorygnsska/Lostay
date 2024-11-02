@@ -29,7 +29,16 @@
 
 }
 
+.hotel--edit--admin--container.open {
+    transform: translateX(0);
+    position: relative;
+}
+
 .hotel--edit--admin--container {
+    right: 0;
+    position: absolute;
+    transition: transform 0.3s ease;
+    transform: translateX(100%);
     border: 1px solid var(--lightGrayColor);
     padding: 30px 10px;
     width: 700px;
@@ -156,6 +165,152 @@
         }
 
         .tourist--attraction--box {
+            margin-bottom: 20px;
+            margin-left: 10px;
+
+            input {
+                width: 650px;
+                height: 40px;
+                border-radius: 10px;
+                outline: none;
+                border: 1px solid var(--lightGrayColor);
+                padding-left: 10px;
+            }
+        }
+    }
+
+
+}
+
+
+.room--edit--admin--container.open {
+    transform: translateX(0);
+    position: relative;
+}
+
+.room--edit--admin--container {
+    right: 0;
+    transition: transform 0.3s ease;
+    transform: translateX(100%);
+    position: absolute;
+    border: 1px solid var(--lightGrayColor);
+    padding: 30px 10px;
+    width: 700px;
+
+
+    .top--content {
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+
+
+        .top--box {
+            display: flex;
+            width: 50%;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            padding-right: 10px;
+
+            .title {
+                width: 90px;
+                padding-left: 0;
+                font-weight: bold;
+                font-size: 17px;
+            }
+
+            input {
+                width: 240px;
+                padding-left: 5px;
+                border-radius: 5px;
+                outline: none;
+                border: 1px solid var(--lightGrayColor);
+                margin-left: 10px;
+            }
+        }
+
+    }
+
+    .mid--box {
+        margin-bottom: 30px;
+
+        .title {
+            padding-left: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .address {
+            width: 642px;
+            margin-left: 10px;
+            width: 650px;
+            padding-left: 5px;
+            border-radius: 5px;
+            outline: none;
+            border: 1px solid var(--lightGrayColor);
+        }
+
+
+        .selected--box {
+            display: flex;
+            gap: 10px;
+            padding-left: 10px;
+            flex-wrap: wrap;
+
+            .selected--btn {
+                outline: none;
+                border: 1px solid var(--lightGrayColor);
+                width: 110px;
+                background-color: #fff;
+                height: 30px;
+                border-radius: 10px;
+            }
+        }
+
+        .image--box {
+            display: flex;
+            gap: 10px;
+
+
+            input {
+                border: none;
+                outline: none;
+                width: 85px;
+                padding-left: 10px;
+            }
+
+            .image--file--box {
+                border: 1px solid var(--lightGrayColor);
+                width: 555px;
+                height: auto;
+                border-radius: 5px;
+                margin-left: 10px;
+                padding: 5px;
+
+
+                .image {
+                    border: 1px solid rgb(167, 215, 255);
+                    background-color: rgb(237, 247, 255);
+                    margin-right: 20px;
+                    margin-bottom: 10px;
+
+                    display: inline-block;
+                    padding-left: 3px;
+                    padding-right: 3px;
+                    border-radius: 10px;
+
+                    .delete--file {
+                        color: var(--lightGrayColor);
+                        cursor: pointer;
+                        margin-left: 5px;
+                        width: 20px;
+                        height: 20px;
+                    }
+                }
+            }
+        }
+
+        .introduction--box {
             margin-bottom: 20px;
             margin-left: 10px;
 

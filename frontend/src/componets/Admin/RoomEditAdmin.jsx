@@ -1,37 +1,46 @@
 import React, { useEffect, useState } from 'react'
-import { adminPrivateApi } from '../../api/adminApi';
 import { IoClose } from "react-icons/io5";
+import { adminPrivateApi } from '../../api/adminApi';
 
-export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModalShow }) {
+export default function RoomEditAdmin({ propRoom, roomModalToggle, roomModalShow }) {
 
     // ==================== START ======================== //
     // 저장된 호텔 정보들
     const [state, setState] = useState({
-        hotelName: '',
-        hotelAddress: '',
-        hotelCommission: '',
-        hotelIntroduction: '',
+        roomName: propRoom?.roomName || '',
+        roomCount: propRoom?.roomCount || 0,
+        roomPrice: propRoom?.roomPrice || 0,
+        roomDiscount: propRoom?.roomDiscount || 0,
+        roomPeopleMax: propRoom?.roomPeopleMax || 0,
+        roomPeopleInfo: propRoom?.roomPeopleInfo || '',
+        roomCheckinTime: propRoom?.roomCheckinTime || '',
+        roomCheckoutTime: propRoom?.roomCheckoutTime || '',
     })
 
     useEffect(() => {
-        if (propHotel) {
+        if (propRoom) {
             setState({
-                hotelName: propHotel.hotelName || '',
-                hotelAddress: propHotel.hotelAdress || '',
-                hotelCommission: propHotel.hotelCommission || '',
-                hotelIntroduction: propHotel.hotelIntroduction || '',
+                roomName: propRoom.roomName,
+                roomCount: propRoom.roomCount,
+                roomPrice: propRoom.roomPrice,
+                roomDiscount: propRoom.roomDiscount,
+                roomPeopleMax: propRoom.roomPeopleMax,
+                roomPeopleInfo: propRoom.roomPeopleInfo,
+                roomCheckinTime: propRoom.roomCheckinTime,
+                roomCheckoutTime: propRoom.roomCheckoutTime,
             });
 
-            setRateButton(propHotel.hotelRating.length > 0 ? propHotel.hotelRating : '없음')
-            setActiveAmenitiesBtn(propHotel.hotelAmenitiesList)
-            setThumbnail(propHotel.hotelThumbnail)
+            setActiveAmenitiesBtn(propRoom.roomAmenitiesList)
+            setThumbnail(propRoom.roomThumbnail)
             setUploadThumbnail(null)
-            setImages(propHotel.hotelImageList)
-            const updatedLocations = Array(5).fill('').map((_, index) => propHotel.hotelTouristAttractionList[index] || '');
-            setLocations(updatedLocations);
+            setImages(propRoom.roomImageList)
+            const updatedIntrodution = Array(8).fill('').map((_, index) => propRoom.roomIntroductionList[index] || '');
+            setIntroduction(updatedIntrodution);
+
+
 
         }
-    }, [propHotel]);
+    }, [propRoom]);
     // 저장된 호텔 정보들
     // ==================== END ======================== //
 
@@ -64,16 +73,7 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
     // ==================== END ======================== //
 
 
-    // ==================== START ======================== //
-    // 등급 설정
-    const rankBtn = ['특1급', '특급', '5성급', '4성급', '가족호텔', '리조트', '없음'];
-    const [RateButton, setRateButton] = useState('');
 
-    const clickRating = (rate) => {
-        setRateButton(rate); // 클릭한 등급만 활성화
-    };
-    // 등급 설정
-    // ==================== END ======================== //
 
 
     // ==================== START ======================== //
@@ -81,16 +81,11 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
     const [activeAmenitiesBtn, setActiveAmenitiesBtn] = useState([]);
 
     const amenitiesBtn = [
-        '사우나', '수영장', '레스토랑', '라운지', '피트니스',
-        '골프장', '엘리베이터', '공용PC', '바베큐', '카페',
-        '공용스파', '편의점', '노래방', '주방/식당', '세탁기',
-        '건조기', '탈수기', '주차장', '취사가능', '공용샤워실',
-        '온천', '스키장',
-        '조식제공', '무료주차', '객실내취사', '반려견동반',
-        '객실내흡연', '발렛파킹', '금연', '프린터사용',
-        '짐보관가능', '픽업서비스', '캠프파이어', '카드결제',
-        '장애인편의', '바(BAR)', '미니바', '무선인터넷',
-        '욕실용품', '에어컨', '드라이기', 'TV', '샤워실'
+        'TV', '쇼파', '옷장', '데스크', '에어컨',
+        '미니바', '헤어드라이기', '욕실용품', '샤워가운',
+        '슬리퍼', '금고', '전화기', '다리미', '침대',
+        '책상', '침구류', '스마트 TV', '욕실용품 (유료)',
+        '생수', '체중계', '스마트 전화기', 'PC', '넷플릭스', '커피포트',
     ];
 
     function clickAmenities(name) {
@@ -105,6 +100,19 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
     // 시설 설정
     // ==================== END ======================== //
 
+
+    // ==================== START ======================== //
+    // 객실 소개
+    const [introduction, setIntroduction] = useState(Array(8).fill(''));
+
+    const handleInputChange = (index, value) => {
+        const updatedIntroduction = [...introduction];
+        updatedIntroduction[index] = value; // 특정 인덱스의 값 업데이트
+        setIntroduction(updatedIntroduction);
+    };
+
+    // 객실 소개
+    // ==================== END ======================== //
 
     // ==================== START ======================== //
     // 썸네일 설정
@@ -171,26 +179,30 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
         const formData = new FormData();
 
 
-        formData.append('hotelNo', propHotel.hotelNo);
-        formData.append('hotelName', state.hotelName);
-        formData.append('hotelCommission', state.hotelCommission);
-        formData.append('hotelAdress', state.hotelAddress);
-        formData.append('hotelIntroduction', state.hotelIntroduction);
+        formData.append('roomNo', propRoom.roomNo);
+        formData.append('roomName', state.roomName);
+        formData.append('roomCount', state.roomCount);
+        formData.append('roomPrice', state.roomPrice);
+        formData.append('roomDiscount', state.roomDiscount);
+        formData.append('roomPeopleMax', state.roomPeopleMax);
+        formData.append('roomPeopleInfo', state.roomPeopleInfo);
+        formData.append('roomCheckinTime', formatTimeForLocalTime(state.roomCheckinTime));
+        formData.append('roomCheckoutTime', formatTimeForLocalTime(state.roomCheckoutTime));
 
-        formData.append('hotelRating', RateButton === '없음' ? '' : RateButton);
-        formData.append('hotelAmenities', activeAmenitiesBtn)
-        formData.append('hotelTouristAttractionList', locations.filter(loc => loc !== ''))
+        formData.append('roomAmenities', activeAmenitiesBtn)
+
+        formData.append('roomIntroductionList', introduction.filter(loc => loc !== ''))
 
         formData.append('uploadThumbnail', uploadThumbnail);
-        formData.append('hotelDelThumbnail', delThumbnail);
+        formData.append('roomDelThumbnail', delThumbnail);
         uploadImages.forEach((file) => {
             formData.append('uploadImages', file);
         })
-        formData.append('hotelDelImages', delImages);
+        formData.append('roomDelImages', delImages);
 
 
         try {
-            const response = await adminPrivateApi.put('/admin/hotelUpdate', formData,
+            const response = await adminPrivateApi.put('/admin/roomUpdate', formData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -198,7 +210,7 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
                 });
             if (response.status === 200) {
                 alert('업뎃완료')
-                hotelModalToggle(true)
+                roomModalToggle(true)
             } else {
                 alert('업뎃실패')
             }
@@ -206,101 +218,137 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
         } catch (error) {
             alert('업뎃실패')
         }
-
-
+    }
+    const onClose = () => {
+        console.log('dd')
     }
 
+    const formatTimeForLocalTime = (time) => {
+        // '15:00'와 같은 형식으로 변환
+        if (time) {
+            const [hours, minutes] = time.split(':');
+            return `${hours}:${minutes}:00`; // '15:00:00' 형식
+        }
+        return null; // 혹은 ''로 처리할 수 있습니다
+    };
     // 서버로 데이터 보내기
     // ==================== END ======================== //
 
-
-    // ==================== START ======================== //
-    // 관광명소
-    const [locations, setLocations] = useState(Array(5).fill(''));
-
-    const handleInputChange = (index, value) => {
-        const updatedLocations = [...locations];
-        updatedLocations[index] = value || ''; // 특정 인덱스의 값 업데이트
-        setLocations(updatedLocations);
-    };
-
-    // 관광명소
-    // ==================== END ======================== //
     return (
-        <div className={`hotel--edit--admin--container ${hotelModalShow && 'open'}`}>
+        <div className={`room--edit--admin--container ${roomModalShow && 'open'}`}>
 
             <div>
                 <button type='button' onClick={handelerUpdate}>수정</button>
-                <button type='button' onClick={() => hotelModalToggle()}>취소</button>
+                <button type='button' onClick={() => roomModalToggle()}>취소</button>
             </div>
             <div className='top--content'>
                 <div className='top--box'>
-                    <div className='title'>호텔명</div>
+                    <div className='title'>객실명</div>
                     <input
-                        name='hotelName'
-                        value={state.hotelName}
+                        name='roomName'
+                        value={state.roomName}
                         onChange={handleChange}
                         type='text'
                     />
                 </div>
 
                 <div className='top--box'>
-                    <div className='title'>중개료</div>
+                    <div className='title'>방 갯수</div>
                     <input
-                        name="hotelCommission"
-                        value={state.hotelCommission}
+                        name="roomCount"
+                        value={state.roomCount}
+                        onChange={preventInvalidInput}
+                        className='count'
+                    />
+                </div>
+
+                <div className='top--box'>
+                    <div className='title'>가격</div>
+                    <input
+                        name="roomPrice"
+                        value={state.roomPrice}
                         onInput={preventInvalidInput}
                         type='text'
                     />
                 </div>
-            </div>
 
+                <div className='top--box'>
+                    <div className='title'>할인율</div>
+                    <input
+                        name="roomDiscount"
+                        value={state.roomDiscount}
+                        onChange={preventInvalidInput}
+                        type='text'
+                        className='discount'
+                        maxLength={2}
+                    />
+                </div>
 
-            <div className='mid--box'>
-                <div className='title'>주소</div>
-                <input
-                    name="hotelAddress"
-                    value={state.hotelAddress}
-                    onChange={handleChange}
-                    type='text'
-                    className='address'
-                />
-            </div>
+                <div className='top--box'>
+                    <div className='title'>최대인원 수</div>
+                    <input
+                        name="roomPeopleMax"
+                        value={state.roomPeopleMax}
+                        onChange={preventInvalidInput}
+                        type='text'
+                        className='peopleMax'
+                    />
+                </div>
 
+                <div className='top--box'>
+                    <div className='title'>인원정보</div>
+                    <input
+                        name="roomPeopleInfo"
+                        value={state.roomPeopleInfo}
+                        onChange={handleChange}
+                        type='text'
+                        className='peopleInfo'
+                    />
+                </div>
 
-            <div className='mid--box'>
-                <div className='title'>소개</div>
-                <textarea
-                    name="hotelIntroduction"
-                    value={state.hotelIntroduction}
-                    onChange={handleChange}
-                    className='introduction'
-                />
-            </div>
+                <div className='top--box'>
+                    <div className='title'>체크인</div>
+                    <input
+                        name="roomCheckinTime"
+                        value={state.roomCheckinTime}
+                        onChange={handleChange}
+                        type='time'
+                        className='checkinTime'
+                    />
+                </div>
 
-
-
-            <div className='mid--box'>
-                <div className='title'>등급</div>
-                <div className='selected--box'>
-                    {rankBtn.map(name => (
-                        <input type='button' className='selected--btn' value={name} key={name} name={name} id={name}
-                            onClick={() => clickRating(name)}
-                            style={{
-                                backgroundColor: RateButton.includes(name) ? 'rgb(237, 247, 255)' : '',
-                                color: RateButton.includes(name) ? 'rgb(0, 83, 192)' : '',
-                                border: RateButton.includes(name) ? '1px solid rgb(167, 215, 255)' : ''
-                            }}
-                        />
-                    ))}
+                <div className='top--box'>
+                    <div className='title'>체크아웃</div>
+                    <input
+                        name="roomCheckoutTime"
+                        value={state.roomCheckoutTime}
+                        onChange={handleChange}
+                        type='time'
+                        className='checkoutTime'
+                    />
                 </div>
             </div>
 
             <div className='mid--box'>
+                <div className='title'>객실 소개</div>
+                {introduction.map((loc, index) => (
+                    <div className='introduction--box' key={index}>
+                        <input
+                            key={index}
+                            type="text"
+                            value={loc}
+                            onChange={(e) => handleInputChange(index, e.target.value)}
+                        />
+                    </div>
+                ))}
+            </div>
+
+
+            <div className='mid--box'>
                 <div className='title'>시설</div>
                 <div className='selected--box'>
-                    {amenitiesBtn.map(name => (
-                        <input type='button' className='selected--btn' value={name} key={name} name={name} id={name}
+                    {amenitiesBtn.map((name, index) => (
+                        <input key={index} type='button' className='selected--btn' value={name} name={name} id={name}
                             onClick={(e) => clickAmenities(e.target.name)}
                             style={{
                                 backgroundColor: activeAmenitiesBtn.includes(name) ? 'rgb(237, 247, 255)' : '',
@@ -365,26 +413,13 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
                             ))}
                         {uploadImages &&
                             uploadImages.map((image, index) => (
-                                <div className='image'>
+                                <div className='image' key={index}>
                                     {image.name}
                                     <IoClose className='delete--file' onClick={() => handlerDelImages(image)} />
                                 </div>
                             ))}
                     </div>
                 </div>
-            </div>
-
-            <div className='mid--box'>
-                <div className='title'>관광명소</div>
-                {locations.map((loc, index) => (
-                    <div className='tourist--attraction--box' key={index}>
-                        <input
-                            type="text"
-                            value={loc || ''}
-                            onChange={(e) => handleInputChange(index, e.target.value)}
-                        />
-                    </div>
-                ))}
             </div>
         </div >
     )

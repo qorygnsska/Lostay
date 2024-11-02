@@ -26,7 +26,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.lostay.backend.adminpage.dto.AdminEventDTO;
 import com.lostay.backend.adminpage.dto.AdminHotelUpdateDTO;
 import com.lostay.backend.adminpage.dto.AdminRevenueChartDTO;
+import com.lostay.backend.adminpage.dto.AdminRoomUpdateDTO;
 import com.lostay.backend.adminpage.dto.HotelInfosDTO;
+import com.lostay.backend.adminpage.dto.RoomsInfosDTO;
 import com.lostay.backend.adminpage.dto.roomsDTO;
 
 import com.lostay.backend.event.entity.Event;
@@ -311,11 +313,10 @@ public class AdminService {
 	// 홍정훈(관리자 페이지 호텔.객실 텝 정보 조회)
 	public Page<HotelInfosDTO> getHotels(int pageIndex) {
 		Pageable pageable = PageRequest.of(pageIndex, 10, Sort.by("hotelNo").ascending());
-		Page<HotelInfosDTO> hotelsDTOPage = hotelRepo.findBYHotelsInfo(pageable);
-		// 모든 호텔을 가져옴
-		List<Hotel> allHotels = hotelRepo.findAll();
-		// 각 호텔 DTO에 방 리스트 설정
-		for (HotelInfosDTO dto : hotelsDTOPage.getContent()) {
+		Page<HotelInfosDTO> hotelsPage = hotelRepo.findByHotelInfo(pageable);
+
+		
+		for (HotelInfosDTO dto : hotelsPage.getContent()) {
 			dto.setHotelImageList(
 					Arrays.stream(dto.getHotelImage().split(",")).map(String::trim).collect(Collectors.toList()));
 
@@ -325,26 +326,9 @@ public class AdminService {
 			dto.setHotelTouristAttractionList(
 					Arrays.stream(dto.getHotelTouristAttraction().split(",")).map(String::trim).collect(Collectors.toList()));
 			
-			List<roomsDTO> roomsList = new ArrayList<>(); // 호텔마다 새로운 리스트 생성
-			// 모든 호텔에서 해당 호텔의 방 정보를 가져옴
-			for (Hotel hotel : allHotels) {
-				if (hotel.getHotelNo().equals(dto.getHotelNo())) {
-					for (Room room : hotel.getRooms()) {
-						roomsDTO roomsdto = new roomsDTO();
-						roomsdto.setRoomNo(room.getRoomNo());
-						roomsdto.setRoomName(room.getRoomName());
-						roomsdto.setRoomCount(room.getRoomCount());
-						roomsdto.setRoomPrice(room.getRoomPrice());
-						roomsdto.setRoomDiscount(room.getRoomDiscount());
-						roomsList.add(roomsdto); // 방 정보를 리스트에 추가
-					}
-				}
-			}
-
-			dto.setRooms(roomsList); // 각 호텔 DTO에 방 리스트 설정
 		}
 
-		return hotelsDTOPage; // Page<HotelInfosDTO> 반환
+		return hotelsPage; // Page<HotelInfosDTO> 반환
 	}
 
 	// 효준 호텔 수정
@@ -434,6 +418,117 @@ public class AdminService {
      
 		return true;
 	}
+	
+	// 효준 특정 호텔 룸 리스트 가져오기
+	public Page<RoomsInfosDTO> roomsList(Long hotelNo, int pageIndex) {
+		System.out.println(hotelNo.TYPE);
+		System.out.println(hotelNo);
+		Pageable pageable = PageRequest.of(pageIndex, 10);
+		Page<RoomsInfosDTO> RoomsPage = roomRepo.findByHotelNo(hotelNo,pageable);
+
+		for (RoomsInfosDTO dto : RoomsPage.getContent()) {
+			dto.setRoomImageList(
+					Arrays.stream(dto.getRoomImg().split(",")).map(String::trim).collect(Collectors.toList()));
+
+			dto.setRoomAmenitiesList(
+					Arrays.stream(dto.getRoomAmenities().split(",")).map(String::trim).collect(Collectors.toList()));
+			
+			dto.setRoomIntroductionList(
+					Arrays.stream(dto.getRoomIntroduction().split(",")).map(String::trim).collect(Collectors.toList()));
+		}
+		
+		return RoomsPage;
+	}
+	
+	// 효준 룸 업데이트
+	public boolean roomUpdate(AdminRoomUpdateDTO adminRoomUpdateDTO, MultipartFile uploadThumbnail,
+			List<MultipartFile> uploadImages) {
+	
+		Room room = roomRepo.findByRoomNo(adminRoomUpdateDTO.getRoomNo());
+		
+		room.setRoomName(adminRoomUpdateDTO.getRoomName());
+		room.setRoomCount(adminRoomUpdateDTO.getRoomCount());
+		room.setRoomPrice(adminRoomUpdateDTO.getRoomPrice());
+		room.setRoomDiscount(adminRoomUpdateDTO.getRoomDiscount());
+		room.setRoomPeopleMax(adminRoomUpdateDTO.getRoomPeopleMax());
+		room.setRoomPeopleInfo(adminRoomUpdateDTO.getRoomPeopleInfo());
+		room.setRoomCheckinTime(adminRoomUpdateDTO.getRoomCheckinTime());
+		room.setRoomCheckoutTime(adminRoomUpdateDTO.getRoomCheckoutTime());
+		room.setRoomAmenities(String.join(",", adminRoomUpdateDTO.getRoomAmenities()));
+
+		// 경로
+		String path = room.getRoomThumbnail();
+		int lastSlashIndex = path.lastIndexOf("/", path.lastIndexOf("/") - 1);
+		String middlePath = path.substring(0, lastSlashIndex + 1);
+		
+		String initPath = "C:\\Lostay\\frontend\\public\\";
+		String thumbnailPath = middlePath +"thumbnail";
+		String imagesPath = middlePath + "images";
+		
+		// 썸네일 파일 지우기
+		if(adminRoomUpdateDTO.getRoomThumbnail() != null) {
+			File file = new File(initPath + adminRoomUpdateDTO.getRoomThumbnail());
+			System.out.println(initPath + adminRoomUpdateDTO.getRoomThumbnail());
+	        if (file.exists()) {
+	            if (!file.delete()) {
+	                return false;
+	            }
+	        }
+		}
+
+        // 썸네일 업로드
+        if (uploadThumbnail != null) {
+			File uploadDir = new File(initPath + thumbnailPath + "\\" + uploadThumbnail.getOriginalFilename());
+			
+			System.out.println("썸네일 업로드 경로 : " + initPath + thumbnailPath + "\\" + uploadThumbnail.getOriginalFilename());
+			try {
+				uploadThumbnail.transferTo(uploadDir);
+				room.setRoomThumbnail(thumbnailPath + "/" +uploadThumbnail.getOriginalFilename());
+			} catch (IllegalStateException | IOException e) {
+				return false;
+			}
+			
+		}
+        
+        
+        // 이미지 파일 지우기
+        String roomlImageString = room.getRoomImg();
+        List<String> roomImageList = new ArrayList<>();
+        roomImageList = new ArrayList<>(Arrays.asList(roomlImageString.split(",")));
+        
+        for(String imagePath : adminRoomUpdateDTO.getRoomDelImages()) {
+        	File file = new File(initPath + imagePath);
+            if (file.exists()) {
+                if (!file.delete()) {
+                    return false;
+                }
+            }
+            roomImageList.remove(imagePath);
+        }
+        
+        
+        // 이미지 업로드
+        if(uploadImages != null) {
+
+        	List<String> imageFileNames = new ArrayList<>();
+            for (MultipartFile file : uploadImages) {
+            	File uploadDir = new File(initPath+imagesPath+ "\\" + file.getOriginalFilename());
+            	System.out.println("이미지 업로드 경로 : " + initPath+imagesPath+ "\\" + file.getOriginalFilename());
+            	
+            	try {
+					file.transferTo(uploadDir);
+				} catch (IllegalStateException | IOException e) {
+					return false;
+				}
+            	
+            	roomImageList.add(imagesPath+ "/" +file.getOriginalFilename());
+            }
+        }
+        
+        room.setRoomImg(String.join(",", roomImageList));
+     
+		return true;
+	}
 
 	// 홍정훈(관리자 페이지 호텔.객실 텝 객실 할인율 수정)
 	public boolean updateRoomDiscount(Long roomNo, int roomDiscount) {
@@ -502,5 +597,8 @@ public class AdminService {
 		System.out.println("result:" + result);
 		return result;
 	}
+
+
+
 
 }

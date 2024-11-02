@@ -1,0 +1,51 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffd5b87cccc, pid=14112, tid=14900
+#
+# JRE version: OpenJDK Runtime Environment (11.0.2+2) (build 11.0.0.2+2-2)
+# Java VM: OpenJDK 64-Bit Server VM (11.0.0.2+2-2, mixed mode, tiered, compressed oops, g1 gc, windows-amd64)
+# Problematic frame:
+# V  [jvm.dll+0x6ccccc]
+#
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.java.com/bugreport/crash.jsp
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=54047 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=localhost -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -XX:TieredStopAtLevel=1 -Dspring.boot.project.name=backend -Dfile.encoding=utf-8 com.lostay.backend.BackendApplication --spring.output.ansi.enabled=always
+
+Host: AMD Ryzen 5 7500F 6-Core Processor             , 12 cores, 31G,  Windows 10 , 64 bit Build 19041 (10.0.19041.4957)
+Time: Sat Nov  2 23:34:29 2024 대한민국 표준시 elapsed time: 0 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000020afce8b000):  WatcherThread [stack: 0x000000d05ad00000,0x000000d05ae00000] [id=14900]
+
+Stack: [0x000000d05ad00000,0x000000d05ae00000],  sp=0x000000d05adffb00,  free space=1022k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x6ccccc]
+V  [jvm.dll+0x71847d]
+V  [jvm.dll+0x73de29]
+V  [jvm.dll+0x639e42]
+C  [ucrtbase.dll+0x21bb2]
+C  [KERNEL32.DLL+0x17374]
+C  [ntdll.dll+0x4cc91]
+
+
+siginfo: EXCEPTION_ACCESS_VIOLATION (0xc0000005), reading address 0x0000000000000008
+
+
+Register to memory mapping:
+
+RIP=0x00007ffd5b87cccc jvm.dll
+RAX=0x0 is NULL
+RBX=0x0 is NULL
+RCX=0x0000000800000007 is pointing into metadata
+RDX=0x0000000000000040 is an unknown value
+RSP=0x000000d05adffb00 points into unknown readable memory
+RBP=0x0000000000000002 is an unknown value
+RSI=

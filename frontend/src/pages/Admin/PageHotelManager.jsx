@@ -4,6 +4,8 @@ import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
 import { Container, Form, Pagination, Table } from 'react-bootstrap'
 import { adminPrivateApi } from '../../api/adminApi'
 import HotelEditAdmin from '../../componets/Admin/HotelEditAdmin'
+import RoomListAdmin from '../../componets/Admin/RoomListAdmin'
+import RoomEditAdmin from '../../componets/Admin/RoomEditAdmin'
 
 export default function PageHotelManager() {
 
@@ -55,7 +57,6 @@ export default function PageHotelManager() {
             if (response.status === 200) {
                 setHotelRoomList(response.data)
                 setTotalPage(response.data.totalPages)
-                console.log(response.data)
             } else {
                 console.log('에러')
             }
@@ -72,25 +73,47 @@ export default function PageHotelManager() {
 
     // ==================== START ======================== //
     // 호텔 수정 모달
-    const [modalShow, setModalShow] = useState(false);
+    const [hotelModalShow, setHotelModalShow] = useState(false);
     const [propHotel, setPropHotel] = useState(null);
 
-    const handleModalShow = () => {
-
-        ModalToggle(); // 모달 열기
-    };
 
     const propHotelChange = (hotel) => {
-        console.log(hotel)
+        setHotelModalShow(true)
+        setRoomModalShow(false)
         setPropHotel(hotel)
-
     }
 
-    const ModalToggle = () => {
-        setModalShow(!modalShow)
+    const hotelModalToggle = (result) => {
+        if (result) {
+            getData()
+        }
+        setHotelModalShow(!hotelModalShow)
     }
     // 호텔 수정 모달
     // ==================== END ======================== //
+
+
+    // ==================== START ======================== //
+    // 객실 리스트 보기 모달
+    const [roomModalShow, setRoomModalShow] = useState(false);
+    const [selectedHotelNo, setSelectedHotelNo] = useState(null);
+    const [room, setRoom] = useState(null);
+    const [roomReload, setRoomReload] = useState(false)
+
+    const toggleRoomList = (hotelNo) => {
+        setSelectedHotelNo((prev) => (prev === hotelNo ? null : hotelNo));
+    };
+
+    const roomModalToggle = (result) => {
+        if (result) {
+            setRoomReload(true)
+        }
+        setRoomModalShow(!roomModalShow)
+    }
+
+    // 객실 리스트 보기 모달
+    // ==================== END ======================== //
+
 
     return (
 
@@ -118,25 +141,38 @@ export default function PageHotelManager() {
                                 <th className="hotel_rating">등급</th>
                                 <th className="hotel_address">주소</th>
                                 <th className="hotel_commission">중개료</th>
-                                <th className="hotel_totalRoomCount">객실 수</th>
+                                <th className="hotel_update">수정</th>
                             </tr>
                         </thead>
                         <tbody id="table_body">
                             {hotelRoomList?.content.map(function (hotel, index) {
                                 return (
-                                    <tr key={index}>
-                                        <td className="hotel_no">{hotel.hotelNo}</td>
-                                        <td className="hotel_name">{hotel.hotelName}</td>
-                                        <td className="hotel_rating">{hotel.hotelRating ? hotel.hotelRating : '-'}</td>
-                                        <td className="hotel_address">{hotel.hotelAdress}</td>
-                                        <td className="hotel_commission">{hotel.hotelCommission}</td>
-                                        <td className="hotel_totalRoomCount">{hotel.totalRoomCount}</td>
-                                        <td className="btn_container">
-                                            {/*수정 또는 삭제 버튼에 어디서 뭘 누르는지 알려주기 */}
-                                            <button type='button' onClick={() => propHotelChange(hotel)}>수정</button>
-                                            <button roomList={hotel.rooms} >객실보기</button>
-                                        </td>
-                                    </tr>
+                                    <React.Fragment key={hotel.hotelNo}>
+                                        <tr >
+                                            <td className="hotel_no">{hotel.hotelNo}</td>
+                                            <td className="hotel_name">{hotel.hotelName}</td>
+                                            <td className="hotel_rating">{hotel.hotelRating ? hotel.hotelRating : '-'}</td>
+                                            <td className="hotel_address">{hotel.hotelAdress}</td>
+                                            <td className="hotel_commission">{hotel.hotelCommission}%</td>
+                                            <td className="btn_container">
+                                                {/*수정 또는 삭제 버튼에 어디서 뭘 누르는지 알려주기 */}
+                                                <button type='button' onClick={() => propHotelChange(hotel)}>수정</button>
+                                                <button onClick={() => toggleRoomList(hotel.hotelNo)}>객실보기</button>
+                                            </td>
+                                        </tr>
+
+                                        {selectedHotelNo === hotel.hotelNo && (
+                                            <tr>
+                                                <td colSpan="6">
+                                                    <RoomListAdmin propHotelNo={hotel.hotelNo} setRoom={setRoom} setRoomModalShow={setRoomModalShow} setHotelModalShow={setHotelModalShow}
+                                                        roomReload={roomReload} setRoomReload={setRoomReload}
+                                                    />
+                                                </td>
+                                            </tr>
+                                        )}
+
+                                    </React.Fragment>
+
                                 )
                             })}
                         </tbody>
@@ -157,11 +193,9 @@ export default function PageHotelManager() {
 
                 </div>
 
-                <HotelEditAdmin propHotel={propHotel} />
-
+                <HotelEditAdmin propHotel={propHotel} hotelModalToggle={hotelModalToggle} hotelModalShow={hotelModalShow} />
+                <RoomEditAdmin propRoom={room} roomModalToggle={roomModalToggle} roomModalShow={roomModalShow} />
             </div>
-
-
         </div>
 
     )
