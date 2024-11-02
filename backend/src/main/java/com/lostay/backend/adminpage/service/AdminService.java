@@ -1,12 +1,15 @@
 package com.lostay.backend.adminpage.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lostay.backend.adminpage.dto.AdminEventDTO;
+import com.lostay.backend.adminpage.dto.AdminHotelUpdateDTO;
 import com.lostay.backend.adminpage.dto.AdminRevenueChartDTO;
 import com.lostay.backend.adminpage.dto.HotelInfosDTO;
 import com.lostay.backend.adminpage.dto.roomsDTO;
@@ -45,7 +49,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdminService {
 
-
 	@Autowired
 	private HotelRepository hotelRepo;
 
@@ -61,7 +64,6 @@ public class AdminService {
 	// 이벤트 이미지 파일 저장 경로
 	String eventDirPath = "C:\\Lostay\\frontend\\public\\event\\";
 
-	
 	@Autowired
 	private ReviewRepository reviewRepo;
 
@@ -314,6 +316,15 @@ public class AdminService {
 		List<Hotel> allHotels = hotelRepo.findAll();
 		// 각 호텔 DTO에 방 리스트 설정
 		for (HotelInfosDTO dto : hotelsDTOPage.getContent()) {
+			dto.setHotelImageList(
+					Arrays.stream(dto.getHotelImage().split(",")).map(String::trim).collect(Collectors.toList()));
+
+			dto.setHotelAmenitiesList(
+					Arrays.stream(dto.getHotelAmenities().split(",")).map(String::trim).collect(Collectors.toList()));
+
+			dto.setHotelTouristAttractionList(
+					Arrays.stream(dto.getHotelTouristAttraction().split(",")).map(String::trim).collect(Collectors.toList()));
+			
 			List<roomsDTO> roomsList = new ArrayList<>(); // 호텔마다 새로운 리스트 생성
 			// 모든 호텔에서 해당 호텔의 방 정보를 가져옴
 			for (Hotel hotel : allHotels) {
@@ -336,6 +347,94 @@ public class AdminService {
 		return hotelsDTOPage; // Page<HotelInfosDTO> 반환
 	}
 
+	// 효준 호텔 수정
+	public boolean hotelUpdate(AdminHotelUpdateDTO adminHotelUpdateDTO, MultipartFile uploadThumbnail,
+			List<MultipartFile> uploadImages) {
+
+		Hotel hotel = hotelRepo.getByHotelNo(adminHotelUpdateDTO.getHotelNo());
+
+		hotel.setHotelName(adminHotelUpdateDTO.getHotelName());
+		hotel.setHotelCommission(adminHotelUpdateDTO.getHotelCommission());
+		hotel.setHotelAdress(adminHotelUpdateDTO.getHotelAdress());
+		hotel.setHotelIntroduction(adminHotelUpdateDTO.getHotelIntroduction());
+		hotel.setHotelAmenities(String.join(",", adminHotelUpdateDTO.getHotelAmenities()));
+		hotel.setHotelRating(adminHotelUpdateDTO.getHotelRating());
+		hotel.setHotelTouristAttraction(String.join(",", adminHotelUpdateDTO.getHotelTouristAttractionList()));
+
+		// 경로
+		String path = hotel.getHotelThumbnail();
+		int lastSlashIndex = path.lastIndexOf("/", path.lastIndexOf("/") - 1);
+		String middlePath = path.substring(0, lastSlashIndex + 1);
+		
+		String initPath = "C:\\Lostay\\frontend\\public\\";
+		String thumbnailPath = middlePath +"thumbnail";
+		String imagesPath = middlePath + "images";
+		
+		// 썸네일 파일 지우기
+		if(adminHotelUpdateDTO.getHotelDelThumbnail() != null) {
+			File file = new File(initPath + adminHotelUpdateDTO.getHotelDelThumbnail());
+			System.out.println(initPath + adminHotelUpdateDTO.getHotelDelThumbnail());
+	        if (file.exists()) {
+	            if (!file.delete()) {
+	                return false;
+	            }
+	        }
+		}
+
+        // 썸네일 업로드
+        if (uploadThumbnail != null) {
+			File uploadDir = new File(initPath + thumbnailPath + "\\" + uploadThumbnail.getOriginalFilename());
+			
+			System.out.println("썸네일 업로드 경로 : " + initPath + thumbnailPath + "\\" + uploadThumbnail.getOriginalFilename());
+			try {
+				uploadThumbnail.transferTo(uploadDir);
+				hotel.setHotelThumbnail(thumbnailPath + "/" +uploadThumbnail.getOriginalFilename());
+			} catch (IllegalStateException | IOException e) {
+				return false;
+			}
+			
+		}
+        
+        
+        // 이미지 파일 지우기
+        String hotelImageString = hotel.getHotelImage();
+        List<String> hotelImageList = new ArrayList<>();
+        hotelImageList = new ArrayList<>(Arrays.asList(hotelImageString.split(",")));
+        
+        for(String imagePath : adminHotelUpdateDTO.getHotelDelImages()) {
+        	File file = new File(initPath + imagePath);
+            if (file.exists()) {
+                if (!file.delete()) {
+                    return false;
+                }
+            }
+            hotelImageList.remove(imagePath);
+        }
+        
+        
+        // 이미지 업로드
+        if(uploadImages != null) {
+
+        	List<String> imageFileNames = new ArrayList<>();
+            for (MultipartFile file : uploadImages) {
+            	File uploadDir = new File(initPath+imagesPath+ "\\" + file.getOriginalFilename());
+            	System.out.println("이미지 업로드 경로 : " + initPath+imagesPath+ "\\" + file.getOriginalFilename());
+            	
+            	try {
+					file.transferTo(uploadDir);
+				} catch (IllegalStateException | IOException e) {
+					return false;
+				}
+            	
+            	hotelImageList.add(imagesPath+ "/" +file.getOriginalFilename());
+            }
+        }
+        
+        hotel.setHotelImage(String.join(",", hotelImageList));
+     
+		return true;
+	}
+
 	// 홍정훈(관리자 페이지 호텔.객실 텝 객실 할인율 수정)
 	public boolean updateRoomDiscount(Long roomNo, int roomDiscount) {
 		Optional<Room> optionalRoom = roomRepo.findById(roomNo); // 방을 가져옴
@@ -348,70 +447,60 @@ public class AdminService {
 			return false;
 		}
 	}
-	
+
 	// 관리자 페이지 년도별 매출액 조회(jh)
 	public List<AdminRevenueChartDTO> RevenueChart() {
-	    List<Payment> payments = paymentRepo.findAllSuccessfulPayments();
+		List<Payment> payments = paymentRepo.findAllSuccessfulPayments();
 
-	    return payments.stream()
-	            .collect(Collectors.groupingBy(payment -> payment.getPayDay().getYear())) // 연도별 그룹화
-	            .entrySet().stream()
-	            .map(entry -> convertToYearDto(entry.getKey(), entry.getValue()))
-	            .collect(Collectors.toList());
+		return payments.stream().collect(Collectors.groupingBy(payment -> payment.getPayDay().getYear())) // 연도별 그룹화
+				.entrySet().stream().map(entry -> convertToYearDto(entry.getKey(), entry.getValue()))
+				.collect(Collectors.toList());
 	}
 
 	private AdminRevenueChartDTO convertToYearDto(int year, List<Payment> payments) {
-	    int totalCommission = payments.stream()
-	            .mapToInt(this::calculateCommission)
-	            .sum();
-	    int totalReservations = payments.size(); // 예약 수
+		int totalCommission = payments.stream().mapToInt(this::calculateCommission).sum();
+		int totalReservations = payments.size(); // 예약 수
 
-	
-	    return new AdminRevenueChartDTO(year, totalCommission, totalReservations);
+		return new AdminRevenueChartDTO(year, totalCommission, totalReservations);
 	}
 
 	// 관리자 페이지 월별 매출액 조회(jh)
 	public List<AdminRevenueChartDTO> RevenueMonthChart(int year) {
-	    List<Payment> payments = paymentRepo.findSuccessfulPaymentsByYear(year);
+		List<Payment> payments = paymentRepo.findSuccessfulPaymentsByYear(year);
 
-	    return payments.stream()
-	            .collect(Collectors.groupingBy(payment -> 
-	                String.format("%d-%02d", payment.getPayDay().getYear(), payment.getPayDay().getMonthValue()))) // 월별 그룹화
-	            .entrySet().stream()
-	            .sorted(Map.Entry.comparingByKey()) // 월 순서로 정렬
-	            .map(entry -> convertToMonthDto(entry.getKey(), entry.getValue()))
-	            .collect(Collectors.toList());
+		return payments.stream()
+				.collect(Collectors.groupingBy(payment -> String.format("%d-%02d", payment.getPayDay().getYear(),
+						payment.getPayDay().getMonthValue()))) // 월별 그룹화
+				.entrySet().stream().sorted(Map.Entry.comparingByKey()) // 월 순서로 정렬
+				.map(entry -> convertToMonthDto(entry.getKey(), entry.getValue())).collect(Collectors.toList());
 	}
 
 	private AdminRevenueChartDTO convertToMonthDto(String month, List<Payment> payments) {
-	    int totalCommission = payments.stream()
-	            .mapToInt(this::calculateCommission)
-	            .sum();
-	    int totalReservations = payments.size(); // 예약 수
+		int totalCommission = payments.stream().mapToInt(this::calculateCommission).sum();
+		int totalReservations = payments.size(); // 예약 수
 
-
-	    return new AdminRevenueChartDTO(month, Integer.parseInt(month.substring(0, 4)), totalCommission, totalReservations);
+		return new AdminRevenueChartDTO(month, Integer.parseInt(month.substring(0, 4)), totalCommission,
+				totalReservations);
 	}
 
 	private int calculateCommission(Payment payment) {
-	    double commissionRate = payment.getRoom().getHotel().getHotelCommission() / 100.0; // 부동소수점으로 변환
-	    return (int) (payment.getPayPrice() * commissionRate); // 계산 후 정수형으로 변환
+		double commissionRate = payment.getRoom().getHotel().getHotelCommission() / 100.0; // 부동소수점으로 변환
+		return (int) (payment.getPayPrice() * commissionRate); // 계산 후 정수형으로 변환
 	}
-	
+
 	// // 관리자 페이지 분기별 매출액 조회(jh)
 	public List<AdminRevenueChartDTO> RevenuebranchChart(int year) {
-	    List<AdminRevenueChartDTO> result = new ArrayList<>();
-	    for (int quarter = 1; quarter <= 4; quarter++) {
-	        List<Payment> payments = paymentRepo.findSuccessfulPaymentsByQuarter(year, quarter);
-	        
-	        int totalCommission = payments.stream()
-	                .mapToInt(this::calculateCommission)
-	                .sum();
-	        int totalReservations = payments.size(); // 예약 수
+		List<AdminRevenueChartDTO> result = new ArrayList<>();
+		for (int quarter = 1; quarter <= 4; quarter++) {
+			List<Payment> payments = paymentRepo.findSuccessfulPaymentsByQuarter(year, quarter);
 
-	        result.add(new AdminRevenueChartDTO(year, totalCommission, totalReservations, quarter));
-	    }
-	    System.out.println("result:"+ result);
-	    return result;
+			int totalCommission = payments.stream().mapToInt(this::calculateCommission).sum();
+			int totalReservations = payments.size(); // 예약 수
+
+			result.add(new AdminRevenueChartDTO(year, totalCommission, totalReservations, quarter));
+		}
+		System.out.println("result:" + result);
+		return result;
 	}
+
 }

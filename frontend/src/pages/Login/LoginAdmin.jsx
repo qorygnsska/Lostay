@@ -22,6 +22,12 @@ export default function LoginAdmin() {
         Login()
     }
 
+    // 엔터 눌렀을 때
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            loginHandler();
+        }
+    };
 
     const idChangeHandler = (e) => {
         setId(e.target.value);
@@ -96,6 +102,7 @@ export default function LoginAdmin() {
                             className='id'
                             value={id}
                             onChange={idChangeHandler}
+                            onKeyDown={handleKeyDown}
                         />
                     </div>
 
@@ -107,6 +114,7 @@ export default function LoginAdmin() {
                             className='password'
                             value={pw}
                             onChange={pwChangeHandler}
+                            onKeyDown={handleKeyDown}
                         />
                     </div>
 
