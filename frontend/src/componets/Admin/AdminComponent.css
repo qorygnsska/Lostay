@@ -43,6 +43,33 @@
     padding: 30px 10px;
     width: 700px;
 
+    .edit--btn--box {
+        display: flex;
+        justify-content: right;
+        width: 100%;
+        margin-bottom: 30px;
+        gap: 10px;
+        font-size: 18px;
+        font-weight: bold;
+
+        .edit--btn {
+            width: 70px;
+            height: 35px;
+            border-radius: 5px;
+            background-color: var(--regularBlueColor);
+            color: #fff;
+            border: none;
+
+        }
+
+        .cancle--btn {
+            width: 70px;
+            height: 35px;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+    }
 
     .top--content {
         display: flex;
@@ -182,6 +209,60 @@
 
 }
 
+.roomListAdmin--container {
+
+    .room--table--wrap {
+        min-height: 340px;
+        max-width: 1200px;
+        margin: auto;
+        padding-top: 40px;
+        padding-bottom: 20px;
+    }
+
+    #table_entire_room {
+
+        .room_no {
+            width: 5%;
+        }
+
+        .room_name {
+            width: 30%;
+        }
+
+        .room_price {
+            width: 10%;
+        }
+
+        .room_discount {
+            width: 10%;
+        }
+
+        .room_update {
+            width: 10%;
+        }
+    }
+
+    .page-item {
+        width: 30px;
+        height: 34px;
+
+        .page-link {
+            padding-left: 10px;
+            color: black;
+        }
+
+
+    }
+
+    .page-item.active {
+        .page-link {
+            background-color: var(--lightGrayColor);
+            border: none;
+            padding-left: 11px;
+            margin-top: 2px;
+        }
+    }
+}
 
 .room--edit--admin--container.open {
     transform: translateX(0);
@@ -197,6 +278,33 @@
     padding: 30px 10px;
     width: 700px;
 
+    .edit--btn--box {
+        display: flex;
+        justify-content: right;
+        width: 100%;
+        margin-bottom: 30px;
+        gap: 10px;
+        font-size: 18px;
+        font-weight: bold;
+
+        .edit--btn {
+            width: 70px;
+            height: 35px;
+            border-radius: 5px;
+            background-color: var(--regularBlueColor);
+            color: #fff;
+            border: none;
+
+        }
+
+        .cancle--btn {
+            width: 70px;
+            height: 35px;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+    }
 
     .top--content {
         display: flex;

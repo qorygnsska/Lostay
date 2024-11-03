@@ -229,9 +229,9 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
     return (
         <div className={`hotel--edit--admin--container ${hotelModalShow && 'open'}`}>
 
-            <div>
-                <button type='button' onClick={handelerUpdate}>수정</button>
-                <button type='button' onClick={() => hotelModalToggle()}>취소</button>
+            <div className='edit--btn--box'>
+                <button type='button' onClick={handelerUpdate} className='edit--btn'>수정</button>
+                <button type='button' onClick={() => hotelModalToggle()} className='cancle--btn'>취소</button>
             </div>
             <div className='top--content'>
                 <div className='top--box'>

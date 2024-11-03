@@ -237,9 +237,9 @@ export default function RoomEditAdmin({ propRoom, roomModalToggle, roomModalShow
     return (
         <div className={`room--edit--admin--container ${roomModalShow && 'open'}`}>
 
-            <div>
-                <button type='button' onClick={handelerUpdate}>수정</button>
-                <button type='button' onClick={() => roomModalToggle()}>취소</button>
+            <div className='edit--btn--box'>
+                <button type='button' onClick={handelerUpdate} className='edit--btn'>수정</button>
+                <button type='button' onClick={() => roomModalToggle()} className='cancle--btn'>취소</button>
             </div>
             <div className='top--content'>
                 <div className='top--box'>

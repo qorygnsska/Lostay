@@ -115,6 +115,12 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
 			       "FROM Hotel h LEFT JOIN h.rooms r " +
 			       "GROUP BY h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission, h.hotelAmenities, h.hotelImage, h.hotelIntroduction, h.hotelTouristAttraction, h.hotelThumbnail")
 		Page<HotelInfosDTO> findByHotelInfo(Pageable pageable);
+
+		@Query("SELECT new com.lostay.backend.adminpage.dto.HotelInfosDTO(h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission, h.hotelAmenities, h.hotelImage, h.hotelIntroduction, h.hotelTouristAttraction, h.hotelThumbnail) " +
+			       "FROM Hotel h LEFT JOIN h.rooms r " +
+			       "WHERE REPLACE(h.hotelName, ' ', '') LIKE %:searchText% "	+
+			       "GROUP BY h.hotelNo, h.hotelName, h.hotelRating, h.hotelAdress, h.hotelCommission, h.hotelAmenities, h.hotelImage, h.hotelIntroduction, h.hotelTouristAttraction, h.hotelThumbnail")
+		Page<HotelInfosDTO> findByHotelInfo(Pageable pageable, @Param("searchText") String searchText);
 		 
 	
 //	@Query("SELECT " +

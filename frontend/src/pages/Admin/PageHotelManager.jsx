@@ -1,22 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import CompHeaderAdmin from '../../componets/Header/CompHeaderAdmin'
 import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
-import { Container, Form, Pagination, Table } from 'react-bootstrap'
+import { Pagination, Table } from 'react-bootstrap'
 import { adminPrivateApi } from '../../api/adminApi'
 import HotelEditAdmin from '../../componets/Admin/HotelEditAdmin'
 import RoomListAdmin from '../../componets/Admin/RoomListAdmin'
 import RoomEditAdmin from '../../componets/Admin/RoomEditAdmin'
 
 export default function PageHotelManager() {
-
-    //하위요소가 값을 넘겨주면 실행할 함수
-    const functionForMyChild = (fromMyChild) => {
-        //fromMyChild: 하위요소가 넘겨준 변수(text_search)의 매개변수
-        //console.log('text_fromChild: ' + text_fromChild);   //previousState
-        //console.log('fromChild: ' + fromMyChild);
-        // setText_fromChild(fromMyChild);
-        // setActivePage(1);//검색어가 바뀔 때 1page 요청
-    }
 
     // ==================== START ======================== //
     // 페이지 네이션
@@ -44,19 +35,31 @@ export default function PageHotelManager() {
     // ==================== END ======================== //
 
 
+    // ==================== START ======================== //
+
+    //하위요소(검색창)가 넘겨줄 값을 담을 변수
+    const [text_fromChild, setText_fromChild] = useState('');
+    // ==================== END ======================== //
+    const functionForMyChild = (fromMyChild) => {
+        setText_fromChild(fromMyChild);
+        setActivePage(1);//검색어가 바뀔 때 1page 요청
+    }
+
+    // ==================== START ======================== //
 
     // ==================== START ======================== //
     // 호텔,객실 데이터
     const [hotelRoomList, setHotelRoomList] = useState(null);
 
 
-    const getData = async () => {
+    const getData = async (searchText) => {
         try {
-            const response = await adminPrivateApi.get(`http://localhost:9090/admin/hotelsList?page=${curPage}`)
+            const response = await adminPrivateApi.get(`http://localhost:9090/admin/hotelsList?page=${curPage}&searchText=${searchText}`)
 
             if (response.status === 200) {
                 setHotelRoomList(response.data)
                 setTotalPage(response.data.totalPages)
+                console.log(response.data)
             } else {
                 console.log('에러')
             }
@@ -66,12 +69,15 @@ export default function PageHotelManager() {
     }
 
     useEffect(() => {
-        getData()
-    }, [curPage]);
+        let searchText = ''
+        if (text_fromChild) {
+            searchText = text_fromChild.trim().replace(" ", "")
+        }
+        getData(searchText)
+    }, [curPage, text_fromChild]);
     // 호텔,객실 데이터 끝
     // ==================== END ======================== //
 
-    // ==================== START ======================== //
     // 호텔 수정 모달
     const [hotelModalShow, setHotelModalShow] = useState(false);
     const [propHotel, setPropHotel] = useState(null);
@@ -81,6 +87,7 @@ export default function PageHotelManager() {
         setHotelModalShow(true)
         setRoomModalShow(false)
         setPropHotel(hotel)
+        setSelectedHotelNo('')
     }
 
     const hotelModalToggle = (result) => {
@@ -102,6 +109,7 @@ export default function PageHotelManager() {
 
     const toggleRoomList = (hotelNo) => {
         setSelectedHotelNo((prev) => (prev === hotelNo ? null : hotelNo));
+        setPropHotel('')
     };
 
     const roomModalToggle = (result) => {
@@ -133,51 +141,53 @@ export default function PageHotelManager() {
 
 
                     {/* 호텔리스트 */}
-                    <Table striped bordered hover id='table_entire_review'>
-                        <thead id="table_header">
-                            <tr>
-                                <th className="hotel_no">No</th>
-                                <th className="hotel_name">호텔명</th>
-                                <th className="hotel_rating">등급</th>
-                                <th className="hotel_address">주소</th>
-                                <th className="hotel_commission">중개료</th>
-                                <th className="hotel_update">수정</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table_body">
-                            {hotelRoomList?.content.map(function (hotel, index) {
-                                return (
-                                    <React.Fragment key={hotel.hotelNo}>
-                                        <tr >
-                                            <td className="hotel_no">{hotel.hotelNo}</td>
-                                            <td className="hotel_name">{hotel.hotelName}</td>
-                                            <td className="hotel_rating">{hotel.hotelRating ? hotel.hotelRating : '-'}</td>
-                                            <td className="hotel_address">{hotel.hotelAdress}</td>
-                                            <td className="hotel_commission">{hotel.hotelCommission}%</td>
-                                            <td className="btn_container">
-                                                {/*수정 또는 삭제 버튼에 어디서 뭘 누르는지 알려주기 */}
-                                                <button type='button' onClick={() => propHotelChange(hotel)}>수정</button>
-                                                <button onClick={() => toggleRoomList(hotel.hotelNo)}>객실보기</button>
-                                            </td>
-                                        </tr>
-
-                                        {selectedHotelNo === hotel.hotelNo && (
-                                            <tr>
-                                                <td colSpan="6">
-                                                    <RoomListAdmin propHotelNo={hotel.hotelNo} setRoom={setRoom} setRoomModalShow={setRoomModalShow} setHotelModalShow={setHotelModalShow}
-                                                        roomReload={roomReload} setRoomReload={setRoomReload}
-                                                    />
+                    <div className='table--wrap'>
+                        <Table bordered id='table_entire_hotel'>
+                            <thead id="table_header">
+                                <tr>
+                                    <th className="hotel_no">No</th>
+                                    <th className="hotel_name">호텔명</th>
+                                    <th className="hotel_rating">등급</th>
+                                    <th className="hotel_address">주소</th>
+                                    <th className="hotel_commission">중개료</th>
+                                    <th className="hotel_update">관리</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table_body">
+                                {hotelRoomList?.content.map(function (hotel, index) {
+                                    return (
+                                        <React.Fragment key={hotel.hotelNo}>
+                                            <tr className={selectedHotelNo === hotel.hotelNo || propHotel?.hotelNo === hotel.hotelNo ? 'table-primary ' : ''}>
+                                                <td className="hotel_no">{hotel.hotelNo}</td>
+                                                <td className="hotel_name">{hotel.hotelName}</td>
+                                                <td className="hotel_rating">{hotel.hotelRating ? hotel.hotelRating : '-'}</td>
+                                                <td className="hotel_address">{hotel.hotelAdress}</td>
+                                                <td className="hotel_commission">{hotel.hotelCommission}%</td>
+                                                <td className="btn_container">
+                                                    {/*수정 또는 삭제 버튼에 어디서 뭘 누르는지 알려주기 */}
+                                                    <button type='button' onClick={() => propHotelChange(hotel)} className='comp--admin--btn--container'>수정</button>
+                                                    <span>/</span>
+                                                    <button onClick={() => toggleRoomList(hotel.hotelNo)} className='comp--admin--btn--container'>객실보기</button>
                                                 </td>
                                             </tr>
-                                        )}
 
-                                    </React.Fragment>
+                                            {selectedHotelNo === hotel.hotelNo && (
+                                                <tr className={selectedHotelNo === hotel.hotelNo ? 'table-secondary' : ''}>
+                                                    <td colSpan="6" className='room--td'>
+                                                        <RoomListAdmin propHotelNo={hotel.hotelNo} setRoom={setRoom} setRoomModalShow={setRoomModalShow} setHotelModalShow={setHotelModalShow}
+                                                            roomReload={roomReload} setRoomReload={setRoomReload}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                            )}
 
-                                )
-                            })}
-                        </tbody>
-                    </Table>
+                                        </React.Fragment>
 
+                                    )
+                                })}
+                            </tbody>
+                        </Table>
+                    </div>
 
                     {/* 페이지 네이션 */}
                     <div id="container_paging" className="d-flex justify-content-center">
