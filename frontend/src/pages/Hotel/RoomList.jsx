@@ -237,7 +237,13 @@ export default function RoomList() {
           <div className='HotelRank'>{RoomInfos.dto.hotelRating}</div>
           <div className='HotelName'>{RoomInfos.dto.hotelName}</div>
         </div>
-        <KakaoApiShare />
+        <KakaoApiShare
+         title={RoomInfos.dto.hotelName}
+         address={RoomInfos.dto.hotelAdress}
+         Thumbnail={RoomInfos.dto.hotelThumbnail}
+
+        />  {/* 카카오 공유 api */}
+
         {Heart ? <IoMdHeart className='FullHeartIcon' onClick={handlerCart}/> : <IoIosHeartEmpty className='HeartIcon' onClick={handlerCart}/>}
       </div>
 

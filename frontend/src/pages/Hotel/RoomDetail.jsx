@@ -17,6 +17,7 @@ import BackNav from "../../componets/BackNav/BackNav";
 import axios from 'axios';
 import RoomReview from '../../componets/Hotel/RoomReview';
 
+import KakaoApiShare from '../../componets/KakaoApi/KakaoApishare';
 
 export default function RoomDetail() {
 
@@ -84,6 +85,15 @@ export default function RoomDetail() {
             <div className='NameBox'>
                 <div className='RoomName'>{RoomDetail?.roomName}</div>
                 <Link to={`/RoomList/${RoomDetail?.hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`} className='HotelName'>{RoomDetail?.hotelName}<GrNext/></Link>
+               
+               {/* 카카오 공유 api */}
+                <KakaoApiShare
+         title={RoomDetail?.roomName}
+         address={RoomDetail?.hotelAdress}
+        Thumbnail={RoomDetail?.roomThumbnail}
+        /> 
+
+
             </div>
 
             <div className='RowLine'></div>

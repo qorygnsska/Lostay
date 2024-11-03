@@ -1,27 +1,26 @@
 // kakaoApiShare.jsx
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
-export default function KakaoApiShare() {
-  // 공유할 내용 정의
-  const title = '호텔 이름';
-  const description = '호텔 설명';
-  const imageUrl = 'http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png';
-  const mobileWebUrl = 'https://developers.kakao.com';
-  const webUrl = 'https://developers.kakao.com';
+export default function KakaoApiShare({ title, address ,Thumbnail}) {
+  const location = useLocation(); // 현재 위치 가져오기
+  const imageUrl = `http://localhost:3000/${Thumbnail}`;
+  const webUrl = `${window.location.origin}${location.pathname}`; // 현재 URL 설정
+
 
   const handleShare = () => {
-    console.log('Sharing initiated...');
-
+    console.log(title,address,imageUrl);
+  
     if (window.Kakao) {
       window.Kakao.Share.createDefaultButton({
         container: '#kakaotalk-sharing-btn',
         objectType: 'feed',
         content: {
           title: title,
-          description: description,
+          description: address,
           imageUrl: imageUrl,
           link: {
-            mobileWebUrl: mobileWebUrl,
+      
             webUrl: webUrl,
           },
         },
@@ -29,7 +28,7 @@ export default function KakaoApiShare() {
           {
             title: '웹으로 보기',
             link: {
-              mobileWebUrl: mobileWebUrl,
+    
               webUrl: webUrl,
             },
           },
@@ -42,8 +41,9 @@ export default function KakaoApiShare() {
 
   useEffect(() => {
     // 카카오톡 JavaScript SDK 초기화
-    if (window.Kakao) {
+    if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init('6ce94ba3ce787fda2efe59c95e6bc036'); // 카카오톡 앱 JavaScript 키
+      
     }
   }, []);
 
