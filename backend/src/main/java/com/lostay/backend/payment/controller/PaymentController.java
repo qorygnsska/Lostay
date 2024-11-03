@@ -192,10 +192,8 @@ public class PaymentController {
 		}
 	
 	// 결제 취소
-	@GetMapping("/Cancle")//변경전: /PaymentCancle 변경후:/payment/Cancle
+	@PostMapping("/Cancle")//변경전: /PaymentCancle 변경후:/payment/Cancle
 	public ResponseEntity<?> paymentcancle(@RequestParam(defaultValue = "2") Long payNo,@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
-		
-		String tokenBody = String.format("{\"imp_key\":\"%s\",\"imp_secret\":\"%s\"}", apiKey, secretKey);
 		
 		
 		try {
@@ -230,18 +228,19 @@ public class PaymentController {
 					.method("POST", HttpRequest.BodyPublishers.ofString(String.format("{\"imp_uid\":\"%s\"}", uid))).build();
 		 
 		 
-	       HttpResponse<String> cancelResponse = HttpClient.newHttpClient().send(cancel_request, HttpResponse.BodyHandlers.ofString());
+	     // 취소 요청 응답 확인
+		 HttpResponse<String> cancelResponse = HttpClient.newHttpClient().send(cancel_request, HttpResponse.BodyHandlers.ofString());
 		 
 	       
 	       if (cancelResponse.statusCode() != 200) {
-	            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+	            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	        } else {
 	            System.out.println("결제 취소 성공");
 
-//	            Long userNo = customOAuth2User.getUserNo();
-	            Long userNo = 2L;
+	            Long userNo = customOAuth2User.getUserNo();
+//	            Long userNo = 1L;
 	            paySer.canclePayment(payNo,userNo);
-	            return new ResponseEntity(HttpStatus.OK);
+	            return new ResponseEntity<>(HttpStatus.OK);
 	            
 	        }
 	       
@@ -263,6 +262,76 @@ public class PaymentController {
 			
 	
 	}
+	
+	
+	// 사후검증 틀릴 때 이용하는 메소드
+		@PostMapping("/VCancle")//변경전: /PaymentCancle 변경후:/payment/Cancle
+		public ResponseEntity<?> Vpaymentcancle(@RequestParam() String imp_uid,@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+			
+			
+			try {
+				// 토큰발급
+				HttpRequest request = HttpRequest.newBuilder()
+					    .uri(URI.create("https://api.iamport.kr/users/getToken"))
+					    .header("Content-Type", "application/json")
+					    .method("POST", HttpRequest.BodyPublishers.ofString(String.format("{\"imp_key\":\"%s\",\"imp_secret\":\"%s\"}", apiKey, secretKey)))
+					    .build();
+			
+			 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+			 
+			 if(response.statusCode() != 200) {
+				 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			 }else {
+				 System.out.println("토큰 발급 성공");
+			 }
+			 
+			 
+			 JSONObject jsonResponse = new JSONObject(response.body());
+			 
+			 // jsonObject에서 response 안에 있는 access토큰 문자열로 받아오기
+			 String accessToken = jsonResponse.getJSONObject("response").getString("access_token");
+			 
+			
+			 
+			// 취소 요청
+			 HttpRequest cancel_request = HttpRequest.newBuilder()
+						.uri(URI.create("https://api.iamport.kr/payments/cancel"))
+						.header("Content-Type", "application/json")
+						.header("Authorization", "Bearer " + accessToken)
+						.method("POST", HttpRequest.BodyPublishers.ofString(String.format("{\"imp_uid\":\"%s\"}", imp_uid))).build();
+			 
+			 
+		     // 취소 요청 응답 확인
+			 HttpResponse<String> cancelResponse = HttpClient.newHttpClient().send(cancel_request, HttpResponse.BodyHandlers.ofString());
+			 
+		       
+		       if (cancelResponse.statusCode() != 200) {
+		            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		        } else {
+		            System.out.println("결제 취소 성공");
+
+		            return new ResponseEntity<>(HttpStatus.OK);
+		            
+		        }
+		       
+		       
+		       
+			} catch (IOException e) {
+		        e.printStackTrace();
+		        return new ResponseEntity<>("Network error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+		    } catch (InterruptedException e) {
+		        Thread.currentThread().interrupt();
+		        return new ResponseEntity<>("Request interrupted", HttpStatus.INTERNAL_SERVER_ERROR);
+		    } catch (JSONException e) {
+		        e.printStackTrace();
+		        return new ResponseEntity<>("Invalid JSON format in response", HttpStatus.BAD_REQUEST);
+		    } catch (RuntimeException e) {
+		        e.printStackTrace();
+		        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+				
+		
+		}
 	
 	
 	
