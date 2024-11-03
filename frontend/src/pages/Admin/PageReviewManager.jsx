@@ -51,7 +51,7 @@ export default function PageReviewManager() {
 
         //인증 토큰 연계한 Axios 'GET' request by privateApi(Customized Comp)
         // async&await이나 then()은 같은 것
-        axios.get(`http://localhost:9090/adminReviewList?underSanction=${underSanction}&userName=${userName}&page=${requestedPage}`)
+        axios.get(`http://localhost:9090/admin/reviewList?underSanction=${underSanction}&userName=${userName}&page=${requestedPage}`)
             .then(response => {
                 //console.log(response);
                 console.log(response.data);

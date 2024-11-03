@@ -21,21 +21,15 @@ public class EsRestController {
 		
 	@GetMapping("/searchIndex")
 	public ResponseEntity<?> searchIndex(@RequestParam String searchVal) {
-		
 		System.out.println("esController.searchIndex: " + searchVal);
 		
 		return new ResponseEntity<>(ess.searchIndex(searchVal), HttpStatus.OK);
 	}
-	
-	
+
 	@GetMapping("/searchToken")
 	public ResponseEntity<?> searchToken(@RequestParam String searchVal) {
 		System.out.println("esController.searchToken: " + searchVal);
 		
 		return new ResponseEntity<>(ess.searchToken(searchVal), HttpStatus.OK);
 	}
-	
-	
-	
-	
 }

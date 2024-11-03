@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.lostay.backend.admin.entity.Admin;
@@ -23,7 +24,7 @@ public class AdminLoginService {
 
 	@Autowired
 	private final AdminRepository adminRepo;
-	
+
 	@Autowired
 	private final RefreshTokenService refreshTokenService;
 
@@ -31,20 +32,31 @@ public class AdminLoginService {
 	private final JWTUtil jwtutil;
 
 	private Long refreshTkExpired = 24 * 60 * 60 * 1000L; // 1일
-	
-	
+
 	// 로그인 체크
-	public Object loginAdmin(String id, String pw, HttpServletResponse response) {
+	public boolean loginAdmin(String id, String pw, HttpServletResponse response) {
 
-		Admin adminEntity =adminRepo.findByAdminId(id);
-		Long adminNo = adminEntity.getAdminNo();
+		try {
+			Admin adminEntity = adminRepo.findByAdminId(id);
 
-		String refreshToken = jwtutil.createJwt("refresh", "admin", "ROLE_ADMIN", adminNo, refreshTkExpired);
+			Long adminNo = adminEntity.getAdminNo();
 
-		addRefreshEntity(adminEntity.getAdminId(), refreshToken);
+			if (adminEntity.getAdminId().equals(id) && adminEntity.getAdminPw().equals(pw)) {
 
-		response.addCookie(createCookie("refresh", refreshToken));
-		return adminEntity;
+				String refreshToken = jwtutil.createJwt("refresh", "admin", "ROLE_ADMIN", adminNo, refreshTkExpired);
+
+				addRefreshEntity(adminEntity.getAdminId(), refreshToken);
+
+				response.addCookie(createCookie("refresh", refreshToken));
+
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+
 	}
 
 	// 쿠키 만들기
@@ -62,9 +74,9 @@ public class AdminLoginService {
 	// redis에 리프레쉬 토큰 저장
 	private void addRefreshEntity(String adminId, String refresh) {
 
-
 		AdminRefreshTokenDTO adminRefreshTokenDTO = new AdminRefreshTokenDTO();
-		adminRefreshTokenDTO.setAdminId(adminId);;
+		adminRefreshTokenDTO.setAdminId(adminId);
+		;
 		adminRefreshTokenDTO.setRefreshToken(refresh);
 
 		refreshTokenService.create(adminRefreshTokenDTO);

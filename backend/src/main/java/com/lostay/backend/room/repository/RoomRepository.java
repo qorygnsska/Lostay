@@ -2,10 +2,15 @@ package com.lostay.backend.room.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import com.lostay.backend.adminpage.dto.RoomsInfosDTO;
 import com.lostay.backend.room.dto.RoomCustomDTO;
 import com.lostay.backend.room.dto.RoomListHotelInfoDTO;
 import com.lostay.backend.room.entity.Room;
@@ -111,6 +116,20 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 	Long findAvailableCount(@Param("roomNo")Long roomNo
 			               ,@Param("checkInDate")LocalDateTime in
 			               ,@Param("checkOutDate")LocalDateTime out);
+
+
+	@Query("SELECT new com.lostay.backend.adminpage.dto.RoomsInfosDTO(" +
+		       "r.roomNo, r.roomName, r.roomPeopleMax, r.roomPeopleInfo, " +
+		       "r.roomCount, r.roomThumbnail, r.roomImg, r.roomPrice, " +
+		       "r.roomDiscount, r.roomAmenities, r.roomIntroduction, " +
+		       "r.roomCheckinTime, r.roomCheckoutTime) " +
+		       "FROM Hotel h LEFT JOIN h.rooms r " +
+		       "WHERE h.hotelNo = :hotelNo " +
+		       "ORDER BY r.roomNo ASC")
+	Page<RoomsInfosDTO> findByHotelNo(@Param("hotelNo") Long hotelNo, Pageable pageable);
+
+
+	Room findByRoomNo(Long roomNo);
 
 
 
