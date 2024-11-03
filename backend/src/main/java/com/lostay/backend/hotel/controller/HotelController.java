@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.lostay.backend.elasticsearch.service.EsService;
 import com.lostay.backend.hotel.service.HotelService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +29,8 @@ public class HotelController {
 	@Autowired
 	private HotelService hotelService;
 
+	@Autowired
+	private EsService ess;
 
 
 	@GetMapping("/search") //변경전: /testhotel 변경후:/hotel/search
@@ -43,15 +45,17 @@ public class HotelController {
 		    , @RequestParam(defaultValue="0") int roomDiscountState //할인혜택 0:전체보기
 			, @RequestParam(required = false) String[] hotelRating //등급
 			, @RequestParam(required = false) String[] hotelAmenities //시설&서비스
-			, @RequestParam(required = false) String sort) //정렬 방식
-			
-	{
+			, @RequestParam(required = false) String sort) { //정렬 방식 
 		   
-	    if(hotelsearch.equals("제주도")) {
-	    	hotelsearch="제주";
-	    }
+		//Elasticserach로 입력어를 토큰화 //일단 0번째 토큰만
+		String filteredSearch = ess.searchToken(hotelsearch).get(0);
+		
+//	    if(hotelsearch.equals("제주도")) {
+//	    	hotelsearch="제주";
+//	    }
 	    
-	    log.info("호텔주소: " + hotelsearch);
+	    log.info("입력: " + hotelsearch);
+	    log.info("검색: " + filteredSearch);
 	    log.info("체크인: " + checkIn);
 	    log.info("체크아웃: " + checkOut);
 	    log.info("기준인원: " + roomPeopleInfo);
@@ -64,7 +68,7 @@ public class HotelController {
 	    log.info("정렬: " + sort);
 	    // 호텔 서비스 호출
 	    return new ResponseEntity<>(hotelService.findHotelsFilter(
-	    		hotelAmenities, hotelsearch, minRoomPrice, maxRoomPrice,
+	    		hotelAmenities, filteredSearch, minRoomPrice, maxRoomPrice,
                 checkIn, checkOut, roomPeopleInfo, soldOut,roomDiscountState, hotelRating, sort),
                 HttpStatus.OK);
 	}

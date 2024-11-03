@@ -315,9 +315,21 @@ public class AdminService {
 	}
 
 	// 홍정훈(관리자 페이지 호텔.객실 텝 정보 조회)
-	public Page<HotelInfosDTO> getHotels(int pageIndex) {
+	public Page<HotelInfosDTO> getHotels(int pageIndex, String searchText) {
 		Pageable pageable = PageRequest.of(pageIndex, 10, Sort.by("hotelNo").ascending());
-		Page<HotelInfosDTO> hotelsPage = hotelRepo.findByHotelInfo(pageable);
+		
+		Page<HotelInfosDTO> hotelsPage = null;
+		
+		System.out.println(searchText);
+		
+		if(searchText == null) {
+			System.out.println("타니");
+			hotelsPage = hotelRepo.findByHotelInfo(pageable);	
+		}else {
+			System.out.println("타니2");
+			hotelsPage = hotelRepo.findByHotelInfo(pageable,searchText);
+		}
+		
 
 		
 		for (HotelInfosDTO dto : hotelsPage.getContent()) {
@@ -427,7 +439,7 @@ public class AdminService {
 	public Page<RoomsInfosDTO> roomsList(Long hotelNo, int pageIndex) {
 		System.out.println(hotelNo.TYPE);
 		System.out.println(hotelNo);
-		Pageable pageable = PageRequest.of(pageIndex, 10);
+		Pageable pageable = PageRequest.of(pageIndex, 5);
 		Page<RoomsInfosDTO> RoomsPage = roomRepo.findByHotelNo(hotelNo,pageable);
 
 		for (RoomsInfosDTO dto : RoomsPage.getContent()) {
@@ -535,17 +547,17 @@ public class AdminService {
 	}
 
 	// 홍정훈(관리자 페이지 호텔.객실 텝 객실 할인율 수정)
-	public boolean updateRoomDiscount(Long roomNo, int roomDiscount) {
-		Optional<Room> optionalRoom = roomRepo.findById(roomNo); // 방을 가져옴
-
-		if (optionalRoom.isPresent()) { // 방이 존재하면
-			Room room = optionalRoom.get(); // 방 객체 가져오기
-			room.setRoomDiscount(roomDiscount); // 할인율 업데이트
-			return true;
-		} else {
-			return false;
-		}
-	}
+//	public boolean updateRoomDiscount(Long roomNo, int roomDiscount) {
+//		Optional<Room> optionalRoom = roomRepo.findById(roomNo); // 방을 가져옴
+//
+//		if (optionalRoom.isPresent()) { // 방이 존재하면
+//			Room room = optionalRoom.get(); // 방 객체 가져오기
+//			room.setRoomDiscount(roomDiscount); // 할인율 업데이트
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
 
 	// 관리자 페이지 년도별 매출액 조회(jh)
 	public List<AdminRevenueChartDTO> RevenueChart() {

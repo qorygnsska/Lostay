@@ -60,6 +60,32 @@
 .page--hotel--manager--container {
     height: 100%;
 
+    #table_entire_hotel {
+        .hotel_no {
+            width: 5%;
+        }
+
+        .hotel_name {
+            width: 32.5%;
+        }
+
+        .hotel_rating {
+            width: 10%;
+        }
+
+        .hotel_address {
+            width: 22.5%;
+        }
+
+        .hotel_commission {
+            width: 10%;
+        }
+
+        .hotel_update {
+            width: 20%;
+        }
+    }
+
     /* 관리자 호텔 객실 페이지 */
     .page--wrap {
         display: flex;
@@ -69,9 +95,22 @@
         #container_section {
             flex: 5;
         }
+
+        .table--wrap {
+            min-height: 500px;
+        }
+
+
+    }
+
+    .selHotel {
+        background-color: blanchedalmond;
+    }
+
+    .room--td {
+        padding: 0;
     }
 }
-
 
 
 

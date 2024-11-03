@@ -71,39 +71,39 @@ export default function RoomListAdmin({ propHotelNo, setRoom, setRoomModalShow, 
     }
     // ==================== END ======================== //
     return (
-        <div className='RoomListAdmin'>
-
+        <div className='roomListAdmin--container'>
             {/* 룸리스트 */}
-            <Table striped bordered hover id='table_entire_review'>
-                <thead id="table_header">
-                    <tr>
-                        <th className="room_no">No</th>
-                        <th className="room_name">객실명</th>
-                        <th className="room_price">가격</th>
-                        <th className="room_discount">할인율</th>
-                        <th className="room_update">수정</th>
-                    </tr>
-                </thead>
-                <tbody id="table_body">
-                    {roomList?.content.map(function (room, index) {
-                        return (
-                            <React.Fragment key={room.roomNo}>
-                                <tr key={room.roomNo}>
-                                    <td className="room_no">{room.roomNo}</td>
-                                    <td className="romm_name">{room.roomName}</td>
-                                    <td className="room_price">{room.roomPrice.toLocaleString()}원</td>
-                                    <td className="room_discount">{room.roomDiscount}%</td>
-                                    <td className="btn_container">
-                                        {/*수정 또는 삭제 버튼에 어디서 뭘 누르는지 알려주기 */}
-                                        <button type='button' onClick={() => propRoomChange(room)}>수정</button>
-                                    </td>
-                                </tr>
-                            </React.Fragment >
-                        )
-                    })}
-                </tbody>
-            </Table>
-
+            <div className='room--table--wrap'>
+                <Table striped bordered hover id='table_entire_room'>
+                    <thead id="table_header">
+                        <tr>
+                            <th className="room_no">No</th>
+                            <th className="room_name">객실명</th>
+                            <th className="room_price">가격</th>
+                            <th className="room_discount">할인율</th>
+                            <th className="room_update">관리</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_body">
+                        {roomList?.content.map(function (room, index) {
+                            return (
+                                <React.Fragment key={room.roomNo}>
+                                    <tr key={room.roomNo}>
+                                        <td className="room_no">{room.roomNo}</td>
+                                        <td className="romm_name">{room.roomName}</td>
+                                        <td className="room_price">{room.roomPrice.toLocaleString()}원</td>
+                                        <td className="room_discount">{room.roomDiscount}%</td>
+                                        <td className="btn_container">
+                                            {/*수정 또는 삭제 버튼에 어디서 뭘 누르는지 알려주기 */}
+                                            <button type='button' onClick={() => propRoomChange(room)} className='comp--admin--btn--container'>수정</button>
+                                        </td>
+                                    </tr>
+                                </React.Fragment >
+                            )
+                        })}
+                    </tbody>
+                </Table>
+            </div>
 
 
 

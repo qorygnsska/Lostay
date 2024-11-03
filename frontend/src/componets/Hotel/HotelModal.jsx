@@ -5,7 +5,7 @@ import { CiRedo } from "react-icons/ci";
 import Form from 'react-bootstrap/Form';
 import { Range } from 'react-range'; // 슬라이더
 
-export default function HotelModal({ props, show, handleClose, callParent }) {
+export default function HotelModal({ show, handleClose, callParent, props }) {
 
   // 버튼(고정값)
   const rankBtn = ['특1급', '특급', '5성급', '4성급', '가족호텔', '리조트'];
@@ -67,7 +67,7 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
   function clickAmenities(param) {
     handleButtonClick(param);
 
-    if(amenities.includes(param)){
+    if (amenities.includes(param)) {
       setAmenities(amenities.filter(button => button !== param));
     } else {
       setAmenities([...amenities, param]);
@@ -106,8 +106,12 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
 
   return (
     <div className='hotel--modal--container'>
-      <Modal show={show} onHide={handleClose} keyboard={false} scrollable={true} className='hotel--list--Filter'
+      <Modal
         {...props}
+        show={show}
+        onHide={handleClose}
+        keyboard={false} scrollable={true}
+        className='hotel--list--Filter'
         size='lg'
       >
         <Modal.Header className='FilterHead'>
@@ -161,7 +165,6 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
                         right: `${(1000000 - maxValue) / 1000000 * 100}%`, // 오른쪽 핸들의 위치
                         backgroundColor: '#007bff',
                         transition: 'left 0.2s ease, right 0.2s ease'
-
                       }}
                     />
                     {children} {/* 슬라이더 핸들 */}
@@ -170,6 +173,7 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
                 renderThumb={({ props, index }) => (
                   <div
                     {...props}
+                    key={index}
                     style={{
                       height: '16px',
                       width: '16px',
@@ -180,12 +184,11 @@ export default function HotelModal({ props, show, handleClose, callParent }) {
                       boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
                       transition: 'transform 0.2s ease'
                     }}
-                  >
-                  </div>
+                  />
                 )}
               />
-
             </div>
+
             <div className='EventF border-bottom pb-3 mb-3'>
               <p>할인혜택</p>
               <input type='button' value='할인 중' key='할인 중' name='할인 중' className='BtnF' id='할인 중'
