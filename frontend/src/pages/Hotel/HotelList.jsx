@@ -13,7 +13,7 @@ import NavTop from '../../componets/NavToTop/NavTop';
 import Navbar from '../../componets/Navbar/Navbar';
 import Footer from '../../componets/Footer/Footer';
 
-export default function HotelList(props) {
+export default function HotelList() {
 
   //////////////////////////////////////////////////////////////////////////////JIP1030
   const today = new Date(); //오늘 날짜
@@ -106,6 +106,9 @@ export default function HotelList(props) {
       if (response.status === 200) {//HttpStatus.OK
         setHotels(response.data);
         setResultCount(response.data.length);
+        setRealHotel([]);
+        setPage(1);
+        setHasMore(true);
       }
     } catch (error) {
       console.log(error);
@@ -186,7 +189,8 @@ export default function HotelList(props) {
 
       <HotelFilter place={place} resultCount={resultCount} handleShow={handleShow} callParent={(fromFilter) => setSortOption(fromFilter)} />
 
-      <HotelModal gf={props} show={show} handleClose={handleClose} callParent={filterModalCallsMe} />
+      <HotelModal show={show} handleClose={handleClose} callParent={filterModalCallsMe} />
+      {/* gf={props} 호텔리스트가 최상위 페이지라 prop로 받아올 것이 없음, 물려줄 것도 없음 */}
 
       <HotelGrid hotels={RealHotel} check_in={check_in} check_out={check_out} member={member} />
 

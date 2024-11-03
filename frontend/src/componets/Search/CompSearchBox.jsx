@@ -186,9 +186,9 @@ export default function CompSearchBox(props) {
                                 id="input_place"
                                 type="search"
                                 placeholder="지역 또는 호텔 이름을 입력하세요."
+                                autoFocus={props.focus === "input_place" ? true : false}
                                 value={place}
                                 onChange={(event) => setPlace(event.target.value)}
-                                autoFocus={props.focus === "input_place" ? true : false}
                             />
                         </InputGroup>
 
@@ -199,10 +199,10 @@ export default function CompSearchBox(props) {
                                     id="input_check_in"
                                     type="text"
                                     placeholder="체크인"
+                                    autoFocus={props.focus === "input_period" ? true : false}
                                     value={dateFormatter(check_in)}
                                     readOnly
                                     onClick={() => setCheckInPicker(!checkInPicker)}
-                                    autoFocus={props.focus === "input_period" ? true : false}
                                 />
                             </InputGroup>
 
@@ -256,11 +256,11 @@ export default function CompSearchBox(props) {
                                 id="input_member"
                                 type="text"
                                 placeholder="인원"
+                                autoFocus={props.focus === "input_member" ? true : false}
                                 value={'인원 ' + member + '명'}
                                 readOnly
                                 // onChange={(event) => setMember(event.target.value)} 
                                 // 여기서는 값이 바뀔 일이 없네?(readOnly), 값이 바뀌명 '인원' + '명'까지 member에 들어감
-                                autoFocus={props.focus === "input_member" ? true : false}
                                 onClick={() => setMemberPicker(!memberPicker)}
                             />
                         </InputGroup>
