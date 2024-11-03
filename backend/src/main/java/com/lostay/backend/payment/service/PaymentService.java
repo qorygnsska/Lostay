@@ -261,4 +261,11 @@ public class PaymentService {
 		return amount;
 	}
 
+	public String findUid(Long payNo) {
+		
+		String uid = payRepo.findById(payNo).get().getImpUid();
+		
+		return uid;
+	}
+
 }

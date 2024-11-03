@@ -18,8 +18,6 @@ public class RoomCheckDTO {
 	
 	private Long Rid;
 
-	private Long count;  // 체크아웃 날짜
-
 	private Long roomNo;			// 객실번호
 	
 	private LocalDate checkInDay;	// 체크인 날짜

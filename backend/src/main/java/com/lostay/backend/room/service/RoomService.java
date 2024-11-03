@@ -8,9 +8,12 @@ import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.lostay.backend.hotel.repository.HotelRepository;
@@ -40,6 +43,9 @@ public class RoomService {
 	
 	@Autowired
 	private RoomRedisRepository roomRedisRepo;
+	
+	@Autowired
+	private RedisTemplate<String, RoomCheck> redisTemplate;
 	
 	// 호텔에 대한 객실 리스트 조회(호텔과 객실 정보)
 	public RoomListDTO findHotelRoomList(Long hotelNo, LocalDateTime checkInDate, LocalDateTime checkOutDate, int peopleMax) {
@@ -133,76 +139,83 @@ public class RoomService {
 		dto.setHotelAdress(room.getHotel().getHotelAdress());
 		dto.setAvailableRooms(avc);
 		dto.setPeriod(period);
-		
+		dto.setRoomThumbnail(room.getRoomThumbnail());
+	
 		return dto;
 	}
 
 
 
-//	public Long findAvailableCount(RoomCheckDTO dto) {
-//		
-//		LocalDateTime in = dto.getCheckInDay().atTime(15,0,0);
-//	    LocalDateTime out = dto.getCheckOutDay().atTime(11,0,0);
-//	    Long roomNo = dto.getRoomNo();
-//	    Long count = roomRepo.findAvailableCount(roomNo,in,out);
-//
-//	    return count;
-//	}
+	
+	public Long findAvailableCount(RoomCheckDTO dto) {
+		
+		LocalDateTime in = dto.getCheckInDay().atTime(15,0,0);
+	    LocalDateTime out = dto.getCheckOutDay().atTime(11,0,0);
+	    Long roomNo = dto.getRoomNo();
+	    Long count = roomRepo.findAvailableCount(roomNo,in,out);
+
+	    return count;
+	}
 
 
-
-//	// 레디스에 값이 있는지 찾아오는거
+//    // 레디스에 값이 있는지 찾아오는거
 //	public RoomCheckDTO findRedisInfo(Long roomNo,LocalDateTime in,LocalDateTime out) {
 //		
-//		Optional<RoomCheck> newRoom = roomRedisRepo.findByRoomNoAndCheckInDayAndCheckOutDay
-//										(roomNo, in.toLocalDate(), out.toLocalDate());
+//		List<RoomCheck> newRoom = roomRedisRepo.findByRoomNoAndCheckInDayLessThanAndCheckOutDayGreaterThan
+//				(roomNo,in,out);
 //		
-//	    return newRoom.map(room -> {
-//	        RoomCheckDTO dto = new RoomCheckDTO();
-//	        dto.setRid(room.getRid());
-//	        dto.setCount(room.getCount());
-//	        dto.setRoomNo(room.getRoomNo());
-//	        dto.setCheckInDay(room.getCheckInDay());
-//	        dto.setCheckOutDay(room.getCheckOutDay());
-//	        return dto;
-//	    }).orElse(new RoomCheckDTO()); // Optional이 비어있을 때 기본값 제공
+//	    
 //
 //		
 //	}
-//
-//
-//
-//	// 업데이트 및 저장
-//	public RoomCheckDTO RedisSave(Long rid, Long count, Long roomNo, LocalDateTime in, LocalDateTime out) {
-//
-//		
-//		RoomCheck ch = new RoomCheck(); 
-//		
-//		if(rid == null) {
-//			
-//			ch.setCount(count);
-//			ch.setRoomNo(roomNo);
-//			ch.setCheckInDay(in.toLocalDate());
-//			ch.setCheckOutDay(out.toLocalDate());
-//			
-//			roomRedisRepo.save(ch);
-//				
-//		}else {
-//	
-//			ch.setRid(rid);
-//			ch.setCount(count);
-//			ch.setRoomNo(roomNo);
-//			ch.setCheckInDay(in.toLocalDate());
-//			ch.setCheckOutDay(out.toLocalDate());
-//			
-//			roomRedisRepo.save(ch);
-//			
-//		}
-//
-//		RoomCheckDTO c1 = new RoomCheckDTO(ch.getRid(),ch.getCount()
-//						,ch.getRoomNo(),ch.getCheckInDay(),ch.getCheckOutDay());
-//		
-//		return c1;
-//	}
+
+
+
+	// 업데이트 및 저장
+	public RoomCheckDTO RedisSave(Long roomNo, LocalDate in, LocalDate out) {
+
+		
+		RoomCheck ch = new RoomCheck(); 
+			
+			ch.setRoomNo(roomNo);
+			ch.setCheckInDay(in);
+			ch.setCheckOutDay(out);
+			
+			roomRedisRepo.save(ch);
+			
+
+
+		RoomCheckDTO c1 = new RoomCheckDTO(ch.getRid()
+						,ch.getRoomNo(),ch.getCheckInDay(),ch.getCheckOutDay());
+		
+		return c1;
+	}
+
+
+	// redis에 해당하는 값을 가진 사람이 몇명 있는지
+	public int findRedisHumanCount(RoomCheckDTO dto) {
+//		 String ping = redisTemplate.getConnectionFactory().getConnection().ping();
+//		    System.out.println("Redis connection: " + ping); // true가 출력되어야 함
+		  Set<String> keys = redisTemplate.keys("roomCheck:*");
+		  
+		  
+		  
+		  int totalCount = 0;
+		  
+		  if (keys != null) {
+			  System.out.println("여기서 출력되니?" + keys.toString());
+		        for (String key : keys) {
+		        	  Map<Object, Object> roomCheckMap = redisTemplate.opsForHash().entries(key);
+		        	if (roomCheckMap != null &&
+		                roomCheckMap.get("roomNo").equals(dto.getRoomNo()) &&
+		                ((LocalDate) roomCheckMap.get("checkInDay")).isBefore(dto.getCheckOutDay()) &&
+		                ((LocalDate) roomCheckMap.get("checkOutDay")).isAfter(dto.getCheckInDay())) {
+		                totalCount += 1;
+		            }
+		        }
+		    }
+		
+		return totalCount;
+	}
 	
 }
