@@ -22,11 +22,7 @@ public class RoomCheck {
 	@Id
 	private Long Rid;
 
-	private Long count;  // 체크아웃 날짜
-	@Indexed
 	private Long roomNo;			// 객실번호
-	@Indexed
 	private LocalDate checkInDay;	// 체크인 날짜
-	@Indexed
 	private LocalDate checkOutDay;  // 체크아웃 날짜
 }
