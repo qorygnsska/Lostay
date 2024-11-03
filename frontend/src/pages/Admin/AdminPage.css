@@ -27,8 +27,49 @@
 
 
 .page--admin--home--container {
-    /* 관리자 홈 페이지 */
 
+
+    /* 관리자 홈 페이지 */
+    .year--wrap {
+        padding-top: 50px;
+        display: flex;
+        width: 1400px;
+        justify-content: space-between;
+        margin: auto;
+
+        .year--total {
+
+            .year--total--box {
+                width: 400px;
+                height: 200px;
+                border-radius: 10px;
+                box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+                ul {
+                    font-size: 30px;
+                }
+            }
+        }
+
+        .year--chart--box {
+            .year--chart {
+                display: flex;
+                justify-content: center;
+                width: 900px;
+                height: 350px;
+                box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+                border-radius: 10px;
+            }
+        }
+
+        .year--title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--lightGrayColor3);
+        }
+
+
+    }
 
 }
 
