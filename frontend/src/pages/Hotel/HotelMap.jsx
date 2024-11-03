@@ -24,23 +24,36 @@ export default function HotelMap() {
     const [bus, setBus] = useState(false);
     const [walk, setWalk] = useState(false);
 
+    // 상태가 업데이트될 때마다 폼을 제출하기 위한 useRef
+    const isStateUpdated = useRef(false);
+
     const clickVehicle = (vehicle) => {
-        if(vehicle === 'car'){
+        isStateUpdated.current = false; // 상태 변경 전 플래그 초기화
+        if (vehicle === 'car') {
             setCar(true);
             setBus(false);
             setWalk(false);
-        }else if(vehicle === 'bus'){
+        } else if (vehicle === 'bus') {
             setCar(false);
             setBus(true);
             setWalk(false);
-        }else{
+        } else {
             setCar(false);
             setBus(false);
             setWalk(true);
         }
-        handleSubmit(new Event('submit')); 
-        
-    }
+        isStateUpdated.current = true; // 상태 변경 후 플래그 설정
+    };
+
+    useEffect(() => {
+        // 모든 상태가 업데이트된 후에만 handleSubmit을 호출
+        if (isStateUpdated.current) {
+            handleSubmit(new Event('submit'));
+            isStateUpdated.current = false; // 초기화하여 여러 번 호출되지 않도록 설정
+        }
+    }, [car, bus, walk]); // 상태가 변경될 때마다 useEffect 실행
+
+   
 
     // 마커
     const [map, setMap] = useState(null);
@@ -179,8 +192,8 @@ export default function HotelMap() {
         });
     };
 
-    // 좌표로 경로 길찾기
-    const getRoute = async (startLng, startLat, endLng, endLat) => {
+    // 차량 길찾기
+    const carRoute = async (startLng, startLat, endLng, endLat) => {
         const response = await fetch(`https://apis-navi.kakaomobility.com/v1/directions?origin=${startLng},${startLat}&destination=${endLng},${endLat}`, {
             method: 'GET',
             headers: {
@@ -194,6 +207,38 @@ export default function HotelMap() {
         
         const data = await response.json();
         return data; // 경로 데이터 반환
+    };
+
+    // 도보 길찾기
+    const walkRoute = async (startLng, startLat, endLng, endLat) => {
+        try {
+            const response = await fetch('https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'appKey': 'rywsBUd1t66rMXhmaFV1p8a8SJ1zN2N55P12AhPx' // 여기에 실제 appKey를 입력하세요
+                },
+                body: JSON.stringify({
+                    startX: startLng,
+                    startY: startLat,
+                    endX: endLng,
+                    endY: endLat,
+                    startName: "%EC%B6%9C%EB%B0%9C%EC%A7%80",
+                    endName: "%EB%AA%A9%EC%A0%81%EC%A7%80"
+                })
+            });
+    
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
+            const data = await response.json();
+            console.log(data);
+            return data;
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
     };
 
 
@@ -296,7 +341,7 @@ export default function HotelMap() {
             // 이동수단이 차일 때
             if(car === true){
                 // 길찾기 API 호출
-                const routeData = await getRoute(startCoords.longitude, startCoords.latitude, endCoords.longitude, endCoords.latitude);
+                const routeData = await carRoute(startCoords.longitude, startCoords.latitude, endCoords.longitude, endCoords.latitude);
                 console.log('길찾기 데이터:', routeData);
 
                 // div css 변경
@@ -341,6 +386,9 @@ export default function HotelMap() {
 
                 // 선 그리기
                 drawRoads(road);
+            }else if(walk === true){
+                 // 길찾기 API 호출
+                 const routeData = await walkRoute(startCoords.longitude, startCoords.latitude, endCoords.longitude, endCoords.latitude);
             }
             
 
