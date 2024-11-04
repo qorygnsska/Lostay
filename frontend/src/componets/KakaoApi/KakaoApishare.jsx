@@ -12,7 +12,7 @@ export default function KakaoApiShare({ title, address, Thumbnail }) {
     try {
       // 이미지 가져오기
       const response = await fetch(imageUrl);
-      
+
       // 응답 상태 확인
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
