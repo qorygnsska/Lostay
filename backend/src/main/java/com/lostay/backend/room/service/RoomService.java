@@ -11,9 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.DataType;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +50,7 @@ public class RoomService {
 	@Autowired
 	private RedisTemplate<String, RoomCheck> redisTemplate;
 	
+
 	// 호텔에 대한 객실 리스트 조회(호텔과 객실 정보)
 	public RoomListDTO findHotelRoomList(Long hotelNo, LocalDateTime checkInDate, LocalDateTime checkOutDate, int peopleMax) {
 
@@ -182,6 +185,7 @@ public class RoomService {
 			ch.setCheckInDay(in);
 			ch.setCheckOutDay(out);
 			
+			
 			roomRedisRepo.save(ch);
 			
 
@@ -192,30 +196,58 @@ public class RoomService {
 		return c1;
 	}
 
-
+	
+	// 레디스에서 roomCheck:123214354738483598327984 통해서 값 가져오기
+	public Optional<RoomCheck> getRoomCheck(String rid) {
+		 HashOperations<String, String, RoomCheck> hashOperations = redisTemplate.opsForHash();
+	        RoomCheck roomCheck = hashOperations.get("roomCheck", rid);
+	        return Optional.ofNullable(roomCheck);
+    }
+	
 	// redis에 해당하는 값을 가진 사람이 몇명 있는지
 	public int findRedisHumanCount(RoomCheckDTO dto) {
-//		 String ping = redisTemplate.getConnectionFactory().getConnection().ping();
-//		    System.out.println("Redis connection: " + ping); // true가 출력되어야 함
-		  Set<String> keys = redisTemplate.keys("roomCheck:*");
-		  
-		  
+		 String ping = redisTemplate.getConnectionFactory().getConnection().ping();
+		    System.out.println("Redis connection: " + ping); // true가 출력되어야 함
+		    
+		  Set<String> keys = redisTemplate.keys("*");
+		  List<String> redisKey = new ArrayList<String>();
+		  for (String value : keys) {
+			  if(value.length() > 9){
+			  if(value.substring(0,10).equals("roomCheck:")) {
+				  redisKey.add(value.substring(10));
+				  System.out.println("keys : " + value);
+			    
+			}
+		  }
+	   }	  
+	
 		  
 		  int totalCount = 0;
 		  
-		  if (keys != null) {
-			  System.out.println("여기서 출력되니?" + keys.toString());
-			  DataType type = redisTemplate.type(keys.toString());
-			  System.out.println("key의 데이터 타입 : " + type);
-		        for (String key : keys) {
-		        	  Map<Object, Object> roomCheckMap = redisTemplate.opsForHash().entries(key);
-		        	if (roomCheckMap != null &&
-		                roomCheckMap.get("roomNo").equals(dto.getRoomNo()) &&
-		                ((LocalDate) roomCheckMap.get("checkInDay")).isBefore(dto.getCheckOutDay()) &&
-		                ((LocalDate) roomCheckMap.get("checkOutDay")).isAfter(dto.getCheckInDay())) {
-		                totalCount += 1;
-		            }
+		  
+		  if (redisKey != null) {
+		        for (String key : redisKey) {
+		        	System.out.println("여기서 출력되니?" + key.toString());
+		        	
+		        	  System.out.println("이 부분 왜 출력이 안되는거야? : "  + key);
+		        	  System.out.println("총 카운트가 몇이야 ? " + totalCount);
+		        	  Optional<RoomCheck> roomCheck = roomRedisRepo.findById(Long.parseLong(key));
+		        	  if (roomCheck != null) {
+		                  // 각 필드를 가져오기 (예: "roomNo", "checkInDay", "checkOutDay")
+		                  Long roomNo = roomCheck.get().getRoomNo();
+		                  LocalDate checkInDay = (roomCheck.get().getCheckInDay());
+		                  LocalDate checkOutDay = (roomCheck.get().getCheckOutDay());
+
+		                  // 비교 로직
+		                  if (roomNo.equals(dto.getRoomNo()) &&
+		                      checkInDay.isBefore(dto.getCheckOutDay()) &&
+		                      checkOutDay.isAfter(dto.getCheckInDay())) {
+		                      totalCount += 1;
+		                  }
+		        	  }
 		        }
+		    }else {
+		    	System.out.println("키가 널인거야? 말이 안되는데");
 		    }
 		
 		return totalCount;
