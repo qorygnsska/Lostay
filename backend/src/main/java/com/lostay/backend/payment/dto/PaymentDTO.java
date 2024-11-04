@@ -49,8 +49,9 @@ public class PaymentDTO {
 							//  0이면 적립, 1이면 사용
 	private long disNo;			// 결제수단 넘버
 	private String imp_uid;		// 결제 고유 번호
-	private String name;		// 이름
-	private String phone;			// 예약자 전화번호
+	private String name;		// 이용자 이름
+	private String phone;			// 이용자 전화번호
+	private Long rid;				// 레디스 아이디.
 	    
 }
 

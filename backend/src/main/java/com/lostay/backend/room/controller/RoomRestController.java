@@ -58,7 +58,7 @@ public class RoomRestController {
 	// 예약자가 비슷한 시간에 예약을 하려 할 때 먼저 들어온 사람이 있으면
 	// 후에 들어오는 사람을 막는 메소드
 	@Synchronized
-	@GetMapping("/Reservation/Syncronized")
+	@GetMapping("/Reservation/Synchronized")
 	public ResponseEntity<?> reservationsyncronized(@RequestBody RoomCheckDTO dto) {
 
 		Long count = roomSer.findAvailableCount(dto);
@@ -69,9 +69,9 @@ public class RoomRestController {
 		System.out.println("레디스에 들어와있는 인원수 : " + RedisHumanCount);
 		
 		if (count < RedisHumanCount) {
-			Body.put("message", "예약이 마감되었습니다.");
-			Body.put("status", false);
-			return new ResponseEntity<>(Body, HttpStatus.BAD_REQUEST);
+			System.out.println("예약마감");
+		
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}else {
 			
 			Long roomNo = dto.getRoomNo();
@@ -83,41 +83,12 @@ public class RoomRestController {
 			
 				roomdto = roomSer.RedisSave(roomNo, in, out);
 				System.out.println(roomdto);
-				Body.put("message", "예약이 가능합니다.");
-				Body.put("status", true);
-				return new ResponseEntity<>(Body, HttpStatus.OK);
+				System.out.println("예약가능");
+			
+				return new ResponseEntity<>(roomdto.getRid(), HttpStatus.OK);
 
 			}
-//		else {
-//				
-//				System.out.println("else:"+result);
-//				if (result.getCount() >= 1) {
-//					roomdto = roomSer.RedisSave(result.getRid(),result.getCount() - 1, roomNo, in, out);
-//
-//					Body.put("message", "예약이 가능합니다.");
-//					Body.put("status", true);
-//					return new ResponseEntity<>(Body, HttpStatus.OK);
-//
-//				} else {
-//					Body.put("message", "예약이 마감되었습니다.");
-//					Body.put("status", false);
-//					return new ResponseEntity<>(Body, HttpStatus.OK);
-//				}
-//
-//				
-//			}
-//		}
 
-//		RoomCheckDTO result = roomSer.findRedisInfo(roomNo, in, out);
-
-
-		
-
-		// 우선 레디스에 해당되는 roomNo랑 in, out이 값이 있니?
-		// 있다면 Rcount 값을 가져오고 없다면
-		// 레디스에 --count값과 roomNo,in,out 값 넣어주기
-		// 레디스에서 Rcount값 가져오기
-				
 				
 	}
 
