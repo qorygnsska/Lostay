@@ -181,7 +181,7 @@ public class PaymentController {
 //			Long userNo = customOAuth2User.getUserNo();
 			Long userNo = 1L;
 			Boolean result = paySer.savePayment(userNo,dto);
-
+			System.out.println(result);
 			if(result) {
 				
 				paySer.deleteRedis(dto.getRid());
@@ -267,7 +267,7 @@ public class PaymentController {
 	
 	// 사후검증 틀릴 때 이용하는 메소드
 		@PostMapping("/VCancle")//변경전: /PaymentCancle 변경후:/payment/Cancle
-		public ResponseEntity<?> Vpaymentcancle(@RequestParam() String imp_uid,@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+		public ResponseEntity<?> Vpaymentcancle(@RequestBody String imp_uid,@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
 			
 			
 			try {
