@@ -167,9 +167,9 @@ public class AdminController {
 
 	// 홍정훈(관리자 페이지 호텔.객실 텝 정보 조회)
 	@GetMapping("/hotelsList") // 변경전: /adminhotelsList 변경후:/admin/hotelsList
-	public ResponseEntity<?> adminHotelList(@RequestParam(defaultValue = "1") int page, @RequestParam String searchText) {
+	public ResponseEntity<?> adminHotelList(@RequestParam(defaultValue = "1") int page, @RequestParam String searchText, @RequestParam(defaultValue = "10") int showCnt) {
 
-		return new ResponseEntity<>(adminService.getHotels(page - 1,searchText), HttpStatus.OK);
+		return new ResponseEntity<>(adminService.getHotels(page - 1,searchText, showCnt), HttpStatus.OK);
 	}
 
 
@@ -239,9 +239,9 @@ public class AdminController {
 
 	// 관리자 페이지 호텔별 분기 조회
 	@GetMapping("/revenueData")
-	public ResponseEntity<RevenueDataDTO> getRevenueData(@RequestParam String hotelName, @RequestParam int year) {
+	public ResponseEntity<RevenueDataDTO> getRevenueData(@RequestParam Long hotelNo, @RequestParam int year) {
 		System.out.println("revenueData 실행");
-		RevenueDataDTO revenueData = adminService.getRevenueDataByHotelName(hotelName, year);
+		RevenueDataDTO revenueData = adminService.getRevenueDataByHotelNo(hotelNo, year);
 		// revenueData가 비어있는지 확인
 		if (revenueData.getRevenueData() == null || revenueData.getRevenueData().isEmpty()) {
 			return ResponseEntity.notFound().build(); // 404 Not Found
