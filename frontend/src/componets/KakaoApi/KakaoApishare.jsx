@@ -60,7 +60,6 @@ export default function KakaoApiShare({ title, address, Thumbnail }) {
   const handleShare = (event) => {
     event.preventDefault(); // 기본 동작 방지
     console.log(title, address, imageUrl);
-<<<<<<< HEAD
   
     if (window.Kakao && imageUrl) {
       window.Kakao.Share.createDefaultButton({
@@ -77,39 +76,6 @@ export default function KakaoApiShare({ title, address, Thumbnail }) {
         buttons: [
           {
             title: '웹으로 보기',
-=======
-
-    try {
-      // 이미지 가져오기
-      const response = await fetch(imageUrl);
-
-      // 응답 상태 확인
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const blob = await response.blob(); // Blob으로 변환
-      console.log('Blob:', blob); // Blob 상태 확인
-
-      const file = new File([blob], 'thumbnail.webp', { type: blob.type }); // 파일 객체 생성
-      console.log('File:', file); // 파일 객체 상태 확인
-
-      // Kakao API에 이미지 업로드
-      const uploadResponse = await window.Kakao.Share.uploadImage({
-        file: file, // 업로드할 파일
-      });
-      const uploadedImageUrl = uploadResponse.infos.original.url; // 업로드된 이미지 URL
-
-      // 공유 버튼 생성
-      if (window.Kakao) {
-        window.Kakao.Share.createDefaultButton({
-          container: '#kakaotalk-sharing-btn',
-          objectType: 'feed',
-          content: {
-            title: title,
-            description: address,
-            imageUrl: uploadedImageUrl, // 업로드된 이미지 URL
->>>>>>> master
             link: {
               webUrl: webUrl,
             },
