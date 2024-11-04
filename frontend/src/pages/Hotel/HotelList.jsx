@@ -7,7 +7,7 @@ import HotelModal from '../../componets/Hotel/HotelModal';
 import HotelGrid from '../../componets/Hotel/HotelGrid';
 import CompHeaderGeneral from '../../componets/Header/CompHeaderGeneral';
 import CompSearchBox from '../../componets/Search/CompSearchBox';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import NavTop from '../../componets/NavToTop/NavTop';
 import Navbar from '../../componets/Navbar/Navbar';
@@ -17,6 +17,7 @@ export default function HotelList() {
 
   //////////////////////////////////////////////////////////////////////////////JIP1030
   const today = new Date(); //오늘 날짜
+  today.setHours(0,0,0,0);
   //////////////////////////////////////////////////////////for default parameters
   //홈에서 검색을 안하고 /hotelList url로 치고 들어올 경우 parameter가 없을 수 있음
   //useState로 설정하니깐 오류남 ???
@@ -29,7 +30,7 @@ export default function HotelList() {
 
   const location = useLocation(); //uri에서 가져오기
   //console.log(location);
-  //console.log(location.pathname);
+  //console.log(location.search);
   try {//uri -> parameter 가져와서 decoding -> '&' 구분자로 split
     const parameters = decodeURI(location.search).split('&');
     //parameters 배열에서 각각 '=' 구분자로 split
@@ -37,6 +38,7 @@ export default function HotelList() {
     check_in = new Date(parameters[1].split('=')[1]);
     check_out = new Date(parameters[2].split('=')[1]);
     member = parameters[3].split('=')[1];
+
   } catch (error) {
     //url에서 /hotelList를 치고 들어오는 경우
     place = ''; //try구문에서 place부터 에러가 나서, 미지정 시 place = undefined가 됨

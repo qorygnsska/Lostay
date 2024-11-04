@@ -75,7 +75,6 @@ export default function Home() {
                     className="search--btn"
                     onClick={() => setSearchBoxShow(true)}
                 >
-                    {/* button onClick: JIP1017 */}
                     <IoSearchOutline />
                     <span>여행지나 숙소를 검색해보세요.</span>
                 </button>
@@ -98,7 +97,7 @@ export default function Home() {
             <h2>국내 인기 여행지</h2>
             <LocationCarousel locationList={locationList} check_in={tomorrow} check_out={tdat} member={2} />{/* JIP1030 check_in check_out 추가 */}
 
-            {/* 여행질별 숙소 리스트 */}
+            {/* 여행지별 숙소 리스트 */}
             <h2>여행지별 숙소</h2>
             <LocationHotelCarousel locationHotelList={locationHotelList} />
 

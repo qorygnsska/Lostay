@@ -24,18 +24,37 @@ import { privateApi } from '../../api/api';
 
 export default function RoomList() {
 
-  const { search } = useLocation();
-  const ucheckInDate = new URLSearchParams(search).get('checkInDate'); // url에서 값 가져오기
-  const ucheckOutDate = new URLSearchParams(search).get('checkOutDate');
-  const upeopleMax = new URLSearchParams(search).get('peopleMax');
+//////////////////////////////////////////////////////////////////////////////JIP1029
+  //////////////////////////////////////////////////////////for default parameters JIP1104
+  const today = new Date(); //오늘 날짜
+  today.setHours(0, 0, 0, 0);//오늘 날짜의 시간, 분, 초, ms를 모두 0으로 설정
 
-  //////////////////////////////////////////////////////////////////////////////JIP1029
-  //////////////////////////////////////////////////////////for default parameters
+  const tomorrow = new Date(today); //오늘 + 1(tomorrow)
+  tomorrow.setDate(today.getDate() + 1);
+
+  const tdat = new Date(tomorrow); //오늘 + 1 + 1(the day after tomorrow)
+  tdat.setDate(tomorrow.getDate() + 1);
+
+  //const ucheckInDate = new URLSearchParams(search).get('checkInDate'); // url에서 값 가져오기
+  //const ucheckOutDate = new URLSearchParams(search).get('checkOutDate');
+  //const upeopleMax = new URLSearchParams(search).get('peopleMax');
+
+  let ucheckInDate = tomorrow;//넘어온 값이 없을 경우
+  let ucheckOutDate = tdat;
+  let upeopleMax = 2;
+
+  const { search } = useLocation();
+  if(search !== '') { //넘어온 값이 있을 경우
+    ucheckInDate = new URLSearchParams(search).get('checkInDate'); // url에서 값 가져오기
+    ucheckOutDate = new URLSearchParams(search).get('checkOutDate');
+    upeopleMax = new URLSearchParams(search).get('peopleMax');
+  }
+
   const parameters = useParams();
-  let check_in = new Date(ucheckInDate);
-  let check_out = new Date(ucheckOutDate);
-  let member = upeopleMax;
-  //////////////////////////////////////////////////////////for default parameters
+  const check_in = new Date(ucheckInDate);
+  const check_out = new Date(ucheckOutDate);
+  const member = upeopleMax;
+  //////////////////////////////////////////////////////////for default parameters  JIP1104
   //////////////////////////////////////////////////////////for hidden & focus
   // searchBox(Modal)이 열렸니?
   const [searchBoxShow, setSearchBoxShow] = useState(false);
@@ -65,7 +84,7 @@ export default function RoomList() {
   // 날짜 형식 변경
   const convertToLocalDateTime = (dateString) => {
     const date = new Date(dateString);
-    
+
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -74,7 +93,7 @@ export default function RoomList() {
     const seconds = String(date.getSeconds()).padStart(2, '0');
 
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-};
+  };
 
 
   // 기본 파라미터
@@ -144,19 +163,19 @@ export default function RoomList() {
         SetHeart(true);
         SetcartNo(response.data);
       }
-      
+
     } catch (error) {
-       setError(error);
+      setError(error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if(user === true){
+    if (user === true) {
       fetchCart();
     }
-  },[])
+  }, [])
 
   // 찜 추가
   const AddCart = async () => {
@@ -165,7 +184,7 @@ export default function RoomList() {
       if (response.status === 200) {
         SetHeart(true);
         SetcartNo(response.data.cartNo);
-      }else{
+      } else {
         SetHeart(false);
       }
     } catch (error) {
@@ -181,7 +200,7 @@ export default function RoomList() {
       const response = await privateApi.post(`/cart/delete?cartNo=${cartNo}`);
       if (response.status === 200) {
         SetHeart(false);
-      }else{
+      } else {
         SetHeart(true);
       }
     } catch (error) {
@@ -193,17 +212,17 @@ export default function RoomList() {
 
   // 찜 눌렀을 때
   const handlerCart = () => {
-      if (user === true) {
-          if(Heart){
-            DeleteCart();
-          }else{
-            AddCart();
-          }
+    if (user === true) {
+      if (Heart) {
+        DeleteCart();
       } else {
-          alert("로그인 후 이용해주세요.");
-          navigate("/login", {replace : true});
+        AddCart();
       }
-    };
+    } else {
+      alert("로그인 후 이용해주세요.");
+      navigate("/login", { replace: true });
+    }
+  };
 
   return (
     <Container className='room--list'>
@@ -238,13 +257,13 @@ export default function RoomList() {
           <div className='HotelName'>{RoomInfos.dto.hotelName}</div>
         </div>
         <KakaoApiShare
-         title={RoomInfos.dto.hotelName}
-         address={RoomInfos.dto.hotelAdress}
-         Thumbnail={RoomInfos.dto.hotelThumbnail}
+          title={RoomInfos.dto.hotelName}
+          address={RoomInfos.dto.hotelAdress}
+          Thumbnail={RoomInfos.dto.hotelThumbnail}
 
         />  {/* 카카오 공유 api */}
 
-        {Heart ? <IoMdHeart className='FullHeartIcon' onClick={handlerCart}/> : <IoIosHeartEmpty className='HeartIcon' onClick={handlerCart}/>}
+        {Heart ? <IoMdHeart className='FullHeartIcon' onClick={handlerCart} /> : <IoIosHeartEmpty className='HeartIcon' onClick={handlerCart} />}
       </div>
 
       <div className='RowLine'></div>
@@ -255,7 +274,7 @@ export default function RoomList() {
       ) : (
         <div>리뷰가 없습니다.</div>
       )}
-      
+
 
 
       <div className='HotelLocation'>
