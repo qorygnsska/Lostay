@@ -360,7 +360,7 @@ export default function PageAdminHome() {
         <div className='select--wrap'>
           <div className='select--total'>
             <div className='select--title'>
-              총 중개료 / 총 예약 건수
+              총 중개료 / 예약 건수
             </div>
             <div className='select--total--box'>
               <ul>

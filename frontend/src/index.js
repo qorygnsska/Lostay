@@ -14,34 +14,35 @@ import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // 효준
-import Home from "./pages/Home/Home"; // 메인 페이지
-import Login from "./pages/Login/Login"; // 로그인 페이지
-import LoginPopup from "./pages/Login/LoginPopup"; // 소셜 로그인 팝업 페이지
-import LoginPhone from "./pages/Login/LoginPhone"; // 소셜 휴대폰번호 인증 팝업 페이지
-import LoginAdmin from "./pages/Login/LoginAdmin"; // 어드민 로그인
-import MyPage from "./pages/MyPage/MyPage"; // 마이페이지 - 메인
-import WishList from "./pages/MyPage/Wish/WishList"; // 마이페이지 - 찜 내역
-import Profile from "./pages/MyPage/Profile/Profile"; // 마이페이지 - 내 정보 관리
-import BookingHistory from "./pages/MyPage/BookingHistory/BookingHistory"; // 마이페이지 - 예매 내역
-import MyReview from "./pages/MyPage/MyReview/MyReview"; // 마이페이지 - 리뷰 내역
-import MyPoint from "./pages/MyPage/MyPoint/MyPoint"; // 마이페이지 - 포인트 내역
-import Reservation from "./pages/Reservation/Reservation"; // 예약 결제 페이지
+import Home from "./pages/Home/Home";                                       // 메인 페이지
+import Login from "./pages/Login/Login";                                    // 로그인 페이지
+import LoginPopup from "./pages/Login/LoginPopup";                          // 소셜 로그인 팝업 페이지
+import LoginPhone from "./pages/Login/LoginPhone";                          // 소셜 휴대폰번호 인증 팝업 페이지
+import LoginAdmin from "./pages/Login/LoginAdmin";                          // 어드민 로그인
+import MyPage from "./pages/MyPage/MyPage";                                 // 마이페이지 - 메인
+import WishList from "./pages/MyPage/Wish/WishList";                        // 마이페이지 - 찜 내역
+import Profile from "./pages/MyPage/Profile/Profile";                       // 마이페이지 - 내 정보 관리
+import BookingHistory from "./pages/MyPage/BookingHistory/BookingHistory";  // 마이페이지 - 예매 내역
+import MyReview from "./pages/MyPage/MyReview/MyReview";                    // 마이페이지 - 리뷰 내역
+import MyPoint from "./pages/MyPage/MyPoint/MyPoint";                       // 마이페이지 - 포인트 내역
+import Reservation from "./pages/Reservation/Reservation";                  // 예약 결제 페이지
 
 // 교훈
-import HotelList from "./pages/Hotel/HotelList"; // 호텔 리스트 페이지
-import RoomList from "./pages/Hotel/RoomList"; // 객실 리스트 페이지
-import HotelMap from "./pages/Hotel/HotelMap"; // 지도 페이지
-import RoomDetail from "./pages/Hotel/RoomDetail"; // 객실 상세 페이지
-import HotelReviews from "./pages/Hotel/HotelReviews"; // 호텔 전체 리뷰 페이지
+import HotelList from "./pages/Hotel/HotelList";        // 호텔 리스트 페이지
+import RoomList from "./pages/Hotel/RoomList";          // 객실 리스트 페이지
+import HotelMap from "./pages/Hotel/HotelMap";          // 지도 페이지
+import RoomDetail from "./pages/Hotel/RoomDetail";      // 객실 상세 페이지
+import HotelReviews from "./pages/Hotel/HotelReviews";  // 호텔 전체 리뷰 페이지
 
 // 정일
-import PageEventList from "./pages/Event/PageEventList"; // 이벤트리스트 페이지
-import PageEventDetail from "./pages/Event/PageEventDetail"; // 이벤트상세 페이지
-import PageAdminHome from "./pages/Admin/PageAdminHome"; // 관리자 페이지 - 메인
-import PageEventManager from "./pages/Admin/PageEventManager"; // 관리자 페이지 - 이벤트 관리
-import PageHotelManager from "./pages/Admin/PageHotelManager"; // 관리자 페이지 - 호텔 객실 관리
-import PageReviewManager from "./pages/Admin/PageReviewManager"; // 관리자 페이지 - 리뷰 관리
-import PageUserManager from "./pages/Admin/PageUserManager"; // 관리자 페이지 - 사용자 관리
+import PageEventList from "./pages/Event/PageEventList";            // 이벤트리스트 페이지
+import PageEventDetail from "./pages/Event/PageEventDetail";        // 이벤트상세 페이지
+import PageAdminHome from "./pages/Admin/PageAdminHome";            // 관리자 페이지 - 메인
+import PageEventManager from "./pages/Admin/PageEventManager";      // 관리자 페이지 - 이벤트 관리
+import PageHotelManager from "./pages/Admin/PageHotelManager";      // 관리자 페이지 - 호텔 객실 관리
+import PageReviewManager from "./pages/Admin/PageReviewManager";    // 관리자 페이지 - 리뷰 관리
+import PageUserManager from "./pages/Admin/PageUserManager";        // 관리자 페이지 - 사용자 관리
+import PageHotelChart from "./pages/Admin/PageHotelChartManager";   // 관리자 페이지 - 호텔 차트 보기
 
 
 
@@ -79,6 +80,8 @@ const router = createBrowserRouter([
             { path: "/admin-hotel", element: <PageHotelManager /> },
             { path: "/admin-review", element: <PageReviewManager /> },
             { path: "/admin-user", element: <PageUserManager /> },
+            { path: "/admin-hotelchart", element: <PageHotelChart /> },
+
         ],
     },
 ]);
