@@ -10,9 +10,9 @@ export default function KakaoApiShare({ title, address, Thumbnail }) {
   useEffect(() => {
     // AWS S3 설정
     AWS.config.update({
-      // region: process.env.REACT_APP_S3_REGION,
-      // accessKeyId: process.env.REACT_APP_S3_ACCESS_KEY_ID,
-      // secretAccessKey: process.env.REACT_APP_S3_SECRET_ACCESS_KEY,
+      region: process.env.REACT_APP_S3_REGION,
+      accessKeyId: process.env.REACT_APP_S3_ACCESS_KEY_ID,
+      secretAccessKey: process.env.REACT_APP_S3_SECRET_ACCESS_KEY,
     });
 
     // S3 객체 생성
@@ -88,9 +88,10 @@ export default function KakaoApiShare({ title, address, Thumbnail }) {
   };
 
   return (
-    <div>
+    <div className='d-flex align-items-end'>
       <a id="kakaotalk-sharing-btn" href="javascript" onClick={handleShare}>
         <img
+          id="kakao_share"
           src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
           alt="카카오톡 공유하기 버튼"
         />

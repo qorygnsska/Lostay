@@ -256,14 +256,17 @@ export default function RoomList() {
           <div className='HotelRank'>{RoomInfos.dto.hotelRating}</div>
           <div className='HotelName'>{RoomInfos.dto.hotelName}</div>
         </div>
+
+        <div className='d-flex align-self-end mb-2'>
         <KakaoApiShare
           title={RoomInfos.dto.hotelName}
           address={RoomInfos.dto.hotelAdress}
           Thumbnail={RoomInfos.dto.hotelThumbnail}
-
-        />  {/* 카카오 공유 api */}
+          
+          />  {/* 카카오 공유 api */}
 
         {Heart ? <IoMdHeart className='FullHeartIcon' onClick={handlerCart} /> : <IoIosHeartEmpty className='HeartIcon' onClick={handlerCart} />}
+          </div>
       </div>
 
       <div className='RowLine'></div>
