@@ -2,13 +2,14 @@ import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
-export default function LocationHotelCarousel({ locationHotelList }) {
+export default function LocationHotelCarousel(props) {
     const sliderRef = useRef(null);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [activeIndex, setActiveIndex] = useState(0); // 추가된 상태
     const slideShowCtn = 1;
-    const totalSlides = locationHotelList.length;
+    const totalSlides = props.locationHotelList.length;
 
     const handleBeforeChange = (current, next) => {
         setCurrentSlide(next);
@@ -35,7 +36,7 @@ export default function LocationHotelCarousel({ locationHotelList }) {
         <div className="location--hotel--carousle--container">
             {/* 광역시별 버튼 */}
             <ul className="location--name--list">
-                {locationHotelList.map((locationHotel, index) => (
+                {props.locationHotelList.map((locationHotel, index) => (
                     <li key={index}>
                         <button className={activeIndex === index ? "active" : ""} onClick={() => handleButtonClick(index)}>
                             {locationHotel.location}
@@ -46,11 +47,11 @@ export default function LocationHotelCarousel({ locationHotelList }) {
 
             {/* 슬라이드 실행 */}
             <Slider ref={sliderRef} {...settings}>
-                {locationHotelList.map((locationHotel, metropolitanHotelIndex) => (
+                {props.locationHotelList.map((locationHotel, metropolitanHotelIndex) => (
                     <div key={metropolitanHotelIndex} className="hotel--list--wrap">
                         {/* 호텔 정보 */}
                         {locationHotel.hotelList.map((hotel, hotelIndex) => (
-                            <a key={hotelIndex} href="ex.com">
+                            <Link key={hotelIndex} to={`/roomList/${hotel.hotelNo}?checkInDate=${props.check_in}&checkOutDate=${props.check_out}&peopleMax=${props.member}`}>
                                 <div className="hotel--list--info">
                                     <img src={`${hotel.hotelThumbnail}`} alt={`슬라이드`} className="carousel-image" />
                                     <div className="hotel--info--wrap">
@@ -93,7 +94,7 @@ export default function LocationHotelCarousel({ locationHotelList }) {
                                         </div>
                                     </div>
                                 </div>
-                            </a>
+                            </Link>
                         ))}
                     </div>
                 ))}

@@ -36,7 +36,7 @@ public class MainController {
 	@GetMapping("/event")//변경전: /eventMain 변경후:/main/event
 	public ResponseEntity<?>eventMain(){
 		log.info("locationMaint실행");
-		return new ResponseEntity<>(mainService.eventFindAll(),HttpStatus.OK);
+		return new ResponseEntity<>(mainService.eventOnGoing(),HttpStatus.OK);
 	}
 	//특가 호텔 조회
 	@GetMapping("/discountHotel")//변경전: /discountHotelMain 변경후:/main/discountHotel

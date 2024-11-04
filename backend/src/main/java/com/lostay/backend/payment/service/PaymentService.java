@@ -67,12 +67,14 @@ public class PaymentService {
 		dto.setHotelAddress(payment.getRoom().getHotel().getHotelAdress());
 		dto.setCheckIn(payment.getReservations().getCheckIn()); // 체크인 날짜 시간은 안가져옴
 		dto.setCheckOut(payment.getReservations().getCheckOut()); // 체크아웃 날짜 시간은 안가져옴
-		dto.setUserName(payment.getUser().getUserName());
-		dto.setUserPhone(payment.getUser().getUserPhone());
+		dto.setUserName(payment.getReservations().getName());
+		dto.setUserPhone(payment.getReservations().getPhone());
 		dto.setPayDay(payment.getPayDay());
 		dto.setPayType(payment.getPayType());
 		// 결제당시 할인율이 적용된 객실 금액
-		dto.setRoomPrice(payment.getPayPrice() + payment.getPayPoint());
+		int p = payment.getPayPrice() + payment.getPayPoint();    // 실제 결제된 가격 + 사용한 포인트
+		dto.setRoomPrice(p);
+		
 		dto.setPayPrice(payment.getPayPrice());
 		dto.setPayPoint(payment.getPayPoint());
 		dto.setCancleDay(payment.getCancleDay());
@@ -190,9 +192,11 @@ public class PaymentService {
 		LocalDateTime in = dto.getCheckIn().toLocalDate().atTime(15,0);
 		LocalDateTime out = dto.getCheckOut().toLocalDate().atTime(11,0);
 		
+		reservation.setName(dto.getName());
 		reservation.setCheckIn(in);
 		reservation.setCheckOut(out);
 		reservation.setPayment(savePay);
+		reservation.setPhone(dto.getPhone());
 
 		Reservation r = resRepo.save(reservation);
 		

@@ -49,8 +49,8 @@ export default function CompHeaderAdmin() {
 
 
     const handleLogout = () => {    //#btn_logout 클릭 시 : 관리자 로그아웃
-        
-        if(window.confirm('정말 로그아웃?')) {
+
+        if (window.confirm('정말 로그아웃?')) {
             console.log('로그아웃 실행');
 
             //window.location.href="/"; //메인페이지로 이동
@@ -71,7 +71,7 @@ export default function CompHeaderAdmin() {
 
                     {/* useState */}
                     <p className='mb-0'>{time.toLocaleString()}</p>
-                    
+
                     {/* useEffect 
                     <p className='mb-0'>{clock.toLocaleString()}</p>
                     */}
@@ -80,13 +80,19 @@ export default function CompHeaderAdmin() {
                     <Nav variant="underline" >
 
                         <Nav.Item>
-                            {/* <Nav.Link href="/admin-event" className={`${selectedLink=="/admin-event"?"active":""}`} >이벤트</Nav.Link> */}
-                            {/* <Link to="/admin-event" className={`nav-link ${selectedLink=="/admin-event"?"active":""}`}>이벤트</Link> */}
-                            <NavLink to="/admin-event" className="nav-link" >이벤트</NavLink>
+                            <NavLink to="/admin-hotel" className="nav-link" >호텔&middot;객실</NavLink>
                         </Nav.Item>
 
                         <Nav.Item>
-                            <NavLink to="/admin-hotel" className="nav-link" >호텔&middot;객실</NavLink>
+                            {/* <Nav.Link href="/admin-user" className={`${selectedLink=="/admin-user"?"active":""}`} >회원</Nav.Link> */}
+                            {/* <Link to="/admin-user" className={`nav-link ${selectedLink=="/admin-user"?"active":""}`}>회원</Link> */}
+                            <NavLink to="/admin-user" className="nav-link" >회원</NavLink>
+                        </Nav.Item>
+
+                        <Nav.Item>
+                            {/* <Nav.Link href="/admin-event" className={`${selectedLink=="/admin-event"?"active":""}`} >이벤트</Nav.Link> */}
+                            {/* <Link to="/admin-event" className={`nav-link ${selectedLink=="/admin-event"?"active":""}`}>이벤트</Link> */}
+                            <NavLink to="/admin-event" className="nav-link" >이벤트</NavLink>
                         </Nav.Item>
 
                         <Nav.Item>
@@ -98,7 +104,7 @@ export default function CompHeaderAdmin() {
                         <Nav.Item>
                             {/* <Nav.Link href="/admin-user" className={`${selectedLink=="/admin-user"?"active":""}`} >회원</Nav.Link> */}
                             {/* <Link to="/admin-user" className={`nav-link ${selectedLink=="/admin-user"?"active":""}`}>회원</Link> */}
-                            <NavLink to="/admin-user" className="nav-link" >회원</NavLink>
+                            <NavLink to="/admin-hotelchart" className="nav-link" >차트</NavLink>
                         </Nav.Item>
 
                         <Nav.Item id="btn_container">

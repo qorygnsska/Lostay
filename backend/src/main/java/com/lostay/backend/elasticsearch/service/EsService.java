@@ -116,6 +116,13 @@ public class EsService {
 				resultToken.add(token.token());
 			}
 			
+			//람다식으로 각 토큰을 String으로 생성하는 방법
+//			StringBuilder resultString = new StringBuilder();
+//			response.tokens().forEach(token -> 
+//			resultString.append("Token: ").append(token.token()).append("\n")
+//			);
+//			System.out.println(resultString.toString());
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 			resultToken.add("catchError");//통신은 되지만 에러가 날 때 돌려줄 결과물

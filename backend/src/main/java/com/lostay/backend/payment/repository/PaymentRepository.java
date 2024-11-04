@@ -32,8 +32,8 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 		       "JOIN r.payments p " + // Join 방식 변경
 		       "WHERE p.payStatus = 'Y' " +
 		       "AND YEAR(p.payDay) = :year " +
-		       "AND h.hotelName = :hotelName " +
+		       "AND h.hotelNo = :hotelNo " +
 		       "GROUP BY YEAR(p.payDay), QUARTER(p.payDay)")
-	List<Object[]> findRevenueDataByHotelName(@Param("hotelName") String hotelName,@Param("year") int year);
+	List<Object[]> findRevenueDataByHotelNo(@Param("hotelNo") Long hotelNo,@Param("year") int year);
 
 }
