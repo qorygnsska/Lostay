@@ -85,7 +85,7 @@ public class RoomService {
 ////		dto.setTotalReviewCount(reviewCount);
 //		dto.setList(list);
 //		
-
+			System.out.println("테스트"+dto.getDto().getHotelThumbnail());
 		
 		return dto;
 	}
