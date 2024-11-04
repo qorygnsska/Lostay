@@ -161,7 +161,11 @@ export default function CompSearchBox(props) {
     //'검색' 버튼 클릭!
     const searchHandler = async () => {
         //console.log('@CompSearchBox place: ' + place + '/' + check_in + '-' + check_out + '/' + member);
-        window.location.href = `/hotelList?place=${place}&check_in=${check_in}&check_out=${check_out}&member=${member}`;
+        if (place.trim().length < 2) {
+            alert('최소 2글자 이상의 검색어를 입력하세요.');
+        } else {
+            window.location.href = `/hotelList?place=${place}&check_in=${check_in}&check_out=${check_out}&member=${member}`;
+        }
     }
     //////////////////////////////////////////////////////////for eventHandler
 

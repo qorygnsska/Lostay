@@ -37,8 +37,8 @@ export default function HotelList() {
     check_in = new Date(parameters[1].split('=')[1]);
     check_out = new Date(parameters[2].split('=')[1]);
     member = parameters[3].split('=')[1];
-
   } catch (error) {
+    //url에서 /hotelList를 치고 들어오는 경우
     place = ''; //try구문에서 place부터 에러가 나서, 미지정 시 place = undefined가 됨
   }
   //////////////////////////////////////////////////////////for default parameters
@@ -79,6 +79,12 @@ export default function HotelList() {
   }
   //////////////////////////////////////////////////////////for hidden & focus
   const getHotelList = async () => {
+
+    if (place.trim().length < 2) {  //url에서 place 값 바꿔 들어오는 경우
+      alert('장소 값이 올바르지 않습니다.');
+      window.location.href = '/';
+    }
+
     try {
       //Date -> String 변환
       const checkIn = check_in.getFullYear().toString() + '-' + (check_in.getMonth() + 1).toString().padStart(2, '0') + '-' + check_in.getDate().toString().padStart(2, '0');
@@ -106,9 +112,9 @@ export default function HotelList() {
       if (response.status === 200) {//HttpStatus.OK
         setHotels(response.data);
         setResultCount(response.data.length);
-        setRealHotel([]);
-        setPage(1);
-        setHasMore(true);
+        setRealHotel([]);//무한스크롤 컨테이너 초기화
+        setPage(1);//무한스크롤 컨테이너 초기화
+        setHasMore(true);//무한스크롤 컨테이너 초기화
       }
     } catch (error) {
       console.log(error);
@@ -136,7 +142,7 @@ export default function HotelList() {
     //////////////////////////////////////////////////1028JIP: hotel -> hotels로 바꿈!
     const newHotels = hotels.slice((page - 1) * 5, page * 5); // 5개씩 가져오기
 
-    if(hotels.length > 0){
+    if (hotels.length > 0) {
       if (newHotels.length === 0) {
         setHasMore(false); // 더 이상 데이터가 없으면 종료
       } else {
@@ -153,15 +159,12 @@ export default function HotelList() {
     }
   }, [inView, hasMore, hotels]);
 
-
   // 모달
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
   // 필터 클릭 시
   const handleShow = () => setShow(true);
-
-
 
   return (
     <Container className='hotel--list'>
