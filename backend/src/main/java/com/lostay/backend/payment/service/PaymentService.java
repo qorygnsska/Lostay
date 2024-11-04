@@ -44,13 +44,13 @@ public class PaymentService {
 
 	@Autowired
 	private ReservationRepository resRepo;
-	
+
 	@Autowired
 	private PointRepository poRepo;
-	
+
 	@Autowired
 	private DiscountRepository disRepo;
-	
+
 	@Autowired
 	private RoomRedisRepository roomRedisRepo;
 
@@ -78,9 +78,9 @@ public class PaymentService {
 		dto.setPayDay(payment.getPayDay());
 		dto.setPayType(payment.getPayType());
 		// 결제당시 할인율이 적용된 객실 금액
-		int p = payment.getPayPrice() + payment.getPayPoint();    // 실제 결제된 가격 + 사용한 포인트
+		int p = payment.getPayPrice() + payment.getPayPoint(); // 실제 결제된 가격 + 사용한 포인트
 		dto.setRoomPrice(p);
-		
+
 		dto.setPayPrice(payment.getPayPrice());
 		dto.setPayPoint(payment.getPayPoint());
 		dto.setCancleDay(payment.getCancleDay());
@@ -94,9 +94,9 @@ public class PaymentService {
 		Optional<Room> newRoom = roomRepo.findById(roomNo);
 
 		Period period = Period.between(checkInDate, checkOutDate);
-		
+
 		List<Discount> disList = disRepo.findAll();
-		
+
 		Room room = newRoom.get();
 		RoomDTO roomDto = new RoomDTO();
 
@@ -114,7 +114,7 @@ public class PaymentService {
 		roomDto.setRoomPrice(room.getRoomPrice());
 		int roomPrice = room.getRoomPrice();
 		int roomDiscount = room.getRoomDiscount();
-		int discountPrice = (int)roomPrice - roomPrice * roomDiscount/100;
+		int discountPrice = (int) roomPrice - roomPrice * roomDiscount / 100;
 		int finalPrice = discountPrice * period.getDays();
 		roomDto.setDiscountPrice(finalPrice);
 		roomDto.setDisList(disList);
@@ -149,25 +149,23 @@ public class PaymentService {
 		int totalPoint = userPoint - dto.getPayPoint();
 		user.setUserPoint(totalPoint);
 		User u = userRepo.save(user);
-		
-			
+
 		// 포인트 테이블에 포인트 내역 추가해야 함
-		 Point po = new Point();
-		if(dto.getPayPoint() > 0) {
+		Point po = new Point();
+		if (dto.getPayPoint() > 0) {
 			LocalDateTime now = LocalDateTime.now();
 			Point newPoint = new Point();
 			newPoint.setUser(user);
 			newPoint.setPointDay(now);
-			
+
 			newPoint.setPointPlusMinus(-1 * dto.getPayPoint());
 			newPoint.setPointTitle("숙박 예약 사용");
-			
-		    po = poRepo.save(newPoint);
+
+			po = poRepo.save(newPoint);
 		}
-		//  0이면 적립, 1이면 사용
+		// 0이면 적립, 1이면 사용
 //		newPoint.setStatus(1);
-		
-				
+
 		// 객실에 관련된 정보 결제테이블에 외래키로 넣어주기
 		Optional<Room> newRoom = roomRepo.findById(dto.getRoomNo());
 		Room room = newRoom.get();
@@ -176,7 +174,7 @@ public class PaymentService {
 
 		savePay.setUser(user);
 		savePay.setRoom(room);
-		
+
 		Discount discount = disRepo.findById(dto.getDisNo()).get();
 		savePay.setPayType(discount.getDisCategory());
 		savePay.setPayDay(dto.getPayDay());
@@ -194,10 +192,10 @@ public class PaymentService {
 
 		// 결제 테이블에 들어온 정보 예약 테이블에 넣어주기
 		Reservation reservation = new Reservation();
-		
-		LocalDateTime in = dto.getCheckIn().toLocalDate().atTime(15,0);
-		LocalDateTime out = dto.getCheckOut().toLocalDate().atTime(11,0);
-		
+
+		LocalDateTime in = dto.getCheckIn().toLocalDate().atTime(15, 0);
+		LocalDateTime out = dto.getCheckOut().toLocalDate().atTime(11, 0);
+
 		reservation.setName(dto.getName());
 		reservation.setPhone(dto.getPhone());
 		reservation.setCheckIn(in);
@@ -205,15 +203,24 @@ public class PaymentService {
 		reservation.setPayment(savePay);
 		reservation.setResReviewStatus("N");
 		reservation.setResStatus("Y");
-		
+
 		Reservation r = resRepo.save(reservation);
-		
-		if(p.getPayNo() != null & r.getReservationNo() != null 
-			&u.getUserNo() != null & po.getPointNo() !=null) {
-			return true;
-		}else {
-			return false;
+		System.out.println("payno" + p.getPayNo());
+		System.out.println("reservationNO" + r.getReservationNo());
+		System.out.println("POINTNO" + po.getPointNo());
+		System.out.println("USERNO" + u.getUserNo());
+
+		if (dto.getPayPoint() > 0) {
+			if (p.getPayNo() != null & r.getReservationNo() != null & u.getUserNo() != null & po.getPointNo() != null) {
+				return true;
+			}
+		} else {
+			if (p.getPayNo() != null & r.getReservationNo() != null & u.getUserNo() != null) {
+				return true;
+			}
 		}
+		return false;
+
 	}
 
 	// 결제/예약 취소(status N으로 업데이트)
@@ -224,21 +231,21 @@ public class PaymentService {
 
 		Optional<User> newUser = userRepo.findById(userNo);
 		User user = newUser.get();
-		
+
 		int payPoint = payment.getPayPoint();
 		int userPoint = user.getUserPoint();
 		user.setUserPoint(userPoint + payPoint);
 		userRepo.save(user);
-		
+
 		Optional<Reservation> newReservation = resRepo.findByPayment_PayNo(payNo);
 		Reservation reservation = newReservation.get();
 		reservation.setResStatus("N");
 		payment.setPayStatus("N");
 		resRepo.save(reservation);
 		payRepo.save(payment);
-		
-		if(payPoint > 0) {
-			
+
+		if (payPoint > 0) {
+
 			Point point = new Point();
 			LocalDateTime now = LocalDateTime.now();
 			point.setPointDay(now);
@@ -252,38 +259,37 @@ public class PaymentService {
 
 	// 사전검증, 결제 전에 결제하려는 금액과 실제 결제할 금액이 같은지
 	public int compareAmount(long userNo, int point, Long roomNo, Long disNo) {
-		
+
 		User user = userRepo.findById(userNo).get();
 		int amount = -1;
 		int totalPoint = user.getUserPoint();
-		
-		if(totalPoint < point) {
+
+		if (totalPoint < point) {
 			return amount;
-		}else {
+		} else {
 			Room room = roomRepo.findById(roomNo).get();
-			int discountPrice = room.getRoomPrice() - (room.getRoomPrice() * room.getRoomDiscount()/100);
-		
+			int discountPrice = room.getRoomPrice() - (room.getRoomPrice() * room.getRoomDiscount() / 100);
+
 			Discount discount = disRepo.findById(disNo).get();
-		
-			amount = discountPrice - (discountPrice * (int)discount.getDisRate()/100) - point;
-			
-			
+
+			amount = discountPrice - (discountPrice * (int) discount.getDisRate() / 100) - point;
+
 		}
-		
+
 		return amount;
 	}
 
 	public String findUid(Long payNo) {
-		
+
 		String uid = payRepo.findById(payNo).get().getImpUid();
-		
+
 		return uid;
 	}
 
 	public void deleteRedis(Long rid) {
 
 		roomRedisRepo.deleteById(rid);
-		
+
 	}
 
 }

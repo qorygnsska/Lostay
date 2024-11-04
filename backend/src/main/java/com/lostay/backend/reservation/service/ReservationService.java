@@ -46,7 +46,7 @@ public class ReservationService {
 			LocalDateTime checkInDate = dto.getCheckIn();
 		    
 		    // 체크인 날짜로부터 1일 전의 날짜
-			LocalDate cancleRoomDeadline = checkInDate.minusDays(1).toLocalDate();
+			LocalDate cancleRoomDeadline = checkInDate.toLocalDate();
 		    
 		    // 현재 시간이 체크인 날짜 1루 전인지 값 넣기
 		    if (LocalDate.now().isBefore(cancleRoomDeadline)) {

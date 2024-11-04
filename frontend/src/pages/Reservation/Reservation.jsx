@@ -432,8 +432,14 @@ export default function Reservation() {
                                 if (rsp.paid_amount === res.data.response.amount) {
                                     // 최종 성공
                                     const originalDateTime = res.data.response.paidAt;
-                                    const payDay = originalDateTime.split('+')[0];
-                                    console.log(payDay)
+                                    console.log(originalDateTime);
+
+                                    // ISO 8601 형식의 날짜를 Date 객체로 변환
+                                    const dateObject = new Date(originalDateTime);
+
+                                    // 한국 시간으로 변환
+                                    const payDay = new Date(dateObject.getTime() + (9 * 60 * 60 * 1000));
+                                    console.log(payDay.toISOString()); // ISO 형식으로 출력
                                     putData(rsp, payDay);
                                 } else {
                                     // 금액 불일치 환불해야함
@@ -466,7 +472,7 @@ export default function Reservation() {
                 roomNo: hotelRoomInfo.roomNo,
                 disNo: payType.disNo,
                 payPrice: totalPrice,
-                payPoint: Number(inputPoint),
+                payPoint: inputPoint ? Number(inputPoint) : 0,
                 payDay: payDay,
                 checkIn: `${hotelRoomInfo.roomCheckIn}T${hotelRoomInfo.roomCheckinTime}`,
                 checkOut: `${hotelRoomInfo.roomCheckOut}T${hotelRoomInfo.roomCheckoutTime}`,
@@ -480,12 +486,14 @@ export default function Reservation() {
                 navigate('/', { replace: true });
             } else {
                 // 데이터 삽입 실패 환불해야함..
+                console.log('데이터 넣을 때 넣기오류')
                 alert("결제에 실패했습니다.")
                 Vcancle(rsp);
             }
         } catch (error) {
             // 환불해야함...
             alert("결제에 실패했습니다.")
+            console.log('데이터 넣을 때 서버오류')
             Vcancle(rsp);
         }
     }
