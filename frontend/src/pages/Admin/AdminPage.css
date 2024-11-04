@@ -50,6 +50,11 @@
                     font-size: 30px;
                     padding-right: 30px;
 
+                    .selYear {
+                        font-size: 25px;
+                        margin-bottom: 30px;
+                    }
+
                     .commossion--box,
                     .reservation--box {
                         display: flex;
@@ -212,7 +217,8 @@
     .page--wrap {
         display: flex;
         gap: 20px;
-        padding: 20px;
+        padding-left: 12px;
+        padding-right: 12px;
 
         #container_section {
             flex: 5;
@@ -319,5 +325,126 @@
 
 
 .page--hotel--chart--manager--container {
+
     /* 관리자 호텔 차트 페이지 */
+    .table--wrap {
+        min-height: 290px;
+    }
+
+    .dropdown--box {
+        margin-right: 15px;
+
+        .dropdown>button {
+            background-color: #fff;
+            border-color: var(--lightGrayColor);
+            color: black;
+            width: 90px;
+        }
+
+        .dropdown--menu {
+            min-width: 90px;
+        }
+    }
+
+    .select--wrap {
+        padding-top: 100px;
+        display: flex;
+        width: 1400px;
+        justify-content: space-between;
+        margin: auto;
+
+        .select--total {
+
+            .select--total--box {
+                width: 400px;
+                border-radius: 10px;
+                box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+
+                ul {
+                    font-size: 25px;
+                    padding-right: 30px;
+
+
+                    .hotelName {
+                        font-size: 20px;
+                        margin-bottom: 30px;
+                        font-weight: bold;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+
+                    .commossion--box,
+                    .reservation--box {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                        font-weight: bold;
+
+
+                        .info--title {
+                            display: flex;
+                            gap: 10px;
+                            align-items: center;
+                            font-size: 20px;
+
+
+                            .commossion--icon {
+                                color: rgba(54, 162, 235);
+
+
+                            }
+
+                            .reservation--icon {
+                                color: rgba(255, 99, 132);
+                            }
+                        }
+
+                        .info {
+                            margin-left: 31px;
+
+                            .commossion {
+                                color: rgba(54, 162, 235);
+                            }
+
+                            .reservation {
+                                color: rgba(255, 99, 132);
+                            }
+                        }
+                    }
+
+                    .reservation--box {
+                        margin-top: 20px;
+                    }
+
+                    .branch--info {
+                        display: flex;
+                        font-weight: normal;
+                        flex-wrap: wrap;
+
+                        .info {
+                            width: 40%;
+                            margin-bottom: 10px;
+                            font-size: 16px;
+                        }
+                    }
+
+                }
+            }
+        }
+
+
+
+        .chart {
+            display: flex;
+            justify-content: center;
+            width: 900px;
+            height: 500px;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            border-radius: 10px;
+        }
+
+    }
 }

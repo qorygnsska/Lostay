@@ -315,8 +315,8 @@ public class AdminService {
 	}
 
 	// 홍정훈(관리자 페이지 호텔.객실 텝 정보 조회)
-	public Page<HotelInfosDTO> getHotels(int pageIndex, String searchText) {
-		Pageable pageable = PageRequest.of(pageIndex, 10, Sort.by("hotelNo").ascending());
+	public Page<HotelInfosDTO> getHotels(int pageIndex, String searchText, int showCnt) {
+		Pageable pageable = PageRequest.of(pageIndex, showCnt, Sort.by("hotelNo").ascending());
 		
 		Page<HotelInfosDTO> hotelsPage = null;
 		
@@ -616,9 +616,13 @@ public class AdminService {
 	}
 
 	// 관리자 페이지 호텔별 분기 조회
-	public RevenueDataDTO getRevenueDataByHotelName(String hotelName, int year) {
-        // JPA 리포지토리에서 데이터 조회
-        List<Object[]> results = paymentRepo.findRevenueDataByHotelName(hotelName,year);
+//	public RevenueDataDTO getRevenueDataByHotelName(String hotelName, int year) {
+//        
+//	}
+	// 관리자 페이지 호텔별 분기 조회
+	public RevenueDataDTO getRevenueDataByHotelNo(Long hotelNo, int year) {
+		// JPA 리포지토리에서 데이터 조회
+        List<Object[]> results = paymentRepo.findRevenueDataByHotelNo(hotelNo,year);
         List<QuarterlyRevenueDTO> revenueDataList = new ArrayList<>();
         
         // 쿼리 결과를 DTO로 변환
@@ -632,7 +636,7 @@ public class AdminService {
         }
         // 최종 DTO 구성
         RevenueDataDTO revenueData = new RevenueDataDTO();
-        revenueData.setHotelName(hotelName);
+        revenueData.setHotelNo(hotelNo);
         revenueData.setRevenueData(revenueDataList);
 
         return revenueData;

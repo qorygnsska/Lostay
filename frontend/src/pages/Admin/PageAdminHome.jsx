@@ -394,6 +394,10 @@ export default function PageAdminHome() {
             </div>
             <div className='select--total--box'>
               <ul>
+                <li>
+                  <div className='selYear'>{selectedYear}년</div>
+                </li>
+
                 <li className='commossion--box'>
                   <div className='info--title'><FaSquare className='commossion--icon' />중개료 ({totalBranchCommission.toLocaleString()}원)</div>
                   <div className='branch--info'>
@@ -455,6 +459,10 @@ export default function PageAdminHome() {
             </div>
             <div className='select--total--box'>
               <ul>
+                <li>
+                  <div className='selYear'>{selectedYear}년</div>
+                </li>
+
                 <li className='commossion--box'>
                   <div className='info--title'><FaSquare className='commossion--icon' />중개료 ({totalMonthCommission.toLocaleString()}원)</div>
                   <div className='branch--info'>
@@ -467,7 +475,6 @@ export default function PageAdminHome() {
 
                     }
                   </div>
-
                 </li>
 
                 <li className='reservation--box'>
@@ -487,7 +494,6 @@ export default function PageAdminHome() {
               </ul>
 
             </div>
-
           </div>
           <div className='select--chart--box'> {/* 막대 그래프를 감싸는 DIV */}
             <div className="dropdown--box">
@@ -504,7 +510,7 @@ export default function PageAdminHome() {
               </Dropdown>
             </div>
             <div className='chart'>
-              <Line data={monthData} options={monthOptions} /> {/* Bar 컴포넌트 사용 */}
+              <Bar data={monthData} options={monthOptions} /> {/* Bar 컴포넌트 사용 */}
             </div>
           </div>
         </div>

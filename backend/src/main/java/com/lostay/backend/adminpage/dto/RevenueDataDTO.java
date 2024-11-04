@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RevenueDataDTO {
-    private String hotelName;
+    private Long hotelNo;
     private List<QuarterlyRevenueDTO> revenueData;
 }
