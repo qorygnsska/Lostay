@@ -82,9 +82,11 @@ export default function RoomDetail() {
 
             {RoomDetail?.roomImg.length > 0 && <HotelCarousel images={RoomDetail.roomImg}/>}
 
-            <div className='NameBox'>
+            <div className='NameBox d-flex  justify-content-between'>
+                <div className=''>
                 <div className='RoomName'>{RoomDetail?.roomName}</div>
                 <Link to={`/RoomList/${RoomDetail?.hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`} className='HotelName'>{RoomDetail?.hotelName}<GrNext/></Link>
+                </div>
                
                {/* 카카오 공유 api */}
                 <KakaoApiShare

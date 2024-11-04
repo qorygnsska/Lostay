@@ -21,9 +21,16 @@
 
      .HeartIcon {
           font-size: 25px;
-          margin-right: 10px;
+          margin: 0 10px;
           cursor: pointer;
      }
+
+
+     #kakao_share {
+          width: 25px;
+          height: 25px;
+     }
+
 
      .FullHeartIcon {
           color: red;
