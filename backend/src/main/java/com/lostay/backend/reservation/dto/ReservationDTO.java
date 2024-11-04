@@ -3,6 +3,8 @@ package com.lostay.backend.reservation.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
+
 import com.lostay.backend.hotel.dto.HotelDTO;
 
 import lombok.AllArgsConstructor;
@@ -22,5 +24,6 @@ private Long reservationNo;		// 예약넘버
 	private LocalDateTime checkOut;	// 체크아웃날짜
 	private String resStatus;		// 예약 취소함(N)
 	private String resReviewStatus;	// 리뷰 작성함(Y)
-	
+	private String name;            // 유저네임
+	private String phone;			// 예약자 전화번호
 }

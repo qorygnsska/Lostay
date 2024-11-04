@@ -41,7 +41,7 @@ public class Payment {
     @Column(name = "pay_status")
     private String payStatus; // 결제 상태
     @Column(name = "pay_price")
-    private int payPrice; // 결제 가격
+    private int payPrice; // 결제 가격 (실제 최종 결제가격)
     @Column(name = "pay_point")
     private int payPoint; // 사용한 포인트
     @Column(name = "cancle_day")
@@ -49,6 +49,7 @@ public class Payment {
     @Column(name = "imp_uid")
     private String impUid;		// 결제 고유 id
 
+    
     @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // LAZY 로딩으로 수정
     @ToString.Exclude
     @JsonBackReference // Reservation에서 Payment 방향

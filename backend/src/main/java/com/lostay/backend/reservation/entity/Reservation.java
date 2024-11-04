@@ -36,4 +36,9 @@ public class Reservation {
     private LocalDateTime checkIn; // 체크인 날짜
     @Column(name = "check_out")
     private LocalDateTime checkOut; // 체크아웃 날짜
+    @Column(name = "name")
+    private String name;            // 유저네임
+    @Column(name = "phone")
+    private String phone;			// 예약자 전화번호
+    
 }
