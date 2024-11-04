@@ -36,7 +36,7 @@ export default function Home() {
             setLocationList(locationResp.data);
             setLocationHotelList(locationHotelResp.data);
             setDCHotelList(DCHotelResp.data)
-            console.log(hotelResp.data)
+            console.log(locationHotelResp.data)
         } catch (error) {
             console.error(error);
         }
@@ -75,7 +75,6 @@ export default function Home() {
                     className="search--btn"
                     onClick={() => setSearchBoxShow(true)}
                 >
-                    {/* button onClick: JIP1017 */}
                     <IoSearchOutline />
                     <span>여행지나 숙소를 검색해보세요.</span>
                 </button>
@@ -92,21 +91,21 @@ export default function Home() {
             <h2>
                 <span className="hotel--popular">최근 HOT</span> 인기호텔
             </h2>
-            <HotelCarousel hotelList={hotelList} />
+            <HotelCarousel hotelList={hotelList} check_in={tomorrow} check_out={tdat} member={2} /> {/* JIP1104 check_in, check_out, member 추가 */}
 
             {/* 국내 인기 여행 리스트 */}
             <h2>국내 인기 여행지</h2>
-            <LocationCarousel locationList={locationList} check_in={tomorrow} check_out={tdat} member={2} />{/* JIP1030 check_in check_out 추가 */}
+            <LocationCarousel locationList={locationList} check_in={tomorrow} check_out={tdat} member={2} /> {/* JIP1030 check_in, check_out, member 추가 */}
 
-            {/* 여행질별 숙소 리스트 */}
+            {/* 여행지별 숙소 리스트 */}
             <h2>여행지별 숙소</h2>
-            <LocationHotelCarousel locationHotelList={locationHotelList} />
+            <LocationHotelCarousel locationHotelList={locationHotelList} check_in={tomorrow} check_out={tdat} member={2} /> {/* JIP1104 check_in, check_out, member 추가 */}
 
             {/* 특가 숙소 리스트 */}
             <h2>
                 <span className="hotel--sale">What?!</span> 특가야 가자
             </h2>
-            <HotelCarousel hotelList={DCHotelList} />
+            <HotelCarousel hotelList={DCHotelList} check_in={tomorrow} check_out={tdat} member={2}/> {/* JIP1104 check_in, check_out, member 추가 */}
 
             <Footer />
 

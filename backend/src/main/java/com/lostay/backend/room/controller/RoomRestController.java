@@ -65,8 +65,8 @@ public class RoomRestController {
 		int RedisHumanCount = roomSer.findRedisHumanCount(dto);
 		JSONObject Body = new JSONObject();
 		
-		System.out.println(count);
-		System.out.println(RedisHumanCount);
+		System.out.println("이용 가능한 객실 : " + count);
+		System.out.println("레디스에 들어와있는 인원수 : " + RedisHumanCount);
 		
 		if (count < RedisHumanCount) {
 			Body.put("message", "예약이 마감되었습니다.");

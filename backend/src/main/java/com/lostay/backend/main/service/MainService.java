@@ -1,5 +1,6 @@
 package com.lostay.backend.main.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,7 @@ public class MainService {
 		return locationDTOList;
 	}
 
-	// 이벤트 조회
+	// 이벤트 조회(전체) //eventOnGoing()으로 대체하여 미사용 (1104 JIP)
 	public Object eventFindAll() {
 		List<Event> eventEntity = eventRepo.findAll();
 		List<EventDTO> eventDTOList = new ArrayList<EventDTO>();
@@ -63,7 +64,33 @@ public class MainService {
 		}
 		return eventDTOList;
 	}
+	
+	// 이벤트 조회(현재 진행 중 1104 JIP 추가)
+	public Object eventOnGoing() {
+		
+		//결과로 돌려줄 eventList
+		List<EventDTO> eventDTOList = new ArrayList<EventDTO>();
+		
+		//현재 시간 기준
+		LocalDateTime now = LocalDateTime.now();
+		
+		//시작날짜 < 현재 < 종료날짜
+		List<Event> eventEntityList = eventRepo.findByEventCreateAtLessThanAndEventEndAtGreaterThan(now, now);
+		
+		//List<Entity> -> List<DTO>
+		eventEntityList.forEach(e -> eventDTOList.add(
+						new EventDTO(e.getEventNo(),
+									 e.getEventCreateAt(),
+									 e.getEventEndAt(),
+									 null,//eventImg는 홈에서 필요 없음
+									 e.getEventTitle(),
+									 e.getEventThumbnail())
+								));
 
+		return eventDTOList;
+	}
+	
+	
 	// 특가 호텔 조회
 	public Object findTop10HtolesDiscount() {
 		PageRequest pageable = PageRequest.of(0, 10); // 첫 페이지에서 10개 항목 가져오기

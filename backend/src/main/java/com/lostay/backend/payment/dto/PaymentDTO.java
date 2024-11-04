@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,6 +49,8 @@ public class PaymentDTO {
 							//  0이면 적립, 1이면 사용
 	private long disNo;			// 결제수단 넘버
 	private String imp_uid;		// 결제 고유 번호
-
+	private String name;		// 이름
+	private String phone;			// 예약자 전화번호
+	    
 }
 

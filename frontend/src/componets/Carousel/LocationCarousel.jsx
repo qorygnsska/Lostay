@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 
-export default function LocationCarousel({ locationList, check_in, check_out, member}) {
+export default function LocationCarousel({ locationList, check_in, check_out, member }) {
 
     const sliderRef = useRef(null);
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -17,11 +17,11 @@ export default function LocationCarousel({ locationList, check_in, check_out, me
 
     const settings = {
         dots: false,
-        infinite: true,
+        infinite: false,
         speed: 500,
         slidesToShow: slideShowCtn,
         slidesToScroll: 1,
-        arrows: true,
+        arrows: false,
         beforeChange: handleBeforeChange,
     };
 
@@ -34,7 +34,7 @@ export default function LocationCarousel({ locationList, check_in, check_out, me
                 {locationList.map((data) => (
                     <div key={data.locationNo}>
                         <a href={`/hotelList?place=${data.locationName}&check_in=${check_in}&check_out=${check_out}&member=${member}`}>
-                        {/* href="https://example.com" JIP1030 수정 */}
+                            {/* href="https://example.com" JIP1030 수정 */}
                             <div className="image--box">
                                 <img src={`${process.env.PUBLIC_URL}/Location/${data.locationImage}`} alt={`슬라이드 ${data.locationNo + 1}`} />
                                 {/* src=Location/${data.locationImage} JIP1030 수정 */}

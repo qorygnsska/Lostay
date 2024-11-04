@@ -7,7 +7,7 @@ import HotelModal from '../../componets/Hotel/HotelModal';
 import HotelGrid from '../../componets/Hotel/HotelGrid';
 import CompHeaderGeneral from '../../componets/Header/CompHeaderGeneral';
 import CompSearchBox from '../../componets/Search/CompSearchBox';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import NavTop from '../../componets/NavToTop/NavTop';
 import Navbar from '../../componets/Navbar/Navbar';
@@ -17,6 +17,7 @@ export default function HotelList() {
 
   //////////////////////////////////////////////////////////////////////////////JIP1030
   const today = new Date(); //오늘 날짜
+  today.setHours(0,0,0,0);
   //////////////////////////////////////////////////////////for default parameters
   //홈에서 검색을 안하고 /hotelList url로 치고 들어올 경우 parameter가 없을 수 있음
   //useState로 설정하니깐 오류남 ???
@@ -29,7 +30,7 @@ export default function HotelList() {
 
   const location = useLocation(); //uri에서 가져오기
   //console.log(location);
-  //console.log(location.pathname);
+  //console.log(location.search);
   try {//uri -> parameter 가져와서 decoding -> '&' 구분자로 split
     const parameters = decodeURI(location.search).split('&');
     //parameters 배열에서 각각 '=' 구분자로 split
@@ -39,6 +40,7 @@ export default function HotelList() {
     member = parameters[3].split('=')[1];
 
   } catch (error) {
+    //url에서 /hotelList를 치고 들어오는 경우
     place = ''; //try구문에서 place부터 에러가 나서, 미지정 시 place = undefined가 됨
   }
   //////////////////////////////////////////////////////////for default parameters
@@ -79,6 +81,12 @@ export default function HotelList() {
   }
   //////////////////////////////////////////////////////////for hidden & focus
   const getHotelList = async () => {
+
+    if (place.trim().length < 2) {  //url에서 place 값 바꿔 들어오는 경우
+      alert('장소 값이 올바르지 않습니다.');
+      window.location.href = '/';
+    }
+
     try {
       //Date -> String 변환
       const checkIn = check_in.getFullYear().toString() + '-' + (check_in.getMonth() + 1).toString().padStart(2, '0') + '-' + check_in.getDate().toString().padStart(2, '0');
@@ -106,9 +114,9 @@ export default function HotelList() {
       if (response.status === 200) {//HttpStatus.OK
         setHotels(response.data);
         setResultCount(response.data.length);
-        setRealHotel([]);
-        setPage(1);
-        setHasMore(true);
+        setRealHotel([]);//무한스크롤 컨테이너 초기화
+        setPage(1);//무한스크롤 컨테이너 초기화
+        setHasMore(true);//무한스크롤 컨테이너 초기화
       }
     } catch (error) {
       console.log(error);
@@ -136,7 +144,7 @@ export default function HotelList() {
     //////////////////////////////////////////////////1028JIP: hotel -> hotels로 바꿈!
     const newHotels = hotels.slice((page - 1) * 5, page * 5); // 5개씩 가져오기
 
-    if(hotels.length > 0){
+    if (hotels.length > 0) {
       if (newHotels.length === 0) {
         setHasMore(false); // 더 이상 데이터가 없으면 종료
       } else {
@@ -153,15 +161,12 @@ export default function HotelList() {
     }
   }, [inView, hasMore, hotels]);
 
-
   // 모달
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
   // 필터 클릭 시
   const handleShow = () => setShow(true);
-
-
 
   return (
     <Container className='hotel--list'>

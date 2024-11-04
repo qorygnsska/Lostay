@@ -36,7 +36,6 @@ export default function PageHotelManager() {
 
 
     // ==================== START ======================== //
-
     //하위요소(검색창)가 넘겨줄 값을 담을 변수
     const [text_fromChild, setText_fromChild] = useState('');
     // ==================== END ======================== //
@@ -78,6 +77,8 @@ export default function PageHotelManager() {
     // 호텔,객실 데이터 끝
     // ==================== END ======================== //
 
+
+    // ==================== START ======================== //
     // 호텔 수정 모달
     const [hotelModalShow, setHotelModalShow] = useState(false);
     const [propHotel, setPropHotel] = useState(null);
