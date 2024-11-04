@@ -79,7 +79,7 @@ export default function HotelMap() {
     const [BusSubwayRoad, setBusSubwayRoad] = useState();
 
     // 모달에 띄우는 방법
-    const [ChoiceRoad, setChoiceRoad] = useState([]);
+    const [ChoiceRoad, setChoiceRoad] = useState();
 
     // 카테고리 선택
     const ClickCategory = (category) => {
@@ -115,33 +115,27 @@ export default function HotelMap() {
    
     const clickAll = (index) => {
         setChoiceRoad(AllRoad[index]);
-        //setbusVisible(false);
+        setbusShow(true);
+        setbusVisible(false);
     }
 
     const clickBus = (index) => {
         setChoiceRoad(BusRoad[index]);
+        setbusShow(true);
         setbusVisible(false);
     }
 
     const clickSubway = (index) => {
         setChoiceRoad(SubwayRoad[index]);
+        setbusShow(true);
         setbusVisible(false);
     }
 
     const clickBusSubway = (index) => {
         setChoiceRoad(BusSubwayRoad[index]);
+        setbusShow(true);
         setbusVisible(false);
     }
-
-    useEffect(() => {
-        console.log("있냐?");
-        
-        if (ChoiceRoad?.length > 0) {
-            console.log("있다");
-            
-            setbusShow(true);
-        }
-    }, [ChoiceRoad]);
 
     // 마커
     const [map, setMap] = useState(null);
@@ -867,7 +861,7 @@ export default function HotelMap() {
             </div>
 
             <Navbar />
-            {ChoiceRoad?.length > 0 && (<BusModal show={busShow} handleClose={handleClose} road={ChoiceRoad} formatTime={formatTime} />)}
+            {ChoiceRoad !== null && (<BusModal show={busShow} handleClose={handleClose} road={ChoiceRoad} formatTime={formatTime} />)}
         </Container>
 
 
