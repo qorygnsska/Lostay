@@ -4,13 +4,13 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-export default function CardCarousel({ hotelList }) {
+export default function CardCarousel(props) {
 
     // 슬라이드 설정
     const sliderRef = useRef(null);
     const [currentSlide, setCurrentSlide] = useState(0);
     const slideShowCtn = 3
-    const totalSlides = hotelList.length;
+    const totalSlides = props.hotelList.length;
 
     // 현재 슬라이드 위치 저장
     const handleBeforeChange = (current, next) => {
@@ -34,9 +34,9 @@ export default function CardCarousel({ hotelList }) {
 
             {/* 슬라이드 실행 */}
             <Slider ref={sliderRef} {...settings}>
-                {hotelList.map((hotel) => (
+                {props.hotelList.map((hotel) => (
                     <div key={hotel.hotelNo} >
-                        <Link to="/hotelList" className="link">
+                        <Link to={`/roomList/${hotel.hotelNo}?checkInDate=${props.check_in}&checkOutDate=${props.check_out}&peopleMax=${props.member}`} className="link">
                             {/* 호텔 정보 */}
                             <img src={`${hotel.hotelThumbnail}`} alt={`슬라이드 ${hotel.hotelNo + 1}`} className="carousel-image" />
                             <div className="hotel--info--wrap">
