@@ -36,7 +36,7 @@ export default function Home() {
             setLocationList(locationResp.data);
             setLocationHotelList(locationHotelResp.data);
             setDCHotelList(DCHotelResp.data)
-            console.log(hotelResp.data)
+            console.log(locationHotelResp.data)
         } catch (error) {
             console.error(error);
         }
