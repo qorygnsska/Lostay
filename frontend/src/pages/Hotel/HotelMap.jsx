@@ -6,6 +6,10 @@ import Navbar from '../../componets/Navbar/Navbar';
 import { FaCar } from "react-icons/fa6";
 import { FaBus } from "react-icons/fa";
 import { FaWalking } from "react-icons/fa";
+import { FaTrainSubway } from "react-icons/fa6";
+import { FaCircleDown } from "react-icons/fa6";
+import { FaBan } from "react-icons/fa";
+import BusModal from '../../componets/Map/BusModal';
 
 
 const {kakao} = window;
@@ -55,6 +59,90 @@ export default function HotelMap() {
 
    
 
+
+    // 대중교통
+    const [AllCount, setAllCount] = useState(0);
+    const [BusCount, setBusCount] = useState(0);
+    const [SubwayCount, setSubwayCount] = useState(0);
+    const [BusSubwayCount, setBusSubwayCount] = useState(0);
+
+    // 대중교통 카테고리
+    const [CAll, setCAll] = useState(true);
+    const [CBus, setCBus] = useState(false);
+    const [CSubway, setCSubway] = useState(false);
+    const [CBusSubway, setCBusSubway] = useState(false);
+
+    // 대중교통 방법들
+    const [AllRoad, setAllRoad] = useState();
+    const [BusRoad, setBusRoad] = useState();
+    const [SubwayRoad, setSubwayRoad] = useState();
+    const [BusSubwayRoad, setBusSubwayRoad] = useState();
+
+    // 모달에 띄우는 방법
+    const [ChoiceRoad, setChoiceRoad] = useState([]);
+
+    // 카테고리 선택
+    const ClickCategory = (category) => {
+        if(category === 'all'){
+            setCAll(true);
+            setCBus(false);
+            setCSubway(false);
+            setCBusSubway(false);
+        }else if(category === 'bus'){
+            setCAll(false);
+            setCBus(true);
+            setCSubway(false);
+            setCBusSubway(false);
+        }else if(category === 'subway'){
+            setCAll(false);
+            setCBus(false);
+            setCSubway(true);
+            setCBusSubway(false);
+        }else{
+            setCAll(false);
+            setCBus(false);
+            setCSubway(false);
+            setCBusSubway(true);
+        }
+    }
+
+    const [busShow, setbusShow] = useState(false);
+    const handleClose = () => {
+        setbusVisible(true);
+        setbusShow(false);
+    }
+
+   
+    const clickAll = (index) => {
+        setChoiceRoad(AllRoad[index]);
+        //setbusVisible(false);
+    }
+
+    const clickBus = (index) => {
+        setChoiceRoad(BusRoad[index]);
+        setbusVisible(false);
+    }
+
+    const clickSubway = (index) => {
+        setChoiceRoad(SubwayRoad[index]);
+        setbusVisible(false);
+    }
+
+    const clickBusSubway = (index) => {
+        setChoiceRoad(BusSubwayRoad[index]);
+        setbusVisible(false);
+    }
+
+    useEffect(() => {
+        console.log("있냐?");
+        
+        if (ChoiceRoad?.length > 0) {
+            console.log("있다");
+            
+            setbusShow(true);
+        }
+    }, [ChoiceRoad]);
+
     // 마커
     const [map, setMap] = useState(null);
     const [roadPolylines, setRoadPolylines] = useState([]);
@@ -64,8 +152,10 @@ export default function HotelMap() {
     const [distance, setDistance] = useState(0); // 거리
     const [duration, setDuration] = useState(0); // 소요시간
     const [fare, setFare] = useState({toll: 0, taxi: 0}); // 통행료
+    const [kcal, setKcal] = useState(0); // 칼로리
 
     const [isVisible, setIsVisible] = useState(false); // div 표시
+    const [busVisible, setbusVisible] = useState(false); // bus div 표시
 
     // 모달
     const [isStartModalOpen, setIsStartModalOpen] = useState(false);
@@ -133,8 +223,22 @@ export default function HotelMap() {
 
     // 통행료 포맷 함수
     const formatCurrency = (amount) => {
-        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     };
+
+    // 시간 포맷 함수
+    const formatTime = (time) => {
+        if(time >= 3600){
+            const hours = Math.floor(time / 3600);
+            const minutes = Math.floor((time % 3600) / 60);
+            const formattedDuration = `${hours}시간 ${minutes}분`;
+            return formattedDuration;
+        }else{
+            const minutes = Math.floor((time % 3600) / 60);
+            const formattedDuration = `${minutes}분`;
+            return formattedDuration;
+        }
+    }
 
 
     // 기본주소 좌표로 바꾸기
@@ -209,6 +313,35 @@ export default function HotelMap() {
         return data; // 경로 데이터 반환
     };
 
+    // 대중교통 길찾기
+    const busRoute = async (startLng, startLat, endLng, endLat) => {
+        try {
+            const response = await fetch('https://apis.openapi.sk.com/transit/routes', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'appKey': 'rywsBUd1t66rMXhmaFV1p8a8SJ1zN2N55P12AhPx' // 여기에 실제 appKey를 입력하세요
+                },
+                body: JSON.stringify({
+                    startX: startLng,
+                    startY: startLat,
+                    endX: endLng,
+                    endY: endLat,
+                })
+            });
+    
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    };
+
     // 도보 길찾기
     const walkRoute = async (startLng, startLat, endLng, endLat) => {
         try {
@@ -234,12 +367,13 @@ export default function HotelMap() {
             }
     
             const data = await response.json();
-            console.log(data);
             return data;
         } catch (error) {
             console.error('Fetch error:', error);
         }
     };
+
+    
 
 
     // 마커 찍기
@@ -309,6 +443,39 @@ export default function HotelMap() {
         setRoadPolylines(newPolylines); // 새로운 선 객체 배열로 업데이트
     };
 
+    // 도보 선 그리기
+    const drawRoadsWalk = (roads) => {
+        const newPolylines = roads.map(roadItem => {
+            // vertexes 배열에서 좌표를 추출
+            const path = [];
+            // geometry.type에 따라 처리 방식 결정
+            if (roadItem.geometry.type === "LineString") {
+                // LineString의 경우
+                for (let coord of roadItem.geometry.coordinates) {
+                    const longitude = coord[0];
+                    const latitude = coord[1];
+                    path.push(new kakao.maps.LatLng(latitude, longitude));
+                }
+            } else if (roadItem.geometry.type === "Point") {
+                // Point의 경우
+                const longitude = roadItem.geometry.coordinates[0];
+                const latitude = roadItem.geometry.coordinates[1];
+                path.push(new kakao.maps.LatLng(latitude, longitude));
+            }
+            
+            const polyline = new kakao.maps.Polyline({
+                path: path,
+                strokeWeight: 10,
+                strokeColor: 'rgb(63, 153, 250)',
+                strokeOpacity: 1,
+                strokeStyle: 'solid',
+            });
+            polyline.setMap(map); // 맵에 선 그리기
+            return polyline; // 선 객체를 배열에 저장
+        });
+        setRoadPolylines(newPolylines); // 새로운 선 객체 배열로 업데이트
+    };
+
 
     // 도로 선 지우기
     const clearRoads = () => {
@@ -342,10 +509,105 @@ export default function HotelMap() {
             if(car === true){
                 // 길찾기 API 호출
                 const routeData = await carRoute(startCoords.longitude, startCoords.latitude, endCoords.longitude, endCoords.latitude);
-                console.log('길찾기 데이터:', routeData);
+                console.log('차 길찾기 데이터:', routeData);
 
                 // div css 변경
                 setIsVisible(true);
+                setbusVisible(false);
+
+                // 마커 지우고
+                removeMarkers();
+
+                // 마커 찍기
+                const newStartMarker = addMarker(startCoords);
+                const newEndMarker = addMarker(endCoords);
+
+                setStartMarker(newStartMarker);
+                setEndMarker(newEndMarker);
+
+                // 두 마커의 위치를 포함하는 경계 계산
+                const bounds = new kakao.maps.LatLngBounds();
+                bounds.extend(new kakao.maps.LatLng(startCoords.latitude, startCoords.longitude));
+                bounds.extend(new kakao.maps.LatLng(endCoords.latitude, endCoords.longitude));
+
+                // 지도의 중심을 경계에 맞추고 줌 레벨 조정
+                map.setBounds(bounds);
+             
+                // 거리(미터) → 거리(킬로미터)
+                const realdistance = routeData.routes[0].summary.distance;
+                if(realdistance >= 1000){
+                    const distanceInKm = (realdistance / 1000).toFixed(2); // 소수점 둘째 자리까지
+                    const formatdistanceInKm = `${distanceInKm}km`;
+                    setDistance(formatdistanceInKm);
+                }else{
+                    const formatdistanceInm = `${realdistance}m`;
+                    setDistance(formatdistanceInm);
+                }
+            
+                // 소요시간(초) → 시간 및 분
+                const durationInSec = routeData.routes[0].summary.duration;
+                if(durationInSec >= 3600){
+                    const hours = Math.floor(durationInSec / 3600);
+                    const minutes = Math.floor((durationInSec % 3600) / 60);
+                    const formattedDuration = `${hours}시간 ${minutes}분`;
+                    setDuration(formattedDuration);
+                }else{
+                    const minutes = Math.floor((durationInSec % 3600) / 60);
+                    const formattedDuration = `${minutes}분`;
+                    setDuration(formattedDuration);
+                }
+
+                // 통행료
+                setFare(routeData.routes[0].summary.fare);
+
+                const road = (routeData.routes[0].sections[0].roads);
+
+                // 선 지우기
+                clearRoads();
+
+                // 선 그리기
+                drawRoads(road);
+
+            }else if(bus === true){
+                // 길찾기 API 호출
+                const routeData = await busRoute(startCoords.longitude, startCoords.latitude, endCoords.longitude, endCoords.latitude);
+                console.log('대중교통 길찾기 데이터:', routeData);
+
+                // div css 변경
+                setIsVisible(false);
+                setbusVisible(true);
+
+                // 카테고리 개수 저장
+                const bus = routeData.metaData.requestParameters.busCount
+                const subway = routeData.metaData.requestParameters.subwayCount
+                const bussubway = routeData.metaData.requestParameters.subwayBusCount
+                setAllCount(bus + subway + bussubway);
+                setBusCount(bus);
+                setSubwayCount(subway);
+                setBusSubwayCount(bussubway);
+
+                // 경로 저장
+                const AllRoad = routeData.metaData.plan.itineraries;
+                const BusRoad = AllRoad.filter(itinerary => itinerary.pathType === 2);
+                const SubwayRoad = AllRoad.filter(itinerary => itinerary.pathType === 1);
+                const BusSubwayRoad = AllRoad.filter(itinerary => itinerary.pathType === 3);
+
+                setAllRoad(AllRoad);
+                setBusRoad(BusRoad);
+                setSubwayRoad(SubwayRoad);
+                setBusSubwayRoad(BusSubwayRoad);
+
+                
+
+
+            }else if(walk === true){
+                // 길찾기 API 호출
+                const routeData = await walkRoute(startCoords.longitude, startCoords.latitude, endCoords.longitude, endCoords.latitude);
+                console.log('도보 길찾기 데이터:', routeData);
+
+                // div css 변경
+                setIsVisible(true);
+                setbusVisible(false);
 
                 // 마커 지우고
                 removeMarkers();
@@ -366,29 +628,41 @@ export default function HotelMap() {
                 map.setBounds(bounds);
 
                 // 거리(미터) → 거리(킬로미터)
-                const distanceInKm = (routeData.routes[0].summary.distance / 1000).toFixed(2); // 소수점 둘째 자리까지
-                setDistance(distanceInKm);
+                const realdistance = routeData.features[0].properties.totalDistance;
+                if(realdistance >= 1000){
+                    const distanceInKm = (realdistance / 1000).toFixed(2); // 소수점 둘째 자리까지
+                    const formatdistanceInKm = `${distanceInKm}km`;
+                    setDistance(formatdistanceInKm);
+                }else{
+                    const formatdistanceInm = `${realdistance}m`;
+                    setDistance(formatdistanceInm);
+                }
+                
 
                 // 소요시간(초) → 시간 및 분
-                const durationInSec = routeData.routes[0].summary.duration;
-                const hours = Math.floor(durationInSec / 3600);
-                const minutes = Math.floor((durationInSec % 3600) / 60);
-                const formattedDuration = `${hours}시간 ${minutes}분`;
-                setDuration(formattedDuration);
+                const durationInSec = routeData.features[0].properties.totalTime;
+                if(durationInSec >= 3600){
+                    const hours = Math.floor(durationInSec / 3600);
+                    const minutes = Math.floor((durationInSec % 3600) / 60);
+                    const formattedDuration = `${hours}시간 ${minutes}분`;
+                    setDuration(formattedDuration);
+                }else{
+                    const minutes = Math.floor((durationInSec % 3600) / 60);
+                    const formattedDuration = `${minutes}분`;
+                    setDuration(formattedDuration);
+                }
 
-                // 통행료
-                setFare(routeData.routes[0].summary.fare);
+                // 칼로리(미터 당 0.8칼로리)
+                const kcal = (routeData.features[0].properties.totalDistance * 0.8).toFixed(0);
+                setKcal(kcal);
 
-                const road = (routeData.routes[0].sections[0].roads);
+                const road = (routeData.features);
 
                 // 선 지우기
                 clearRoads();
 
                 // 선 그리기
-                drawRoads(road);
-            }else if(walk === true){
-                 // 길찾기 API 호출
-                 const routeData = await walkRoute(startCoords.longitude, startCoords.latitude, endCoords.longitude, endCoords.latitude);
+                drawRoadsWalk(road);
             }
             
 
@@ -430,18 +704,170 @@ export default function HotelMap() {
 
             <div id='KakaoMap'>
                 <div className={`FindInfo ${isVisible ? '' : 'hidden'}`}>
-                    <div className='timeInfo'>
-                        <div id='time'>{duration}</div>
-                        <div id='km'>{distance}km</div>
+                    {car &&
+                        <>
+                            <div className='timeInfo'>
+                                <div id='time'>{duration}</div>
+                                <div id='km'>{distance}</div>
+                            </div>
+                            <div className='fareInfo'>
+                                <div id='toll'>통행료 : 약 {formatCurrency(fare.toll)}원 |</div>
+                                <div id='taxi'>택시비 : 약 {formatCurrency(fare.taxi)}원~</div>
+                            </div>
+                        </>
+                    }
+                    {walk &&
+                        <>
+                            <div className='timeInfo'>
+                                <div id='time'>{duration}</div>
+                                <div id='km'>{distance}</div>
+                            </div>
+                            <div id='toll'>칼로리 : 약 {formatCurrency(kcal)}kcal</div>
+                        </>
+                    }
+                </div>
+
+                
+                <div className={`busInfo ${busVisible ? '' : 'hidden'}`}>
+                    <div className='category'>
+                        {CAll ? <div id='categoryItem' onClick={() => ClickCategory('all')} style={{ color: 'rgb(63, 153, 250)' }}>전체 {AllCount}</div> : <div id='categoryItem' onClick={() => ClickCategory('all')}>전체 {AllCount}</div>}
+                        {CBus ? <div id='categoryItem' onClick={() => ClickCategory('bus')} style={{ color: 'rgb(63, 153, 250)' }}>버스 {BusCount}</div> : <div id='categoryItem' onClick={() => ClickCategory('bus')}>버스 {BusCount}</div>}
+                        {CSubway ? <div id='categoryItem' onClick={() => ClickCategory('subway')} style={{ color: 'rgb(63, 153, 250)' }}>지하철 {SubwayCount}</div> : <div id='categoryItem' onClick={() => ClickCategory('subway')}>지하철 {SubwayCount}</div>}
+                        {CBusSubway ? <div id='categoryItem' onClick={() => ClickCategory('bussubway')} style={{ color: 'rgb(63, 153, 250)' }}>버스+지하철 {BusSubwayCount}</div> : <div id='categoryItem' onClick={() => ClickCategory('bussubway')}>버스+지하철 {BusSubwayCount}</div>}
                     </div>
-                    <div className='fareInfo'>
-                        <div id='toll'>통행료 : 약 {formatCurrency(fare.toll)} |</div>
-                        <div id='taxi'>택시비 : 약 {formatCurrency(fare.taxi)}~</div>
+                    <div className='RowLine'></div>
+
+                    <div className='busContent'>
+                        {CAll && 
+                            <>
+                            {AllRoad?.length > 0 ? (
+                                AllRoad.map((road, index) => (
+                                    <div className='busRoads' key={index} onClick={() => clickAll(index)}>
+                                        <div className='totalTime'>{formatTime(road.totalTime)}</div>
+                                        <div className='busroadInfo'>
+                                            <div>도보 {formatTime(road.totalWalkTime)}</div>
+                                            <div>요금 {road.fare.regular.totalFare.toLocaleString()}원</div>
+                                            <div>환승 {road.transferCount}회</div>
+                                        </div>
+                                        <div>
+                                            {road.legs.map((root, index) => (
+                                                root.mode !== "WALK" ? (
+                                                    <div className='routeDiv' key={index}>
+                                                        <div>{root.mode === "BUS" ? <FaBus id='busIcon'/> : <FaTrainSubway id='busIcon'/>}{root.start.name}</div>
+                                                        <div id='routeName'>{root.route}</div>
+                                                        {index === road.legs.length - 2 && <div><FaCircleDown id='busIcon'/>{root.end.name}</div>}
+                                                    </div>
+                                                ) : null
+                                            ))}
+                                        </div>
+                                        <div className='RowLine'></div>
+                                    </div>       
+                                ))
+                            ) : (
+                                <div id='NonRoad'><FaBan id='banIcon'/>경로 정보가 없습니다.</div>
+                            )}
+                            </>
+                        }
+
+                        {CBus && 
+                            <>
+                            {BusRoad?.length > 0 ? (
+                                BusRoad.map((road, index) => (
+                                    <div className='busRoads' key={index} onClick={() => clickBus(index)}>
+                                        <div className='totalTime'>{formatTime(road.totalTime)}</div>
+                                        <div className='busroadInfo'>
+                                            <div>도보 {formatTime(road.totalWalkTime)}</div>
+                                            <div>요금 {road.fare.regular.totalFare.toLocaleString()}원</div>
+                                            <div>환승 {road.transferCount}회</div>
+                                        </div>
+                                        <div>
+                                            {road.legs.map((root, index) => (
+                                                root.mode !== "WALK" ? (
+                                                    <div className='routeDiv' key={index}>
+                                                        <div>{root.mode === "BUS" ? <FaBus id='busIcon'/> : <FaTrainSubway id='busIcon'/>}{root.start.name}</div>
+                                                        <div id='routeName'>{root.route}</div>
+                                                        {index === road.legs.length - 2 && <div><FaCircleDown id='busIcon'/>{root.end.name}</div>}
+                                                    </div>
+                                                ) : null
+                                            ))}
+                                        </div>
+                                        <div className='RowLine'></div>
+                                    </div>       
+                                ))
+                            ) : (
+                                <div id='NonRoad'><FaBan id='banIcon'/>경로 정보가 없습니다.</div>
+                            )}
+                            </>
+                        }
+
+                        {CSubway && 
+                            <>
+                            {SubwayRoad?.length > 0 ? (
+                                SubwayRoad.map((road, index) => (
+                                    <div className='busRoads' key={index} onClick={() => clickSubway(index)}>
+                                        <div className='totalTime'>{formatTime(road.totalTime)}</div>
+                                        <div className='busroadInfo'>
+                                            <div>도보 {formatTime(road.totalWalkTime)}</div>
+                                            <div>요금 {road.fare.regular.totalFare.toLocaleString()}원</div>
+                                            <div>환승 {road.transferCount}회</div>
+                                        </div>
+                                        <div>
+                                            {road.legs.map((root, index) => (
+                                                root.mode !== "WALK" ? (
+                                                    <div className='routeDiv' key={index}>
+                                                        <div>{root.mode === "BUS" ? <FaBus id='busIcon'/> : <FaTrainSubway id='busIcon'/>}{root.start.name}</div>
+                                                        <div id='routeName'>{root.route}</div>
+                                                        {index === road.legs.length - 2 && <div><FaCircleDown id='busIcon'/>{root.end.name}</div>}
+                                                    </div>
+                                                ) : null
+                                            ))}
+                                        </div>
+                                        <div className='RowLine'></div>
+                                    </div>       
+                                ))
+                            ) : (
+                                <div id='NonRoad'><FaBan id='banIcon'/>경로 정보가 없습니다.</div>
+                            )}
+                            </>
+                        }
+
+                        {CBusSubway && 
+                            <>
+                            {BusSubwayRoad?.length > 0 ? (
+                                BusSubwayRoad.map((road, index) => (
+                                    <div className='busRoads' key={index} onClick={() => clickBusSubway(index)}>
+                                        <div className='totalTime'>{formatTime(road.totalTime)}</div>
+                                        <div className='busroadInfo'>
+                                            <div>도보 {formatTime(road.totalWalkTime)}</div>
+                                            <div>요금 {road.fare.regular.totalFare.toLocaleString()}원</div>
+                                            <div>환승 {road.transferCount}회</div>
+                                        </div>
+                                        <div>
+                                            {road.legs.map((root, index) => (
+                                                root.mode !== "WALK" ? (
+                                                    <div className='routeDiv' key={index}>
+                                                        <div>{root.mode === "BUS" ? <FaBus id='busIcon'/> : <FaTrainSubway id='busIcon'/>}{root.start.name}</div>
+                                                        <div id='routeName'>{root.route}</div>
+                                                        {index === road.legs.length - 2 && <div><FaCircleDown id='busIcon'/>{root.end.name}</div>}
+                                                    </div>
+                                                ) : null
+                                            ))}
+                                        </div>
+                                        <div className='RowLine'></div>
+                                    </div>       
+                                ))
+                            ) : (
+                                <div id='NonRoad'><FaBan id='banIcon'/>경로 정보가 없습니다.</div>
+                            )}
+                            </>
+                        }
                     </div>
+
                 </div>
             </div>
 
             <Navbar />
+            {ChoiceRoad?.length > 0 && (<BusModal show={busShow} handleClose={handleClose} road={ChoiceRoad} formatTime={formatTime} />)}
         </Container>
 
 
