@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -204,6 +205,8 @@ public class RoomService {
 		  
 		  if (keys != null) {
 			  System.out.println("여기서 출력되니?" + keys.toString());
+			  DataType type = redisTemplate.type(keys.toString());
+			  System.out.println("key의 데이터 타입 : " + type);
 		        for (String key : keys) {
 		        	  Map<Object, Object> roomCheckMap = redisTemplate.opsForHash().entries(key);
 		        	if (roomCheckMap != null &&
