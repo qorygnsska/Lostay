@@ -84,6 +84,8 @@ export default function Reservation() {
     }, [])
 
 
+
+
     // 예약자 정보
     const [name, setName] = useState('');
     const nameInputRef = useRef(null);
@@ -107,16 +109,18 @@ export default function Reservation() {
     // 휴대폰번호 수정
 
     // 입력된 휴대폰 번호
-    const [phone, setPhone] = useState('010-9920-2102');
+    const [phone, setPhone] = useState('');
+    const [userPhone, setUserPhone] = useState('');
 
     // 변경 전 휴대폰 번호
-    const [prePhone, setPrePhone] = useState('010-9920-2101');
+    const [prePhone, setPrePhone] = useState('');
 
     // 휴대폰 수정 On/ Off
     const [phoneEdit, setPhoneEidt] = useState(false);
 
     // 휴대폰 Input
     const phoneInputRef = useRef(null);
+    const userPhoneInputRef = useRef(null);
 
     // 휴대폰 번호 수정 안했을 시 활성화
     const [isVerifiedPhone, setVerifiedPhone] = useState(true);
@@ -158,6 +162,8 @@ export default function Reservation() {
 
     // 인증번호 전송 버튼 활성화 여부
     const isButtonEnabled = phone.replace(/-/g, "").length === 10 || phone.replace(/-/g, "").length === 11;
+
+
 
     // 인증번호 확인 버튼 활성화
     const isVerificationCodeBtnEnabled = verificationCode.length === 6 && isVerificationBtnEn;
@@ -222,6 +228,33 @@ export default function Reservation() {
         setPhone(formattedPhone);
         setVerifiedPhone(true);
     };
+
+    // 이용자 휴대폰번호 수정된 값
+    const [isUserPhoneEdit, setIsUserPhoneEdit] = useState(true)
+    const handleUserPhoneChange = (e) => {
+        const formattedPhone = formatPhoneNumber(e.target.value);
+        setUserPhone(formattedPhone);
+        // 이용자 전화번호 정상 여부
+        const isUserPhone = formattedPhone.replace(/-/g, "").length === 10 || formattedPhone.replace(/-/g, "").length === 11;
+        setIsUserPhoneEdit(isUserPhone);
+    }
+
+    // 이용자와 정보가 같을시
+    const [sameUserChecked, setSameUserChecked] = useState(false)
+    const handleSameUser = (checked) => {
+        if (checked) {
+            setSameUserChecked(true)
+            setUserPhone(userInfo.userPhone)
+            setName(userInfo.userName)
+            setIsUserPhoneEdit(true)
+        } else {
+            setSameUserChecked(false)
+            setUserPhone('')
+            setName('')
+            setIsUserPhoneEdit(false)
+        }
+    };
+
 
     // 인증번호 전송 함수
     const sendVerification = () => {
@@ -337,170 +370,145 @@ export default function Reservation() {
     IMP.init('imp67745024');
 
     const paymentClick = () => {
-        // 이름 작성 여뷰
+        if (checkItems.length === agreeChkInfo.length) {
+            // 이름 작성 여뷰
+            if (phoneEdit) {
+                alert('예약자 전화번호를 저장해주세요.')
+                return;
+            } else if (name.length === 0 || nameWarning === true) {
+                alert('이름을 입력해주세요.')
+                return;
+            } else if (!isUserPhoneEdit) {
+                alert('이용자 전화번호를 입력해주세요')
+                return;
+            }
+            else if (payType === null) {
+                alert('결제수단을 선택해주세요.')
+                return;
+            }
 
-        if (name.length === 0 || nameWarning === true) {
-            alert('이름을 입력해주세요.')
-            return;
-        } else if (phoneEdit) {
-            alert('전화번호를 저장해주세요.')
-            return;
-        } else if (payType === null) {
-            alert('결제수단을 선택해주세요.')
-            return;
+            const merchant_uid = "merchant_" + new Date().getTime()
+            privateApi.post('http://localhost:9090/payment/Before', {
+                point: Number(inputPoint),
+                roomNo: hotelRoomInfo.roomNo,
+                disNo: payType.disNo,
+                merchant_uid: merchant_uid,
+            })
+                // 사전검증 성공
+                .then((res) => {
+                    if (res.status === 200) {
+                        requestPay(payType.disPg, merchant_uid)
+                    } else {
+                        // accessToken 발급 실패 or 사전검증 요청 실패
+                        alert('결제에 실패했습니다.')
+                    }
+
+                })
+                .catch((error) => {
+                    // accessToken 발급 실패 or 사전검증 요청 실패
+                    alert("결제에 실패했습니다.")
+                });
         }
 
-        const merchant_uid = "merchant_" + new Date().getTime()
-        privateApi.post('http://localhost:9090/payment/Before', {
-            point: Number(inputPoint),
-            roomNo: hotelRoomInfo.roomNo,
-            disNo: payType.disNo,
-            merchant_uid: merchant_uid,
-        })
-            .then((res) => {
-                if (res.status === 200) {
-                    // 사전검증 성공
-                    requestPay(payType.disPg, merchant_uid)
-                } else {
-                    // accessToken 발급 실패 or 사전검증 요청 실패
-                    alert('결제에 실패했습니다.')
-                }
+        const requestPay = (pg, merchant_uid) => {
+            console.log('pg사에 요청보내기.')
+            IMP.request_pay({
+                pg: pg,
+                merchant_uid: merchant_uid,
+                name: "주문명:결제테스트",
+                amount: totalPrice,
+                buyer_name: "구매자이름",
+                buyer_tel: "010-1234-5678",
 
-            })
-            .catch((error) => {
-                // accessToken 발급 실패 or 사전검증 요청 실패
-                alert("결제에 실패했습니다.")
-            });
-    }
-
-    const requestPay = (pg, merchant_uid) => {
-        console.log('pg사에 요청보내기.')
-        IMP.request_pay({
-            pg: pg,
-            merchant_uid: merchant_uid,
-            name: "주문명:결제테스트",
-            amount: totalPrice,
-            buyer_name: "구매자이름",
-            buyer_tel: "010-1234-5678",
-
-        }, (rsp) => {
-            if (rsp.success) { // 프론트에서 결제가 완료되면
-                privateApi.post(`http://localhost:9090/payment/Verification`, {
-                    imp_uid: rsp.imp_uid,            // 결제 고유번호
-                    merchant_uid: rsp.merchant_uid,   // 주문번호
-                    amount: rsp.paid_amount
-                })
-                    .then((res) => {
-                        if (res.status === 200) {
-                            if (rsp.paid_amount === res.data.response.amount) {
-
-                                const originalDateTime = res.data.response.paidAt;
-                                const payDay = originalDateTime.split('+')[0];
-
-                                const putData = async () => {
-                                    try {
-                                        const result = await privateApi.post('http://localhost:9090/payment/Insert', {
-                                            roomNo: hotelRoomInfo.roomNo,
-                                            disNo: payType.disNo,
-                                            payPrice: hotelRoomInfo.discountPrice,
-                                            payPoint: Number(inputPoint),
-                                            payDay: payDay,
-                                            checkIn: `${hotelRoomInfo.roomCheckIn}T${hotelRoomInfo.roomCheckinTime}`,
-                                            checkOut: `${hotelRoomInfo.roomCheckOut}T${hotelRoomInfo.roomCheckoutTime}`,
-                                            imp_uid: rsp.imp_uid,
-                                        });
-                                        console.log('result', result)
-                                        console.log('result', result.status)
-                                        if (result.status === 200) {
-                                            alert('결제 완료되었습니다.')
-                                            navigate('/', { replace: true });
-                                        } else {
-                                            // 데이터 삽입 실패 환불해야함..
-                                            alert("결제에 실패했습니다.")
-                                            const response = async () => {
-                                                try {
-                                                    // 성공적인 응답 처리
-                                                    const res = await privateApi.post('http://localhost:9090/payment/Cancle', {});
-
-                                                } catch (error) {
-                                                    // 에러 처리
-
-                                                }
-                                            }
-                                        }
-                                    } catch (error) {
-                                        // 환불해야함...
-                                        alert("결제에 실패했습니다.")
-                                        const response = async () => {
-                                            try {
-                                                // 성공적인 응답 처리
-                                                const res = await privateApi.post('http://localhost:9090/payment/Cancle', {});
-
-                                            } catch (error) {
-                                                // 에러 처리
-
-                                            }
-                                        }
-                                    }
-                                }
-
-                                putData();
-                            } else {
-                                // 금액 불일치 환불해야함
-                                alert("결제에 실패했습니다.")
-                                const response = async () => {
-                                    try {
-                                        // 성공적인 응답 처리
-                                        const res = await privateApi.post('http://localhost:9090/payment/Cancle', {});
-
-                                    } catch (error) {
-                                        // 에러 처리
-
-                                    }
-                                }
-                            }
-                        } else {
-                            // 금액 불일치 환불해야함
-                            alert("결제에 실패했습니다.")
-                            const response = async () => {
-                                try {
-                                    // 성공적인 응답 처리
-                                    const res = await privateApi.post('http://localhost:9090/payment/Cancle', {});
-
-                                } catch (error) {
-                                    // 에러 처리
-
-                                }
-                            }
-                        }
-
+            }, (rsp) => {
+                if (rsp.success) { // 프론트에서 결제가 완료되면
+                    privateApi.post(`http://localhost:9090/payment/Verification`, {
+                        imp_uid: rsp.imp_uid,            // 결제 고유번호
+                        merchant_uid: rsp.merchant_uid,   // 주문번호
+                        amount: rsp.paid_amount
                     })
-                    .catch((error) => {
-                        // 사후 검증 실패 환불해야함
-                        alert("결제에 실패했습니다.")
-                        const response = async () => {
-                            try {
-                                // 성공적인 응답 처리
-                                const res = await privateApi.post('http://localhost:9090/payment/Cancle', {});
-
-                            } catch (error) {
-                                // 에러 처리
-
+                        .then((res) => {
+                            if (res.status === 200) {
+                                if (rsp.paid_amount === res.data.response.amount) {
+                                    // 최종 성공
+                                    const originalDateTime = res.data.response.paidAt;
+                                    const payDay = originalDateTime.split('+')[0];
+                                    console.log(payDay)
+                                    putData(rsp, payDay);
+                                } else {
+                                    // 금액 불일치 환불해야함
+                                    alert("결제에 실패했습니다.")
+                                    Vcancle(rsp);
+                                }
+                            } else {
+                                // 200 안오면 환불해야함
+                                alert("결제에 실패했습니다.")
+                                Vcancle(rsp);
                             }
-                        }
-                    });
-            } else {
-                // 결제 실패 했을 때
-                alert("결제에 실패했습니다.")
-            }
-        });
+
+                        })
+                        .catch((error) => {
+                            // 사후 검증 실패 환불해야함
+                            alert("결제에 실패했습니다.")
+                            Vcancle(rsp);
+                        });
+                } else {
+                    // 결제 실패 했을 때
+                    alert("결제에 실패했습니다.")
+                }
+            });
+        }
     }
+
+    const putData = async (rsp, payDay) => {
+        try {
+            const result = await privateApi.post('http://localhost:9090/payment/Insert', {
+                roomNo: hotelRoomInfo.roomNo,
+                disNo: payType.disNo,
+                payPrice: totalPrice,
+                payPoint: Number(inputPoint),
+                payDay: payDay,
+                checkIn: `${hotelRoomInfo.roomCheckIn}T${hotelRoomInfo.roomCheckinTime}`,
+                checkOut: `${hotelRoomInfo.roomCheckOut}T${hotelRoomInfo.roomCheckoutTime}`,
+                imp_uid: rsp.imp_uid,
+                name: name,
+                phone: userPhone,
+            });
+
+            if (result.status === 200) {
+                alert('결제 완료되었습니다.')
+                navigate('/', { replace: true });
+            } else {
+                // 데이터 삽입 실패 환불해야함..
+                alert("결제에 실패했습니다.")
+                Vcancle(rsp);
+            }
+        } catch (error) {
+            // 환불해야함...
+            alert("결제에 실패했습니다.")
+            Vcancle(rsp);
+        }
+    }
+
+    const Vcancle = async (rsp) => {
+        try {
+            // 성공적인 응답 처리
+            const res = await privateApi.post('http://localhost:9090/payment/VCancle', {
+                imp_uid: rsp.imp_uid,
+            });
+
+        } catch (error) {
+            // 에러 처리
+            alert('고객센터에 전화해주세요')
+        }
+    }
+
 
 
 
     const [useAllPoints, setUseAllPoints] = useState(false); // 포인트 모두 사용
     const [inputPoint, setInputPoint] = useState(0); // 포인트 직접 입력
-    const [totalPrice, setTotalPrice] = useState(hotelRoomInfo ? hotelRoomInfo.discountPrice : 0); // 총 결제 가격
+    const [totalPrice, setTotalPrice] = useState(0); // 총 결제 가격
     const [payType, setpayType] = useState(null); // 결제 수단
     const [salePrice, setSalePrice] = useState(0); // 할인 금액
     const [checkItems, setCheckItems] = useState([]); // 체크된 동의 담을 배열
@@ -639,6 +647,10 @@ export default function Reservation() {
         return ''
     };
 
+    useEffect(() => {
+        setTotalPrice(hotelRoomInfo?.discountPrice.toLocaleString())
+    }, [hotelRoomInfo])
+
     return (
         <div className="re--container">
             <BackNav title="객실 예약" />
@@ -670,22 +682,13 @@ export default function Reservation() {
                     </div>
                 </div>
 
-                {/* 사용자 정보 */}
+                {/* 예약자 정보 */}
                 <div className="profile--info">
                     <span className="section--title">예약자 정보</span>
                     <div className="profile--box">
                         <span>예약자 이름</span>
-                        <input
-                            type="text"
-                            ref={nameInputRef}
-                            value={name}
-                            onChange={handleNameChange}
-                            maxLength={15}
-                            className={`input--name ${nameWarning && 'warning'}`}
-                        />
+                        <span>{userInfo?.userName}</span>
                     </div>
-
-                    {nameWarning && <div className="name--warning">이름은 2자 ~ 15자 이내로 작성해주세요.</div>}
 
                     <div className="profile--box">
                         <span>휴대폰 번호</span>
@@ -760,6 +763,58 @@ export default function Reservation() {
                     >
                         취소
                     </div>
+                </div>
+
+                {/* 이용자 정보 */}
+                <div className="profile--info">
+                    <span className="section--title">이용자 정보</span>
+
+                    <div>
+                        <input
+                            type="checkbox"
+                            name="sameUser"
+                            id="sameUser"
+                            onChange={(e) => handleSameUser(e.target.checked)}
+                        // 데이터 개수와 체크된 아이템의 개수가 다를 경우 선택 해제 (하나라도 해제 시 선택 해제)
+                        />
+                        <label htmlFor="sameUser">
+                            <div className="sameUser--box">
+                                <MdOutlineCheckBox className={`sameUser--icon ${sameUserChecked && 'checked'}`} />
+                                <span>예약자 정보와 동일</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div className="profile--box">
+                        <span>이용자 이름</span>
+                        <input
+                            type="text"
+                            ref={nameInputRef}
+                            value={name}
+                            placeholder="이용자 이름 입력"
+                            onChange={handleNameChange}
+                            maxLength={15}
+                            className={`input--name ${nameWarning && 'warning'}`}
+                        />
+                    </div>
+
+                    {nameWarning && <div className="name--warning">이름은 2자 ~ 15자 이내로 작성해주세요.</div>}
+
+                    <div className="profile--box">
+                        <span>휴대폰 번호</span>
+                        <div className="input--phone">
+                            <input
+                                ref={userPhoneInputRef}
+                                value={userPhone}
+                                onChange={handleUserPhoneChange}
+                                placeholder="휴대폰 번호 입력"
+                                maxLength={13}
+                                className="userPhone"
+                            />
+                        </div>
+                    </div>
+
+                    {!isUserPhoneEdit && <div className="userPhone--warning">12~13 자리를 입력해주세요</div>}
                 </div>
 
                 {/* 결제 수단 */}
@@ -848,7 +903,7 @@ export default function Reservation() {
                     <AgreeInfo agreeInfo={agreeInfo} />
                     <AgreeChkInfo agreeChkInfo={agreeChkInfo} checkItems={checkItems} handleSingleCheck={handleSingleCheck} handleAllCheck={handleAllCheck} />
                     {/* 결제버튼 */}
-                    <button disabled={checkItems.length !== agreeChkInfo.length} onClick={paymentClick}>{totalPrice?.toLocaleString()}원 결제하기</button>
+                    <div className={`pay--btn ${checkItems.length !== agreeChkInfo.length && 'disabled'}`} onClick={paymentClick}>{totalPrice?.toLocaleString()}원 결제하기</div>
                 </div>
             </div>
             <Navbar />
