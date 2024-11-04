@@ -37,7 +37,7 @@ export default function WishList({ wishList, setToast, setToastText, index }) {
 
     return (
         <div className={`wishlist--component--container ${index % 2 === 0 ? 'wishlist--border' : ''}`}>
-            <Link to="/hotellist">
+            <Link to={`/roomList/${wishList.hotelNo}`}>
                 <div className="wishlist--wrap">
                     <div className="wishlist--img">
                         <img src={`${wishList.hotelThumbnail}`} alt={`hotel`} />
