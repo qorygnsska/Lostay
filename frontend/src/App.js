@@ -40,6 +40,7 @@ import "../src/componets/Carousel/ReviewCarousel.css"
 import "../src/componets/HotelReview/ReviewCarousel2.css"
 import "../src/componets/MyPage/BookingHistory/PaymentModal.css"
 import "../src/pages/Login/LoginAdmin.css"
+import "../src/componets/Map/BusModal.css";
 
 
 // CustomCSS for pages

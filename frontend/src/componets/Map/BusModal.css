@@ -1,0 +1,13 @@
+.bus--modal--container{
+
+    .modal-content {
+        width: 800px;
+        margin: auto;
+
+        .modal-header {
+            border-bottom: none;
+            font-weight: bold;
+            
+        }
+    }
+}

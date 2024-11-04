@@ -9,6 +9,7 @@ import { FaWalking } from "react-icons/fa";
 import { FaTrainSubway } from "react-icons/fa6";
 import { FaCircleDown } from "react-icons/fa6";
 import { FaBan } from "react-icons/fa";
+import BusModal from '../../componets/Map/BusModal';
 
 
 const {kakao} = window;
@@ -77,6 +78,9 @@ export default function HotelMap() {
     const [SubwayRoad, setSubwayRoad] = useState();
     const [BusSubwayRoad, setBusSubwayRoad] = useState();
 
+    // 모달에 띄우는 방법
+    const [ChoiceRoad, setChoiceRoad] = useState([]);
+
     // 카테고리 선택
     const ClickCategory = (category) => {
         if(category === 'all'){
@@ -101,22 +105,43 @@ export default function HotelMap() {
             setCBusSubway(true);
         }
     }
+
+    const [busShow, setbusShow] = useState(false);
+    const handleClose = () => {
+        setbusVisible(true);
+        setbusShow(false);
+    }
+
+   
     const clickAll = (index) => {
-        console.log("전체" + index);
-        
+        setChoiceRoad(AllRoad[index]);
+        //setbusVisible(false);
     }
 
     const clickBus = (index) => {
-        console.log("버스" + index);
+        setChoiceRoad(BusRoad[index]);
+        setbusVisible(false);
     }
 
     const clickSubway = (index) => {
-        console.log("지하철" + index);
+        setChoiceRoad(SubwayRoad[index]);
+        setbusVisible(false);
     }
 
     const clickBusSubway = (index) => {
-        console.log("버지" + index);
+        setChoiceRoad(BusSubwayRoad[index]);
+        setbusVisible(false);
     }
+
+    useEffect(() => {
+        console.log("있냐?");
+        
+        if (ChoiceRoad?.length > 0) {
+            console.log("있다");
+            
+            setbusShow(true);
+        }
+    }, [ChoiceRoad]);
 
     // 마커
     const [map, setMap] = useState(null);
@@ -842,7 +867,7 @@ export default function HotelMap() {
             </div>
 
             <Navbar />
-
+            {ChoiceRoad?.length > 0 && (<BusModal show={busShow} handleClose={handleClose} road={ChoiceRoad} formatTime={formatTime} />)}
         </Container>
 
 
