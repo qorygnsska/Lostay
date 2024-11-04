@@ -13,7 +13,7 @@ export default function HotelGrid(props) {
                     <div className='HotelRow' key={index}>
                         <div className='HotelCol'>
                             <Link className='link_to_roomList' to={`../roomList/${hotel.hotelNo}?checkInDate=${props.check_in}&checkOutDate=${props.check_out}&peopleMax=${props.member}`} >
-                                <img src={'../' + hotel.hotelThumbnail} alt='호텔이미지' className='HotelImg' />
+                                <img src={'../' + hotel.hotelThumbnail} alt='호텔이미지' className='HotelImg me-3' />
                             </Link>
 
                             <div className='HotelInfo'>
