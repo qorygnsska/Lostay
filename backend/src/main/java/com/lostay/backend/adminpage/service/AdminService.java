@@ -586,11 +586,11 @@ public class AdminService {
 				.map(entry -> convertToMonthDto(entry.getKey(), entry.getValue())).collect(Collectors.toList());
 	}
 
-	private AdminRevenueChartDTO convertToMonthDto(String month, List<Payment> payments) {
+	private AdminRevenueChartDTO convertToMonthDto(String month, List<Payment> payments) { 
 		int totalCommission = payments.stream().mapToInt(this::calculateCommission).sum();
 		int totalReservations = payments.size(); // 예약 수
 
-		return new AdminRevenueChartDTO(month, Integer.parseInt(month.substring(0, 4)), totalCommission,
+		return new AdminRevenueChartDTO(String.valueOf(Integer.parseInt(month.substring(5, 7))), Integer.parseInt(month.substring(0, 4)), totalCommission,
 				totalReservations);
 	}
 
