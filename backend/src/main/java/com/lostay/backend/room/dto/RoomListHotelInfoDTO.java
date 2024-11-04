@@ -19,11 +19,10 @@ public class RoomListHotelInfoDTO {
 	private String hotelIntroduction;  // 호텔 소개
 	private String[] hotelAmenities;   // 호텔서비스/시설
 	private String[] hotelImage;  // 호텔 이미지
-	
-	
+	private String hotelThumbnail; //호텔 썸네일 (11-03 jh) 추가 	
 	public RoomListHotelInfoDTO(Long hotelNo, String hotelRating, String hotelName, double reviewAvg,
 			Long totalReviewCount, String hotelAdress, String hotelIntroduction, String hotelAmenities,
-			String hotelImage) {
+			String hotelImage, String hotelThumbnail) {
 		super();
 		this.hotelNo = hotelNo;
 		this.hotelRating = hotelRating;
@@ -36,6 +35,7 @@ public class RoomListHotelInfoDTO {
 		this.hotelAmenities = str;
 		String[] str2 = hotelImage.split(",");
 		this.hotelImage = str2;
+		this.hotelThumbnail=hotelThumbnail;
 	}
 	
 	

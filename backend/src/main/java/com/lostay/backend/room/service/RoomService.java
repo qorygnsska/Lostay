@@ -139,7 +139,8 @@ public class RoomService {
 		dto.setHotelAdress(room.getHotel().getHotelAdress());
 		dto.setAvailableRooms(avc);
 		dto.setPeriod(period);
-		
+		dto.setRoomThumbnail(room.getRoomThumbnail());
+	
 		return dto;
 	}
 

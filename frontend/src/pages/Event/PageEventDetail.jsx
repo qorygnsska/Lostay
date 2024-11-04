@@ -13,7 +13,7 @@ export default function PageEventDetail() {
     // function getEvent() {}
     const getEvent = () => {
         //request 'GET'
-        fetch(`http://localhost:9090/eventDetail/${no}`)
+        fetch(`http://localhost:9090/event/detail/${no}`)
             .then(response => response.json())
             .then(data => {
                 console.log(data);

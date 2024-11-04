@@ -69,7 +69,7 @@ export default function CompEventUpdater(props) {
         //console.log(props.picked + 'is opening');
 
         // async&await이나 then()은 같은 것
-        fetch(`http://localhost:9090/adminEventDetail?eventNo=${props.picked}`)
+        fetch(`http://localhost:9090/admin/eventDetail?eventNo=${props.picked}`)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -138,7 +138,7 @@ export default function CompEventUpdater(props) {
             try {
                 // async function & await fetch : 'synchronous' request-response pair
                 // async&await이나 then()은 같은 것
-                const response = await fetch('http://localhost:9090/adminEvent', {
+                const response = await fetch('http://localhost:9090/admin/event', {
                     method: 'PUT',
                     headers: {},
                     body: formData

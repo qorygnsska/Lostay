@@ -17,6 +17,9 @@ import CompSearchBox from '../../componets/Search/CompSearchBox';
 import { useSelector } from 'react-redux';
 import Navbar from '../../componets/Navbar/Navbar';
 import NavTop from '../../componets/NavToTop/NavTop';
+
+import KakaoApiShare from '../../componets/KakaoApi/KakaoApishare';
+
 import { privateApi } from '../../api/api';
 
 export default function RoomList() {
@@ -234,6 +237,12 @@ export default function RoomList() {
           <div className='HotelRank'>{RoomInfos.dto.hotelRating}</div>
           <div className='HotelName'>{RoomInfos.dto.hotelName}</div>
         </div>
+        <KakaoApiShare
+         title={RoomInfos.dto.hotelName}
+         address={RoomInfos.dto.hotelAdress}
+         Thumbnail={RoomInfos.dto.hotelThumbnail}
+
+        />  {/* 카카오 공유 api */}
 
         {Heart ? <IoMdHeart className='FullHeartIcon' onClick={handlerCart}/> : <IoIosHeartEmpty className='HeartIcon' onClick={handlerCart}/>}
       </div>

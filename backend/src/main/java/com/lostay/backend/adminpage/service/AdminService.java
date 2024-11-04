@@ -1,12 +1,15 @@
 package com.lostay.backend.adminpage.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,8 +24,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lostay.backend.adminpage.dto.AdminEventDTO;
+import com.lostay.backend.adminpage.dto.AdminHotelUpdateDTO;
 import com.lostay.backend.adminpage.dto.AdminRevenueChartDTO;
+import com.lostay.backend.adminpage.dto.AdminRoomUpdateDTO;
 import com.lostay.backend.adminpage.dto.HotelInfosDTO;
+
+import com.lostay.backend.adminpage.dto.QuarterlyRevenueDTO;
+import com.lostay.backend.adminpage.dto.RevenueDataDTO;
+import com.lostay.backend.adminpage.dto.RoomsInfosDTO;
+
 import com.lostay.backend.adminpage.dto.roomsDTO;
 
 import com.lostay.backend.event.entity.Event;
@@ -45,7 +55,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdminService {
 
-
 	@Autowired
 	private HotelRepository hotelRepo;
 
@@ -61,7 +70,6 @@ public class AdminService {
 	// 이벤트 이미지 파일 저장 경로
 	String eventDirPath = "C:\\Lostay\\frontend\\public\\event\\";
 
-	
 	@Autowired
 	private ReviewRepository reviewRepo;
 
@@ -307,111 +315,326 @@ public class AdminService {
 	}
 
 	// 홍정훈(관리자 페이지 호텔.객실 텝 정보 조회)
-	public Page<HotelInfosDTO> getHotels(int pageIndex) {
+	public Page<HotelInfosDTO> getHotels(int pageIndex, String searchText) {
 		Pageable pageable = PageRequest.of(pageIndex, 10, Sort.by("hotelNo").ascending());
-		Page<HotelInfosDTO> hotelsDTOPage = hotelRepo.findBYHotelsInfo(pageable);
-		// 모든 호텔을 가져옴
-		List<Hotel> allHotels = hotelRepo.findAll();
-		// 각 호텔 DTO에 방 리스트 설정
-		for (HotelInfosDTO dto : hotelsDTOPage.getContent()) {
-			List<roomsDTO> roomsList = new ArrayList<>(); // 호텔마다 새로운 리스트 생성
-			// 모든 호텔에서 해당 호텔의 방 정보를 가져옴
-			for (Hotel hotel : allHotels) {
-				if (hotel.getHotelNo().equals(dto.getHotelNo())) {
-					for (Room room : hotel.getRooms()) {
-						roomsDTO roomsdto = new roomsDTO();
-						roomsdto.setRoomNo(room.getRoomNo());
-						roomsdto.setRoomName(room.getRoomName());
-						roomsdto.setRoomCount(room.getRoomCount());
-						roomsdto.setRoomPrice(room.getRoomPrice());
-						roomsdto.setRoomDiscount(room.getRoomDiscount());
-						roomsList.add(roomsdto); // 방 정보를 리스트에 추가
-					}
-				}
-			}
+		
+		Page<HotelInfosDTO> hotelsPage = null;
+		
+		System.out.println(searchText);
+		
+		if(searchText == null) {
+			System.out.println("타니");
+			hotelsPage = hotelRepo.findByHotelInfo(pageable);	
+		}else {
+			System.out.println("타니2");
+			hotelsPage = hotelRepo.findByHotelInfo(pageable,searchText);
+		}
+		
 
-			dto.setRooms(roomsList); // 각 호텔 DTO에 방 리스트 설정
+		
+		for (HotelInfosDTO dto : hotelsPage.getContent()) {
+			dto.setHotelImageList(
+					Arrays.stream(dto.getHotelImage().split(",")).map(String::trim).collect(Collectors.toList()));
+
+			dto.setHotelAmenitiesList(
+					Arrays.stream(dto.getHotelAmenities().split(",")).map(String::trim).collect(Collectors.toList()));
+
+			dto.setHotelTouristAttractionList(
+					Arrays.stream(dto.getHotelTouristAttraction().split(",")).map(String::trim).collect(Collectors.toList()));
+			
 		}
 
-		return hotelsDTOPage; // Page<HotelInfosDTO> 반환
+		return hotelsPage; // Page<HotelInfosDTO> 반환
+	}
+
+	// 효준 호텔 수정
+	public boolean hotelUpdate(AdminHotelUpdateDTO adminHotelUpdateDTO, MultipartFile uploadThumbnail,
+			List<MultipartFile> uploadImages) {
+
+		Hotel hotel = hotelRepo.getByHotelNo(adminHotelUpdateDTO.getHotelNo());
+
+		hotel.setHotelName(adminHotelUpdateDTO.getHotelName());
+		hotel.setHotelCommission(adminHotelUpdateDTO.getHotelCommission());
+		hotel.setHotelAdress(adminHotelUpdateDTO.getHotelAdress());
+		hotel.setHotelIntroduction(adminHotelUpdateDTO.getHotelIntroduction());
+		hotel.setHotelAmenities(String.join(",", adminHotelUpdateDTO.getHotelAmenities()));
+		hotel.setHotelRating(adminHotelUpdateDTO.getHotelRating());
+		hotel.setHotelTouristAttraction(String.join(",", adminHotelUpdateDTO.getHotelTouristAttractionList()));
+
+		// 경로
+		String path = hotel.getHotelThumbnail();
+		int lastSlashIndex = path.lastIndexOf("/", path.lastIndexOf("/") - 1);
+		String middlePath = path.substring(0, lastSlashIndex + 1);
+		
+		String initPath = "C:\\Lostay\\frontend\\public\\";
+		String thumbnailPath = middlePath +"thumbnail";
+		String imagesPath = middlePath + "images";
+		
+		// 썸네일 파일 지우기
+		if(adminHotelUpdateDTO.getHotelDelThumbnail() != null) {
+			File file = new File(initPath + adminHotelUpdateDTO.getHotelDelThumbnail());
+			System.out.println(initPath + adminHotelUpdateDTO.getHotelDelThumbnail());
+	        if (file.exists()) {
+	            if (!file.delete()) {
+	                return false;
+	            }
+	        }
+		}
+
+        // 썸네일 업로드
+        if (uploadThumbnail != null) {
+			File uploadDir = new File(initPath + thumbnailPath + "\\" + uploadThumbnail.getOriginalFilename());
+			
+			System.out.println("썸네일 업로드 경로 : " + initPath + thumbnailPath + "\\" + uploadThumbnail.getOriginalFilename());
+			try {
+				uploadThumbnail.transferTo(uploadDir);
+				hotel.setHotelThumbnail(thumbnailPath + "/" +uploadThumbnail.getOriginalFilename());
+			} catch (IllegalStateException | IOException e) {
+				return false;
+			}
+			
+		}
+        
+        
+        // 이미지 파일 지우기
+        String hotelImageString = hotel.getHotelImage();
+        List<String> hotelImageList = new ArrayList<>();
+        hotelImageList = new ArrayList<>(Arrays.asList(hotelImageString.split(",")));
+        
+        for(String imagePath : adminHotelUpdateDTO.getHotelDelImages()) {
+        	File file = new File(initPath + imagePath);
+            if (file.exists()) {
+                if (!file.delete()) {
+                    return false;
+                }
+            }
+            hotelImageList.remove(imagePath);
+        }
+        
+        
+        // 이미지 업로드
+        if(uploadImages != null) {
+
+        	List<String> imageFileNames = new ArrayList<>();
+            for (MultipartFile file : uploadImages) {
+            	File uploadDir = new File(initPath+imagesPath+ "\\" + file.getOriginalFilename());
+            	System.out.println("이미지 업로드 경로 : " + initPath+imagesPath+ "\\" + file.getOriginalFilename());
+            	
+            	try {
+					file.transferTo(uploadDir);
+				} catch (IllegalStateException | IOException e) {
+					return false;
+				}
+            	
+            	hotelImageList.add(imagesPath+ "/" +file.getOriginalFilename());
+            }
+        }
+        
+        hotel.setHotelImage(String.join(",", hotelImageList));
+     
+		return true;
+	}
+	
+	// 효준 특정 호텔 룸 리스트 가져오기
+	public Page<RoomsInfosDTO> roomsList(Long hotelNo, int pageIndex) {
+		System.out.println(hotelNo.TYPE);
+		System.out.println(hotelNo);
+		Pageable pageable = PageRequest.of(pageIndex, 5);
+		Page<RoomsInfosDTO> RoomsPage = roomRepo.findByHotelNo(hotelNo,pageable);
+
+		for (RoomsInfosDTO dto : RoomsPage.getContent()) {
+			dto.setRoomImageList(
+					Arrays.stream(dto.getRoomImg().split(",")).map(String::trim).collect(Collectors.toList()));
+
+			dto.setRoomAmenitiesList(
+					Arrays.stream(dto.getRoomAmenities().split(",")).map(String::trim).collect(Collectors.toList()));
+			
+			dto.setRoomIntroductionList(
+					Arrays.stream(dto.getRoomIntroduction().split(",")).map(String::trim).collect(Collectors.toList()));
+		}
+		
+		return RoomsPage;
+	}
+	
+	// 효준 룸 업데이트
+	public boolean roomUpdate(AdminRoomUpdateDTO adminRoomUpdateDTO, MultipartFile uploadThumbnail,
+			List<MultipartFile> uploadImages) {
+	
+		Room room = roomRepo.findByRoomNo(adminRoomUpdateDTO.getRoomNo());
+		
+		room.setRoomName(adminRoomUpdateDTO.getRoomName());
+		room.setRoomCount(adminRoomUpdateDTO.getRoomCount());
+		room.setRoomPrice(adminRoomUpdateDTO.getRoomPrice());
+		room.setRoomDiscount(adminRoomUpdateDTO.getRoomDiscount());
+		room.setRoomPeopleMax(adminRoomUpdateDTO.getRoomPeopleMax());
+		room.setRoomPeopleInfo(adminRoomUpdateDTO.getRoomPeopleInfo());
+		room.setRoomCheckinTime(adminRoomUpdateDTO.getRoomCheckinTime());
+		room.setRoomCheckoutTime(adminRoomUpdateDTO.getRoomCheckoutTime());
+		room.setRoomAmenities(String.join(",", adminRoomUpdateDTO.getRoomAmenities()));
+
+		// 경로
+		String path = room.getRoomThumbnail();
+		int lastSlashIndex = path.lastIndexOf("/", path.lastIndexOf("/") - 1);
+		String middlePath = path.substring(0, lastSlashIndex + 1);
+		
+		String initPath = "C:\\Lostay\\frontend\\public\\";
+		String thumbnailPath = middlePath +"thumbnail";
+		String imagesPath = middlePath + "images";
+		
+		// 썸네일 파일 지우기
+		if(adminRoomUpdateDTO.getRoomThumbnail() != null) {
+			File file = new File(initPath + adminRoomUpdateDTO.getRoomThumbnail());
+			System.out.println(initPath + adminRoomUpdateDTO.getRoomThumbnail());
+	        if (file.exists()) {
+	            if (!file.delete()) {
+	                return false;
+	            }
+	        }
+		}
+
+        // 썸네일 업로드
+        if (uploadThumbnail != null) {
+			File uploadDir = new File(initPath + thumbnailPath + "\\" + uploadThumbnail.getOriginalFilename());
+			
+			System.out.println("썸네일 업로드 경로 : " + initPath + thumbnailPath + "\\" + uploadThumbnail.getOriginalFilename());
+			try {
+				uploadThumbnail.transferTo(uploadDir);
+				room.setRoomThumbnail(thumbnailPath + "/" +uploadThumbnail.getOriginalFilename());
+			} catch (IllegalStateException | IOException e) {
+				return false;
+			}
+			
+		}
+        
+        
+        // 이미지 파일 지우기
+        String roomlImageString = room.getRoomImg();
+        List<String> roomImageList = new ArrayList<>();
+        roomImageList = new ArrayList<>(Arrays.asList(roomlImageString.split(",")));
+        
+        for(String imagePath : adminRoomUpdateDTO.getRoomDelImages()) {
+        	File file = new File(initPath + imagePath);
+            if (file.exists()) {
+                if (!file.delete()) {
+                    return false;
+                }
+            }
+            roomImageList.remove(imagePath);
+        }
+        
+        
+        // 이미지 업로드
+        if(uploadImages != null) {
+
+        	List<String> imageFileNames = new ArrayList<>();
+            for (MultipartFile file : uploadImages) {
+            	File uploadDir = new File(initPath+imagesPath+ "\\" + file.getOriginalFilename());
+            	System.out.println("이미지 업로드 경로 : " + initPath+imagesPath+ "\\" + file.getOriginalFilename());
+            	
+            	try {
+					file.transferTo(uploadDir);
+				} catch (IllegalStateException | IOException e) {
+					return false;
+				}
+            	
+            	roomImageList.add(imagesPath+ "/" +file.getOriginalFilename());
+            }
+        }
+        
+        room.setRoomImg(String.join(",", roomImageList));
+     
+		return true;
 	}
 
 	// 홍정훈(관리자 페이지 호텔.객실 텝 객실 할인율 수정)
-	public boolean updateRoomDiscount(Long roomNo, int roomDiscount) {
-		Optional<Room> optionalRoom = roomRepo.findById(roomNo); // 방을 가져옴
+//	public boolean updateRoomDiscount(Long roomNo, int roomDiscount) {
+//		Optional<Room> optionalRoom = roomRepo.findById(roomNo); // 방을 가져옴
+//
+//		if (optionalRoom.isPresent()) { // 방이 존재하면
+//			Room room = optionalRoom.get(); // 방 객체 가져오기
+//			room.setRoomDiscount(roomDiscount); // 할인율 업데이트
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
 
-		if (optionalRoom.isPresent()) { // 방이 존재하면
-			Room room = optionalRoom.get(); // 방 객체 가져오기
-			room.setRoomDiscount(roomDiscount); // 할인율 업데이트
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
 	// 관리자 페이지 년도별 매출액 조회(jh)
 	public List<AdminRevenueChartDTO> RevenueChart() {
-	    List<Payment> payments = paymentRepo.findAllSuccessfulPayments();
+		List<Payment> payments = paymentRepo.findAllSuccessfulPayments();
 
-	    return payments.stream()
-	            .collect(Collectors.groupingBy(payment -> payment.getPayDay().getYear())) // 연도별 그룹화
-	            .entrySet().stream()
-	            .map(entry -> convertToYearDto(entry.getKey(), entry.getValue()))
-	            .collect(Collectors.toList());
+		return payments.stream().collect(Collectors.groupingBy(payment -> payment.getPayDay().getYear())) // 연도별 그룹화
+				.entrySet().stream().map(entry -> convertToYearDto(entry.getKey(), entry.getValue()))
+				.collect(Collectors.toList());
 	}
 
 	private AdminRevenueChartDTO convertToYearDto(int year, List<Payment> payments) {
-	    int totalCommission = payments.stream()
-	            .mapToInt(this::calculateCommission)
-	            .sum();
-	    int totalReservations = payments.size(); // 예약 수
+		int totalCommission = payments.stream().mapToInt(this::calculateCommission).sum();
+		int totalReservations = payments.size(); // 예약 수
 
-	
-	    return new AdminRevenueChartDTO(year, totalCommission, totalReservations);
+		return new AdminRevenueChartDTO(year, totalCommission, totalReservations);
 	}
 
 	// 관리자 페이지 월별 매출액 조회(jh)
 	public List<AdminRevenueChartDTO> RevenueMonthChart(int year) {
-	    List<Payment> payments = paymentRepo.findSuccessfulPaymentsByYear(year);
+		List<Payment> payments = paymentRepo.findSuccessfulPaymentsByYear(year);
 
-	    return payments.stream()
-	            .collect(Collectors.groupingBy(payment -> 
-	                String.format("%d-%02d", payment.getPayDay().getYear(), payment.getPayDay().getMonthValue()))) // 월별 그룹화
-	            .entrySet().stream()
-	            .sorted(Map.Entry.comparingByKey()) // 월 순서로 정렬
-	            .map(entry -> convertToMonthDto(entry.getKey(), entry.getValue()))
-	            .collect(Collectors.toList());
+		return payments.stream()
+				.collect(Collectors.groupingBy(payment -> String.format("%d-%02d", payment.getPayDay().getYear(),
+						payment.getPayDay().getMonthValue()))) // 월별 그룹화
+				.entrySet().stream().sorted(Map.Entry.comparingByKey()) // 월 순서로 정렬
+				.map(entry -> convertToMonthDto(entry.getKey(), entry.getValue())).collect(Collectors.toList());
 	}
 
 	private AdminRevenueChartDTO convertToMonthDto(String month, List<Payment> payments) {
-	    int totalCommission = payments.stream()
-	            .mapToInt(this::calculateCommission)
-	            .sum();
-	    int totalReservations = payments.size(); // 예약 수
+		int totalCommission = payments.stream().mapToInt(this::calculateCommission).sum();
+		int totalReservations = payments.size(); // 예약 수
 
-
-	    return new AdminRevenueChartDTO(month, Integer.parseInt(month.substring(0, 4)), totalCommission, totalReservations);
+		return new AdminRevenueChartDTO(month, Integer.parseInt(month.substring(0, 4)), totalCommission,
+				totalReservations);
 	}
 
 	private int calculateCommission(Payment payment) {
-	    double commissionRate = payment.getRoom().getHotel().getHotelCommission() / 100.0; // 부동소수점으로 변환
-	    return (int) (payment.getPayPrice() * commissionRate); // 계산 후 정수형으로 변환
+		double commissionRate = payment.getRoom().getHotel().getHotelCommission() / 100.0; // 부동소수점으로 변환
+		return (int) (payment.getPayPrice() * commissionRate); // 계산 후 정수형으로 변환
 	}
-	
-	// // 관리자 페이지 분기별 매출액 조회(jh)
-	public List<AdminRevenueChartDTO> RevenuebranchChart(int year) {
-	    List<AdminRevenueChartDTO> result = new ArrayList<>();
-	    for (int quarter = 1; quarter <= 4; quarter++) {
-	        List<Payment> payments = paymentRepo.findSuccessfulPaymentsByQuarter(year, quarter);
-	        
-	        int totalCommission = payments.stream()
-	                .mapToInt(this::calculateCommission)
-	                .sum();
-	        int totalReservations = payments.size(); // 예약 수
 
-	        result.add(new AdminRevenueChartDTO(year, totalCommission, totalReservations, quarter));
-	    }
-	    System.out.println("result:"+ result);
-	    return result;
+	 // 관리자 페이지 분기별 매출액 조회(jh)
+
+	public List<AdminRevenueChartDTO> RevenuebranchChart(int year) {
+		List<AdminRevenueChartDTO> result = new ArrayList<>();
+		for (int quarter = 1; quarter <= 4; quarter++) {
+			List<Payment> payments = paymentRepo.findSuccessfulPaymentsByQuarter(year, quarter);
+
+			int totalCommission = payments.stream().mapToInt(this::calculateCommission).sum();
+			int totalReservations = payments.size(); // 예약 수
+
+			result.add(new AdminRevenueChartDTO(year, totalCommission, totalReservations, quarter));
+		}
+		System.out.println("result:" + result);
+		return result;
+	}
+
+	// 관리자 페이지 호텔별 분기 조회
+	public RevenueDataDTO getRevenueDataByHotelName(String hotelName, int year) {
+        // JPA 리포지토리에서 데이터 조회
+        List<Object[]> results = paymentRepo.findRevenueDataByHotelName(hotelName,year);
+        List<QuarterlyRevenueDTO> revenueDataList = new ArrayList<>();
+        
+        // 쿼리 결과를 DTO로 변환
+        for (Object[] result : results) {
+            int resultsyear = (Integer) result[0];
+            int quarter = (Integer) result[1];
+            Long totalCommission = ((Number) result[2]).longValue(); 
+            Long totalReservations = ((Number) result[3]).longValue(); 
+
+            revenueDataList.add(new QuarterlyRevenueDTO(resultsyear, quarter, totalCommission, totalReservations));
+        }
+        // 최종 DTO 구성
+        RevenueDataDTO revenueData = new RevenueDataDTO();
+        revenueData.setHotelName(hotelName);
+        revenueData.setRevenueData(revenueDataList);
+
+        return revenueData;
 	}
 }
