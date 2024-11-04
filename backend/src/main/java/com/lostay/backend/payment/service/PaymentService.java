@@ -18,6 +18,7 @@ import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.payment.repository.PaymentRepository;
 import com.lostay.backend.point.entity.Point;
 import com.lostay.backend.point.repository.PointRepository;
+import com.lostay.backend.redis.repository.RoomRedisRepository;
 import com.lostay.backend.reservation.dto.ReservationDTO;
 import com.lostay.backend.reservation.entity.Reservation;
 import com.lostay.backend.reservation.repository.ReservationRepository;
@@ -49,6 +50,9 @@ public class PaymentService {
 	
 	@Autowired
 	private DiscountRepository disRepo;
+	
+	@Autowired
+	private RoomRedisRepository roomRedisRepo;
 
 	// payNo로 결제/취소 내역 가져오기
 	public PaymentDTO findPayHistory(Long payNo) {
@@ -67,8 +71,10 @@ public class PaymentService {
 		dto.setHotelAddress(payment.getRoom().getHotel().getHotelAdress());
 		dto.setCheckIn(payment.getReservations().getCheckIn()); // 체크인 날짜 시간은 안가져옴
 		dto.setCheckOut(payment.getReservations().getCheckOut()); // 체크아웃 날짜 시간은 안가져옴
-		dto.setUserName(payment.getReservations().getName());
-		dto.setUserPhone(payment.getReservations().getPhone());
+		dto.setUserName(payment.getUser().getUserName());
+		dto.setUserPhone(payment.getUser().getUserPhone());
+		dto.setName(payment.getReservations().getName());
+		dto.setPhone(payment.getReservations().getPhone());
 		dto.setPayDay(payment.getPayDay());
 		dto.setPayType(payment.getPayType());
 		// 결제당시 할인율이 적용된 객실 금액
@@ -193,11 +199,13 @@ public class PaymentService {
 		LocalDateTime out = dto.getCheckOut().toLocalDate().atTime(11,0);
 		
 		reservation.setName(dto.getName());
+		reservation.setPhone(dto.getPhone());
 		reservation.setCheckIn(in);
 		reservation.setCheckOut(out);
 		reservation.setPayment(savePay);
-		reservation.setPhone(dto.getPhone());
-
+		reservation.setResReviewStatus("N");
+		reservation.setResStatus("Y");
+		
 		Reservation r = resRepo.save(reservation);
 		
 		if(p.getPayNo() != null & r.getReservationNo() != null 
@@ -270,6 +278,12 @@ public class PaymentService {
 		String uid = payRepo.findById(payNo).get().getImpUid();
 		
 		return uid;
+	}
+
+	public void deleteRedis(Long rid) {
+
+		roomRedisRepo.deleteById(rid);
+		
 	}
 
 }

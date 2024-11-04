@@ -1,11 +1,16 @@
 package com.lostay.backend.room.entity;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.lostay.backend.room.dto.RoomCheckDTO;
 
 import lombok.AllArgsConstructor;
@@ -23,6 +28,7 @@ public class RoomCheck {
 	private Long Rid;
 
 	private Long roomNo;			// 객실번호
-	private LocalDate checkInDay;	// 체크인 날짜
+	private LocalDate checkInDay;
 	private LocalDate checkOutDay;  // 체크아웃 날짜
+	    
 }

@@ -184,6 +184,7 @@ public class PaymentController {
 
 			if(result) {
 				
+				paySer.deleteRedis(dto.getRid());
 				return new ResponseEntity<>(HttpStatus.OK);
 			}else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
