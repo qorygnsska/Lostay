@@ -3,8 +3,7 @@ import CompHeaderAdmin from '../../componets/Header/CompHeaderAdmin'
 import { Container, Form, Pagination, Table } from 'react-bootstrap'
 import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
 import CompAdminBtn from '../../componets/Admin/CompAdminBtn'
-import { privateApi } from '../../api/api'
-import axios from 'axios'
+import { adminPrivateApi } from '../../api/adminApi'
 
 export default function PageReviewManager() {
 
@@ -51,10 +50,10 @@ export default function PageReviewManager() {
 
         //인증 토큰 연계한 Axios 'GET' request by privateApi(Customized Comp)
         // async&await이나 then()은 같은 것
-        axios.get(`http://localhost:9090/admin/reviewList?underSanction=${underSanction}&userName=${userName}&page=${requestedPage}`)
+        adminPrivateApi.get(`/admin/reviewList?underSanction=${underSanction}&userName=${userName}&page=${requestedPage}`)
             .then(response => {
                 //console.log(response);
-                console.log(response.data);
+                //console.log(response.data);
                 setReviewList(response.data.content); //Page<DTO>.getContent()
                 setPageCount(response.data.totalPages); // Page<DTO>.getTotalPages()
             })
@@ -87,10 +86,11 @@ export default function PageReviewManager() {
                         <CompAdminSearch where={'admin-review'} callParent={functionForMyChild} />
                     </div>
 
-                    <Table striped bordered hover id='table_entire_review'>
+                    <Table bordered hover id='table_entire_review'>
+                        {/* striped  */}
                         <thead id="table_header">
                             <tr>
-                                <th className="review_no">#</th>
+                                <th className="review_no">No</th>
                                 <th className="user_name">작성자</th>
                                 <th className="hotel_name">호텔</th>
                                 <th className="room_name">객실</th>
