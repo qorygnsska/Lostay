@@ -80,15 +80,15 @@ export default function KakaoApiShare({ title, address, Thumbnail }) {
     return () => clearInterval(intervalId); // Cleanup interval
   }, [Thumbnail]); // Thumbnail이 변경될 때마다 실행
 
-  const handleShare = (event) => {
-    event.preventDefault(); // 기본 동작 방지
+  const handleShare = () => {
     console.log('공유 버튼 클릭', title, address, imageUrl);
 
     // 카카오 SDK 초기화 여부를 체크하고, 초기화가 완료되었을 때만 공유 버튼을 생성
     if (window.Kakao && kakaoInitialized && imageUrl) {
       console.log('Kakao SDK가 초기화되었고, 이미지 URL도 준비되었습니다.');
-      window.Kakao.Share.createDefaultButton({
-        container: '#kakaotalk-sharing-btn',
+
+      // 공유할 때 바로 카카오톡 공유 창이 열리도록 sendDefault 사용
+      window.Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
           title: title,
@@ -114,7 +114,7 @@ export default function KakaoApiShare({ title, address, Thumbnail }) {
 
   return (
     <div className="d-flex align-items-end">
-      <a id="kakaotalk-sharing-btn" href="javascript:;" onClick={handleShare}>
+      <a id="kakaotalk-sharing-btn" onClick={handleShare}>
         <img
           id="kakao_share"
           src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
