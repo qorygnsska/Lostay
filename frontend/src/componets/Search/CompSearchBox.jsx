@@ -6,10 +6,14 @@ import { MdOutlineCalendarMonth, MdOutlinePlace } from 'react-icons/md';
 import { Calendar } from 'primereact/calendar';
 import LocationCarousel from '../Carousel/LocationCarousel';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 export default function CompSearchBox(props) {
 
-    //requestParameter(검색한 주소, 날짜, 인원)를 기억할 변수
+    //클릭이 일어난 location(path)
+    const whereAmI = useLocation().pathname.toString();
+
+    //requestParameter(장소, 날짜, 인원)를 기억할 변수
     const [place, setPlace] = useState(props.place);
     const [check_in, setCheck_in] = useState(props.check_in);
     const [check_out, setCheck_out] = useState(props.check_out);
@@ -67,7 +71,6 @@ export default function CompSearchBox(props) {
         return date.day;
     }
     //////////////////////////////////////////////////////////dateTemplate(prop) : specific dates as a parameter to customizing style
-
     // Date() -> "yyyy/MM/dd" (날짜 형식 -> 텍스트 형식 변환 함수)
     const dateFormatter = (rawDate) => (rawDate.getFullYear().toString() + "/" + (rawDate.getMonth() + 1).toString() + "/" + rawDate.getDate().toString());
     //////////////////////////////////////////////////////////for datePicker(Calendar)
@@ -107,6 +110,9 @@ export default function CompSearchBox(props) {
     //////////////////////////////////////////////////////////for eventHandler
     //모달이 열릴 때
     const modalOnShow = () => {
+        //어느 위치(url)에서 눌렀는지
+        //console.log('searchModalSays: ' + whereAmI);
+        
         //헤더의 어디(장소, 날짜, 인원 중)를 눌렀는지 확인하여 auto-focusing
         //console.log('focusing at modal: ' + props.focus);
     }
@@ -164,11 +170,18 @@ export default function CompSearchBox(props) {
         if (place.trim().length < 2) {
             alert('최소 2글자 이상의 검색어를 입력하세요.');
         } else {
-            window.location.href = `/hotelList?place=${place}&check_in=${check_in}&check_out=${check_out}&member=${member}`;
+            //roomList페이지에서 '장소'를 변경하지 않고 검색을 누르면!
+            //(다시 호텔리스트로 보내지 말고) '날짜'와 '인원'만 바꿔서 보여주기
+            if(whereAmI.substring(0, whereAmI.lastIndexOf('/'))==='/roomList'&&props.place===place) {
+                //console.log('roomList 제자리');
+                window.location.href = `${whereAmI}?checkInDate=${check_in}&checkOutDate=${check_out}&peopleMax=${member}`
+            }else {
+                //console.log('toHotelList');
+                window.location.href = `/hotelList?place=${place}&check_in=${check_in}&check_out=${check_out}&member=${member}`;
+            }
         }
     }
     //////////////////////////////////////////////////////////for eventHandler
-
 
     return (
         <>
