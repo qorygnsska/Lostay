@@ -66,7 +66,9 @@ public class HotelService {
                 "    MAX(r.roomDiscount) AS roomDiscount, " +
                 "    MAX(r.roomPrice) AS roomPrice, " +
                 "    MAX(r.roomPrice * (1 - (r.roomDiscount * 0.01))) AS discountedPrice, " +
-                "    h.hotelThumbnail " +
+                "    h.hotelThumbnail, " +
+                "    h.hotelAdress, " +
+                "    h.hotelTouristAttraction " +
             "FROM " +
                 "    Hotel h " +
                 "JOIN " +
@@ -167,14 +169,14 @@ public class HotelService {
 
         for (Object[] result : results) {
             HotelDTO dto = new HotelDTO();
-            
+                        
             // 결과값을 DTO에 매핑
             dto.setHotelNo((Long) result[0]); // 호텔 번호
             dto.setHotelName((String) result[1]); // 호텔 이름
             dto.setHotelRating((String) result[2]); // 호텔 등급
             dto.setReviewRating((Double) result[3]); // 평균 리뷰 평점
             dto.setTotalReviewCount((Long) result[4]); // 총 리뷰 수
-
+            
             // 최대 할인율을 int로 변환
             int roomDiscount = ((Number) result[5]).intValue(); // 최대 할인율
             dto.setRoomDiscount(roomDiscount); 
@@ -187,7 +189,9 @@ public class HotelService {
             int discountedPrice = ((Number) result[7]).intValue(); // 할인된 가격
             dto.setRoomDcPrice(discountedPrice); // 할인된 가격 설정
             dto.setHotelThumbnail((String) result[8]); // 호텔 썸네일
-           
+            dto.setHotelAdress((String) result[9]); // 호텔 주소
+            dto.setHotelTouristAttraction((String) result[10]); // 호텔 오시는길
+            
             // DTO를 리스트에 추가
             hotHotelDTOList.add(dto);
         }
