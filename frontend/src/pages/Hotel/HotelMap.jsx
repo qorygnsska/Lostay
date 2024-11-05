@@ -4,13 +4,18 @@ import { useLocation } from 'react-router-dom';
 import Navbar from '../../componets/Navbar/Navbar';
 
 import { FaCar } from "react-icons/fa6";
-import { FaBus } from "react-icons/fa";
+import { FaBus, FaSubway } from "react-icons/fa";
 import { FaWalking } from "react-icons/fa";
 import { FaTrainSubway } from "react-icons/fa6";
 import { FaCircleDown } from "react-icons/fa6";
 import { FaBan } from "react-icons/fa";
-import BusModal from '../../componets/Map/BusModal';
 
+import { FaMapMarkerAlt } from "react-icons/fa";
+import { IoMdAirplane } from "react-icons/io";
+import { IoTrain } from "react-icons/io5";
+
+import { CgBorderStyleDotted } from "react-icons/cg";
+import { RxCross2 } from "react-icons/rx";
 
 const {kakao} = window;
 
@@ -37,6 +42,7 @@ export default function HotelMap() {
             setCar(true);
             setBus(false);
             setWalk(false);
+            setbusShow(false);
         } else if (vehicle === 'bus') {
             setCar(false);
             setBus(true);
@@ -45,6 +51,7 @@ export default function HotelMap() {
             setCar(false);
             setBus(false);
             setWalk(true);
+            setbusShow(false);
         }
         isStateUpdated.current = true; // 상태 변경 후 플래그 설정
     };
@@ -110,32 +117,35 @@ export default function HotelMap() {
     const handleClose = () => {
         setbusVisible(true);
         setbusShow(false);
+        setChoiceRoad(null);
     }
 
    
     const clickAll = (index) => {
         setChoiceRoad(AllRoad[index]);
-        setbusShow(true);
-        setbusVisible(false);
     }
 
     const clickBus = (index) => {
         setChoiceRoad(BusRoad[index]);
-        setbusShow(true);
-        setbusVisible(false);
     }
 
     const clickSubway = (index) => {
         setChoiceRoad(SubwayRoad[index]);
-        setbusShow(true);
-        setbusVisible(false);
     }
 
     const clickBusSubway = (index) => {
-        setChoiceRoad(BusSubwayRoad[index]);
-        setbusShow(true);
-        setbusVisible(false);
+        setChoiceRoad(BusSubwayRoad[index]);        
     }
+
+    useEffect(() => {
+        if(ChoiceRoad){
+            setbusShow(true);
+            setbusVisible(false);
+            console.log(ChoiceRoad);
+            
+        }
+        
+    },[ChoiceRoad])
 
     // 마커
     const [map, setMap] = useState(null);
@@ -231,6 +241,18 @@ export default function HotelMap() {
             const minutes = Math.floor((time % 3600) / 60);
             const formattedDuration = `${minutes}분`;
             return formattedDuration;
+        }
+    }
+
+    // 거리(미터) → 거리(킬로미터) 포맷
+    const formatDistance = (distance) => {
+        if(distance >= 1000){
+            const distanceInKm = (distance / 1000).toFixed(1); // 소수점 첫째 자리까지
+            const formatdistanceInKm = `${distanceInKm}km`;
+            return formatdistanceInKm;
+        }else{
+            const formatdistanceInm = `${distance}m`;
+            return formatdistanceInm;
         }
     }
 
@@ -529,27 +551,11 @@ export default function HotelMap() {
              
                 // 거리(미터) → 거리(킬로미터)
                 const realdistance = routeData.routes[0].summary.distance;
-                if(realdistance >= 1000){
-                    const distanceInKm = (realdistance / 1000).toFixed(2); // 소수점 둘째 자리까지
-                    const formatdistanceInKm = `${distanceInKm}km`;
-                    setDistance(formatdistanceInKm);
-                }else{
-                    const formatdistanceInm = `${realdistance}m`;
-                    setDistance(formatdistanceInm);
-                }
+                setDistance(formatDistance(realdistance));
             
                 // 소요시간(초) → 시간 및 분
                 const durationInSec = routeData.routes[0].summary.duration;
-                if(durationInSec >= 3600){
-                    const hours = Math.floor(durationInSec / 3600);
-                    const minutes = Math.floor((durationInSec % 3600) / 60);
-                    const formattedDuration = `${hours}시간 ${minutes}분`;
-                    setDuration(formattedDuration);
-                }else{
-                    const minutes = Math.floor((durationInSec % 3600) / 60);
-                    const formattedDuration = `${minutes}분`;
-                    setDuration(formattedDuration);
-                }
+                setDuration(formatTime(durationInSec));
 
                 // 통행료
                 setFare(routeData.routes[0].summary.fare);
@@ -572,10 +578,13 @@ export default function HotelMap() {
                 setbusVisible(true);
 
                 // 카테고리 개수 저장
-                const bus = routeData.metaData.requestParameters.busCount
-                const subway = routeData.metaData.requestParameters.subwayCount
-                const bussubway = routeData.metaData.requestParameters.subwayBusCount
-                setAllCount(bus + subway + bussubway);
+                const bus = routeData.metaData.requestParameters.busCount;
+                const subway = routeData.metaData.requestParameters.subwayCount;
+                const bussubway = routeData.metaData.requestParameters.subwayBusCount;
+                const airplain = routeData.metaData.requestParameters.airplaneCount;
+                const train = routeData.metaData.requestParameters.trainCount;
+                const express = routeData.metaData.requestParameters.expressbusCount;
+                setAllCount(bus + subway + bussubway + airplain + train + express);
                 setBusCount(bus);
                 setSubwayCount(subway);
                 setBusSubwayCount(bussubway);
@@ -591,8 +600,11 @@ export default function HotelMap() {
                 setSubwayRoad(SubwayRoad);
                 setBusSubwayRoad(BusSubwayRoad);
 
-                
+                // 마커 지우고
+                removeMarkers();
 
+                // 선 지우기
+                clearRoads();
 
             }else if(walk === true){
                 // 길찾기 API 호출
@@ -623,28 +635,12 @@ export default function HotelMap() {
 
                 // 거리(미터) → 거리(킬로미터)
                 const realdistance = routeData.features[0].properties.totalDistance;
-                if(realdistance >= 1000){
-                    const distanceInKm = (realdistance / 1000).toFixed(2); // 소수점 둘째 자리까지
-                    const formatdistanceInKm = `${distanceInKm}km`;
-                    setDistance(formatdistanceInKm);
-                }else{
-                    const formatdistanceInm = `${realdistance}m`;
-                    setDistance(formatdistanceInm);
-                }
-                
+                setDistance(formatDistance(realdistance));
 
                 // 소요시간(초) → 시간 및 분
                 const durationInSec = routeData.features[0].properties.totalTime;
-                if(durationInSec >= 3600){
-                    const hours = Math.floor(durationInSec / 3600);
-                    const minutes = Math.floor((durationInSec % 3600) / 60);
-                    const formattedDuration = `${hours}시간 ${minutes}분`;
-                    setDuration(formattedDuration);
-                }else{
-                    const minutes = Math.floor((durationInSec % 3600) / 60);
-                    const formattedDuration = `${minutes}분`;
-                    setDuration(formattedDuration);
-                }
+                setDuration(formatTime(durationInSec));
+                
 
                 // 칼로리(미터 당 0.8칼로리)
                 const kcal = (routeData.features[0].properties.totalDistance * 0.8).toFixed(0);
@@ -694,6 +690,7 @@ export default function HotelMap() {
                         <input type='submit' value="길찾기" id='searchBtn' hidden/>
                     </form>
                 </div>
+
             </div>
 
             <div id='KakaoMap'>
@@ -747,9 +744,16 @@ export default function HotelMap() {
                                             {road.legs.map((root, index) => (
                                                 root.mode !== "WALK" ? (
                                                     <div className='routeDiv' key={index}>
-                                                        <div>{root.mode === "BUS" ? <FaBus id='busIcon'/> : <FaTrainSubway id='busIcon'/>}{root.start.name}</div>
+                                                        {root.mode === "BUS" && <div id='ModalTitle'><FaBus id='busIcon' style={{ color: `#${root.routeColor}` }}/>{root.start.name} 정류장</div>}
+                                                        {root.mode === "SUBWAY" && <div id='ModalTitle'><FaSubway id='busIcon' style={{ color: `#${root.routeColor}` }}/>{root.start.name}역</div>}
+                                                        {root.mode === "AIRPLANE" && <div id='ModalTitle'><IoMdAirplane id='busIcon' style={{ color: `#${root.routeColor}` }}/>{root.start.name}공항</div>}
+                                                        {root.mode === "TRAIN" && <div id='ModalTitle'><IoTrain id='busIcon' style={{ color: `#${root.routeColor}` }}/>{root.start.name}역</div>}
+                                                        {root.mode === "EXPRESSBUS" && <div id='ModalTitle'><FaBus id='busIcon' style={{ color: `#${root.routeColor}` }}/>{root.start.name}</div>}
                                                         <div id='routeName'>{root.route}</div>
-                                                        {index === road.legs.length - 2 && <div><FaCircleDown id='busIcon'/>{root.end.name}</div>}
+                                                        <CgBorderStyleDotted id='arrow'/>
+                                                        {index === road.legs.length - 2 && 
+                                                            <div><FaCircleDown id='busIcon'/>{root.mode === "BUS" ? `${root.end.name} 정류장` : `${root.end.name}역`}</div>
+                                                        }
                                                     </div>
                                                 ) : null
                                             ))}
@@ -778,9 +782,10 @@ export default function HotelMap() {
                                             {road.legs.map((root, index) => (
                                                 root.mode !== "WALK" ? (
                                                     <div className='routeDiv' key={index}>
-                                                        <div>{root.mode === "BUS" ? <FaBus id='busIcon'/> : <FaTrainSubway id='busIcon'/>}{root.start.name}</div>
+                                                        <div>{root.mode === "BUS" ? <FaBus id='busIcon' style={{ color: `#${root.routeColor}` }}/> : <FaTrainSubway id='busIcon'/>}{root.start.name} 정류장</div>
                                                         <div id='routeName'>{root.route}</div>
-                                                        {index === road.legs.length - 2 && <div><FaCircleDown id='busIcon'/>{root.end.name}</div>}
+                                                        <CgBorderStyleDotted id='arrow'/>
+                                                        {index === road.legs.length - 2 && <div><FaCircleDown id='busIcon'/>{root.end.name} 정류장</div>}
                                                     </div>
                                                 ) : null
                                             ))}
@@ -809,9 +814,10 @@ export default function HotelMap() {
                                             {road.legs.map((root, index) => (
                                                 root.mode !== "WALK" ? (
                                                     <div className='routeDiv' key={index}>
-                                                        <div>{root.mode === "BUS" ? <FaBus id='busIcon'/> : <FaTrainSubway id='busIcon'/>}{root.start.name}</div>
+                                                        <div>{root.mode === "BUS" ? <FaBus id='busIcon'/> : <FaTrainSubway id='busIcon' style={{ color: `#${root.routeColor}` }}/>}{root.start.name}역</div>
                                                         <div id='routeName'>{root.route}</div>
-                                                        {index === road.legs.length - 2 && <div><FaCircleDown id='busIcon'/>{root.end.name}</div>}
+                                                        <CgBorderStyleDotted id='arrow'/>
+                                                        {index === road.legs.length - 2 && <div><FaCircleDown id='busIcon'/>{root.end.name}역</div>}
                                                     </div>
                                                 ) : null
                                             ))}
@@ -840,9 +846,12 @@ export default function HotelMap() {
                                             {road.legs.map((root, index) => (
                                                 root.mode !== "WALK" ? (
                                                     <div className='routeDiv' key={index}>
-                                                        <div>{root.mode === "BUS" ? <FaBus id='busIcon'/> : <FaTrainSubway id='busIcon'/>}{root.start.name}</div>
+                                                        {root.mode === "BUS" ? <div><FaBus id='busIcon' style={{ color: `#${root.routeColor}` }}/>{root.start.name} 정류장</div> : <div><FaTrainSubway id='busIcon' style={{ color: `#${root.routeColor}` }}/>{root.start.name}역</div>}
                                                         <div id='routeName'>{root.route}</div>
-                                                        {index === road.legs.length - 2 && <div><FaCircleDown id='busIcon'/>{root.end.name}</div>}
+                                                        <CgBorderStyleDotted id='arrow'/>
+                                                        {index === road.legs.length - 2 && 
+                                                            <div><FaCircleDown id='busIcon'/>{root.mode === "BUS" ? `${root.end.name} 정류장` : `${root.end.name}역`}</div>
+                                                        }
                                                     </div>
                                                 ) : null
                                             ))}
@@ -860,8 +869,60 @@ export default function HotelMap() {
                 </div>
             </div>
 
+            {busShow &&
+                <div className='ChoiceModal'>
+                    <div className='ModalHeader'>
+                        <div className='HeaderDiv'>
+                            <div className='mtotalTime'>{formatTime(ChoiceRoad.totalTime)}</div>
+
+                            <div className='mbusroadInfo'>
+                                <div>도보 {formatTime(ChoiceRoad.totalWalkTime)}</div>
+                                <div>요금 {ChoiceRoad.fare.regular.totalFare.toLocaleString()}원</div>
+                                <div>환승 {ChoiceRoad.transferCount}회</div>
+                            </div>
+                        </div>
+
+                        <div onClick={handleClose} className='clickBack'><RxCross2/></div>
+
+                    </div>
+                    <div className='RowLine'></div>
+
+                    <div className='ModalContent'>
+                        <div id='ModalTitle'><FaMapMarkerAlt id='busIcon'/>출발</div>
+                        <div className='RowLine2'></div>
+                        {ChoiceRoad.legs.map((road, index) => (
+                            <div className='ModalInfo' key={index}>
+                                {road.mode === "WALK" && <div id='ModalTitle'><FaWalking id='busIcon'/>{road.end.name}까지 걷기</div>}
+                                {road.mode === "BUS" && <div id='ModalTitle'><FaBus id='busIcon' style={{ color: `#${road.routeColor}` }}/>{road.start.name} 정류장 탑승</div>}
+                                {road.mode === "SUBWAY" && <div id='ModalTitle'><FaSubway id='busIcon' style={{ color: `#${road.routeColor}` }}/>{road.start.name}역 탑승</div>}
+                                {road.mode === "AIRPLANE" && <div id='ModalTitle'><IoMdAirplane id='busIcon' style={{ color: `#${road.routeColor}` }}/>{road.start.name}공항 탑승</div>}
+                                {road.mode === "TRAIN" && <div id='ModalTitle'><IoTrain id='busIcon' style={{ color: `#${road.routeColor}` }}/>{road.start.name}역 탑승</div>}
+                                {road.mode === "EXPRESSBUS" && <div id='ModalTitle'><FaBus id='busIcon' style={{ color: `#${road.routeColor}` }}/>{road.start.name} 탑승</div>}
+                                {road.mode !== "WALK" && <div id='ModalRoute'>{road.route}</div>}
+                                <div className='ModalTime'>
+                                    <div>{formatTime(road.sectionTime)},</div>
+                                    {road.mode === "WALK" && <div>{formatDistance(road.distance)}</div>}
+                                    {road.mode === "BUS" && <div>{road.passStopList.stationList.length - 1}개 정류장 이동</div>}
+                                    {road.mode === "SUBWAY" && <div>{road.passStopList.stationList.length - 1}개 역 이동</div>}
+                                    {road.routePayment && <div>약 {road.routePayment.toLocaleString()}원</div>}
+                                </div>
+                                {road.mode === "BUS" && <div id='ModalTitle'><FaBus id='busIcon' style={{ color: `#${road.routeColor}` }}/>{road.end.name} 정류장 하차</div>}
+                                {road.mode === "SUBWAY" && <div id='ModalTitle'><FaSubway id='busIcon' style={{ color: `#${road.routeColor}` }}/>{road.end.name}역 하차</div>}
+                                {road.mode === "AIRPLANE" && <div id='ModalTitle'><IoMdAirplane id='busIcon' style={{ color: `#${road.routeColor}` }}/>{road.end.name}공항 하차</div>}
+                                {road.mode === "TRAIN" && <div id='ModalTitle'><IoTrain id='busIcon' style={{ color: `#${road.routeColor}` }}/>{road.end.name}역 하차</div>}
+                                {road.mode === "EXPRESSBUS" && <div id='ModalTitle'><FaBus id='busIcon' style={{ color: `#${road.routeColor}` }}/>{road.end.name} 하차</div>}
+                                
+                                <div className='RowLine2'></div>
+                            </div>
+                        ))}
+                        <div id='ModalTitle'><FaMapMarkerAlt id='busIcon'/>도착</div>
+                        <div className='RowLine2'></div>
+
+                    </div>
+                </div>
+            }   
+
             <Navbar />
-            {ChoiceRoad !== null && (<BusModal show={busShow} handleClose={handleClose} road={ChoiceRoad} formatTime={formatTime} />)}
         </Container>
 
 
