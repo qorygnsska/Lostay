@@ -28,7 +28,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 	        "JOIN c.user u " + // Cart에서 사용자로의 관계
 	        "WHERE u.userNo = :userNo " +
 	        "GROUP BY h.hotelNo, h.hotelName, h.hotelRating, h.hotelThumbnail, c.cartNo " +
-	        "ORDER BY MAX(r.roomDiscount) DESC, ROUND(AVG(re.reviewRating), 1) DESC")
+	        "ORDER BY c.cartNo  DESC")
 	Page<MypageCartListDTO> findTop10CartPage(@Param("userNo") Long userNo, Pageable pageable);
 
 	

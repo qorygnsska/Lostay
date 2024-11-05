@@ -16,17 +16,62 @@ import { IoTrain } from "react-icons/io5";
 
 import { CgBorderStyleDotted } from "react-icons/cg";
 import { RxCross2 } from "react-icons/rx";
+import BackNav from "../../componets/BackNav/BackNav";
 
 const {kakao} = window;
 
 export default function HotelMap() {
 
+    const geocoder = new kakao.maps.services.Geocoder();
+
     const { search } = useLocation();
     const location = new URLSearchParams(search).get('location'); // 쿼리 파라미터에서 location 값 가져오기
 
-    const Location = '서초동 1330-3'; // 기본주소
+    // 현재 위치 가져오기
+    const [myaddress, setmyAddress] = useState('');
+    const [error, setError] = useState(null);
+    useEffect(() => {
+        // 위치 정보를 가져오는 함수
+        const getLocation = () => {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const { latitude, longitude } = position.coords;
 
-    const geocoder = new kakao.maps.services.Geocoder();
+                getAddressFromCoordinates(latitude, longitude);
+                
+              },
+              (err) => {
+                // 위치를 가져오는 데 실패했을 때
+                setError(err.message);
+              },
+              { enableHighAccuracy: true } // 정확한 위치 요청
+            );
+          } else {
+            setError('Geolocation is not supported by this browser.');
+          }
+
+          // 카카오 역 지오코딩
+          const getAddressFromCoordinates = (latitude, longitude) => {
+            if (window.kakao) {
+      
+              geocoder.coord2Address(longitude, latitude, (result, status) => {
+                if (status === window.kakao.maps.services.Status.OK) {
+                  // 도로명 주소가 결과의 첫 번째 항목에 포함됨
+                  setmyAddress(result[0].address.address_name);
+                  console.log(result[0].address.address_name);
+                  
+                } else {
+                  setError('Unable to retrieve address');
+                }
+              });
+            }
+          };
+        };
+    
+        getLocation(); 
+      }, []);
+
+    
 
     // 이동수단 선택
     const [car, setCar] = useState(false);
@@ -275,26 +320,28 @@ export default function HotelMap() {
 
     // 맵 띄우기
     useEffect(() => {
-        if (location) {
-            endRef.current.value = location; // 폼의 출발지에 자동으로 채우기
-        }
-        const container = document.getElementById('KakaoMap');
+        if (myaddress) {
+            startRef.current.value = myaddress;// 폼의 출발지에 자동으로 채우기
+            endRef.current.value = location; 
+        
+            const container = document.getElementById('KakaoMap');
 
-        getLatLngFromAddress(Location)
-            .then(latLng => {
-                const options = {
-                    center: latLng,
-                    level: 3,
-                };
-                const newMap = new kakao.maps.Map(container, options) // 지도 생성 및 객체 리턴
-                setMap(newMap);
+            getLatLngFromAddress(myaddress)
+                .then(latLng => {
+                    const options = {
+                        center: latLng,
+                        level: 3,
+                    };
+                    const newMap = new kakao.maps.Map(container, options) // 지도 생성 및 객체 리턴
+                    setMap(newMap);
                 
-            })
-            .catch(error => {
-                console.error(error);
-            });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
        
-    }, []);
+    }, [myaddress]);
 
 
     // 길찾기 주소 좌표 구하기
@@ -393,15 +440,22 @@ export default function HotelMap() {
 
 
     // 마커 찍기
-    const addMarker = (coords) => {
+    const addMarker = (coords, text) => {
         if (!map) return; // 지도가 없으면 종료
 
         const markerPosition = new kakao.maps.LatLng(coords.latitude, coords.longitude);
-        const marker = new kakao.maps.Marker({
+
+        const content = `<div class ="marker"><label class ="markerLa">${text}</label></div>`;
+
+        // 커스텀 오버레이를 생성합니다
+        const customOverlay = new kakao.maps.CustomOverlay({
             position: markerPosition,
+            content: content   
         });
-        marker.setMap(map); // 마커를 지도에 추가
-        return marker;
+
+        customOverlay.setMap(map);
+
+        return customOverlay;
     };
 
     // 마커지우기
@@ -482,7 +536,8 @@ export default function HotelMap() {
             const polyline = new kakao.maps.Polyline({
                 path: path,
                 strokeWeight: 10,
-                strokeColor: 'rgb(63, 153, 250)',
+                // strokeColor: 'rgb(63, 153, 250)',
+                strokeColor: '#fb6969',
                 strokeOpacity: 1,
                 strokeStyle: 'solid',
             });
@@ -535,8 +590,8 @@ export default function HotelMap() {
                 removeMarkers();
 
                 // 마커 찍기
-                const newStartMarker = addMarker(startCoords);
-                const newEndMarker = addMarker(endCoords);
+                const newStartMarker = addMarker(startCoords, "출발");
+                const newEndMarker = addMarker(endCoords, "도착");
 
                 setStartMarker(newStartMarker);
                 setEndMarker(newEndMarker);
@@ -619,8 +674,8 @@ export default function HotelMap() {
                 removeMarkers();
 
                 // 마커 찍기
-                const newStartMarker = addMarker(startCoords);
-                const newEndMarker = addMarker(endCoords);
+                const newStartMarker = addMarker(startCoords, "출발");
+                const newEndMarker = addMarker(endCoords, "도착");
 
                 setStartMarker(newStartMarker);
                 setEndMarker(newEndMarker);
@@ -662,12 +717,15 @@ export default function HotelMap() {
    
     };
 
+    
+
    
 
     
     return (
 
         <Container className='hotel--map--container'>
+            <BackNav title="길찾기" />
             <div className='TopBox'>
                 <div className='FormBox'>
 
@@ -681,9 +739,10 @@ export default function HotelMap() {
                             {renderModal(isEndModalOpen, () => setIsEndModalOpen(false), endRef)}
                         </div>
                         <div className='IconBox'>
-                            {car ? <div className='car' onClick={() => clickVehicle('car')} style={{ background: 'rgb(129, 173, 255)', color: 'white' }}><FaCar /></div> : <div className='car' onClick={() => clickVehicle('car')}><FaCar /></div>}
-                            {bus ? <div className='bus' onClick={() => clickVehicle('bus')} style={{ background: 'rgb(129, 173, 255)', color: 'white' }}><FaBus /></div> : <div className='bus' onClick={() => clickVehicle('bus')}><FaBus /></div>}
-                            {walk ? <div className='walk' onClick={() => clickVehicle('walk')} style={{ background: 'rgb(129, 173, 255)', color: 'white' }}><FaWalking /></div> : <div className='walk' onClick={() => clickVehicle('walk')}><FaWalking /></div>}
+                            {/* rgb(129, 173, 255) */}
+                            {car ? <div className='car' onClick={() => clickVehicle('car')} style={{ background: '#ffbaba', color: 'white' }}><FaCar /></div> : <div className='car' onClick={() => clickVehicle('car')}><FaCar /></div>}
+                            {bus ? <div className='bus' onClick={() => clickVehicle('bus')} style={{ background: '#ffbaba', color: 'white' }}><FaBus /></div> : <div className='bus' onClick={() => clickVehicle('bus')}><FaBus /></div>}
+                            {walk ? <div className='walk' onClick={() => clickVehicle('walk')} style={{ background: '#ffbaba', color: 'white' }}><FaWalking /></div> : <div className='walk' onClick={() => clickVehicle('walk')}><FaWalking /></div>}
                             
                         </div>
                       
@@ -721,10 +780,11 @@ export default function HotelMap() {
                 
                 <div className={`busInfo ${busVisible ? '' : 'hidden'}`}>
                     <div className='category'>
-                        {CAll ? <div id='categoryItem' onClick={() => ClickCategory('all')} style={{ color: 'rgb(63, 153, 250)' }}>전체 {AllCount}</div> : <div id='categoryItem' onClick={() => ClickCategory('all')}>전체 {AllCount}</div>}
-                        {CBus ? <div id='categoryItem' onClick={() => ClickCategory('bus')} style={{ color: 'rgb(63, 153, 250)' }}>버스 {BusCount}</div> : <div id='categoryItem' onClick={() => ClickCategory('bus')}>버스 {BusCount}</div>}
-                        {CSubway ? <div id='categoryItem' onClick={() => ClickCategory('subway')} style={{ color: 'rgb(63, 153, 250)' }}>지하철 {SubwayCount}</div> : <div id='categoryItem' onClick={() => ClickCategory('subway')}>지하철 {SubwayCount}</div>}
-                        {CBusSubway ? <div id='categoryItem' onClick={() => ClickCategory('bussubway')} style={{ color: 'rgb(63, 153, 250)' }}>버스+지하철 {BusSubwayCount}</div> : <div id='categoryItem' onClick={() => ClickCategory('bussubway')}>버스+지하철 {BusSubwayCount}</div>}
+                        {/* rgb(63, 153, 250) */}
+                        {CAll ? <div id='categoryItem' onClick={() => ClickCategory('all')} style={{ color: '#fb6969' }}>전체 {AllCount}</div> : <div id='categoryItem' onClick={() => ClickCategory('all')}>전체 {AllCount}</div>}
+                        {CBus ? <div id='categoryItem' onClick={() => ClickCategory('bus')} style={{ color: '#fb6969' }}>버스 {BusCount}</div> : <div id='categoryItem' onClick={() => ClickCategory('bus')}>버스 {BusCount}</div>}
+                        {CSubway ? <div id='categoryItem' onClick={() => ClickCategory('subway')} style={{ color: '#fb6969' }}>지하철 {SubwayCount}</div> : <div id='categoryItem' onClick={() => ClickCategory('subway')}>지하철 {SubwayCount}</div>}
+                        {CBusSubway ? <div id='categoryItem' onClick={() => ClickCategory('bussubway')} style={{ color: '#fb6969' }}>버스+지하철 {BusSubwayCount}</div> : <div id='categoryItem' onClick={() => ClickCategory('bussubway')}>버스+지하철 {BusSubwayCount}</div>}
                     </div>
                     <div className='RowLine'></div>
 
@@ -782,7 +842,7 @@ export default function HotelMap() {
                                             {road.legs.map((root, index) => (
                                                 root.mode !== "WALK" ? (
                                                     <div className='routeDiv' key={index}>
-                                                        <div>{root.mode === "BUS" ? <FaBus id='busIcon' style={{ color: `#${root.routeColor}` }}/> : <FaTrainSubway id='busIcon'/>}{root.start.name} 정류장</div>
+                                                        <div id='ModalTitle'>{root.mode === "BUS" ? <FaBus id='busIcon' style={{ color: `#${root.routeColor}` }}/> : <FaTrainSubway id='busIcon'/>}{root.start.name} 정류장</div>
                                                         <div id='routeName'>{root.route}</div>
                                                         <CgBorderStyleDotted id='arrow'/>
                                                         {index === road.legs.length - 2 && <div><FaCircleDown id='busIcon'/>{root.end.name} 정류장</div>}
@@ -814,7 +874,7 @@ export default function HotelMap() {
                                             {road.legs.map((root, index) => (
                                                 root.mode !== "WALK" ? (
                                                     <div className='routeDiv' key={index}>
-                                                        <div>{root.mode === "BUS" ? <FaBus id='busIcon'/> : <FaTrainSubway id='busIcon' style={{ color: `#${root.routeColor}` }}/>}{root.start.name}역</div>
+                                                        <div id='ModalTitle'>{root.mode === "BUS" ? <FaBus id='busIcon'/> : <FaTrainSubway id='busIcon' style={{ color: `#${root.routeColor}` }}/>}{root.start.name}역</div>
                                                         <div id='routeName'>{root.route}</div>
                                                         <CgBorderStyleDotted id='arrow'/>
                                                         {index === road.legs.length - 2 && <div><FaCircleDown id='busIcon'/>{root.end.name}역</div>}
@@ -846,7 +906,7 @@ export default function HotelMap() {
                                             {road.legs.map((root, index) => (
                                                 root.mode !== "WALK" ? (
                                                     <div className='routeDiv' key={index}>
-                                                        {root.mode === "BUS" ? <div><FaBus id='busIcon' style={{ color: `#${root.routeColor}` }}/>{root.start.name} 정류장</div> : <div><FaTrainSubway id='busIcon' style={{ color: `#${root.routeColor}` }}/>{root.start.name}역</div>}
+                                                        {root.mode === "BUS" ? <div id='ModalTitle'><FaBus id='busIcon' style={{ color: `#${root.routeColor}` }}/>{root.start.name} 정류장</div> : <div id='ModalTitle'><FaTrainSubway id='busIcon' style={{ color: `#${root.routeColor}` }}/>{root.start.name}역</div>}
                                                         <div id='routeName'>{root.route}</div>
                                                         <CgBorderStyleDotted id='arrow'/>
                                                         {index === road.legs.length - 2 && 

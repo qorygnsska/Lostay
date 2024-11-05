@@ -193,8 +193,8 @@ public class PaymentService {
 		// 결제 테이블에 들어온 정보 예약 테이블에 넣어주기
 		Reservation reservation = new Reservation();
 
-		LocalDateTime in = dto.getCheckIn().toLocalDate().atTime(15, 0);
-		LocalDateTime out = dto.getCheckOut().toLocalDate().atTime(11, 0);
+		LocalDateTime in = dto.getCheckIn();
+		LocalDateTime out = dto.getCheckOut();
 
 		reservation.setName(dto.getName());
 		reservation.setPhone(dto.getPhone());
@@ -279,7 +279,8 @@ public class PaymentService {
 
 		return amount;
 	}
-
+	
+	// 결제 테이블에서 imp_uid 찾기
 	public String findUid(Long payNo) {
 
 		String uid = payRepo.findById(payNo).get().getImpUid();
@@ -287,10 +288,21 @@ public class PaymentService {
 		return uid;
 	}
 
+	// 결제 시 레디스에서 데이터 지워주기
 	public void deleteRedis(Long rid) {
 
 		roomRedisRepo.deleteById(rid);
 
 	}
 
+	// 이용가능한 객실 수
+	public Long findAvailableCount(PaymentDTO dto) {
+
+		LocalDateTime in = dto.getCheckIn();
+		LocalDateTime out = dto.getCheckOut();
+		Long roomNo = dto.getRoomNo();
+		Long count = roomRepo.findAvailableCount(roomNo, in, out);
+
+		return count;
+	}
 }

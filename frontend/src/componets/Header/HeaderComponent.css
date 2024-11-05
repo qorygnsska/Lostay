@@ -23,7 +23,7 @@
 
 .comp--header--general--container {
     /*HeaderGeneral(일반 사용자용) 컴포넌트*/
-    
+    padding: 12px 0 !important;
 
     #container_navbar_general {
         padding: 0;
@@ -37,18 +37,30 @@
             display: flex;
             gap: 6px;
             
-            input {
-                background-color: rgb(235, 235, 235);
-                cursor: pointer;
+
+            .input-group-text {
+                border-right: 0 !important;
+                border-color: var(--bs-danger-border-subtle);
                 box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
             }
 
-            input:hover {
+            input {
                 background-color: #f7f7f7;
+                border-color: var(--bs-danger-border-subtle);
+                border-left: 0 !important;
+                cursor: pointer;
+                box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
             }
 
-            #input_member {
-                width: 30%;
+
+            input:hover {
+                background-color: white;
+            }
+
+
+            #group_member {
+                width: 40%;
             }
 
         }   

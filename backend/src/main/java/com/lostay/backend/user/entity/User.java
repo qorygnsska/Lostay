@@ -95,10 +95,10 @@ public class User {
 	@JsonManagedReference // User에서 Point 방향
 	private Set<Point> points; // 포인트 목록
 	
-	 @Override
-	    public int hashCode() {
-	        return Objects.hash(userNo); // userNo로만 해시코드 계산
-	    }
+//	 @Override
+//	    public int hashCode() {
+//	        return Objects.hash(userNo); // userNo로만 해시코드 계산
+//	    }
 	
 }
 

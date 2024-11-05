@@ -146,6 +146,8 @@ public class RoomService {
 
 		return count;
 	}
+	
+
 
 //    // 레디스에 값이 있는지 찾아오는거
 //	public RoomCheckDTO findRedisInfo(Long roomNo,LocalDateTime in,LocalDateTime out) {

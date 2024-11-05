@@ -1,4 +1,6 @@
-import { Container, Form, Navbar } from 'react-bootstrap'
+import { Container, Form, InputGroup, Navbar } from 'react-bootstrap'
+import { GoPeople } from 'react-icons/go';
+import { MdOutlineCalendarMonth, MdOutlinePlace } from 'react-icons/md';
 import { useLocation } from 'react-router-dom';
 
 export default function CompHeaderGeneral(props) {
@@ -21,36 +23,42 @@ export default function CompHeaderGeneral(props) {
     return (
         <>
             <Navbar className="comp--header--general--container">
-                <Container id='container_navbar_general'>
+                <Container id="container_navbar_general">
 
-                    <Container id='container_search_param'>
-                        <Form.Control
-                            id="input_place"
-                            className="focus-ring focus-ring-danger border border-danger-subtle"
-                            type="text"
-                            placeholder="Place"
-                            readOnly
-                            value={props.place}
-                            onClick={handleClick}   //클릭 시 실행할 함수
-                        />
-                        <Form.Control
-                            id="input_period"
-                            className="focus-ring focus-ring-danger border border-danger-subtle"
-                            type="text"
-                            placeholder="Period"
-                            readOnly
-                            value={dateFormatter(props.check_in) + ' - ' + dateFormatter(props.check_out) + ' (' + period + '박)'}
-                            onClick={handleClick}
-                        />
-                        <Form.Control
-                            id="input_member"
-                            className="focus-ring focus-ring-danger border border-danger-subtle"
-                            type="text"
-                            placeholder="Member"
-                            readOnly
-                            value={props.member + '명'}
-                            onClick={handleClick}
-                        />
+                    <Container id="container_search_param">
+                        <InputGroup className="group_input">
+                            <InputGroup.Text ><MdOutlinePlace size="24" /></InputGroup.Text>
+                            <Form.Control
+                                id="input_place"
+                                type="text"
+                                placeholder="Place"
+                                readOnly
+                                value={props.place}
+                                onClick={handleClick}   //클릭 시 실행할 함수
+                            />
+                        </InputGroup>
+                        <InputGroup className="group_input">
+                            <InputGroup.Text ><MdOutlineCalendarMonth size="24" /></InputGroup.Text>
+                            <Form.Control
+                                id="input_period"
+                                type="text"
+                                placeholder="Period"
+                                readOnly
+                                value={dateFormatter(props.check_in) + ' - ' + dateFormatter(props.check_out) + ' (' + period + '박)'}
+                                onClick={handleClick}
+                            />
+                        </InputGroup>
+                        <InputGroup id="group_member" className="group_input">
+                            <InputGroup.Text ><GoPeople size="24" /></InputGroup.Text>
+                            <Form.Control
+                                id="input_member"
+                                type="text"
+                                placeholder="Member"
+                                readOnly
+                                value={props.member + '명'}
+                                onClick={handleClick}
+                            />
+                        </InputGroup>
                     </Container>
 
                 </Container>
