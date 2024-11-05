@@ -30,7 +30,7 @@ export default function Login() {
     }, [dispatch]);
 
     const onSocialLogin = (social) => {
-        const popupUrl = `http://localhost:9090/oauth2/authorization/${social}`;
+        const popupUrl = `${process.env.REACT_APP_BASE_URL}/oauth2/authorization/${social}`;
         const width = 600;
         const height = 600;
         const left = window.innerWidth / 2 - width / 2;

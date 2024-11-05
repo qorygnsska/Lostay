@@ -17,7 +17,7 @@ export default function LoginPopup() {
     const axiosAccessToken = async () => {
         try {
             const response = await axios.post(
-                "http://localhost:9090/userReissue/newAccess",
+                `${process.env.REACT_APP_BASE_URL}/userReissue/newAccess`,
                 {},
                 {
                     withCredentials: true,

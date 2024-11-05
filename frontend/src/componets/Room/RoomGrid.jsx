@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { IoPersonOutline } from "react-icons/io5";
 import { FaRegClock } from "react-icons/fa";
 import axios from 'axios';
+import { privateApi } from '../../api/api';
 
 export default function RoomGrid({ rooms, checkInDate, checkOutDate, peopleMax }) {
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function RoomGrid({ rooms, checkInDate, checkOutDate, peopleMax }
     const GoToReservation = async (roomNo) => {
         try {
             // API 요청
-            const response = await axios.post('http://localhost:9090/room/Reservation', {
+            const response = await privateApi.post('/room/Reservation', {
                 roomNo: roomNo,
                 checkInDay: checkInDate,
                 checkOutDay: checkOutDate,

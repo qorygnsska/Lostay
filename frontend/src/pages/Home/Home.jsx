@@ -24,11 +24,11 @@ export default function Home() {
     const getData = async () => {
         try {
             const [eventResp, hotelResp, locationResp, locationHotelResp, DCHotelResp] = await Promise.all([
-                axios.get('http://localhost:9090/main/event'),
-                axios.get('http://localhost:9090/main/hotHotels'),
-                axios.get('http://localhost:9090/main/location'),
-                axios.get('http://localhost:9090/main/triphotels'),
-                axios.get('http://localhost:9090/main/discountHotel')
+                axios.get(`${process.env.REACT_APP_BASE_URL}/main/event`),
+                axios.get(`${process.env.REACT_APP_BASE_URL}/main/hotHotels`),
+                axios.get(`${process.env.REACT_APP_BASE_URL}/main/location`),
+                axios.get(`${process.env.REACT_APP_BASE_URL}/main/triphotels`),
+                axios.get(`${process.env.REACT_APP_BASE_URL}/main/discountHotel`)
             ]);
 
             setEventList(eventResp.data);
@@ -36,7 +36,6 @@ export default function Home() {
             setLocationList(locationResp.data);
             setLocationHotelList(locationHotelResp.data);
             setDCHotelList(DCHotelResp.data)
-            //console.log(locationHotelResp.data)
         } catch (error) {
             console.error(error);
         }
@@ -105,7 +104,7 @@ export default function Home() {
             <h2>
                 <span className="hotel--sale">What?!</span> 특가야 가자
             </h2>
-            <HotelCarousel hotelList={DCHotelList} check_in={tomorrow} check_out={tdat} member={2}/> {/* JIP1104 check_in, check_out, member 추가 */}
+            <HotelCarousel hotelList={DCHotelList} check_in={tomorrow} check_out={tdat} member={2} /> {/* JIP1104 check_in, check_out, member 추가 */}
 
             <Footer />
 

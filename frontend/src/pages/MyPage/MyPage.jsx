@@ -5,7 +5,7 @@ import { BsChatText } from "react-icons/bs";
 import { FaRegHeart, FaChevronRight } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import OkCancleModal from "../../componets/MyPage/BookingHistory/OkCancleModal";
 import { logout } from "../../store/userSlice";
 import { privateApi } from "../../api/api";
@@ -14,8 +14,8 @@ export default function MyPage() {
     // 로그아웃
     const [isShowModal, setShowModal] = useState(false);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [profile, setProfile] = useState(null);
+
 
     const getData = async () => {
 
@@ -30,7 +30,19 @@ export default function MyPage() {
         }
     };
 
+    const user = useSelector((state) => state.user.userState);
+    const userAt = useSelector((state) => state.user.userAt)
+    const navigate = useNavigate();
+
     useEffect(() => {
+
+        if (user === false || userAt === null) {
+            alert("로그인 후 이용해주세요.");
+            navigate("/login", { replace: true });
+
+            return;
+        }
+
         getData();
     }, []);
 
@@ -48,14 +60,14 @@ export default function MyPage() {
 
     const userLogout = async () => {
         try {
-            const ef = await privateApi.post('http://localhost:9090/mypage/User/userLogout'); // API 요청
+            const rsp = await privateApi.post('/mypage/User/userLogout'); // API 요청
 
-            if (ef.status === 200) {
+            if (rsp.status === 200) {
                 dispatch(logout());
                 navigate("/"); // 로그인 페이지로 이동
             }
 
-            return ef;
+            return rsp;
         } catch (error) {
 
         }
