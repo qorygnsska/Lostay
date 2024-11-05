@@ -8,7 +8,7 @@ import AgreeChkInfo from "../../componets/Reservation/AgreeChkInfo";
 import { BsExclamationCircle } from "react-icons/bs";
 import axios from "axios";
 import { privateApi } from "../../api/api";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 const agreeInfo = [
@@ -56,16 +56,26 @@ export default function Reservation() {
     const navigate = useNavigate();
 
     // 첫 화면 데이터 가져오기
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const roomNo = queryParams.get('roomNo');
+    const rid = queryParams.get('rid')
+    const checkInDate = queryParams.get('checkInDate').split('T')[0];
+    const checkOutDate = queryParams.get('checkOutDate').split('T')[0];
+    console.log(checkInDate)
+
     useEffect(() => {
         const getData = async () => {
+            // URL 파라미터에서 roomNo를 추출
+
 
             try {
                 const [hotelRoomInfoResp, userInfoResp] = await Promise.all([
                     privateApi.get('/payment/HotelRoomInfo', {
                         params: {
-                            roomNo: 8,
-                            checkInDate: "2024-11-05", // 'YYYY-MM-DD' 형식의 날짜 전달
-                            checkOutDate: "2024-11-06",
+                            roomNo: roomNo,
+                            checkInDate: checkInDate, // 'YYYY-MM-DD' 형식의 날짜 전달
+                            checkOutDate: checkOutDate,
                         },
                     }),
                     privateApi.get('payment/UserInfo'),
@@ -73,8 +83,6 @@ export default function Reservation() {
 
                 setHotelRoomInfo(hotelRoomInfoResp.data)
                 setUserInfo(userInfoResp.data)
-
-
             } catch (error) {
                 console.error(error);
             }
@@ -479,6 +487,7 @@ export default function Reservation() {
                 imp_uid: rsp.imp_uid,
                 name: name,
                 phone: userPhone,
+                rid: rid,
             });
 
             if (result.status === 200) {
@@ -504,6 +513,10 @@ export default function Reservation() {
             const res = await privateApi.post('http://localhost:9090/payment/VCancle', {
                 imp_uid: rsp.imp_uid,
             });
+
+            if (res.status !== 200) {
+                alert('고객센터에 전화해주세요')
+            }
 
         } catch (error) {
             // 에러 처리
@@ -817,7 +830,7 @@ export default function Reservation() {
                                 onChange={handleUserPhoneChange}
                                 placeholder="휴대폰 번호 입력"
                                 maxLength={13}
-                                className="userPhone"
+                                className={`userPhone ${!isUserPhoneEdit && 'warning'}`}
                             />
                         </div>
                     </div>

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,7 +59,7 @@ public class RoomRestController {
 	// 예약자가 비슷한 시간에 예약을 하려 할 때 먼저 들어온 사람이 있으면
 	// 후에 들어오는 사람을 막는 메소드
 	@Synchronized
-	@GetMapping("/Reservation/Synchronized")
+	@PostMapping("/Reservation")
 	public ResponseEntity<?> reservationsyncronized(@RequestBody RoomCheckDTO dto) {
 
 		Long count = roomSer.findAvailableCount(dto);
@@ -67,6 +68,8 @@ public class RoomRestController {
 		
 		System.out.println("이용 가능한 객실 : " + count);
 		System.out.println("레디스에 들어와있는 인원수 : " + RedisHumanCount);
+		System.out.println("체크인" +dto.getCheckInDay());
+		System.out.println("체크아웃" + dto.getCheckOutDay());
 		
 		if (count < RedisHumanCount) {
 			System.out.println("예약마감");

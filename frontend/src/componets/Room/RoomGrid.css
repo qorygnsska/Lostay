@@ -42,7 +42,7 @@
           font-size: 18px;
           margin-bottom: 10px;
 
-          #nameLink{
+          #nameLink {
                color: black;
                text-decoration: none;
           }
@@ -98,7 +98,7 @@
           color: rgb(156, 156, 156);
      }
 
-     #bak{
+     #bak {
           font-weight: 100;
           font-size: 12px;
           color: rgb(73, 73, 73);
@@ -111,14 +111,21 @@
 
      .RoomBtn {
           margin-top: 10px;
+          display: flex;
+          justify-content: flex-end;
      }
 
      .rBtn {
+          display: flex;
+          justify-content: center;
+          align-items: center;
           padding: 7px;
           color: white;
           text-decoration: none;
           background-color: #fb6969;
           border-radius: 10px;
+          width: 90px;
+          cursor: pointer;
      }
 
      .srBtn {

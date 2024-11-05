@@ -17,15 +17,15 @@ options.add_argument("window-size=1800,1000")
 driver = webdriver.Chrome(options=options)
 
 # 지역 폴더 생성
-location_folder = f'incheon'
+location_folder = f'daejeon'
 os.makedirs(location_folder, exist_ok=True)  # 지역 폴더 생성
 
 # 호텔 폴더 생성
 hotel_folder = os.path.join(location_folder, 'hotel')
 os.makedirs(hotel_folder, exist_ok=True)  # 호텔 폴더 생성
 
-page=4
-driver.get(f'https://www.yeogi.com/domestic-accommodations?sortType=RECOMMEND&keyword=%EC%9D%B8%EC%B2%9C&page={page}&personal=1&checkIn=2024-12-03&checkOut=2024-12-04&reservationActive=STAY&category=2&freeForm=true')
+page=2
+driver.get(f'https://www.yeogi.com/domestic-accommodations?sortType=RECOMMEND&keyword=%EB%8C%80%EC%A0%84&page={page}&personal=1&checkIn=2024-11-19&checkOut=2024-11-20&reservationActive=STAY&category=2&freeForm=true')
 
 hotel_lest = driver.find_elements(By.CSS_SELECTOR, 'a.gc-thumbnail-type-seller-card')
 links = [ele.get_attribute('href') for ele in hotel_lest]
@@ -54,8 +54,7 @@ for hotel_id, link in enumerate(links):
 
     print(f"링크: {link}")
 
-    hotel_id = hotel_id -1
-    
+    hotel_id = hotel_id-1
     driver.get(link)
 
     try:
@@ -176,7 +175,7 @@ for hotel_id, link in enumerate(links):
         hotel_touristPlace_str = ','.join(s for s in hotel_touristPlace)
 
 
-        hotel_query = f'INSERT INTO HOTEL VALUES(DEFAULT, "{hotel_name}", "{thumbnail_path}", "{images_path_str}", "{hotel_service_str}", "{hotel_level}", "{hotel_location}", "{hotel_touristPlace_str}", "{hotel_info}");'
+        hotel_query = f'INSERT INTO HOTEL VALUES(DEFAULT, "{hotel_name}", "{thumbnail_path}", "{images_path_str}", "{hotel_service_str}", "{hotel_level}", "{hotel_location}", "{hotel_touristPlace_str}", "{hotel_info}", {random.randint(2, 6)});'
 
         with open('hotel_insert_queries.txt', 'a', encoding='utf-8') as file:
             file.write(hotel_query + '\n')  # 쿼리와 줄 바꿈 추가
@@ -405,7 +404,7 @@ for hotel_id, link in enumerate(links):
             room_query = (
                         f'INSERT INTO ROOM VALUES('
                         f'DEFAULT, '
-                        f'{num + hotel_id + 349}, '
+                        f'{num + hotel_id + 440}, '
                         f'"{room_title}", '
                         f'{max_person}, '
                         f'"{number_person}", '

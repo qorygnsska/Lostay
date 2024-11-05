@@ -73,6 +73,10 @@
 
         .link_to_roomList {
             text-decoration: none;
+            color: black;
+        }
+        .link_to_roomList:hover {
+            color: #fb6969;
         }
     }
 
@@ -95,7 +99,7 @@
     }
 
     .HotelInfo {
-        width: 350px;
+        width: 100%;
         /* margin-right: 10px; */
     }
 
@@ -106,10 +110,16 @@
     }
 
     .HotelName {
-        font-size: 18px;
+        font-size: 20px;
         font-weight: bold;
         margin-top: -2px;
         margin-bottom: 2px;
+    }
+
+    .HotelAddrAttr {
+        font-size: 13px;
+        font-weight: bold;
+        color: rgb(124, 124, 124);
     }
 
 
@@ -151,7 +161,7 @@
     .HotelPrice {
         text-align: right;
         align-self: end;
-        width: 150px;
+        width: 200px;
 
     }
 
@@ -177,7 +187,7 @@
     }
 
     .DiscountPrice {
-        font-size: 17px;
+        font-size: 20px;
         font-weight: bold;
         margin-left: 3px;
     }

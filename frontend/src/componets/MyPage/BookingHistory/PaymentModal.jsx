@@ -15,7 +15,6 @@ export default function PaymentModal({ show, onClose, bookData, checkInDayOfWeek
 
         try {
             const response = await privateApi.get(`/payment/History?payNo=${bookData.payNo}`); // API 요청
-            console.log(response.data)
             setPaymentData(response.data)
             return response.data;
 
@@ -207,7 +206,7 @@ export default function PaymentModal({ show, onClose, bookData, checkInDayOfWeek
                                     </div>
 
                                     <div>
-                                        <span>{formatDate(paymentData?.cancleDay).toLocaleString()}</span>
+                                        <span>{formatDate(bookData?.cancleDay).toLocaleString()}</span>
                                     </div>
                                 </div>
                             </div>

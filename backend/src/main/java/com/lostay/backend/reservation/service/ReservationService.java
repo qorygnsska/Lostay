@@ -159,6 +159,7 @@ public class ReservationService {
 		bookHistoryDTO.setHotelNo(dto.getHotelNo());
 		bookHistoryDTO.setHotelName(dto.getHotelName());
 		bookHistoryDTO.setHotelThumbnail(dto.getHotelThumbnail());
+		bookHistoryDTO.setCancleDay(dto.getCancleDay());
 	}
 
 

@@ -21,7 +21,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 	@Query("SELECT new com.lostay.backend.reservation.dto.ReservationHistoryDTO(" +
 			   "u.userNickname, " +
 	           "res.reservationNo, res.resReviewStatus, res.checkIn, res.checkOut, " +
-	           "p.payNo, p.payDay, r.roomNo, r.roomName, " +
+	           "p.payNo, p.payDay, p.cancleDay, r.roomNo, r.roomName, " +
 	           "r.roomCheckinTime, r.roomCheckoutTime, " +
 	           "h.hotelNo, h.hotelName, h.hotelThumbnail) " +
 	           "FROM Reservation res " +
@@ -32,14 +32,14 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 	           "WHERE u.userNo = :userNo " +
 	           "AND res.resStatus = :resStatus " +
 	           "AND res.checkIn > CURRENT_TIMESTAMP " +
-			   "ORDER BY res.checkIn ASC " )
+			   "ORDER BY p.payDay desc, res.checkIn desc" )
 	List<ReservationHistoryDTO> findBookHistory(@Param("userNo") Long userNo, @Param("resStatus") String resStatus);
 
 	// 이용 완료한 숙소
 	@Query("SELECT new com.lostay.backend.reservation.dto.ReservationHistoryDTO(" +
 			   "u.userNickname, " +
 	           "res.reservationNo, res.resReviewStatus, res.checkIn, res.checkOut, " +
-	           "p.payNo, p.payDay, r.roomNo, r.roomName, " +
+	           "p.payNo, p.payDay, p.cancleDay, r.roomNo, r.roomName, " +
 	           "r.roomCheckinTime, r.roomCheckoutTime, " +
 	           "h.hotelNo, h.hotelName, h.hotelThumbnail) " +
 	           "FROM Reservation res " +
@@ -58,7 +58,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 	@Query("SELECT new com.lostay.backend.reservation.dto.ReservationHistoryDTO(" +
 			   "u.userNickname, " +
 	           "res.reservationNo, res.resReviewStatus, res.checkIn, res.checkOut, " +
-	           "p.payNo, p.payDay, r.roomNo, r.roomName, " +
+	           "p.payNo, p.payDay, p.cancleDay, r.roomNo, r.roomName, " +
 	           "r.roomCheckinTime, r.roomCheckoutTime, " +
 	           "h.hotelNo, h.hotelName, h.hotelThumbnail) " +
 	           "FROM Reservation res " +
@@ -68,7 +68,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 	           "JOIN r.hotel h " +
 	           "WHERE u.userNo = :userNo " +
 	           "AND res.resStatus = :resStatus " +
-	           "ORDER BY res.checkIn DESC " )
+	           "ORDER BY p.cancleDay ASC " )
 	List<ReservationHistoryDTO> findBookCancleHistory(@Param("userNo") Long userNo, @Param("resStatus") String resStatus);
 
 

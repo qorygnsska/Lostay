@@ -24,6 +24,7 @@ public class ReservationHistoryDTO {
 	// 결제
 	private Long payNo; 				// 결제 넘버
 	private LocalDateTime payDay;		// 결제 날짜
+	private LocalDateTime cancleDay;
 
 	// 객실
 	private Long roomNo; 				// 객실넘버
@@ -35,4 +36,5 @@ public class ReservationHistoryDTO {
 	private Long hotelNo; 				// 호텔 넘버
 	private String hotelName;			// 호텔 이름
 	private String hotelThumbnail; 		// 호텔 썸네일
+
 }

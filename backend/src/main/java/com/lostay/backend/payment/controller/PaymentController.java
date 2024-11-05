@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.annotations.Parameter;
 import org.json.JSONException;
@@ -267,8 +268,9 @@ public class PaymentController {
 	
 	// 사후검증 틀릴 때 이용하는 메소드
 		@PostMapping("/VCancle")//변경전: /PaymentCancle 변경후:/payment/Cancle
-		public ResponseEntity<?> Vpaymentcancle(@RequestBody String imp_uid,@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+		public ResponseEntity<?> Vpaymentcancle(@RequestBody Map<String, Object> requestData, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
 			
+			String imp_uid = (String) requestData.get("imp_uid");
 			
 			try {
 				// 토큰발급
