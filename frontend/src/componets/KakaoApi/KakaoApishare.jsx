@@ -5,6 +5,7 @@ import AWS from 'aws-sdk';
 export default function KakaoApiShare({ title, address, Thumbnail }) {
   const location = useLocation();
   const [imageUrl, setImageUrl] = useState(null);
+  const [kakaoInitialized, setKakaoInitialized] = useState(false); // 카카오 SDK 초기화 상태
   const webUrl = `${window.location.origin}${location.pathname}`;
 
   useEffect(() => {
@@ -48,22 +49,46 @@ export default function KakaoApiShare({ title, address, Thumbnail }) {
 
       uploadImageToS3();
     } else {
-      console.error("Thumbnail is undefined");
+      console.error('Thumbnail is undefined');
     }
 
     // Kakao SDK 초기화
-    if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init('6ce94ba3ce787fda2efe59c95e6bc036'); // 카카오톡 앱 JavaScript 키
-    }
+    const initializeKakao = () => {
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        console.log('SDK 초기화 중...');
+        window.Kakao.init('6ce94ba3ce787fda2efe59c95e6bc036'); // 카카오톡 앱 JavaScript 키
+      }
+
+      // 카카오 SDK 초기화가 완료되면 상태 업데이트
+      if (window.Kakao.isInitialized()) {
+        console.log('카카오 SDK 초기화 완료');
+        setKakaoInitialized(true); // SDK 초기화 완료 후 상태 업데이트
+      }
+    };
+
+    // SDK 초기화가 늦어지는 경우를 대비하여, 일정 시간마다 확인
+    const intervalId = setInterval(() => {
+      if (window.Kakao.isInitialized()) {
+        setKakaoInitialized(true);
+        clearInterval(intervalId); // 초기화가 완료되면 interval을 종료
+      }
+    }, 100); // 100ms마다 확인
+
+    // SDK 초기화 호출
+    initializeKakao();
+
+    return () => clearInterval(intervalId); // Cleanup interval
   }, [Thumbnail]); // Thumbnail이 변경될 때마다 실행
 
-  const handleShare = (event) => {
-    event.preventDefault(); // 기본 동작 방지
-    console.log(title, address, imageUrl);
-  
-    if (window.Kakao && imageUrl) {
-      window.Kakao.Share.createDefaultButton({
-        container: '#kakaotalk-sharing-btn',
+  const handleShare = () => {
+    console.log('공유 버튼 클릭', title, address, imageUrl);
+
+    // 카카오 SDK 초기화 여부를 체크하고, 초기화가 완료되었을 때만 공유 버튼을 생성
+    if (window.Kakao && kakaoInitialized && imageUrl) {
+      console.log('Kakao SDK가 초기화되었고, 이미지 URL도 준비되었습니다.');
+
+      // 공유할 때 바로 카카오톡 공유 창이 열리도록 sendDefault 사용
+      window.Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
           title: title,
@@ -83,13 +108,13 @@ export default function KakaoApiShare({ title, address, Thumbnail }) {
         ],
       });
     } else {
-      console.error("Kakao is not initialized or imageUrl is not available");
+      console.error('Kakao SDK 초기화되지 않음 또는 이미지 URL 없음');
     }
   };
 
   return (
-    <div className='d-flex align-items-end'>
-      <a id="kakaotalk-sharing-btn" href="javascript" onClick={handleShare}>
+    <div className="d-flex align-items-end">
+      <a id="kakaotalk-sharing-btn" onClick={handleShare}>
         <img
           id="kakao_share"
           src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
