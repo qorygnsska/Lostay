@@ -107,7 +107,12 @@ public class PaymentController {
 	@PostMapping("/Before")//변경전: /Payment/Before 변경후:/payment/Before
 	private ResponseEntity<?> paymentbefore(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
 			                               ,@RequestBody PaymentBeforeDTO paymentBeforeDTO){
-		
+
+//		Long count = paySer.findAvailableCount(dto);
+//		if(count <= 0) {
+//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//		}
+//	
 		System.out.println("before 데이터 보기" + paymentBeforeDTO.toString());
 		try {
 			 long userNo = customOAuth2User.getUserNo();
