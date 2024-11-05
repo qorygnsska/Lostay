@@ -159,7 +159,7 @@ export default function CompSearchBox(props) {
     }
 
     //'검색' 버튼 클릭!
-    const searchHandler = async () => {
+    const searchHandler = () => {
         //console.log('@CompSearchBox place: ' + place + '/' + check_in + '-' + check_out + '/' + member);
         if (place.trim().length < 2) {
             alert('최소 2글자 이상의 검색어를 입력하세요.');

@@ -24,7 +24,7 @@ export default function PageEventList() {
         fetch('http://localhost:9090/event/list')    // fetch() : (default) request 'GET', 'async'
             .then(response => response.json())  // response가 오면 json 변환
             .then(data => {
-                console.log(data);
+                //console.log(data);
                 //결과물로 setEventList 
                 setEventList(data);
             })
@@ -51,9 +51,9 @@ export default function PageEventList() {
     //요소를 반환하지 않고 데이터 처리만 하는 경우(return null component)
     //응답받고 navigate로 넘기고, 2nd args에 navigate값을 넣어주기도 함
 
-    useEffect(() => {
-        console.log(`view: ${viewOngoing ? "onGoing" : "total"}`);
-    }, [viewOngoing]);
+    // useEffect(() => {
+    //     console.log(`view: ${viewOngoing ? "onGoing" : "total"}`);
+    // }, [viewOngoing]);
 
     return (
         <>

@@ -16,7 +16,7 @@ export default function PageEventDetail() {
         fetch(`http://localhost:9090/event/detail/${no}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                //console.log(data);
                 setEvent(data);
 
             }).catch(error => {
