@@ -1,10 +1,35 @@
 import React from 'react'
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoPersonOutline } from "react-icons/io5";
 import { FaRegClock } from "react-icons/fa";
+import axios from 'axios';
 
-export default function ({rooms, checkInDate, checkOutDate, peopleMax}) {
+export default function RoomGrid({ rooms, checkInDate, checkOutDate, peopleMax }) {
+    const navigate = useNavigate();
+
+    // 결제페이지 이동
+    const GoToReservation = async (roomNo) => {
+        try {
+            // API 요청
+            const response = await axios.post('http://localhost:9090/room/Reservation', {
+                roomNo: roomNo,
+                checkInDay: checkInDate,
+                checkOutDay: checkOutDate,
+            });
+
+            // 응답이 성공적일 경우
+            if (response.status === 200) {
+                navigate(`/reservation?roomNo=${roomNo}&rid=${response.data}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`);
+            } else {
+                alert('이미 예약이 마감되었습니다.')
+            }
+        } catch (error) {
+            alert('이미 예약이 마감되었습니다.')
+        }
+
+    }
+
     return (
         <div className='room--grid--container'>
             <div className='RoomList'>
@@ -20,55 +45,55 @@ export default function ({rooms, checkInDate, checkOutDate, peopleMax}) {
                                 </div>
                             </div>
                             <div className='RoomPrice'>
-                                {rooms.availableRooms > 0 ? 
+                                {rooms.availableRooms > 0 ?
                                     rooms.roomDiscount > 0 ? (
                                         <>
-                                        <div className='RealPrice'>{rooms.roomPrice.toLocaleString()}원</div>
-                                        <div className='RoomDiscount'>
-                                            <div className='Discount'>{rooms.roomDiscount}%</div>
-                                            <div className='DiscountPrice'>{rooms.discountPrice.toLocaleString()}원<span id='bak'>/1박</span></div>
-                                        </div>
-                                        <div className='RoomCount'>남은 객실 {rooms.availableRooms}개</div>
-                                        <div className='RoomBtn'>
-                                            <Link to='/예약' className='rBtn'>예약하기</Link>
-                                        </div>
+                                            <div className='RealPrice'>{rooms.roomPrice.toLocaleString()}원</div>
+                                            <div className='RoomDiscount'>
+                                                <div className='Discount'>{rooms.roomDiscount}%</div>
+                                                <div className='DiscountPrice'>{rooms.discountPrice.toLocaleString()}원<span id='bak'>/1박</span></div>
+                                            </div>
+                                            <div className='RoomCount'>남은 객실 {rooms.availableRooms}개</div>
+                                            <div className='RoomBtn'>
+                                                <div onClick={() => GoToReservation(rooms.roomNo)} className='rBtn'>예약하기</div>
+                                            </div>
                                         </>
                                     ) : (
                                         <>
-                                        <div className='RoomDiscount'>
-                                            <div className='DiscountPrice'>{rooms.discountPrice.toLocaleString()}원<span id='bak'>/1박</span></div>
-                                        </div>
-                                        <div className='RoomCount'>남은 객실 {rooms.availableRooms}개</div>
-                                        <div className='RoomBtn'>
-                                            <Link to='/예약' className='rBtn'>예약하기</Link>
-                                        </div>
+                                            <div className='RoomDiscount'>
+                                                <div className='DiscountPrice'>{rooms.discountPrice.toLocaleString()}원<span id='bak'>/1박</span></div>
+                                            </div>
+                                            <div className='RoomCount'>남은 객실 {rooms.availableRooms}개</div>
+                                            <div className='RoomBtn'>
+                                                <div onClick={() => GoToReservation(rooms.roomNo)} className='rBtn'>예약하기</div>
+                                            </div>
                                         </>
                                     )
-                                        
-                                 :  rooms.roomDiscount > 0 ? (
-                                    <>
-                                        <div className='RealPrice'>{rooms.roomPrice.toLocaleString()}원</div>
-                                        <div className='RoomDiscount'>
-                                            <div className='sDiscount'>{rooms.roomDiscount}%</div>
-                                            <div className='sDiscountPrice'>{rooms.roomDcprice.toLocaleString()}원<span id='bak'>/1박</span></div>
-                                        </div>
-                                        <div className='RoomBtn'>
-                                            <button disabled className='srBtn'>예약마감</button>
-                                        </div>
-                                    </>
-                                 ) : (
-                                    <>  
-                                        <div className='RoomDiscount'>
-                                            <div className='sDiscountPrice'>{rooms.roomDcprice.toLocaleString()}원<span id='bak'>/1박</span></div>
-                                        </div>
-                                        <div className='RoomBtn'>
-                                            <button disabled className='srBtn'>예약마감</button>
-                                        </div>
-                                    </>
 
-                                 )
+                                    : rooms.roomDiscount > 0 ? (
+                                        <>
+                                            <div className='RealPrice'>{rooms.roomPrice.toLocaleString()}원</div>
+                                            <div className='RoomDiscount'>
+                                                <div className='sDiscount'>{rooms.roomDiscount}%</div>
+                                                <div className='sDiscountPrice'>{rooms.roomDcprice.toLocaleString()}원<span id='bak'>/1박</span></div>
+                                            </div>
+                                            <div className='RoomBtn'>
+                                                <button disabled className='srBtn'>예약마감</button>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className='RoomDiscount'>
+                                                <div className='sDiscountPrice'>{rooms.roomDcprice.toLocaleString()}원<span id='bak'>/1박</span></div>
+                                            </div>
+                                            <div className='RoomBtn'>
+                                                <button disabled className='srBtn'>예약마감</button>
+                                            </div>
+                                        </>
+
+                                    )
                                 }
-                                
+
                             </div>
                         </div>
                     </div>

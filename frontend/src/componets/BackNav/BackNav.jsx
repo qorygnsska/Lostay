@@ -12,7 +12,7 @@ export default function BackHistory({ title }) {
     return (
         <div className="bakcnav--container">
             <div className="back-history-wrap">
-                <button onClick={() => navigate(-1)}>
+                <button type="button" onClick={() => navigate(-1)}>
                     <FaChevronLeft className="icon" />
                 </button>
 

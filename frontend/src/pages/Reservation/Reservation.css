@@ -93,6 +93,10 @@
                     outline: none;
                 }
 
+                .userPhone.warning {
+                    border: 1px solid var(--redColor);
+                }
+
                 .phone--disabled {
                     outline: none;
                     border: none;

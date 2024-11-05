@@ -99,20 +99,24 @@ export default function BookingHistory({ bookData, handlePaymentCancel, handleRe
         <div className='booking--history--component-container' >
             <div className='booking--info--wrap'>
                 <div className='booking--info--paydate'>
-                    <span>결제일 : {formatDate(bookData.payDay)}</span>
+
                     {
                         bookData.isPayCancel ? ( // 취소내역 상세보기 링크
-
-                            <div className='booking--payment cancle' onClick={canclePaymentClick}>
-                                <span>취소내역</span>
-                                <FaChevronRight />
-                            </div>
+                            <>
+                                <span>취소일 : {formatDate(bookData.cancleDay)}</span>
+                                <div className='booking--payment cancle' onClick={() => canclePaymentClick()}>
+                                    <span>취소내역</span>
+                                    <FaChevronRight />
+                                </div>
+                            </>
                         ) : ( //결제내역 상세보기 링크
-
-                            <div className='booking--payment' onClick={paymentClick}>
-                                <span>결제내역</span>
-                                <FaChevronRight />
-                            </div>
+                            <>
+                                <span>결제일 : {formatDate(bookData.payDay)}</span>
+                                <div className='booking--payment' onClick={() => paymentClick()}>
+                                    <span>결제내역</span>
+                                    <FaChevronRight />
+                                </div>
+                            </>
                         )
                     }
                 </div>

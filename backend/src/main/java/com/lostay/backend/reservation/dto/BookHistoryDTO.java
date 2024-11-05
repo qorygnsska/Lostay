@@ -24,6 +24,7 @@ public class BookHistoryDTO {
     // 결제
     private Long payNo;					// 결제 넘버
     private LocalDateTime payDay;		// 결제 날짜
+    private LocalDateTime cancleDay;
 	
 	// 객실
     private Long roomNo;				// 객실넘버	
