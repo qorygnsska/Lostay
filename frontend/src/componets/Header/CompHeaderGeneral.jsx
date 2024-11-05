@@ -23,14 +23,10 @@ export default function CompHeaderGeneral(props) {
             <Navbar className="comp--header--general--container">
                 <Container id='container_navbar_general'>
 
-                    {/* <div className='logo'>
-                        <h1>로스테이</h1>
-                    </div> */}
-
                     <Container id='container_search_param'>
                         <Form.Control
                             id="input_place"
-                            className="focus-ring focus-ring-danger"
+                            className="focus-ring focus-ring-danger border border-danger-subtle"
                             type="text"
                             placeholder="Place"
                             readOnly
@@ -39,7 +35,7 @@ export default function CompHeaderGeneral(props) {
                         />
                         <Form.Control
                             id="input_period"
-                            className="focus-ring focus-ring-danger"
+                            className="focus-ring focus-ring-danger border border-danger-subtle"
                             type="text"
                             placeholder="Period"
                             readOnly
@@ -48,7 +44,7 @@ export default function CompHeaderGeneral(props) {
                         />
                         <Form.Control
                             id="input_member"
-                            className="focus-ring focus-ring-danger"
+                            className="focus-ring focus-ring-danger border border-danger-subtle"
                             type="text"
                             placeholder="Member"
                             readOnly
