@@ -725,7 +725,7 @@ export default function HotelMap() {
     return (
 
         <Container className='hotel--map--container'>
-            <BackNav title="길 찾기" />
+            <BackNav title="길찾기" />
             <div className='TopBox'>
                 <div className='FormBox'>
 
