@@ -194,8 +194,8 @@ public class PaymentController {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 		
-//			Long userNo = customOAuth2User.getUserNo();
-			Long userNo = 1L;
+			Long userNo = customOAuth2User.getUserNo();
+			
 			Boolean result = paySer.savePayment(userNo,dto);
 			System.out.println(result);
 			if(result) {
