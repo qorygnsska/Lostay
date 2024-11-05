@@ -25,7 +25,7 @@ export default function HotelGrid(props) {
                                 <div className='HotelInfo'>
                                     <div className='HotelRank'>{hotel.hotelRating}</div>
                                     <Link className='link_to_roomList' to={`../roomList/${hotel.hotelNo}?checkInDate=${props.check_in}&checkOutDate=${props.check_out}&peopleMax=${props.member}`} >
-                                        <div className='HotelName'>{hotel.hotelName}</div>
+                                        <span className='HotelName'>{hotel.hotelName}</span>
                                     </Link>
                                     <div className='HotelAddrAttr mb-1'>
                                         <span className='me-1'>{hotel.hotelAdress.split(" ")[0] + " " + hotel.hotelAdress.split(" ")[1]}</span>
