@@ -1,13 +1,50 @@
-.bus--modal--container{
+.bus--modal--container {
+    
 
     .modal-content {
         width: 800px;
-        margin: auto;
+        height: 1000px;
+        transition: all 0.3s ease;
+        /* 애니메이션 효과 */
+
 
         .modal-header {
-            border-bottom: none;
             font-weight: bold;
-            
+            display: flex;
+            justify-content: space-between;
+
+            .totalTime {
+                width: 70px;
+                font-size: 30px;
+                margin-right: 10px;
+            }
+
+            .subInfo {
+                display: flex;
+                gap: 7px;
+                color: gray;
+            }
+
+            .collapse-toggle {
+                cursor: pointer;
+            }
+
         }
     }
+}
+
+.bus--modal--container.collapsed {
+    max-width: 30%;
+    overflow: hidden;
+}
+
+.bus--modal--container .collapse-toggle {
+    font-size: 14px;
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.bus--modal--container.collapsed .modal-content {
+    width: 30%;
+    margin-left: 0;
 }
