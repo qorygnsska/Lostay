@@ -36,6 +36,8 @@ import com.lostay.backend.payment.dto.PaymentVerificationDTO;
 //import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.payment.repository.PaymentRepository;
 import com.lostay.backend.payment.service.PaymentService;
+import com.lostay.backend.reservation.service.ReservationService;
+import com.lostay.backend.room.service.RoomService;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
@@ -59,6 +61,9 @@ public class PaymentController {
 	
 	@Autowired
 	private PaymentService paySer;
+	
+	@Autowired
+	private RoomService roomSer;
 	
 
 	// 결제 내역
@@ -179,6 +184,11 @@ public class PaymentController {
 	public ResponseEntity<?> paymentinsert(@AuthenticationPrincipal CustomOAuth2User customOAuth2User
 							 ,@RequestBody PaymentDTO dto){
 
+			Long count = paySer.findAvailableCount(dto);
+			if(count <= 0) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+		
 //			Long userNo = customOAuth2User.getUserNo();
 			Long userNo = 1L;
 			Boolean result = paySer.savePayment(userNo,dto);
