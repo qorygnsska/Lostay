@@ -16,7 +16,7 @@ export default function LoginPhone() {
     const postPhoneNum = async (phonenum) => {
 
         try {
-            const response = await axios.post(`http://localhost:9090/sms/loginPhone/${phonenum}`); // API 요청
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/sms/loginPhone/${phonenum}`); // API 요청
             setServerCode(response.data);
             return response.data;
 
@@ -29,7 +29,7 @@ export default function LoginPhone() {
     const axiosAccessToken = async (phonenum) => {
         try {
             const response = await axios.post(
-                `http://localhost:9090/userReissue/newAccess/${phonenum}`,
+                `${process.env.REACT_APP_BASE_URL}/userReissue/newAccess/${phonenum}`,
                 {},
                 {
                     withCredentials: true,
@@ -165,7 +165,7 @@ export default function LoginPhone() {
     const postPhoneNumSave = async (phonenum) => {
 
         try {
-            const response = await privateApi.post(`http://localhost:9090/mypage/UserInfo/phone/${phonenum}`); // API 요청
+            const response = await privateApi.post(`/mypage/UserInfo/phone/${phonenum}`); // API 요청
             setServerCode(response.data);
             return response.data;
 

@@ -9,6 +9,7 @@ import { BsExclamationCircle } from "react-icons/bs";
 import axios from "axios";
 import { privateApi } from "../../api/api";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 
 const agreeInfo = [
@@ -51,23 +52,29 @@ const agreeChkInfo = [
 
 export default function Reservation() {
 
-    const [hotelRoomInfo, setHotelRoomInfo] = useState(null);
-    const [userInfo, setUserInfo] = useState(null);
-    const navigate = useNavigate();
-
     // 첫 화면 데이터 가져오기
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const roomNo = queryParams.get('roomNo');
-    const rid = queryParams.get('rid')
-    const checkInDate = queryParams.get('checkInDate').split('T')[0];
-    const checkOutDate = queryParams.get('checkOutDate').split('T')[0];
-    console.log(checkInDate)
+
+    const user = useSelector((state) => state.user.userState);
+    const userAt = useSelector((state) => state.user.userAt)
+    const navigate = useNavigate();
 
     useEffect(() => {
+
+        if (user === false || userAt === null) {
+            alert("로그인 후 이용해주세요.");
+            navigate("/login", { replace: true });
+
+            return;
+        }
+
         const getData = async () => {
             // URL 파라미터에서 roomNo를 추출
 
+            const roomNo = queryParams.get('roomNo');
+            const checkInDate = queryParams.get('checkInDate').split('T')[0];
+            const checkOutDate = queryParams.get('checkOutDate').split('T')[0];
 
             try {
                 const [hotelRoomInfoResp, userInfoResp] = await Promise.all([
@@ -93,6 +100,8 @@ export default function Reservation() {
 
 
 
+    const [hotelRoomInfo, setHotelRoomInfo] = useState(null);
+    const [userInfo, setUserInfo] = useState(null);
 
     // 예약자 정보
     const [name, setName] = useState('');
@@ -350,7 +359,7 @@ export default function Reservation() {
     const postPhoneNum = async (phonenum) => {
 
         try {
-            const response = await axios.post(`http://localhost:9090/sms/loginPhone/${phonenum}`); // API 요청
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/sms/loginPhone/${phonenum}`); // API 요청
             setServerCode(response.data);
             return response.data;
 
@@ -364,7 +373,7 @@ export default function Reservation() {
     const postPhoneNumSave = async (phonenum) => {
 
         try {
-            const response = await privateApi.post(`http://localhost:9090/mypage/UserInfo/phone/${phonenum}`); // API 요청
+            const response = await privateApi.post(`/mypage/UserInfo/phone/${phonenum}`); // API 요청
             setServerCode(response.data);
             return response.data;
 
@@ -396,7 +405,7 @@ export default function Reservation() {
             }
 
             const merchant_uid = "merchant_" + new Date().getTime()
-            privateApi.post('http://localhost:9090/payment/Before', {
+            privateApi.post('/payment/Before', {
                 point: Number(inputPoint),
                 roomNo: hotelRoomInfo.roomNo,
                 disNo: payType.disNo,
@@ -430,7 +439,7 @@ export default function Reservation() {
 
             }, (rsp) => {
                 if (rsp.success) { // 프론트에서 결제가 완료되면
-                    privateApi.post(`http://localhost:9090/payment/Verification`, {
+                    privateApi.post(`/payment/Verification`, {
                         imp_uid: rsp.imp_uid,            // 결제 고유번호
                         merchant_uid: rsp.merchant_uid,   // 주문번호
                         amount: rsp.paid_amount
@@ -475,8 +484,11 @@ export default function Reservation() {
     }
 
     const putData = async (rsp, payDay) => {
+
+        const rid = queryParams.get('rid')
+
         try {
-            const result = await privateApi.post('http://localhost:9090/payment/Insert', {
+            const result = await privateApi.post('/payment/Insert', {
                 roomNo: hotelRoomInfo.roomNo,
                 disNo: payType.disNo,
                 payPrice: totalPrice,
@@ -510,7 +522,7 @@ export default function Reservation() {
     const Vcancle = async (rsp) => {
         try {
             // 성공적인 응답 처리
-            const res = await privateApi.post('http://localhost:9090/payment/VCancle', {
+            const res = await privateApi.post('/payment/VCancle', {
                 imp_uid: rsp.imp_uid,
             });
 

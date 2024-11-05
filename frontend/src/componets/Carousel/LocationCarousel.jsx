@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 
 export default function LocationCarousel({ locationList, check_in, check_out, member }) {
@@ -28,12 +29,11 @@ export default function LocationCarousel({ locationList, check_in, check_out, me
 
     return (
         <div className="location--carousel--container">
-
             {/* 슬라이드 실행 */}
             <Slider ref={sliderRef} {...settings}>
                 {locationList.map((data) => (
                     <div key={data.locationNo}>
-                        <a href={`/hotelList?place=${data.locationName}&check_in=${check_in}&check_out=${check_out}&member=${member}`}>
+                        <Link to={`/hotelList?place=${data.locationName}&check_in=${check_in}&check_out=${check_out}&member=${member}`}>
                             {/* href="https://example.com" JIP1030 수정 */}
                             <div className="image--box">
                                 <img src={`${process.env.PUBLIC_URL}/Location/${data.locationImage}`} alt={`슬라이드 ${data.locationNo + 1}`} />
@@ -44,7 +44,7 @@ export default function LocationCarousel({ locationList, check_in, check_out, me
                                 </div>
                             </div>
 
-                        </a>
+                        </Link>
                     </div>
                 ))}
             </Slider>

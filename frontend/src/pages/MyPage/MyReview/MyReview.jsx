@@ -5,8 +5,24 @@ import MyReviewComponent from "../../../componets/MyPage/MyReview/MyReview";
 import { BsChatText } from "react-icons/bs";
 import useGetReviews from "../../../hooks/reviewInfiniteLoading";
 import { useInView } from "react-intersection-observer";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function MyReview() {
+
+    const user = useSelector((state) => state.user.userState);
+    const userAt = useSelector((state) => state.user.userAt)
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user === false || userAt === null) {
+            alert("로그인 후 이용해주세요.");
+            navigate("/login", { replace: true });
+
+            return;
+        }
+    }, []);
+
 
     const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchNextPage } = useGetReviews();
     // 감지 div

@@ -149,7 +149,7 @@ public class MainService {
 	public Object findByHotelAddressContaining() {
 		
 		//String[] locations = {"서울", "제주도", "부산", "인천", "대전", "대구", "광주", "울산"};
-		String[] locations = {"서울", "제주도", "부산", "광주", "인천", "울산"};
+		String[] locations = {"서울", "제주도", "부산", "광주", "인천", "울산", "대전"};
 		
 		Pageable pageable = PageRequest.of(0, 6); // 0번째 페이지, 6개 항목
 		

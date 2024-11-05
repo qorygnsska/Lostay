@@ -7,6 +7,8 @@ import useGetWishs from "../../../hooks/wishInfiniteLoading";
 import { useInView } from "react-intersection-observer";
 import Toast from "../../../componets/Toast/Toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 
 export default function WishList() {
@@ -28,7 +30,18 @@ export default function WishList() {
         }
     }
 
+    const user = useSelector((state) => state.user.userState);
+    const userAt = useSelector((state) => state.user.userAt)
+    const navigate = useNavigate();
+
     useEffect(() => {
+        if (user === false || userAt === null) {
+            alert("로그인 후 이용해주세요.");
+            navigate("/login", { replace: true });
+
+            return;
+        }
+
         handleRefresh()
     }, [])
 

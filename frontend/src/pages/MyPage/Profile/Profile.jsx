@@ -6,7 +6,7 @@ import { FaChevronRight } from "react-icons/fa";
 
 import axios from "axios";
 import OkCancleModal from "../../../componets/MyPage/BookingHistory/OkCancleModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../store/userSlice";
 import { privateApi } from "../../../api/api";
@@ -28,8 +28,17 @@ export default function Profile() {
             console.error(error);
         }
     };
+    const user = useSelector((state) => state.user.userState);
+    const userAt = useSelector((state) => state.user.userAt)
+    const navigate = useNavigate();
 
     useEffect(() => {
+        if (user === false || userAt === null) {
+            alert("로그인 후 이용해주세요.");
+            navigate("/login", { replace: true });
+
+            return;
+        }
 
         getData();
     }, []);
@@ -111,7 +120,7 @@ export default function Profile() {
                 setNicknameEdit(false);
             } else {
                 try {
-                    const response = await privateApi.put(`http://localhost:9090/mypage/UserInfo/nickname/${nickname.trim()}`); // API 요청
+                    const response = await privateApi.put(`/mypage/UserInfo/nickname/${nickname.trim()}`); // API 요청
 
                     if (response.status === 200) {
                         setNickname(nickname.trim())
@@ -307,7 +316,7 @@ export default function Profile() {
     const postPhoneNum = async (phonenum) => {
 
         try {
-            const response = await axios.post(`http://localhost:9090/sms/loginPhone/${phonenum}`); // API 요청
+            const response = await axios.post(`/sms/loginPhone/${phonenum}`); // API 요청
             setServerCode(response.data);
             return response.data;
 
@@ -320,7 +329,7 @@ export default function Profile() {
     const postPhoneNumSave = async (phonenum) => {
 
         try {
-            const response = await privateApi.post(`http://localhost:9090/mypage/UserInfo/phone/${phonenum}`); // API 요청
+            const response = await privateApi.post(`/mypage/UserInfo/phone/${phonenum}`); // API 요청
             setServerCode(response.data);
             return response.data;
 
@@ -333,7 +342,6 @@ export default function Profile() {
     // 회원 탈퇴
     const [isShowModal, setShowModal] = useState(false);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const showModalToggle = () => {
         setShowModal(!isShowModal)
@@ -347,7 +355,7 @@ export default function Profile() {
 
     const userUnsubscript = async () => {
         try {
-            const response = await privateApi.post('http://localhost:9090/mypage/User/unsubscribe'); // API 요청
+            const response = await privateApi.post('/mypage/User/unsubscribe'); // API 요청
 
             if (response.status === 200) {
                 dispatch(logout());

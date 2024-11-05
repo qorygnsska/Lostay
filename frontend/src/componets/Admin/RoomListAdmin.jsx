@@ -32,7 +32,7 @@ export default function RoomListAdmin({ propHotelNo, setRoom, setRoomModalShow, 
     const [roomList, setRoomList] = useState(null);
     const getData = async () => {
         try {
-            const response = await adminPrivateApi.get(`http://localhost:9090/admin/roomsList?hotelNo=${propHotelNo}&page=${curPage}`)
+            const response = await adminPrivateApi.get(`/admin/roomsList?hotelNo=${propHotelNo}&page=${curPage}`)
 
             if (response.status === 200) {
                 setRoomList(response.data)

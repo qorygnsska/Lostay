@@ -53,7 +53,7 @@ export default function PageHotelChartManager() {
 
     const getData = async (searchText) => {
         try {
-            const response = await adminPrivateApi.get(`http://localhost:9090/admin/hotelsList?page=${curPage}&searchText=${searchText}&showCnt=5`)
+            const response = await adminPrivateApi.get(`/admin/hotelsList?page=${curPage}&searchText=${searchText}&showCnt=5`)
 
             if (response.status === 200) {
                 setHotelRoomList(response.data)

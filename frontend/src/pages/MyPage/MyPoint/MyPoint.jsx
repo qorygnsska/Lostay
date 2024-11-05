@@ -5,11 +5,27 @@ import MyPointComponent from "../../../componets/MyPage/MyPoint/MyPoint";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { TbParkingCircle } from "react-icons/tb";
 import { privateApi } from "../../../api/api";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 
 
 
 export default function MyPoint() {
+
+    const user = useSelector((state) => state.user.userState);
+    const userAt = useSelector((state) => state.user.userAt)
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user === false || userAt === null) {
+            alert("로그인 후 이용해주세요.");
+            navigate("/login", { replace: true });
+
+            return;
+        }
+    }, []);
+
 
     const [monthNum, setMonthNum] = useState(0);
     const [pointDatas, setPointDatas] = useState(null)

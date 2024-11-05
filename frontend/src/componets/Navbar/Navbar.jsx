@@ -6,15 +6,18 @@ import { useSelector } from "react-redux";
 
 export default function Navbar() {
     const user = useSelector((state) => state.user.userState);
+    const userAt = useSelector((state) => state.user.userAt)
     const navigate = useNavigate();
 
     const handlerMypage = () => {
-        if (user === true) {
-            navigate("/mypage");
-        } else {
+        if (user === false || userAt === null) {
             alert("로그인 후 이용해주세요.");
-            navigate("/login", {replace : true});
+            navigate("/login", { replace: true });
+
+            return;
         }
+
+        navigate("/mypage");
     };
 
     return (
