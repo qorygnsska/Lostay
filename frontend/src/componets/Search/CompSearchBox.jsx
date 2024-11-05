@@ -201,6 +201,7 @@ export default function CompSearchBox(props) {
                             <InputGroup.Text ><MdOutlinePlace size="24" /></InputGroup.Text>
                             <Form.Control
                                 id="input_place"
+                                className="border border-light-subtle focus-ring focus-ring-danger"
                                 type="search"
                                 placeholder="지역 또는 호텔 이름을 입력하세요."
                                 autoFocus={props.focus === "input_place" ? true : false}
@@ -214,6 +215,7 @@ export default function CompSearchBox(props) {
                                 <InputGroup.Text ><MdOutlineCalendarMonth size="24" /></InputGroup.Text>
                                 <Form.Control
                                     id="input_check_in"
+                                    className="border border-light-subtle focus-ring focus-ring-danger"
                                     type="text"
                                     placeholder="체크인"
                                     autoFocus={props.focus === "input_period" ? true : false}
@@ -229,6 +231,7 @@ export default function CompSearchBox(props) {
                                 <InputGroup.Text ><MdOutlineCalendarMonth size="24" /></InputGroup.Text>
                                 <Form.Control
                                     id="input_check_out"
+                                    className="border border-light-subtle focus-ring focus-ring-danger"
                                     type="text"
                                     placeholder="체크아웃"
                                     value={dateFormatter(check_out)}
@@ -271,6 +274,7 @@ export default function CompSearchBox(props) {
                             <InputGroup.Text ><GoPeople size="24" /></InputGroup.Text>
                             <Form.Control
                                 id="input_member"
+                                className="border border-light-subtle focus-ring focus-ring-danger"
                                 type="text"
                                 placeholder="인원"
                                 autoFocus={props.focus === "input_member" ? true : false}

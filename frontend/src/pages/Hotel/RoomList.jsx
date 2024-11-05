@@ -52,7 +52,9 @@ export default function RoomList() {
 
   const parameters = useParams();
   const check_in = new Date(ucheckInDate);
+  check_in.setHours(0,0,0,0);
   const check_out = new Date(ucheckOutDate);
+  check_out.setHours(0,0,0,0);
   const member = upeopleMax;
   //////////////////////////////////////////////////////////for default parameters  JIP1104
   //////////////////////////////////////////////////////////for hidden & focus
