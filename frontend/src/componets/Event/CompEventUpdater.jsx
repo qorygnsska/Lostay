@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { Calendar } from 'primereact/calendar';
 import { GoDash } from 'react-icons/go';
+import { adminPrivateApi } from '../../api/adminApi';
 
 export default function CompEventUpdater(props) {
 
@@ -69,26 +70,45 @@ export default function CompEventUpdater(props) {
         //console.log(props.picked + 'is opening');
 
         // async&await이나 then()은 같은 것
-        fetch(`http://localhost:9090/admin/eventDetail?eventNo=${props.picked}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                setNo(data.eventNo);
-                setTitle(data.eventTitle);
-                setCreateAt(new Date(data.eventCreateAt));
-                setEndAt(new Date(data.eventEndAt));
+        //fetch(`http://localhost:9090/admin/eventDetail?eventNo=${props.picked}`)
+        adminPrivateApi.get(`/admin/eventDetail?eventNo=${props.picked}`)
+            //.then(response => response.json()) //axios 안쓸 때만 사용(axios는 자동 json변환해 줌)
+            .then(response => {
+                console.log(response.data);
+                setNo(response.data.eventNo);
+                setTitle(response.data.eventTitle);
+                setCreateAt(new Date(response.data.eventCreateAt));
+                setEndAt(new Date(response.data.eventEndAt));
 
-                const tn = data.eventThumbnail.toString();
-                const img = data.eventImg.toString();
+                const tn = response.data.eventThumbnail.toString();
+                const img = response.data.eventImg.toString();
 
                 setTxt_thumbnail(tn.substring(tn.lastIndexOf("\\") + 1));
                 setTxt_image(img.substring(img.lastIndexOf("\\") + 1));
 
                 //수정한 게 있는지 확인용
-                setOrigin_title(data.eventTitle);
-                setOrigin_createAt(new Date(data.eventCreateAt));
-                setOrigin_endAt(new Date(data.eventEndAt));
+                setOrigin_title(response.data.eventTitle);
+                setOrigin_createAt(new Date(response.data.eventCreateAt));
+                setOrigin_endAt(new Date(response.data.eventEndAt));
             })
+            // .then(data => {
+            //     console.log(data);
+            //     setNo(data.eventNo);
+            //     setTitle(data.eventTitle);
+            //     setCreateAt(new Date(data.eventCreateAt));
+            //     setEndAt(new Date(data.eventEndAt));
+
+            //     const tn = data.eventThumbnail.toString();
+            //     const img = data.eventImg.toString();
+
+            //     setTxt_thumbnail(tn.substring(tn.lastIndexOf("\\") + 1));
+            //     setTxt_image(img.substring(img.lastIndexOf("\\") + 1));
+
+            //     //수정한 게 있는지 확인용
+            //     setOrigin_title(data.eventTitle);
+            //     setOrigin_createAt(new Date(data.eventCreateAt));
+            //     setOrigin_endAt(new Date(data.eventEndAt));
+            // })
             .catch(error => {
                 console.log(error);
                 alert('이벤트 정보를 불러올 수 없습니다.');
@@ -138,16 +158,19 @@ export default function CompEventUpdater(props) {
             try {
                 // async function & await fetch : 'synchronous' request-response pair
                 // async&await이나 then()은 같은 것
-                const response = await fetch('http://localhost:9090/admin/event', {
-                    method: 'PUT',
-                    headers: {},
-                    body: formData
-                    //헤더타입을 빈 객체로 정의하는 이유 
-                    // 헤더를 'Content-Type': 'multipart/form-data'로 명시해주면 boundary가 자동으로 붙어서 컨트롤러에서 받을 떄 boundary를 맞춰줘야 함
-                    // 헤더를 명시하지 않으면 실제로는 'Content-Type': 'multipart/form-data'으로 만들어지지만 boundary는 붙지 않음
-                    // 헤더타입이 json이 아니기 때문에 ('Content-Type': 'application/json')
-                    // body도 json으로 변환하지 않음 (JSON.stringfy(object))
-                });
+                // const response = await fetch('http://localhost:9090/admin/event', {
+                //     method: 'PUT',
+                //     headers: {},
+                //     body: formData
+                //     //헤더타입을 빈 객체로 정의하는 이유 
+                //     // 헤더를 'Content-Type': 'multipart/form-data'로 명시해주면 boundary가 자동으로 붙어서 컨트롤러에서 받을 떄 boundary를 맞춰줘야 함
+                //     // 헤더를 명시하지 않으면 실제로는 'Content-Type': 'multipart/form-data'으로 만들어지지만 boundary는 붙지 않음
+                //     // 헤더타입이 json이 아니기 때문에 ('Content-Type': 'application/json')
+                //     // body도 json으로 변환하지 않음 (JSON.stringfy(object))
+                // }); //axios 안쓸 때
+
+                const response = await adminPrivateApi.put('/admin/event', formData, {headers: {}});
+
                 if (response.ok) {
                     alert('이벤트를 정상적으로 수정했습니다.');
                     window.location.href = "/admin-event"; //refreshing window
