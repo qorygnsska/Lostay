@@ -48,7 +48,7 @@ public class AdminLoginController {
 		
 		//admin도 토큰 만들 때 CustomeOAuth2User로 만듬
 		Long adminNo = customOAuth2Admin.getUserNo();
-		System.out.println("adminCont.logout() " + adminNo);
+		System.out.println("adminController.logout() " + adminNo);
 		
 		boolean result = adminService.logoutAdmin(adminNo);
 		
@@ -60,7 +60,4 @@ public class AdminLoginController {
 		
 	}
 	
-	
-		
-		
 }

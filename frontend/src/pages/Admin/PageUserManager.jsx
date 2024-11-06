@@ -3,8 +3,26 @@ import CompHeaderAdmin from '../../componets/Header/CompHeaderAdmin'
 import { Container, Form, Pagination, Table } from 'react-bootstrap'
 import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
 import { adminPrivateApi } from '../../api/adminApi';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export default function PageUserManager() {
+
+    /////////////////////////////////////////////////////////////////LoginState
+    const navigate = useNavigate();
+    const adminState = useSelector((state) => state.user.userState);
+    const adminAT = useSelector((state) => state.user.userAt)
+
+    useEffect(() => {
+
+        if (adminState === false) {
+            alert('접근이 불가능합니다.');
+            navigate("/admin-login");
+        } else {
+            console.log(adminAT);
+        }
+    }, []);
+    /////////////////////////////////////////////////////////////////LoginState
 
     //default: 전체 보기 vs 비활성 유저만 보기
     const [viewInactive, setViewInactive] = useState(false);
@@ -43,7 +61,7 @@ export default function PageUserManager() {
     // db에서 받아올 userList(array)
     const [userList, setUserList] = useState([]); //초기값은 []: empty array
 
-    const getUserList = (inactive ,userName, requestedPage) => {
+    const getUserList = (inactive, userName, requestedPage) => {
 
         console.log(`getUser ViewInactive: ${viewInactive} userName: ${userName} page: ${requestedPage}`);
 

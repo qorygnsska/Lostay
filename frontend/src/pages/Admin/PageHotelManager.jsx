@@ -6,8 +6,26 @@ import { adminPrivateApi } from '../../api/adminApi'
 import HotelEditAdmin from '../../componets/Admin/HotelEditAdmin'
 import RoomListAdmin from '../../componets/Admin/RoomListAdmin'
 import RoomEditAdmin from '../../componets/Admin/RoomEditAdmin'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 export default function PageHotelManager() {
+
+  /////////////////////////////////////////////////////////////////LoginState
+  const navigate = useNavigate();
+  const adminState = useSelector((state) => state.user.userState);
+  const adminAT = useSelector((state) => state.user.userAt)
+
+  useEffect(() => {
+
+    if (adminState === false) {
+      alert('접근이 불가능합니다.');
+      navigate("/admin-login");
+    } else {
+      console.log(adminAT);
+    }
+  }, []);
+  /////////////////////////////////////////////////////////////////LoginState
 
     // ==================== START ======================== //
     // 페이지 네이션
