@@ -53,8 +53,8 @@ public class RoomService {
 	public RoomListDTO findHotelRoomList(Long hotelNo, LocalDateTime checkInDate, LocalDateTime checkOutDate,
 			int peopleMax) {
 
-		LocalDateTime in = checkInDate.toLocalDate().atTime(15, 0);
-		LocalDateTime out = checkOutDate.toLocalDate().atTime(11, 0);
+		LocalDateTime in = checkInDate;
+		LocalDateTime out = checkOutDate;
 
 		long period = ChronoUnit.DAYS.between(checkInDate.toLocalDate(), checkOutDate.toLocalDate());
 //		Period period = Period.between(checkInDate.toLocalDate(), checkOutDate.toLocalDate());

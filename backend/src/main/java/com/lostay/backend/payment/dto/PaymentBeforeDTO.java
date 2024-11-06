@@ -1,5 +1,8 @@
 package com.lostay.backend.payment.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.AllArgsConstructor;
@@ -14,4 +17,6 @@ public class PaymentBeforeDTO {
 	private Long roomNo;
     private Long disNo;
     private String merchant_uid;
+    private LocalDateTime checkIn;
+    private LocalDateTime checkOut;
 }

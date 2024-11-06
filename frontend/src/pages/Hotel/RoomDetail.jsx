@@ -26,7 +26,7 @@ export default function RoomDetail() {
     const [error, setError] = useState(null);        // 에러 핸들링을 위한 state
     const [loading, setLoading] = useState(true);    // 로딩 상태 관리
 
-    
+
     // 기본 파라미터
     const { roomNo } = useParams();
     const { search } = useLocation();
@@ -42,9 +42,9 @@ export default function RoomDetail() {
           });
           setRoomDetail(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
         } catch (error) {
-          setError(error);  // 오류가 발생한 경우 에러 저장
+            setError(error);  // 오류가 발생한 경우 에러 저장
         } finally {
-          setLoading(false);  // 로딩 상태 종료
+            setLoading(false);  // 로딩 상태 종료
         }
     };
 
@@ -56,9 +56,9 @@ export default function RoomDetail() {
         });
         setRoomReviews(response.data);
         } catch (error) {
-        setError(error);
+            setError(error);
         } finally {
-        setLoading(false);
+            setLoading(false);
         }
     };
 
@@ -81,20 +81,20 @@ export default function RoomDetail() {
         <Container className='room--detail--container'>
             <BackNav title="객실상세" />
 
-            {RoomDetail?.roomImg.length > 0 && <HotelCarousel images={RoomDetail.roomImg}/>}
+            {RoomDetail?.roomImg.length > 0 && <HotelCarousel images={RoomDetail.roomImg} />}
 
             <div className='NameBox d-flex  justify-content-between'>
                 <div className=''>
-                <div className='RoomName'>{RoomDetail?.roomName}</div>
-                <Link to={`/RoomList/${RoomDetail?.hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`} className='HotelName'>{RoomDetail?.hotelName}<GrNext/></Link>
+                    <div className='RoomName'>{RoomDetail?.roomName}</div>
+                    <Link to={`/RoomList/${RoomDetail?.hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`} className='HotelName'>{RoomDetail?.hotelName}<GrNext /></Link>
                 </div>
-               
-               {/* 카카오 공유 api */}
+
+                {/* 카카오 공유 api */}
                 <KakaoApiShare
-         title={RoomDetail?.roomName}
-         address={RoomDetail?.hotelAdress}
-        Thumbnail={RoomDetail?.roomThumbnail}
-        /> 
+                    title={RoomDetail?.roomName}
+                    address={RoomDetail?.hotelAdress}
+                    Thumbnail={RoomDetail?.roomThumbnail}
+                />
 
 
             </div>
@@ -121,20 +121,20 @@ export default function RoomDetail() {
 
             <div className='ReTitle'>객실 리뷰</div>
             {RoomReviews.length > 0 ? (
-                <RoomReview HotelInfo={RoomReviews[0]} Reviews={RoomReviews}/>
+                <RoomReview HotelInfo={RoomReviews[0]} Reviews={RoomReviews} />
             ) : (
                 <div>리뷰가 없습니다.</div>
             )}
-            
+
 
 
             <div className='LoTitle'>위치/길찾기</div>
             <span className='LoContent'>{RoomDetail?.hotelAdress}</span>
-            <Button id='FindBtn' onClick={handleFindButtonClick}>길찾기<IoNavigate /></Button> 
-                
+            <Button id='FindBtn' onClick={handleFindButtonClick}>길찾기<IoNavigate /></Button>
+
             {RoomDetail?.hotelAdress.length > 0 && <KakaoMap Location={RoomDetail.hotelAdress} />}
 
-            {RoomDetail && <RoomNav info={RoomDetail}/>}
+            {RoomDetail && <RoomNav info={RoomDetail} />}
 
             <Footer />
         </Container>

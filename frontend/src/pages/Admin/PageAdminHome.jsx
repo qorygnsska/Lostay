@@ -33,9 +33,9 @@ export default function PageAdminHome() {
   const getData = async () => {
     try {
       const [yearChartResp, branchChartResp, monthChartResp] = await Promise.all([
-        adminPrivateApi.get('http://localhost:9090/admin/revenueYearChart'),
-        adminPrivateApi.get(`http://localhost:9090/admin/revenuebranchChart?year=${selectedYear}`),
-        adminPrivateApi.get(`http://localhost:9090/admin/revenueMonthChart?year=${selectedYear}`),
+        adminPrivateApi.get('/admin/revenueYearChart'),
+        adminPrivateApi.get(`/admin/revenuebranchChart?year=${selectedYear}`),
+        adminPrivateApi.get(`/admin/revenueMonthChart?year=${selectedYear}`),
 
       ])
 
@@ -55,8 +55,8 @@ export default function PageAdminHome() {
   const getMonthandBranchChartData = async (selectedYear) => {
     try {
       const [branchChartResp, monthChartResp] = await Promise.all([
-        adminPrivateApi.get(`http://localhost:9090/admin/revenuebranchChart?year=${selectedYear}`),
-        adminPrivateApi.get(`http://localhost:9090/admin/revenueMonthChart?year=${selectedYear}`),
+        adminPrivateApi.get(`/admin/revenuebranchChart?year=${selectedYear}`),
+        adminPrivateApi.get(`/admin/revenueMonthChart?year=${selectedYear}`),
 
       ]);
 

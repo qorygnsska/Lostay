@@ -78,7 +78,7 @@ public class JWTFilter extends OncePerRequestFilter {
     	String username = jwtUtil.getUsername(accessToken);
     	String role = jwtUtil.getRole(accessToken);
     	Long userNo = jwtUtil.getUserNo(accessToken);
-
+    	System.out.println("JWT: admin No " + userNo);
     	UserDTO userDTO = new UserDTO();
     	userDTO.setUserName(username);
     	userDTO.setUserRole(role);

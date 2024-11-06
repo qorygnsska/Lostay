@@ -292,9 +292,9 @@ export default function RoomList() {
         {RoomInfos.dto.hotelAdress?.length > 0 && <KakaoMap Location={RoomInfos.dto.hotelAdress} />}
 
         <div className='LoAttract'>
-          {RoomInfos.dto.hotelTouristAttraction.map((attract, idx) => (
+          {RoomInfos.dto.hotelTouristAttraction?.map((attract, idx) => (
             <div className='AttractInfo' key={idx}><BsDot id='AttractIcon'/>{attract}</div>
-          ))};
+          ))}
         </div>
       </div>
 

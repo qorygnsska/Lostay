@@ -41,7 +41,7 @@ export default function CompAdminBtn(props) {
       const response = await adminPrivateApi.delete(`/admin/event/${props.no}`);
       //console.log(response.ok);
       
-      if (response.ok) {
+      if (response.status===200) {
         alert('이벤트를 정상적으로 삭제했습니다.');
         window.location.href = "/admin-event"; //refreshing window
       } else {

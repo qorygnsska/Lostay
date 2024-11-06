@@ -16,4 +16,6 @@ public interface AdminRedisRepository extends CrudRepository<AdminRefreshToken, 
 
 	Optional<Admin> findByAdminNo(Long adminNo);
 
+	void deleteByAdminId(String adminId);
+
 }

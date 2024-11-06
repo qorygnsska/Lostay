@@ -103,7 +103,8 @@ export default function CompEventInserter(props) {
                 // axios 안 쓸 때
 
                 const response = await adminPrivateApi.post('/admin/event', formData, {headers: {}});
-                if (response.ok) {
+
+                if (response.status===201) {
                     alert('이벤트를 정상적으로 등록했습니다.');
                     window.location.href = "/admin-event"; //refreshing window
                 } else {

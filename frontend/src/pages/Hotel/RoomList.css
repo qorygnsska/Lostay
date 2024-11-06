@@ -89,17 +89,12 @@
      }
 
      .LoAttract{
-          margin-top: 10px;
-          margin-left: 10px;
-
+          margin-top: 12px;
      }
 
      .AttractInfo{
           color: gray;
-     }
-
-     #AttractIcon{
-
+          margin-bottom: 5px;
      }
 
      .RLtitle {

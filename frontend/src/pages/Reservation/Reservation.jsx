@@ -69,6 +69,8 @@ export default function Reservation() {
             return;
         }
 
+        window.scrollTo(0, 0);
+
         const getData = async () => {
             // URL 파라미터에서 roomNo를 추출
 
@@ -382,6 +384,7 @@ export default function Reservation() {
         }
     };
 
+    // ==================== START ======================== //
     // 결제 (아임포트)
     const { IMP } = window;
     IMP.init('imp67745024');
@@ -410,6 +413,8 @@ export default function Reservation() {
                 roomNo: hotelRoomInfo.roomNo,
                 disNo: payType.disNo,
                 merchant_uid: merchant_uid,
+                checkIn: `${hotelRoomInfo.roomCheckIn}T${hotelRoomInfo.roomCheckinTime}`,
+                checkOut: `${hotelRoomInfo.roomCheckOut}T${hotelRoomInfo.roomCheckoutTime}`,
             })
                 // 사전검증 성공
                 .then((res) => {
@@ -535,8 +540,8 @@ export default function Reservation() {
             alert('고객센터에 전화해주세요')
         }
     }
-
-
+    // 결제
+    // ==================== START ======================== //
 
 
     const [useAllPoints, setUseAllPoints] = useState(false); // 포인트 모두 사용

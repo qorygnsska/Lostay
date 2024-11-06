@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { Button, Container, Nav, Navbar } from 'react-bootstrap'
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { adminPrivateApi } from '../../api/adminApi';
+import { useDispatch } from 'react-redux';
+import { adminLogout } from '../../store/adminSlice';
 
 export default function CompHeaderAdmin() {
 
@@ -47,14 +50,28 @@ export default function CompHeaderAdmin() {
     // [x] : x이 update될 때 실행
 
 
+    const dispatch = useDispatch(); //redux
 
     const handleLogout = () => {    //#btn_logout 클릭 시 : 관리자 로그아웃
 
         if (window.confirm('정말 로그아웃?')) {
-            console.log('로그아웃 실행');
 
-            //window.location.href="/"; //메인페이지로 이동
-            navigate('/');  //not refreshing
+            adminPrivateApi.post('/admin/logout')
+                .then(response => {
+                    console.log(response);
+                    if (response.status===200) {
+                        alert('정상적으로 로그아웃되었습니다.');
+                        dispatch(adminLogout()); //redux 컨테이너에서 관리자 삭제
+                        navigate('/admin-login');  //not refreshing
+                        //window.location.href="/"; //메인페이지로 이동
+                    } else {
+                        alert('서버와 통신이 원활하지 않습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    alert('서버와 통신이 원활하지 않습니다.');
+                })
         }
     }
 
