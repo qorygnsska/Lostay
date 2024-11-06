@@ -2,9 +2,7 @@ package com.lostay.backend.hotel.controller;
 
 import java.util.Arrays;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,10 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.lostay.backend.elasticsearch.service.EsService;
 import com.lostay.backend.hotel.service.HotelService;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -45,7 +41,6 @@ public class HotelController {
 
 		// Elasticserach로 입력어를 토큰화 : filteredSearch(List)
 		List<String> filteredSearch = ess.searchToken(hotelsearch);
-		String[] tokenArr = filteredSearch.toArray(new String[filteredSearch.size()]);
 
 
 		log.info("입력: " + hotelsearch);
@@ -60,8 +55,12 @@ public class HotelController {
 		log.info("등급: " + Arrays.toString(hotelRating));
 		log.info("시설: " + Arrays.toString(hotelAmenities));
 		log.info("정렬: " + sort);
+		
+		//토큰화한 입력어를 배열로 변환
+		String[] searchTokenArray = filteredSearch.toArray(new String[filteredSearch.size()]);
+		
 		// 호텔 서비스 호출
-		return new ResponseEntity<>(hotelService.findHotelsFilter(hotelAmenities, tokenArr, minRoomPrice,
+		return new ResponseEntity<>(hotelService.findHotelsFilter(hotelAmenities, searchTokenArray, minRoomPrice,
 				maxRoomPrice, checkIn, checkOut, roomPeopleInfo, soldOut, roomDiscountState, hotelRating, sort),
 				HttpStatus.OK);
 	}

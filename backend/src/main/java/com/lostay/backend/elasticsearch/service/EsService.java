@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.analysis.TokenFilter;
+import co.elastic.clients.elasticsearch._types.analysis.Tokenizer;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.indices.AnalyzeRequest;
@@ -106,7 +108,8 @@ public class EsService {
 											.analyzer("nori")
 											.text(searchVal)
 											.build();
-									
+												
+			
 			AnalyzeResponse response = esc.indices().analyze(request);
 		
 			//Elasticsearch에서 결과물로 받은 토큰들을 List<String>
