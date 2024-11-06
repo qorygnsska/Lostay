@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lostay.backend.discount.entity.Discount;
 import com.lostay.backend.discount.repository.DiscountRepository;
+import com.lostay.backend.payment.dto.PaymentBeforeDTO;
 import com.lostay.backend.payment.dto.PaymentDTO;
 import com.lostay.backend.payment.entity.Payment;
 import com.lostay.backend.payment.repository.PaymentRepository;
@@ -298,6 +299,17 @@ public class PaymentService {
 	// 이용가능한 객실 수
 	public Long findAvailableCount(PaymentDTO dto) {
 
+		LocalDateTime in = dto.getCheckIn();
+		LocalDateTime out = dto.getCheckOut();
+		Long roomNo = dto.getRoomNo();
+		Long count = roomRepo.findAvailableCount(roomNo, in, out);
+
+		return count;
+	}
+
+	
+	public Long findAvailableCount(PaymentBeforeDTO dto) {
+		
 		LocalDateTime in = dto.getCheckIn();
 		LocalDateTime out = dto.getCheckOut();
 		Long roomNo = dto.getRoomNo();
