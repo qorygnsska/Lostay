@@ -11,7 +11,7 @@ import { privateApi } from "../../api/api";
 import { replace, unstable_HistoryRouter, useLocation, useNavigate, useNavigationType } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsTimerActive, setPageTimer } from "../../store/timerSlice";
-
+import { useHistory } from 'react-router-dom';
 
 const agreeInfo = [
     { id: 1, title: "현장결제", content: "추가인원 비용등의 현장결제 발생 상품을 확인하세요." },
@@ -210,6 +210,7 @@ export default function Reservation() {
 
         // 뒤로 가기 버튼을 눌렀을 때 타이머 초기화
         const handlePopState = () => {
+            window.history.pushState({}, null, null);
             localStorage.removeItem("timerEndTime"); // 타이머 종료 시간 삭제
         };
 
@@ -225,11 +226,11 @@ export default function Reservation() {
     const navigationType = useNavigationType();
     useEffect(() => {
 
-        // 새로고침을 제외하고 초기화
         if (navigationType !== "POP") {
             localStorage.removeItem("timerEndTime");
         }
     }, [navigationType]);
+
 
 
     // 인증번호 전송 버튼 활성화 여부
