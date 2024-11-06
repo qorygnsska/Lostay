@@ -58,7 +58,7 @@ export default function PageHotelManager() {
             if (response.status === 200) {
                 setHotelRoomList(response.data)
                 setTotalPage(response.data.totalPages)
-                console.log(response.data)
+                //console.log(response.data)
             } else {
                 console.log('에러')
             }

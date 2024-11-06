@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { Calendar } from 'primereact/calendar';
+import { adminPrivateApi } from '../../api/adminApi';
 
 export default function CompEventInserter(props) {
 
@@ -88,17 +89,20 @@ export default function CompEventInserter(props) {
 
             try {
                 // async function & await fetch : 'synchronous' request-response pair
-                const response = await fetch('http://localhost:9090/admin/event', {
-                    method: 'POST',
-                    headers: {},
-                    body: formData
-                    //헤더타입을 빈 객체로 정의하는 이유 
-                    // 헤더를 'Content-Type': 'multipart/form-data'로 명시해주면 boundary가 자동으로 붙어서 컨트롤러에서 받을 떄 boundary를 맞춰줘야 함
-                    // 헤더를 명시하지 않으면 실제로는 'Content-Type': 'multipart/form-data'으로 만들어지지만 boundary는 붙지 않음
-                    // 헤더타입이 json이 아니기 때문에 ('Content-Type': 'application/json')
-                    // body도 json으로 변환하지 않음 (JSON.stringfy(object))
-                });
+                // const response = await fetch('http://localhost:9090/admin/event', {
+                //     method: 'POST',
+                //     headers: {},
+                //     body: formData
+                //     //헤더타입을 빈 객체로 정의하는 이유 
+                //     // 헤더를 'Content-Type': 'multipart/form-data'로 명시해주면 boundary가 자동으로 붙어서 컨트롤러에서 받을 떄 boundary를 맞춰줘야 함
+                //     // 헤더를 명시하지 않으면 실제로는 'Content-Type': 'multipart/form-data'으로 만들어지지만 boundary는 붙지 않음
+                //     // 헤더타입이 json이 아니기 때문에 ('Content-Type': 'application/json')
+                //     // body도 json으로 변환하지 않음 (JSON.stringfy(object))
+                // });
                 //
+                // axios 안 쓸 때
+
+                const response = await adminPrivateApi.post('/admin/event', formData, {headers: {}});
                 if (response.ok) {
                     alert('이벤트를 정상적으로 등록했습니다.');
                     window.location.href = "/admin-event"; //refreshing window

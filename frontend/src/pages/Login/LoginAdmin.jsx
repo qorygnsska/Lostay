@@ -42,7 +42,7 @@ export default function LoginAdmin() {
 
     const Login = async () => {
         try {
-            const response = await axios.post('http://localhost:9090/admin/login', {
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/admin/login`, {
                 id: id,
                 pw: pw,
             },
@@ -63,7 +63,7 @@ export default function LoginAdmin() {
     const axiosAccessToken = async () => {
         try {
             const response = await axios.post(
-                "http://localhost:9090/adminReissue/NewAccess",
+                `${process.env.REACT_APP_BASE_URL}/adminReissue/NewAccess`,
                 {},
                 {
                     withCredentials: true,

@@ -241,6 +241,7 @@ public class PaymentService {
 		Reservation reservation = newReservation.get();
 		reservation.setResStatus("N");
 		payment.setPayStatus("N");
+		payment.setCancleDay(LocalDateTime.now());
 		resRepo.save(reservation);
 		payRepo.save(payment);
 

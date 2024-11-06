@@ -3,13 +3,29 @@ import BackNav from "../../../componets/BackNav/BackNav";
 import Navbar from "../../../componets/Navbar/Navbar";
 import { Dropdown, Nav } from "react-bootstrap";
 import BookingHistoryCom from "../../../componets/MyPage/BookingHistory/BookingHistory";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { privateApi } from '../../../api/api'
+import { useSelector } from "react-redux";
 
 
 
 
 export default function BookingHistory() {
+
+    const user = useSelector((state) => state.user.userState);
+    const userAt = useSelector((state) => state.user.userAt)
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user === false || userAt === null) {
+            alert("로그인 후 이용해주세요.");
+            navigate("/login", { replace: true });
+
+            return;
+        }
+    }, []);
+
+
     const setMonth = [3, 6, 12];
     const tabList = ["예약한 숙소", "이용한 숙소", "취소한 숙소"];
 
@@ -73,6 +89,8 @@ export default function BookingHistory() {
             console.error(error);
         }
     };
+
+
 
     useEffect(() => {
         getData(activeTab);

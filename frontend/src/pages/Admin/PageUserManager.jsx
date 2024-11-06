@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import CompHeaderAdmin from '../../componets/Header/CompHeaderAdmin'
 import { Container, Form, Pagination, Table } from 'react-bootstrap'
 import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
-import axios from 'axios';
+import { adminPrivateApi } from '../../api/adminApi';
 
 export default function PageUserManager() {
 
@@ -49,10 +49,10 @@ export default function PageUserManager() {
 
         //인증 토큰 연계한 Axios 'GET' request by privateApi(Customized Comp)
         // async&await이나 then()은 같은 것
-        axios.get(`http://localhost:9090/admin/userList?inactive=${inactive}&userName=${userName}&page=${requestedPage}`)
+        adminPrivateApi.get(`/admin/userList?inactive=${inactive}&userName=${userName}&page=${requestedPage}`)
             .then(response => {
                 //console.log(response);
-                console.log(response.data);
+                //console.log(response.data);
                 setUserList(response.data.content); //Page<DTO>.getContent()
                 setPageCount(response.data.totalPages); // Page<DTO>.getTotalPages()
             })
@@ -83,10 +83,11 @@ export default function PageUserManager() {
                         <CompAdminSearch where={'admin-user'} callParent={functionForMyChild} />
                     </div>
 
-                    <Table striped bordered hover id='table_entire_user'>
+                    <Table bordered hover id='table_entire_user'>
+                        {/* striped  */}
                         <thead id="table_header">
                             <tr>
-                                <th className="user_no">#</th>
+                                <th className="user_no">No</th>
                                 <th className="user_name">이름</th>
                                 <th className="user_nick">별명</th>
                                 <th className="user_email">이메일</th>

@@ -5,6 +5,7 @@ import CompHeaderAdmin from '../../componets/Header/CompHeaderAdmin'
 import { Button, Container, Form, Pagination, Table } from 'react-bootstrap'
 import CompAdminBtn from '../../componets/Admin/CompAdminBtn'
 import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
+import { adminPrivateApi } from '../../api/adminApi'
 
 
 export default function PageEventManager() {
@@ -65,13 +66,18 @@ export default function PageEventManager() {
         console.log(`getEvent ViewOnGoing: ${viewOngoing} eventTitle: ${eventTitle} page: ${requestedPage}`);
 
         // fetch() : (default) request 'GET', 'async' // async&await이나 then()은 같은 것
-        fetch(`http://localhost:9090/admin/eventList?onGoing=${onGoing}&eventTitle=${eventTitle}&page=${requestedPage}`)    
-            .then(response => response.json())  // response가 오면 json 변환
-            .then(data => {
-                console.log(data);
-                setEventList(data.content); // Page<DTO>.getContent()
-                setPageCount(data.totalPages);  // Page<DTO>.getTotalPages()
+        //fetch(`http://localhost:9090/admin/eventList?onGoing=${onGoing}&eventTitle=${eventTitle}&page=${requestedPage}`) //axios안쓸 때
+        adminPrivateApi.get(`/admin/eventList?onGoing=${onGoing}&eventTitle=${eventTitle}&page=${requestedPage}`)
+            //.then(response => response.json())  // response가 오면 json 변환 //axios 안쓸 때만 사용(axios는 자동 json변환해 줌)
+            .then(response => {
+                setEventList(response.data.content); // Page<DTO>.getContent()
+                setPageCount(response.data.totalPages);  // Page<DTO>.getTotalPages()
             })
+            // .then(data => { //axios안쓸 때
+            //     //console.log(data);
+            //     setEventList(data.content); // Page<DTO>.getContent()
+            //     setPageCount(data.totalPages);  // Page<DTO>.getTotalPages()
+            // })
             .catch(error => {
                 console.log(error);
                 alert('이벤트 정보를 불러올 수 없습니다.');
@@ -101,10 +107,11 @@ export default function PageEventManager() {
                         </div>
                     </div>
 
-                    <Table striped bordered hover id="table_entire_event">
+                    <Table bordered hover id="table_entire_event">
+                        {/* striped  */}
                         <thead id="table_header">
                             <tr>
-                                <th className="event_no">#</th>
+                                <th className="event_no">No</th>
                                 <th className="event_title">이벤트 제목</th>
                                 <th className="event_period">이벤트 기간</th>
                                 <th className="btn_container">관리</th>
@@ -133,6 +140,7 @@ export default function PageEventManager() {
                                         <td className="btn_container">
                                             {/*수정 또는 삭제 버튼에 어디서 뭘 누르는지 알려주기 */}
                                             <CompAdminBtn whoAreYou={'update_event'} no={event.eventNo} callParent={openEventUpdater} >수정</CompAdminBtn>
+                                            <span>/</span>
                                             <CompAdminBtn whoAreYou={'delete_event'} no={event.eventNo} >삭제</CompAdminBtn>
                                         </td>
                                     </tr>

@@ -13,6 +13,8 @@ import { Provider } from "react-redux";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+import ScrollToTop from "./scrollRestoration/ScrollToTop";
+
 // 효준
 import Home from "./pages/Home/Home";                                       // 메인 페이지
 import Login from "./pages/Login/Login";                                    // 로그인 페이지
@@ -93,7 +95,9 @@ root.render(
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
             <QueryClientProvider client={queryClient}>
-                <RouterProvider router={router} />
+                <RouterProvider router={router}>
+                    <ScrollToTop />
+                </RouterProvider>
             </QueryClientProvider>
         </PersistGate>
     </Provider>

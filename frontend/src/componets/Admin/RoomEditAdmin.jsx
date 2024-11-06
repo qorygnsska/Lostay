@@ -219,9 +219,7 @@ export default function RoomEditAdmin({ propRoom, roomModalToggle, roomModalShow
             alert('업뎃실패')
         }
     }
-    const onClose = () => {
-        console.log('dd')
-    }
+
 
     const formatTimeForLocalTime = (time) => {
         // '15:00'와 같은 형식으로 변환
