@@ -202,7 +202,7 @@ public class AdminService {
 
 	// 관리자 페이지 이벤트 삭제(1027 JIP)
 	public boolean deleteEvent(Long eventNo) {
-		// System.out.println("adminServ.deleteEvent: " + eventNo);
+		 //System.out.println("adminServ.deleteEvent: " + eventNo);
 
 		if (eventRepo.existsById(eventNo)) {
 			eventRepo.deleteById(eventNo);

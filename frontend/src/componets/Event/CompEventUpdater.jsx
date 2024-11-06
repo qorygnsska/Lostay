@@ -74,7 +74,7 @@ export default function CompEventUpdater(props) {
         adminPrivateApi.get(`/admin/eventDetail?eventNo=${props.picked}`)
             //.then(response => response.json()) //axios 안쓸 때만 사용(axios는 자동 json변환해 줌)
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 setNo(response.data.eventNo);
                 setTitle(response.data.eventTitle);
                 setCreateAt(new Date(response.data.eventCreateAt));
@@ -171,7 +171,7 @@ export default function CompEventUpdater(props) {
 
                 const response = await adminPrivateApi.put('/admin/event', formData, {headers: {}});
 
-                if (response.ok) {
+                if (response.status===200) {
                     alert('이벤트를 정상적으로 수정했습니다.');
                     window.location.href = "/admin-event"; //refreshing window
                 } else {
