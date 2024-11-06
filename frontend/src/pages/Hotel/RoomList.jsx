@@ -17,6 +17,7 @@ import CompSearchBox from '../../componets/Search/CompSearchBox';
 import { useSelector } from 'react-redux';
 import Navbar from '../../componets/Navbar/Navbar';
 import NavTop from '../../componets/NavToTop/NavTop';
+import { BsDot } from "react-icons/bs";
 
 import KakaoApiShare from '../../componets/KakaoApi/KakaoApishare';
 
@@ -107,7 +108,7 @@ export default function RoomList() {
   // 룸리스트 가져오기
   const fetchHotelRoomList = async () => {
     try {
-      const response = await axios.get('http://localhost:9090/room/HotelRoomList', {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/room/HotelRoomList`, {
         params: { hotelNo, checkInDate, checkOutDate, peopleMax },
       });
       setRoomInfos(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
@@ -121,7 +122,7 @@ export default function RoomList() {
   // 룸리스트 리뷰3개 가져오기
   const fetchHotelRoomListReview3 = async () => {
     try {
-      const response = await axios.get('http://localhost:9090/review/InquireRoom3', {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/review/InquireRoom3`, {
         params: { hotelNo },
       });
       setRoomReviews(response.data);
@@ -147,7 +148,8 @@ export default function RoomList() {
 
   const handleFindButtonClick = () => {
     const encodedLocation = encodeURIComponent(RoomInfos.dto.hotelAdress); // 주소를 URL 인코딩
-    window.location.href = `/HotelMap?location=${encodedLocation}`;
+    const encodedLocation2 = encodeURIComponent(RoomInfos.dto.hotelName); // 호텔이름을 URL 인코딩
+    window.location.href = `/HotelMap?location=${encodedLocation}&hotelName=${encodedLocation2}`;
   };
 
   // 찜
@@ -288,6 +290,12 @@ export default function RoomList() {
         <Button id='FindBtn' onClick={handleFindButtonClick}>길찾기<IoNavigate /></Button>
 
         {RoomInfos.dto.hotelAdress?.length > 0 && <KakaoMap Location={RoomInfos.dto.hotelAdress} />}
+
+        <div className='LoAttract'>
+          {RoomInfos.dto.hotelTouristAttraction.map((attract, idx) => (
+            <div className='AttractInfo' key={idx}><BsDot id='AttractIcon'/>{attract}</div>
+          ))};
+        </div>
       </div>
 
       <div className='RLtitle'>객실선택</div>

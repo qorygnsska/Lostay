@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Button, Container, FormControl, InputGroup, ListGroup, Modal } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom';
 import Navbar from '../../componets/Navbar/Navbar';
@@ -16,6 +16,7 @@ import { IoTrain } from "react-icons/io5";
 
 import { CgBorderStyleDotted } from "react-icons/cg";
 import { RxCross2 } from "react-icons/rx";
+import { FaCircleDot } from "react-icons/fa6";
 import BackNav from "../../componets/BackNav/BackNav";
 
 const {kakao} = window;
@@ -24,11 +25,19 @@ export default function HotelMap() {
 
     const geocoder = new kakao.maps.services.Geocoder();
 
+    // 폼에서 주소 받아오기
+    const startRef = useRef();
+    const endRef = useRef();
+    const startNameRef = useRef();
+    const endNameRef = useRef();
+
     const { search } = useLocation();
     const location = new URLSearchParams(search).get('location'); // 쿼리 파라미터에서 location 값 가져오기
+    const hotelName = new URLSearchParams(search).get('hotelName'); // 쿼리 파라미터에서 hotelName 값 가져오기
 
     // 현재 위치 가져오기
     const [myaddress, setmyAddress] = useState('');
+    const myaddressName = '현 위치';
     const [error, setError] = useState(null);
     useEffect(() => {
         // 위치 정보를 가져오는 함수
@@ -109,6 +118,11 @@ export default function HotelMap() {
         }
     }, [car, bus, walk]); // 상태가 변경될 때마다 useEffect 실행
 
+    useEffect(() => {
+        if(car === true || bus === true || walk === true)
+        handleSubmit(new Event('submit'));
+        
+    }, [startRef.current?.value, endRef.current?.value]); // 상태가 변경될 때마다 useEffect 실행
    
 
 
@@ -212,7 +226,7 @@ export default function HotelMap() {
     const [searchResults, setSearchResults] = useState([]); // 검색 결과 저장
 
     // 모달 컴포넌트 생성 함수
-    const renderModal = (isOpen, closeModal, inputRef) => (
+    const renderModal = (isOpen, closeModal, inputRef, nameRef) => (
         <Modal show={isOpen} onHide={closeModal}>
             <Modal.Header closeButton>
                 <Modal.Title>주소 검색</Modal.Title>
@@ -228,7 +242,7 @@ export default function HotelMap() {
                     {searchResults.map((result) => (
                         <ListGroup.Item
                             key={result.id}
-                            onClick={() => handleSelectAddress(result.address_name, inputRef, closeModal)}
+                            onClick={() => handleSelectAddress(result.place_name, result.address_name, inputRef, nameRef, closeModal)}
                             style={{ cursor: 'pointer' }}
                         >
                             {result.place_name} - {result.address_name}
@@ -259,15 +273,12 @@ export default function HotelMap() {
     };
 
     // 주소 선택 시 input에 값 넣고 모달 닫기 및 폼 전송
-    const handleSelectAddress = async (address, inputRef, closeModal) => {
+    const handleSelectAddress = async (placeName, address, inputRef, nameRef, closeModal) => {
         inputRef.current.value = address; 
+        nameRef.current.value = placeName;
         closeModal(); 
         
     };
-
-    // 폼에서 주소 받아오기
-    const startRef = useRef();
-    const endRef = useRef();
         
 
     // 통행료 포맷 함수
@@ -317,12 +328,20 @@ export default function HotelMap() {
         });
     };
 
+    useLayoutEffect(() => {
+        if(location === null){
+            alert("비정상적인 접근입니다.");
+            window.location.href = '/';
+        }
+    })
 
     // 맵 띄우기
     useEffect(() => {
         if (myaddress) {
             startRef.current.value = myaddress;// 폼의 출발지에 자동으로 채우기
+            startNameRef.current.value = myaddressName;
             endRef.current.value = location; 
+            endNameRef.current.value = hotelName;
         
             const container = document.getElementById('KakaoMap');
 
@@ -442,10 +461,15 @@ export default function HotelMap() {
     // 마커 찍기
     const addMarker = (coords, text) => {
         if (!map) return; // 지도가 없으면 종료
+        
+        let content = '';
 
         const markerPosition = new kakao.maps.LatLng(coords.latitude, coords.longitude);
-
-        const content = `<div class ="marker"><label class ="markerLa">${text}</label></div>`;
+        if(text === "출발"){
+            content = `<div class ="startmarker"><label class ="markerLa">${text}</label></div>`;
+        }else{
+            content = `<div class ="endmarker"><label class ="markerLa">${text}</label></div>`;
+        }
 
         // 커스텀 오버레이를 생성합니다
         const customOverlay = new kakao.maps.CustomOverlay({
@@ -730,13 +754,17 @@ export default function HotelMap() {
                 <div className='FormBox'>
 
                     <form onSubmit={handleSubmit}>
-                        <div>
-                            <input type='text' name='start' id='start' placeholder='출발지를 입력하세요.' ref={startRef} onClick={() => setIsStartModalOpen(true)} readOnly required/>
-                            {renderModal(isStartModalOpen, () => setIsStartModalOpen(false), startRef)}
+                        <div className='startDiv'>
+                            <div id='startIcon'><FaCircleDot/></div>
+                            <input type='text' name='startName' id='start' placeholder='출발지를 입력하세요.' ref={startNameRef} onClick={() => setIsStartModalOpen(true)} readOnly required/>
+                            <input type='text' name='start' id='start' placeholder='출발지를 입력하세요.' ref={startRef} readOnly required hidden/>
+                            {renderModal(isStartModalOpen, () => setIsStartModalOpen(false), startRef, startNameRef)}
                         </div>
-                        <div>
-                            <input type='text' name='end' id='end' placeholder='도착지를 입력하세요.' ref={endRef} onClick={() => setIsEndModalOpen(true)} readOnly required/>
-                            {renderModal(isEndModalOpen, () => setIsEndModalOpen(false), endRef)}
+                        <div className='endDiv'>
+                            <div id='endIcon'><FaCircleDot/></div>
+                            <input type='text' name='endName' id='end' placeholder='도착지를 입력하세요.' ref={endNameRef} onClick={() => setIsEndModalOpen(true)} readOnly required/>
+                            <input type='text' name='end' id='end' placeholder='도착지를 입력하세요.' ref={endRef} readOnly required hidden/>
+                            {renderModal(isEndModalOpen, () => setIsEndModalOpen(false), endRef, endNameRef)}
                         </div>
                         <div className='IconBox'>
                             {/* rgb(129, 173, 255) */}

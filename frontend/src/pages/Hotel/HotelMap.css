@@ -1,9 +1,9 @@
-.hotel--map--container{
+.hotel--map--container {
 
     padding: 0 !important;
 
 
-    .TopBox{
+    .TopBox {
         position: relative;
         width: 100%;
         height: 160px;
@@ -11,7 +11,7 @@
         background-color: #ff8d8d;
     }
 
-    .FormBox{
+    .FormBox {
         position: absolute;
         left: 5%;
         top: 10%;
@@ -20,10 +20,16 @@
 
     input::placeholder {
         color: white;
-        
+
     }
 
-    #start{
+    .startDiv,
+    .endDiv {
+        display: flex;
+        align-items: center;
+    }
+
+    #start {
         width: 100%;
         height: 43px;
         border-radius: 10px;
@@ -38,7 +44,14 @@
 
     }
 
-    #end{
+    #startIcon {
+        /* color: rgb(54, 142, 229); */
+        color: rgb(42, 137, 233);
+        margin-left: -10px;
+        margin-right: 10px;
+    }
+
+    #end {
         width: 100%;
         height: 43px;
         border-radius: 10px;
@@ -50,13 +63,22 @@
         background-color: #ffffff;
     }
 
-    .IconBox{
+    #endIcon {
+        /* color: rgb(226, 71, 89); */
+        color: rgb(221, 66, 84);
+        margin-left: -10px;
+        margin-right: 10px;
+    }
+
+    .IconBox {
         margin-top: 12px;
         display: flex;
         justify-content: space-around;
     }
 
-    .car, .bus, .walk{
+    .car,
+    .bus,
+    .walk {
         cursor: pointer;
         text-align: center;
         font-size: 18px;
@@ -67,20 +89,22 @@
         color: white;
     }
 
-    .car:hover, .bus:hover, .walk:hover{
+    .car:hover,
+    .bus:hover,
+    .walk:hover {
         color: white;
         /* background-color: rgb(129, 173, 255); */
         background-color: #ffbaba;
     }
 
 
-    #KakaoMap{
+    #KakaoMap {
         position: relative;
         width: 100%;
         height: 721px;
     }
 
-    .FindInfo{
+    .FindInfo {
         position: absolute;
         top: 78%;
         left: 2.5%;
@@ -93,41 +117,41 @@
         padding: 15px;
     }
 
-    .FindInfo.hidden{
+    .FindInfo.hidden {
         visibility: hidden;
     }
 
-    .timeInfo{
+    .timeInfo {
         display: flex;
         align-items: end;
     }
 
-    .fareInfo{
+    .fareInfo {
         display: flex;
     }
 
-    #time{
+    #time {
         /* color: rgb(0, 143, 238); */
         color: #fb6969;
         font-size: 25px;
     }
 
-    #km{
+    #km {
         margin-left: 5px;
     }
 
-    #toll{
+    #toll {
         color: gray;
     }
 
-    #taxi{
+    #taxi {
         color: gray;
         margin-left: 4px;
     }
 
 
 
-    .busInfo{
+    .busInfo {
         position: absolute;
         z-index: 10;
         width: 100%;
@@ -139,11 +163,11 @@
         position: relative;
     }
 
-    .busInfo.hidden{
+    .busInfo.hidden {
         visibility: hidden;
     }
 
-    .category{
+    .category {
         position: sticky;
         top: 0;
         z-index: 10;
@@ -153,7 +177,7 @@
         margin-bottom: 7px;
     }
 
-    #categoryItem{
+    #categoryItem {
         cursor: pointer;
         text-align: center;
         align-items: center;
@@ -168,22 +192,22 @@
         margin-bottom: 20px;
     }
 
-    .busContent{
+    .busContent {
         overflow-y: auto;
         max-height: 580px;
     }
 
-    .busRoads{
+    .busRoads {
         margin-left: 10px;
         cursor: pointer;
     }
 
-    .totalTime{
+    .totalTime {
         font-weight: bold;
         font-size: 25px;
     }
 
-    .busroadInfo{
+    .busroadInfo {
         display: flex;
         gap: 10px;
         color: gray;
@@ -191,39 +215,39 @@
         margin-bottom: 20px;
     }
 
-    #busIcon{
+    #busIcon {
         color: rgb(23, 123, 255);
         width: 30px;
         margin-bottom: 3px;
     }
 
-    #routeName{
+    #routeName {
         font-size: 14px;
         color: gray;
         margin-left: 7px;
     }
 
-    #arrow{
+    #arrow {
         margin-left: 7px;
         color: gray;
         rotate: 90deg;
     }
 
-    #NonRoad{
+    #NonRoad {
         margin-top: 150px;
         text-align: center;
         font-size: 30px;
         font-weight: bold;
     }
 
-    #banIcon{
+    #banIcon {
         color: rgb(255, 134, 134);
         margin-bottom: 5px;
         margin-right: 7px;
     }
 
 
-    .ChoiceModal{
+    .ChoiceModal {
         padding-top: 7px;
         position: absolute;
         top: 231px;
@@ -235,54 +259,54 @@
         background-color: white;
     }
 
-    .ModalHeader{
+    .ModalHeader {
         margin-top: 7px;
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
 
-    .HeaderDiv{
+    .HeaderDiv {
         display: flex;
         align-items: center;
         gap: 10px;
     }
 
-    .mtotalTime{
+    .mtotalTime {
         margin-left: 20px;
         font-weight: bold;
         font-size: 25px;
     }
 
-    .mbusroadInfo{
+    .mbusroadInfo {
         display: flex;
         color: gray;
         gap: 7px;
         width: 300px;
     }
 
-    .clickBack{
+    .clickBack {
         cursor: pointer;
         margin-right: 30px;
         font-size: 20px;
     }
 
-    .ModalContent{
+    .ModalContent {
         margin-left: 10px;
         overflow-y: auto;
         max-height: 573px;
     }
 
-    #ModalTitle{
+    #ModalTitle {
         font-weight: bold;
     }
 
-    #ModalRoute{
+    #ModalRoute {
         margin-left: 30px;
         font-size: 15px;
     }
 
-    .ModalTime{
+    .ModalTime {
         margin-left: 30px;
         font-size: 15px;
         gap: 5px;
@@ -290,55 +314,64 @@
         color: #808080;
     }
 
-    .RowLine2{
+    .RowLine2 {
         border: 1px solid rgb(233, 233, 233);
         opacity: 50%;
         margin-top: 20px;
         margin-bottom: 20px;
     }
 
+    .startmarker {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        background-color: rgb(42, 137, 233);
+        border-radius: 80% 80% 80% 0;
+        transform: rotate(-45deg);
+        margin: 20px;
+    }
 
-        .marker {
-            position: relative;
-            width: 30px;
-            height: 30px;
-            background-color: red;
-            border-radius: 80% 80% 80% 0;
-            transform: rotate(-45deg);
-            margin: 20px;
+    .endmarker {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        background-color: rgb(221, 66, 84);
+        border-radius: 80% 80% 80% 0;
+        transform: rotate(-45deg);
+        margin: 20px;
+    }
+
+
+
+    /* 그림자 효과 */
+    .startmarker, .endmarker {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 호버 효과 */
+    .startmarker:hover, .endmarker:hover {
+        transform: rotate(-45deg) scale(1.1);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    /* 바운스 애니메이션 */
+    @keyframes bounce {
+
+        0%,
+        100% {
+            transform: rotate(-45deg) translateY(0);
         }
-    
-    
-    
-        /* 그림자 효과 */
-        .marker {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+        50% {
+            transform: rotate(-45deg) translateY(-10px);
         }
-    
-        /* 호버 효과 */
-        .marker:hover {
-            transform: rotate(-45deg) scale(1.1);
-            transition: transform 0.2s ease-in-out;
-        }
-    
-        /* 바운스 애니메이션 */
-        @keyframes bounce {
-    
-            0%,
-            100% {
-                transform: rotate(-45deg) translateY(0);
-            }
-    
-            50% {
-                transform: rotate(-45deg) translateY(-10px);
-            }
-        }
-    
-        .marker.animated {
-            animation: bounce 1s ease-in-out infinite;
-        }
-        
-    .markerLa{
+    }
+
+    .startmarker.animated, .endmarker.animated {
+        animation: bounce 1s ease-in-out infinite;
+    }
+
+    .markerLa {
         z-index: 1000;
         position: absolute;
         transform: rotate(45deg);
