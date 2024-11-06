@@ -6,7 +6,7 @@ import { FaRegClock } from "react-icons/fa";
 import axios from 'axios';
 import { privateApi } from '../../api/api';
 
-export default function RoomGrid({ rooms, checkInDate, checkOutDate, peopleMax }) {
+export default function RoomGrid({ rooms, fetchHotelRoomList, checkInDate, checkOutDate, peopleMax, hotelNo }) {
     const navigate = useNavigate();
 
     // 결제페이지 이동
@@ -21,12 +21,14 @@ export default function RoomGrid({ rooms, checkInDate, checkOutDate, peopleMax }
 
             // 응답이 성공적일 경우
             if (response.status === 200) {
-                navigate(`/reservation?roomNo=${roomNo}&rid=${response.data}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`);
+                navigate(`/reservation?roomNo=${roomNo}&rid=${response.data}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}&hotelNo=${hotelNo}`);
             } else {
                 alert('이미 예약이 마감되었습니다.')
+                fetchHotelRoomList()
             }
         } catch (error) {
             alert('이미 예약이 마감되었습니다.')
+            fetchHotelRoomList()
         }
 
     }
@@ -35,18 +37,18 @@ export default function RoomGrid({ rooms, checkInDate, checkOutDate, peopleMax }
         <div className='room--grid--container'>
             <div className='RoomList'>
                 <div className='RoomRow'>
-                    <Link to={`/RoomDetail/${rooms.roomNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`}><img src={'../' + rooms.roomThumbnail} alt='룸이미지' className='RoomImg' /></Link>
+                    <Link to={`/RoomDetail/${rooms.roomNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}&hotelNo=${hotelNo}`}><img src={'../' + rooms.roomThumbnail} alt='룸이미지' className='RoomImg' /></Link>
                     <div>
                         <div className='RoomInfo'>
                             <div className='InfoBox'>
-                                <div className='RoomName'><Link to={`/RoomDetail/${rooms.roomNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`} id='nameLink'>{rooms.roomName}</Link></div>
+                                <div className='RoomName'><Link to={`/RoomDetail/${rooms.roomNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}&hotelNo=${hotelNo}`} id='nameLink'>{rooms.roomName}</Link></div>
                                 <div className='PTBox'>
                                     <div className='PersonCount'><IoPersonOutline /> {rooms.roomPeopleInfo}</div>
                                     <div className='RoomTime'><FaRegClock /> 체크인 {rooms.roomCheckinTime.slice(0, 5)} ~ 체크아웃 {rooms.roomCheckoutTime.slice(0, 5)}</div>
                                 </div>
                             </div>
                             <div className='RoomPrice'>
-                                {rooms.availableRooms > 0 ?
+                                {rooms.availableRoomsCnt > 0 ?
                                     rooms.roomDiscount > 0 ? (
                                         <>
                                             <div className='RealPrice'>{rooms.roomPrice.toLocaleString()}원</div>
@@ -54,7 +56,7 @@ export default function RoomGrid({ rooms, checkInDate, checkOutDate, peopleMax }
                                                 <div className='Discount'>{rooms.roomDiscount}%</div>
                                                 <div className='DiscountPrice'>{rooms.discountPrice.toLocaleString()}원<span id='bak'>/1박</span></div>
                                             </div>
-                                            <div className='RoomCount'>남은 객실 {rooms.availableRooms}개</div>
+                                            <div className='RoomCount'>남은 객실 {rooms.availableRoomsCnt}개</div>
                                             <div className='RoomBtn'>
                                                 <div onClick={() => GoToReservation(rooms.roomNo)} className='rBtn'>예약하기</div>
                                             </div>
@@ -64,7 +66,7 @@ export default function RoomGrid({ rooms, checkInDate, checkOutDate, peopleMax }
                                             <div className='RoomDiscount'>
                                                 <div className='DiscountPrice'>{rooms.discountPrice.toLocaleString()}원<span id='bak'>/1박</span></div>
                                             </div>
-                                            <div className='RoomCount'>남은 객실 {rooms.availableRooms}개</div>
+                                            <div className='RoomCount'>남은 객실 {rooms.availableRoomsCnt}개</div>
                                             <div className='RoomBtn'>
                                                 <div onClick={() => GoToReservation(rooms.roomNo)} className='rBtn'>예약하기</div>
                                             </div>
@@ -76,7 +78,7 @@ export default function RoomGrid({ rooms, checkInDate, checkOutDate, peopleMax }
                                             <div className='RealPrice'>{rooms.roomPrice.toLocaleString()}원</div>
                                             <div className='RoomDiscount'>
                                                 <div className='sDiscount'>{rooms.roomDiscount}%</div>
-                                                <div className='sDiscountPrice'>{rooms.roomDcprice.toLocaleString()}원<span id='bak'>/1박</span></div>
+                                                <div className='sDiscountPrice'>{rooms.discountPrice.toLocaleString()}원<span id='bak'>/1박</span></div>
                                             </div>
                                             <div className='RoomBtn'>
                                                 <button disabled className='srBtn'>예약마감</button>
@@ -85,7 +87,7 @@ export default function RoomGrid({ rooms, checkInDate, checkOutDate, peopleMax }
                                     ) : (
                                         <>
                                             <div className='RoomDiscount'>
-                                                <div className='sDiscountPrice'>{rooms.roomDcprice.toLocaleString()}원<span id='bak'>/1박</span></div>
+                                                <div className='sDiscountPrice'>{rooms.discountPrice.toLocaleString()}원<span id='bak'>/1박</span></div>
                                             </div>
                                             <div className='RoomBtn'>
                                                 <button disabled className='srBtn'>예약마감</button>

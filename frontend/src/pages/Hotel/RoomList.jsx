@@ -25,7 +25,7 @@ import { privateApi } from '../../api/api';
 
 export default function RoomList() {
 
-//////////////////////////////////////////////////////////////////////////////JIP1029
+  //////////////////////////////////////////////////////////////////////////////JIP1029
   //////////////////////////////////////////////////////////for default parameters JIP1104
   const today = new Date(); //오늘 날짜
   today.setHours(0, 0, 0, 0);//오늘 날짜의 시간, 분, 초, ms를 모두 0으로 설정
@@ -45,7 +45,7 @@ export default function RoomList() {
   let upeopleMax = 2;
 
   const { search } = useLocation();
-  if(search !== '') { //넘어온 값이 있을 경우
+  if (search !== '') { //넘어온 값이 있을 경우
     ucheckInDate = new URLSearchParams(search).get('checkInDate'); // url에서 값 가져오기
     ucheckOutDate = new URLSearchParams(search).get('checkOutDate');
     upeopleMax = new URLSearchParams(search).get('peopleMax');
@@ -53,9 +53,9 @@ export default function RoomList() {
 
   const parameters = useParams();
   const check_in = new Date(ucheckInDate);
-  check_in.setHours(0,0,0,0);
+  check_in.setHours(0, 0, 0, 0);
   const check_out = new Date(ucheckOutDate);
-  check_out.setHours(0,0,0,0);
+  check_out.setHours(0, 0, 0, 0);
   const member = upeopleMax;
   //////////////////////////////////////////////////////////for default parameters  JIP1104
   //////////////////////////////////////////////////////////for hidden & focus
@@ -112,6 +112,7 @@ export default function RoomList() {
         params: { hotelNo, checkInDate, checkOutDate, peopleMax },
       });
       setRoomInfos(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
+      console.log(response.data)
     } catch (error) {
       setError(error);  // 오류가 발생한 경우 에러 저장
     } finally {
@@ -262,15 +263,15 @@ export default function RoomList() {
         </div>
 
         <div className='d-flex align-self-end mb-2'>
-        <KakaoApiShare
-          title={RoomInfos.dto.hotelName}
-          address={RoomInfos.dto.hotelAdress}
-          Thumbnail={RoomInfos.dto.hotelThumbnail}
-          
+          <KakaoApiShare
+            title={RoomInfos.dto.hotelName}
+            address={RoomInfos.dto.hotelAdress}
+            Thumbnail={RoomInfos.dto.hotelThumbnail}
+
           />  {/* 카카오 공유 api */}
 
-        {Heart ? <IoMdHeart className='FullHeartIcon' onClick={handlerCart} /> : <IoIosHeartEmpty className='HeartIcon' onClick={handlerCart} />}
-          </div>
+          {Heart ? <IoMdHeart className='FullHeartIcon' onClick={handlerCart} /> : <IoIosHeartEmpty className='HeartIcon' onClick={handlerCart} />}
+        </div>
       </div>
 
       <div className='RowLine'></div>
@@ -293,7 +294,7 @@ export default function RoomList() {
 
         <div className='LoAttract'>
           {RoomInfos.dto.hotelTouristAttraction?.map((attract, idx) => (
-            <div className='AttractInfo' key={idx}><BsDot id='AttractIcon'/>{attract}</div>
+            <div className='AttractInfo' key={idx}><BsDot id='AttractIcon' />{attract}</div>
           ))}
         </div>
       </div>
@@ -301,7 +302,7 @@ export default function RoomList() {
       <div className='RLtitle'>객실선택</div>
 
       {displayedRooms.map((rooms, idx) => (
-        <RoomGrid rooms={rooms} checkInDate={checkInDate} checkOutDate={checkOutDate} peopleMax={peopleMax} key={idx} />
+        <RoomGrid rooms={rooms} fetchHotelRoomList={fetchHotelRoomList} checkInDate={checkInDate} checkOutDate={checkOutDate} peopleMax={peopleMax} key={idx} hotelNo={hotelNo} />
       ))}
 
       {RoomInfos.list.length > 10 && !showAll && (

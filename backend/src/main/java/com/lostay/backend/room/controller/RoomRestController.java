@@ -61,7 +61,7 @@ public class RoomRestController {
 	@Synchronized
 	@PostMapping("/Reservation")
 	public ResponseEntity<?> reservationsyncronized(@RequestBody RoomCheckDTO dto) {
-
+		System.out.println(dto.toString());
 		Long count = roomSer.findAvailableCount(dto);
 		int RedisHumanCount = roomSer.findRedisHumanCount(dto);
 		JSONObject Body = new JSONObject();
@@ -71,7 +71,7 @@ public class RoomRestController {
 		System.out.println("체크인" +dto.getCheckInDay());
 		System.out.println("체크아웃" + dto.getCheckOutDay());
 		
-		if (count < RedisHumanCount) {
+		if (count <= RedisHumanCount) {
 			System.out.println("예약마감");
 		
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
