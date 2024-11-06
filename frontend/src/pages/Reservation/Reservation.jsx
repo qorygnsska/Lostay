@@ -8,8 +8,9 @@ import AgreeChkInfo from "../../componets/Reservation/AgreeChkInfo";
 import { BsExclamationCircle } from "react-icons/bs";
 import axios from "axios";
 import { privateApi } from "../../api/api";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { replace, unstable_HistoryRouter, useLocation, useNavigate, useNavigationType } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsTimerActive, setPageTimer } from "../../store/timerSlice";
 
 
 const agreeInfo = [
@@ -178,6 +179,58 @@ export default function Reservation() {
         const seconds = timer % 60;
         return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
     };
+
+    // 페이지 타이머 함수
+    // 15분 타이머 걸겅러야됌
+    useEffect(() => {
+        const currentTime = Date.now();
+        let timerEndTime = localStorage.getItem("timerEndTime"); // 로컬 스토리지에서 종료 시간 가져오기
+
+        // 타이머 종료 시간이 없다면 15분 후로 설정
+        if (!timerEndTime) {
+            timerEndTime = currentTime + 15 * 60 * 1000; // 15분 (900초) 후
+            localStorage.setItem("timerEndTime", timerEndTime); // 로컬 스토리지에 타이머 종료 시간 저장
+        }
+
+        // 남은 시간 계산
+        const updateTimeLeft = () => {
+            const remainingTime = Math.max(0, Math.floor((timerEndTime - Date.now()) / 1000)); // 남은 시간(초) 계산
+            console.log(remainingTime)
+            // 타이머가 종료되면 다른 페이지로 이동
+            if (remainingTime <= 0) {
+                alert('결제 시간이 끝났습니다. 이전 페이지로 돌아갑니다.')
+                navigate("-1", { replace: true }); // 타이머 만료 후 이동할 페이지
+
+                localStorage.removeItem("timerEndTime"); // 종료 후 로컬 스토리지에서 타이머 종료 시간 삭제
+            }
+        };
+
+        // 1초마다 타이머 업데이트
+        const interval = setInterval(updateTimeLeft, 1000);
+
+        // 뒤로 가기 버튼을 눌렀을 때 타이머 초기화
+        const handlePopState = () => {
+            localStorage.removeItem("timerEndTime"); // 타이머 종료 시간 삭제
+        };
+
+        window.addEventListener("popstate", handlePopState); // 뒤로 가기 버튼 눌렀을 때 타이머 초기화
+
+
+        // 컴포넌트 언마운트 시 타이머 정리
+        return () => {
+            clearInterval(interval);
+        };
+    }, [navigate]);
+
+    const navigationType = useNavigationType();
+    useEffect(() => {
+
+        // 새로고침을 제외하고 초기화
+        if (navigationType !== "POP") {
+            localStorage.removeItem("timerEndTime");
+        }
+    }, [navigationType]);
+
 
     // 인증번호 전송 버튼 활성화 여부
     const isButtonEnabled = phone.replace(/-/g, "").length === 10 || phone.replace(/-/g, "").length === 11;
