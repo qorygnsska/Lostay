@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import { privateApi } from '../../api/api';
 
-export default function RoomNav({ info }) {
+export default function RoomNav({ info, peopleMax, fetchHotelRoomDetail }) {
 
     const price = info.period * info.discountPrice;
 
@@ -24,12 +24,14 @@ export default function RoomNav({ info }) {
 
             // 응답이 성공적일 경우
             if (response.status === 200) {
-                navigate(`/reservation?roomNo=${roomNo}&rid=${response.data}&checkInDate=${info.checkInDay}&checkOutDate=${info.checkOutDay}`);
+                navigate(`/reservation?roomNo=${roomNo}&rid=${response.data}&checkInDate=${info.checkInDay}&checkOutDate=${info.checkOutDay}&peopleMax=${peopleMax}&hotelNo=${info.hotelNo}`);
             } else {
                 alert('이미 예약이 마감되었습니다.')
+                fetchHotelRoomDetail();
             }
         } catch (error) {
             alert('이미 예약이 마감되었습니다.')
+            fetchHotelRoomDetail();
         }
 
     }
