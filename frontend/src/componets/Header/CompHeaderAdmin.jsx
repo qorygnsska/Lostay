@@ -58,7 +58,7 @@ export default function CompHeaderAdmin() {
 
             adminPrivateApi.post('/admin/logout')
                 .then(response => {
-                    console.log(response);
+                    //console.log(response);
                     if (response.status===200) {
                         alert('정상적으로 로그아웃되었습니다.');
                         dispatch(adminLogout()); //redux 컨테이너에서 관리자 삭제

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { adminLogin } from "../../store/adminSlice";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { replace, useNavigate } from 'react-router-dom';
 import { GoPersonFill } from "react-icons/go";
 import { FaKey } from "react-icons/fa6";
@@ -9,6 +9,22 @@ import { FaKey } from "react-icons/fa6";
 export default function LoginAdmin() {
     const dispatch = useDispatch();
     let navigate = useNavigate();
+    /////////////////////////////////////////////////////////////////LoginState
+
+    const adminState = useSelector((state) => state.admin.adminState);
+    const adminAT = useSelector((state) => state.admin.adminAT)
+
+    useEffect(() => {
+
+        if (adminState !== false) {
+            console.log('AdminState: ' + adminState);
+            console.log('AccessToken: ' + adminAT);
+            alert('이미 로그인 중입니다.');
+            navigate("/admin-home");
+        }
+    }, []);
+    /////////////////////////////////////////////////////////////////LoginState
+
 
     const [warning, setWarning] = useState(false);
     const [id, setId] = useState('')
@@ -69,11 +85,11 @@ export default function LoginAdmin() {
                     withCredentials: true,
                 }
             );
-            console.log(response)
+            //console.log(response)
             if (response.status === 200) {
                 // 액세스 토큰 가져오기
                 const accessToken = response.headers["authorization"];
-                console.log(accessToken)
+                //console.log(accessToken)
                 dispatch(adminLogin({ adminState: true, adminAT: accessToken }));
                 navigate("/admin-home", { replace: true });
             } else {
