@@ -93,7 +93,7 @@ export default function CompSearchBox(props) {
 
     const getLocationList = async () => {
         try {
-            const response = await axios.get(process.env.BASE_URL + '/main/location');
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/main/location`);
             if (response.status === 200) {
                 setLocationList(response.data);
             }
