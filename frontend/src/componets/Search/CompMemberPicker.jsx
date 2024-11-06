@@ -5,9 +5,6 @@ export default function CompMemberPicker(props) {
 
     const [member, setMember] = useState(parseInt(props.member));
 
-
-
-
     const confirmMember = (event) => {
         event.preventDefault();
         //'변경'버튼 클릭으로 인한 상위 페이지 form 제출 방지
