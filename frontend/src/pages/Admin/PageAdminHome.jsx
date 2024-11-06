@@ -5,12 +5,29 @@ import { Bar, Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import { adminPrivateApi } from '../../api/adminApi';
 import { Dropdown } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 // 스케일 등록
 Chart.register(...registerables);
 
 export default function PageAdminHome() {
 
+  /////////////////////////////////////////////////////////////////LoginState
+  const navigate = useNavigate();
+  const adminState = useSelector((state) => state.admin.adminState);
+  const adminAT = useSelector((state) => state.admin.adminAT)
+
+  useEffect(() => {
+
+    if (adminState === false) {
+      alert('접근이 불가능합니다.');
+      navigate("/admin-login");
+    } else {
+      console.log(adminAT);
+    }
+  }, []);
+  /////////////////////////////////////////////////////////////////LoginState
 
   // ==================== START ======================== //
   // 드롭 다운
@@ -347,9 +364,6 @@ export default function PageAdminHome() {
 
   // 월별 중개료, 예약건수
   // ==================== END ======================== //
-
-
-
 
 
   return (

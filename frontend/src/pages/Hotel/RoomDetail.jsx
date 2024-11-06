@@ -37,10 +37,10 @@ export default function RoomDetail() {
     // 룸디테일 가져오기
     const fetchHotelRoomDetail = async () => {
         try {
-            const response = await axios.get('http://localhost:9090/room/RoomDetail', {
-                params: { roomNo, checkInDate, checkOutDate, peopleMax },
-            });
-            setRoomDetail(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
+          const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/room/RoomDetail`, {
+            params: { roomNo, checkInDate, checkOutDate, peopleMax },
+          });
+          setRoomDetail(response.data);  // 성공 시 응답 데이터를 RoomInfos에 저장
         } catch (error) {
             setError(error);  // 오류가 발생한 경우 에러 저장
         } finally {
@@ -51,10 +51,10 @@ export default function RoomDetail() {
     // 룸디테일 리뷰3개 가져오기
     const fetchHotelRoomDetailReview3 = async () => {
         try {
-            const response = await axios.get('http://localhost:9090/review/RoomDetail3', {
-                params: { roomNo },
-            });
-            setRoomReviews(response.data);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/review/RoomDetail3`, {
+            params: { roomNo },
+        });
+        setRoomReviews(response.data);
         } catch (error) {
             setError(error);
         } finally {
@@ -72,7 +72,8 @@ export default function RoomDetail() {
 
     const handleFindButtonClick = () => {
         const encodedLocation = encodeURIComponent(RoomDetail.hotelAdress); // 주소를 URL 인코딩
-        window.location.href = `/HotelMap?location=${encodedLocation}`;
+        const encodedLocation2 = encodeURIComponent(RoomDetail.hotelName); // 호텔이름을 URL 인코딩
+        window.location.href = `/HotelMap?location=${encodedLocation}&hotelName=${encodedLocation2}`;
     };
 
     return (

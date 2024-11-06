@@ -6,12 +6,30 @@ import { Button, Container, Form, Pagination, Table } from 'react-bootstrap'
 import CompAdminBtn from '../../componets/Admin/CompAdminBtn'
 import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
 import { adminPrivateApi } from '../../api/adminApi'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 
 export default function PageEventManager() {
+    /////////////////////////////////////////////////////////////////LoginState
+    const navigate = useNavigate();
+    const adminState = useSelector((state) => state.admin.adminState);
+    const adminAT = useSelector((state) => state.admin.adminAT)
+
+    useEffect(() => {
+
+        if (adminState === false) {
+            alert('접근이 불가능합니다.');
+            navigate("/admin-login");
+        } else {
+            console.log(adminAT);
+        }
+    }, []);
+    /////////////////////////////////////////////////////////////////LoginState
+
 
     //default: 전체 보기 vs 진행 중인 이벤트만 보기
-    const [viewOngoing, setViewOngoing] = useState(false); 
+    const [viewOngoing, setViewOngoing] = useState(false);
 
     function filterHandler() {
         setViewOngoing(!viewOngoing);
@@ -150,7 +168,7 @@ export default function PageEventManager() {
                     </Table>
 
                     <div id="container_paging" className="d-flex justify-content-center">
-                        <Pagination hidden={pageComp.length===0?true:false}>
+                        <Pagination hidden={pageComp.length === 0 ? true : false}>
                             <Pagination.First onClick={() => setActivePage(1)} />
                             <Pagination.Prev onClick={() => setActivePage(activePage - 1 < 1 ? 1 : activePage - 1)} />
                             {pageComp}

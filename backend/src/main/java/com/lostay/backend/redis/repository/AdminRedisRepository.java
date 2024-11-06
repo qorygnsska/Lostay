@@ -10,9 +10,7 @@ import com.lostay.backend.refresh_token.entity.RefreshToken;
 
 public interface AdminRedisRepository extends CrudRepository<AdminRefreshToken, String>{
 
-	Optional<AdminRefreshToken> findAdminIdByRefreshToken(String refreshToken);
-
-	Optional<RefreshToken> findByRefreshToken(String refreshToken);
+	Optional<AdminRefreshToken> findByRefreshToken(String refreshToken);
 
 	Optional<Admin> findByAdminNo(Long adminNo);
 

@@ -5,9 +5,25 @@ import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
 import { adminPrivateApi } from '../../api/adminApi';
 import { Line } from 'react-chartjs-2';
 import { FaSquare } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export default function PageHotelChartManager() {
+  /////////////////////////////////////////////////////////////////LoginState
+  const navigate = useNavigate();
+  const adminState = useSelector((state) => state.admin.adminState);
+  const adminAT = useSelector((state) => state.admin.adminAT)
 
+  useEffect(() => {
+
+    if (adminState === false) {
+      alert('접근이 불가능합니다.');
+      navigate("/admin-login");
+    } else {
+      console.log(adminAT);
+    }
+  }, []);
+  /////////////////////////////////////////////////////////////////LoginState
 
     // ==================== START ======================== //
     // 페이지 네이션

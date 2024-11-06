@@ -72,7 +72,7 @@ public class RefreshTokenService {
 	
 	// Admin Key 찾기
 	public String adminGetKey(String refreshToken) {
-		Optional<AdminRefreshToken> existingToken = adminRedisRepo.findAdminIdByRefreshToken(refreshToken); 
+		Optional<AdminRefreshToken> existingToken = adminRedisRepo.findByRefreshToken(refreshToken); 
 		
 		if (existingToken.isPresent()) {
 	        // 값이 있을 때
@@ -94,7 +94,7 @@ public class RefreshTokenService {
 	// 가져오기
 	public boolean existsAdminRefreshToken(String refreshToken) {
 		
-		Optional<RefreshToken> optionalToken = adminRedisRepo.findByRefreshToken(refreshToken);
+		Optional<AdminRefreshToken> optionalToken = adminRedisRepo.findByRefreshToken(refreshToken);
 		
 		return optionalToken.isPresent();
 	}
@@ -123,7 +123,7 @@ public class RefreshTokenService {
 	// 어드민 업데이트
 		public void adminUpdate(String refreshToken, String newRefreshToken, Long adminNo) {
 			
-			Optional<AdminRefreshToken> existingToken = adminRedisRepo.findAdminIdByRefreshToken(refreshToken);
+			Optional<AdminRefreshToken> existingToken = adminRedisRepo.findByRefreshToken(refreshToken);
 
 			if(existingToken.isPresent()) {
 				AdminRefreshToken adminRefreshTokenEntity = existingToken.get();

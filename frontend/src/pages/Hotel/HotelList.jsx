@@ -101,7 +101,7 @@ export default function HotelList() {
       console.log(`amenities: ${catchall}`);
       console.log(`sort: ${sortOption}`);
 
-      let uri = 'http://localhost:9090/hotel/search';
+      let uri = `${process.env.REACT_APP_BASE_URL}/hotel/search`;
       uri += `?hotelsearch=${place}&checkIn=${checkIn}&checkOut=${checkOut}&roomPeopleInfo=${member}`;
       uri += `&minRoomPrice=${minRoomPrice}&maxRoomPrice=${maxRoomPrice}`;
       uri += `&soldOut=${excSoldOut}&roomDiscountState=${viewDiscount}`;

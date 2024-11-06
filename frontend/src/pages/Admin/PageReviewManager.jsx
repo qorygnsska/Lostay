@@ -4,8 +4,27 @@ import { Container, Form, Pagination, Table } from 'react-bootstrap'
 import CompAdminSearch from '../../componets/Admin/CompAdminSearch'
 import CompAdminBtn from '../../componets/Admin/CompAdminBtn'
 import { adminPrivateApi } from '../../api/adminApi'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 export default function PageReviewManager() {
+
+    /////////////////////////////////////////////////////////////////LoginState
+    const navigate = useNavigate();
+    const adminState = useSelector((state) => state.admin.adminState);
+    const adminAT = useSelector((state) => state.admin.adminAT)
+
+    useEffect(() => {
+
+        if (adminState === false) {
+            alert('접근이 불가능합니다.');
+            navigate("/admin-login");
+        } else {
+            console.log(adminAT);
+        }
+    }, []);
+    /////////////////////////////////////////////////////////////////LoginState
+
 
     //default: 전체 보기 vs 숨긴 리뷰만 보기
     const [viewUnderSanction, setViewUnderSanction] = useState(false);

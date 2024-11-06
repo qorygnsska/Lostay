@@ -21,6 +21,7 @@
 
      .HeartIcon{
           font-size: 25px;
+          margin-left: 10px;
           margin-right: 10px;
           cursor: pointer;
      }
@@ -36,6 +37,7 @@
      .FullHeartIcon {
           color: red;
           font-size: 25px;
+          margin-left: 10px;
           margin-right: 10px;
           cursor: pointer;
      }
@@ -86,7 +88,14 @@
           border-color: rgb(43, 110, 255);
      }
 
+     .LoAttract{
+          margin-top: 12px;
+     }
 
+     .AttractInfo{
+          color: gray;
+          margin-bottom: 5px;
+     }
 
      .RLtitle {
           margin-top: 60px;

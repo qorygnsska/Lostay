@@ -23,7 +23,7 @@ public class HotelService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<HotelDTO> findHotelsFilter(String[] hotelAmenities, String hotelsearch, int minRoomPrice,
+    public List<HotelDTO> findHotelsFilter(String[] hotelAmenities, String[] hotelsearch, int minRoomPrice, 
             int maxRoomPrice, String checkIn, String checkOut, int roomPeopleInfo, int soldOut,
             int roomDiscountState, String[] hotelRating, String sort) {
 
@@ -75,25 +75,62 @@ public class HotelService {
                 "    Room r ON h.hotelNo = r.hotel.hotelNo " +
                 "LEFT JOIN " +
                 "    Review re ON r.roomNo = re.room.roomNo " +
-            "WHERE " +
-                "    (h.hotelAdress LIKE :hotelsearch " +
-                "    OR h.hotelName LIKE :hotelsearch " +
-                "    OR h.hotelTouristAttraction LIKE :hotelsearch " +
-                "    OR h.hotelIntroduction LIKE :hotelsearch) " +
-                "    AND r.roomPrice BETWEEN :minRoomPrice AND :maxRoomPrice " +
-                "    AND r.roomPeopleMax >= :roomPeopleInfo " +
-                "    AND r.roomNo NOT IN ( " +
-                "        SELECT p.room.roomNo " +
-                "        FROM Reservation rs " +
-                "        JOIN Payment p ON p.payNo = rs.payment.payNo " +
-                "        WHERE rs.checkIn < :checkOut " +
-                "          AND rs.checkOut > :checkIn " +
-                "    ) "
+            "WHERE " 
         );
-        
+
+        // hotelsearch 배열을 처리하는 부분 (동적으로 LIKE 조건 추가)
+        if (hotelsearch != null && hotelsearch.length > 0) {
+            query.append(" (");
+            for (int i = 0; i < hotelsearch.length; i++) {
+                // 배열 항목마다 LIKE 조건 추가
+                query.append(" (h.hotelAdress LIKE :hotelsearch" + i + ")");
+                if (i < hotelsearch.length - 1) {
+                    query.append(" AND "); // 마지막이 아닐 때 AND 추가
+                }
+            }
+            query.append(" OR "); // 마지막이 아닐 때 AND 추가
+            for (int i = 0; i < hotelsearch.length; i++) {
+                // 배열 항목마다 LIKE 조건 추가
+                query.append(" (h.hotelName LIKE :hotelsearch" + i + ")");
+                if (i < hotelsearch.length - 1) {
+                    query.append(" AND "); // 마지막이 아닐 때 AND 추가
+                }
+            }
+            query.append(" OR "); // 마지막이 아닐 때 AND 추가
+            for (int i = 0; i < hotelsearch.length; i++) {
+                // 배열 항목마다 LIKE 조건 추가
+                query.append(" (h.hotelTouristAttraction LIKE :hotelsearch" + i +  ")");
+                if (i < hotelsearch.length - 1) {
+                    query.append(" AND "); // 마지막이 아닐 때 AND 추가
+                }
+            }
+            query.append(" OR "); // 마지막이 아닐 때 AND 추가
+            for (int i = 0; i < hotelsearch.length; i++) {
+                // 배열 항목마다 LIKE 조건 추가
+                query.append(" (h.hotelIntroduction LIKE :hotelsearch" + i +  ")");
+                if (i < hotelsearch.length - 1) {
+                    query.append(" AND "); // 마지막이 아닐 때 AND 추가
+                }
+            }
+            query.append(") ");
+                                 
+                      
+        }
+
+        // 나머지 쿼리 조건
+        query.append("    AND r.roomPrice BETWEEN :minRoomPrice AND :maxRoomPrice " +
+                     "    AND r.roomPeopleMax >= :roomPeopleInfo " +
+                     "    AND r.roomNo NOT IN ( " +
+                     "        SELECT p.room.roomNo " +
+                     "        FROM Reservation rs " +
+                     "        JOIN Payment p ON p.payNo = rs.payment.payNo " +
+                     "        WHERE rs.checkIn < :checkOut " +
+                     "          AND rs.checkOut > :checkIn " +
+                     "    ) "
+        );
+
         // 어메니티 조건 추가
         if (hotelAmenities.length > 0) {
-        	
             query.append(" AND (");
             for (int i = 0; i < hotelAmenities.length; i++) {
                 query.append(" FIND_IN_SET(:amenity" + i + ", h.hotelAmenities) > 0");
@@ -138,14 +175,20 @@ public class HotelService {
         query.append(" ORDER BY " + orderByColumn + " " + orderDirection); // 정렬 방향 추가
 
         TypedQuery<Object[]> typedQuery = entityManager.createQuery(query.toString(), Object[].class);
-        typedQuery.setParameter("hotelsearch", "%" + hotelsearch + "%");
         typedQuery.setParameter("minRoomPrice", minRoomPrice);
         typedQuery.setParameter("maxRoomPrice", maxRoomPrice);
         typedQuery.setParameter("roomPeopleInfo", roomPeopleInfo);
         typedQuery.setParameter("checkIn", checkInDateTime);
         typedQuery.setParameter("checkOut", checkOutDateTime);
 
-        // 호텔 등급 파라미터 설정
+        // hotelsearch 파라미터 설정
+        if (hotelsearch != null && hotelsearch.length > 0) {
+            for (int i = 0; i < hotelsearch.length; i++) {
+                typedQuery.setParameter("hotelsearch" + i, "%" + hotelsearch[i] + "%");
+            }
+        }
+
+        // hotelRating 파라미터 설정
         if (hotelRating != null && hotelRating.length > 0) {
             typedQuery.setParameter("hotelRating", Arrays.asList(hotelRating));
         }
