@@ -45,6 +45,7 @@ import PageHotelManager from "./pages/Admin/PageHotelManager";      // 관리자
 import PageReviewManager from "./pages/Admin/PageReviewManager";    // 관리자 페이지 - 리뷰 관리
 import PageUserManager from "./pages/Admin/PageUserManager";        // 관리자 페이지 - 사용자 관리
 import PageHotelChart from "./pages/Admin/PageHotelChartManager";   // 관리자 페이지 - 호텔 차트 보기
+import ToAdminLogin from "./redirectors/ToAdminLogin";
 
 
 
@@ -78,8 +79,8 @@ const router = createBrowserRouter([
             { path: "/event-list", element: <PageEventList /> },
             { path: "/event-detail/:no", element: <PageEventDetail /> },
             { path: "/admin-home", element: <PageAdminHome /> },
-            { path: "/admin-event", element: <PageEventManager /> },
             { path: "/admin-hotel", element: <PageHotelManager /> },
+            { path: "/admin-event", element: <PageEventManager />, errorElement:<ToAdminLogin /> },
             { path: "/admin-review", element: <PageReviewManager /> },
             { path: "/admin-user", element: <PageUserManager /> },
             { path: "/admin-hotelchart", element: <PageHotelChart /> },
