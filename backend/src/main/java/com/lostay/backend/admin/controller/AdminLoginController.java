@@ -8,12 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lostay.backend.admin.service.AdminLoginService;
+import com.lostay.backend.oauth2.service.CustomOAuth2User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,14 +42,18 @@ public class AdminLoginController {
 		}
 	}
 	
+	//관리자 로그아웃
 	@PostMapping("/logout")
-	public ResponseEntity<?> logoutAdmin() {
-		//OAuth2가 없는데 뭘 받아와서 넘겨주나? adminEntity를 어떻게 확인함?
+	public ResponseEntity<?> logoutAdmin(@AuthenticationPrincipal CustomOAuth2User customOAuth2Admin) {
 		
-		boolean result = adminService.logoutAdmin();
+		//admin도 토큰 만들 때 CustomeOAuth2User로 만듬
+		Long adminNo = customOAuth2Admin.getUserNo();
+		System.out.println("adminCont.logout() " + adminNo);
+		
+		boolean result = adminService.logoutAdmin(adminNo);
 		
 		if(result) {
-			return ResponseEntity.ok("Log-out_admin_SUCCESS");
+			return ResponseEntity.ok("Log-out_admin_SUCCESS"); //code: 200
 		} else {
 			return ResponseEntity.notFound().build(); //code: 404
 		}

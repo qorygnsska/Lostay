@@ -1,5 +1,7 @@
 package com.lostay.backend.admin.service;
 
+import java.util.Optional;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.lostay.backend.admin.entity.Admin;
 import com.lostay.backend.admin.repository.AdminRepository;
 import com.lostay.backend.jwt.JWTUtil;
+import com.lostay.backend.redis.repository.AdminRedisRepository;
 import com.lostay.backend.redis.repository.RedisRepository;
 import com.lostay.backend.refresh_token.dto.AdminRefreshTokenDTO;
 import com.lostay.backend.refresh_token.service.RefreshTokenService;
@@ -27,7 +30,7 @@ public class AdminLoginService {
 	private final AdminRepository adminRepo;
 	
 	@Autowired
-	private RedisRepository redisRepo;
+	private AdminRedisRepository adminRedisRepo;
 
 	@Autowired
 	private final RefreshTokenService refreshTokenService;
@@ -80,21 +83,28 @@ public class AdminLoginService {
 
 		AdminRefreshTokenDTO adminRefreshTokenDTO = new AdminRefreshTokenDTO();
 		adminRefreshTokenDTO.setAdminId(adminId);
-		;
 		adminRefreshTokenDTO.setRefreshToken(refresh);
 
 		refreshTokenService.create(adminRefreshTokenDTO);
 	}
 
 	
-	public boolean logoutAdmin() {
+	//관리자 로그아웃(레디스 삭제)
+	public boolean logoutAdmin(Long adminNo) {
 		System.out.println("AdminLoginService.logoutAdmin()");
 		try {
+			//DB Admin테이블에서 토큰에서 가져온 adminNo와 일치하는 친구가 있는지 확인
+			Optional<Admin> adminEntityOption = adminRepo.findById(adminNo);
+			Admin admin = adminEntityOption.orElseThrow(() -> new RuntimeException("Admin not found"));
+			System.out.println("AdminLoginService.admin: " + admin.toString());
 			
-			String adminId = "admin";
-			redisRepo.deleteById(adminId);
+			//PrimaryKey(AdminNo)가 아닌 AdminId로 토큰 관리
+			String adminId = admin.getAdminId();
+			System.out.println("AdminLoginService.adminId: " + adminId);
+
+			adminRedisRepo.deleteById(adminId);//boolean타입으로 리턴할 수 없음(void)
+			System.out.println("Redis에서 지웠다");
 			return true;
-			
 		}catch(Exception e) {
 			return false;
 		}

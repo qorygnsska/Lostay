@@ -50,24 +50,18 @@ export default function CompHeaderAdmin() {
     // [x] : x이 update될 때 실행
 
 
-    const dispatch = useDispatch();
-
+    const dispatch = useDispatch(); //redux
 
     const handleLogout = () => {    //#btn_logout 클릭 시 : 관리자 로그아웃
 
         if (window.confirm('정말 로그아웃?')) {
 
-            adminPrivateApi.post('/admin/logout') //포스트요청을 날리는게 맞는지?
+            adminPrivateApi.post('/admin/logout')
                 .then(response => {
                     console.log(response);
-                    if (response.ok) {
+                    if (response.status===200) {
                         alert('정상적으로 로그아웃되었습니다.');
-                        dispatch(adminLogout());  //adminSlice의 adminLogout() 실행?
-                        //useSelector() 따로 해줘야 함???
-
-                        //MyPage.jsx에서 response 리턴을 왜 함?
-
-
+                        dispatch(adminLogout()); //redux 컨테이너에서 관리자 삭제
                         navigate('/admin-login');  //not refreshing
                         //window.location.href="/"; //메인페이지로 이동
                     } else {
