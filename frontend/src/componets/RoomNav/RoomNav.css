@@ -1,11 +1,11 @@
-.room--nav--container{
+.room--nav--container {
 
     position: fixed;
     bottom: 0;
     width: 768px;
     z-index: 1000;
 
-    .roomDiv{
+    .roomDiv {
         display: flex;
         justify-content: space-between;
         box-shadow: 0px -4px 5px rgba(0, 0, 0, 0.2);
@@ -16,32 +16,39 @@
         background-color: white;
     }
 
-    .infoName{
+    .infoName {
         width: 380px;
     }
 
-    .NavDate{
+    .NavDate {
         font-size: 14px;
     }
 
 
-    .PriceBox{
+    .PriceBox {
         display: flex;
         align-items: end;
     }
 
-    .Price{
+    .Price {
         font-size: 20px;
     }
 
-    .navBtn{
+    .navBtn {
         width: 150px;
         background-color: #fb6969;
+        height: 36px;
+        color: #fff;
+        border-radius: 10px;
         border: none;
         margin-left: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
     }
 
-    .navSBtn{
+    .navSBtn {
         width: 150px;
         background-color: gray !important;
         border: none;

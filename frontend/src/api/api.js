@@ -1,7 +1,6 @@
 import axios from "axios";
 import store from "../store"; // Redux 스토어 import
 import { login, logout } from "../store/userSlice";
-import { replace, useNavigate } from "react-router-dom";
 //토큰이 필요한 api요청을 보내는 axios인스턴스
 
 export const privateApi = axios.create({
@@ -31,12 +30,11 @@ privateApi.interceptors.response.use(
         return response;
     },
     async (error) => {
-        const navigate = useNavigate();
 
         if (error.config && error.response.data.message === "expired" && error.response.status === 401) {
             try {
                 const res = await axios.post(
-                    "http://localhost:9090/userReissue",
+                    `${process.env.REACT_APP_BASE_URL}/userReissue`,
                     {},
                     {
                         withCredentials: true,
@@ -46,11 +44,11 @@ privateApi.interceptors.response.use(
                 if (res.status === 200) {
                     // Redux에 새로운 access token 저장
                     const newAccessToken = res.headers["authorization"];
-
+                    console.log('newToken', newAccessToken)
                     if (newAccessToken === null) {
                         store.dispatch(logout());
-                        alert('이용 시간이 만료되어 로그아웃 됩니다.')
-                        navigate("/login", { replace: true })
+                        alert('이용 시간이 만료되어 로그아웃 됩니다.1')
+                        window.location.replace('/login');
                     }
 
                     store.dispatch(login({ userState: true, aT: newAccessToken }));
@@ -60,14 +58,14 @@ privateApi.interceptors.response.use(
                     return privateApi(error.config);
                 } else {
                     store.dispatch(logout());
-                    alert('이용 시간이 만료되어 로그아웃 됩니다.')
-                    navigate("/login", { replace: true })
+                    alert('이용 시간이 만료되어 로그아웃 됩니다.2')
+                    window.location.replace('/login');
                 }
             } catch (error) {
                 // refresh token 요청 실패 시 로그아웃
                 store.dispatch(logout());
-                alert('이용 시간이 만료되어 로그아웃 됩니다.')
-                navigate("/login", { replace: true })
+                alert('이용 시간이 만료되어 로그아웃 됩니다.3')
+                window.location.replace('/login');
             }
         }
 

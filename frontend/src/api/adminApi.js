@@ -4,7 +4,7 @@ import { adminLogin, adminLogout } from "../store/adminSlice";
 //토큰이 필요한 api요청을 보내는 axios인스턴스
 
 export const adminPrivateApi = axios.create({
-    baseURL: "http://localhost:9090",
+    baseURL: process.env.REACT_APP_BASE_URL,
 });
 
 // 요청 인터셉터 설정
@@ -33,7 +33,7 @@ adminPrivateApi.interceptors.response.use(
         if (error.config && error.response.data.message === "expired" && error.response.status === 401) {
             try {
                 const res = await axios.post(
-                    "http://localhost:9090/adminReissue",
+                    `${process.env.REACT_APP_BASE_URL}/adminReissue`,
                     {},
                     {
                         withCredentials: true,
@@ -45,8 +45,9 @@ adminPrivateApi.interceptors.response.use(
                     const newAccessToken = res.headers["authorization"];
 
                     if (newAccessToken === null) {
-                        console.log('로그아웃한다잉3')
                         store.dispatch(adminLogout());
+                        alert('이용 시간이 만료되어 로그아웃 됩니다.1')
+                        window.location.replace('/admin-login');
                     }
 
                     store.dispatch(adminLogin({ adminState: true, adminAT: newAccessToken }));
@@ -55,13 +56,15 @@ adminPrivateApi.interceptors.response.use(
                     error.config.headers["Authorization"] = `${newAccessToken}`;
                     return adminPrivateApi(error.config);
                 } else {
-                    console.log('로그아웃한다잉2')
                     store.dispatch(adminLogout());
+                    alert('이용 시간이 만료되어 로그아웃 됩니다.2')
+                    window.location.replace('/admin-login');
                 }
             } catch (error) {
                 // refresh token 요청 실패 시 로그아웃
-                console.log('로그아웃한다잉')
                 store.dispatch(adminLogout());
+                alert('이용 시간이 만료되어 로그아웃 됩니다.3')
+                window.location.replace('/admin-login');
             }
         }
 
