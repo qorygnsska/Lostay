@@ -92,8 +92,13 @@ export default function PageHotelManager() {
     }
 
     const hotelModalToggle = (result) => {
+        let searchText = ''
+        if (text_fromChild) {
+            searchText = text_fromChild.trim().replace(" ", "")
+        }
+
         if (result) {
-            getData()
+            getData(searchText)
         }
         setHotelModalShow(!hotelModalShow)
     }

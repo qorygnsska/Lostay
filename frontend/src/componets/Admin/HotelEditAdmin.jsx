@@ -12,9 +12,11 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
         hotelCommission: '',
         hotelIntroduction: '',
     })
+    console.log(propHotel)
+
 
     useEffect(() => {
-        if (propHotel) {
+        if (propHotel && hotelModalShow === true) {
             setState({
                 hotelName: propHotel.hotelName || '',
                 hotelAddress: propHotel.hotelAdress || '',
@@ -26,12 +28,17 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
             setActiveAmenitiesBtn(propHotel.hotelAmenitiesList)
             setThumbnail(propHotel.hotelThumbnail)
             setUploadThumbnail(null)
+            setDelThumbnail(null)
+            setDelImages([])
+            setUploadImages([])
+
             setImages(propHotel.hotelImageList)
+            setOriImagesLen(propHotel.hotelImageList.length);
             const updatedLocations = Array(5).fill('').map((_, index) => propHotel.hotelTouristAttractionList[index] || '');
             setLocations(updatedLocations);
 
         }
-    }, [propHotel]);
+    }, [propHotel, hotelModalShow]);
     // 저장된 호텔 정보들
     // ==================== END ======================== //
 
@@ -108,9 +115,9 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
 
     // ==================== START ======================== //
     // 썸네일 설정
-    const [thumbnail, setThumbnail] = useState('');
-    const [delThumbnail, setDelThumbnail] = useState('');
-    const [uploadThumbnail, setUploadThumbnail] = useState('');
+    const [thumbnail, setThumbnail] = useState(null);
+    const [delThumbnail, setDelThumbnail] = useState(null);
+    const [uploadThumbnail, setUploadThumbnail] = useState(null);
 
     const handlerUploadThumbnail = (e) => {
         setUploadThumbnail(e.target.files[0])
@@ -131,14 +138,15 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
     // ==================== START ======================== //
     // 이미지 설정
     const [images, setImages] = useState([]);
+    const [oriImagesLen, setOriImagesLen] = useState(0)
     const [delImages, setDelImages] = useState([]);
     const [uploadImages, setUploadImages] = useState([]);
 
     // 이미지 삭제
     const handlerDelImages = (image) => {
         if (images.includes(image)) {
-            const updatedImages = images.filter(img => img !== image);
-            setImages(updatedImages);
+            const delImages = images.filter(img => img !== image);
+            setImages(delImages);
             setDelImages(prevDelImages => [...prevDelImages, image]);
         } else {
             const updatedImages = uploadImages.filter(img => img !== image);
@@ -170,44 +178,55 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
     const handelerUpdate = async () => {
         const formData = new FormData();
 
+        if (state.hotelName.length === 0) {
+            alert('호텔명을 입력해주세요.')
+        } else if (state.hotelCommission.length === 0) {
+            alert('중개료를 입력해주세요')
+        } else if (state.hotelAddress.length === 0) {
+            alert("주소를 입력해주세요.")
+        } else if (state.hotelIntroduction.length === 0) {
+            alert("소개를 입력해주세요.")
+        } else if (uploadThumbnail === null && delThumbnail !== null) {
+            alert("썸네일 이미지를 추가해주세요.")
+        } else if (uploadImages.length === 0 && oriImagesLen === delImages.length) {
+            alert("이미지를 추가해주세요.")
+        } else {
+            formData.append('hotelNo', propHotel.hotelNo);
+            formData.append('hotelName', state.hotelName);
+            formData.append('hotelCommission', state.hotelCommission);
+            formData.append('hotelAdress', state.hotelAddress);
+            formData.append('hotelIntroduction', state.hotelIntroduction);
 
-        formData.append('hotelNo', propHotel.hotelNo);
-        formData.append('hotelName', state.hotelName);
-        formData.append('hotelCommission', state.hotelCommission);
-        formData.append('hotelAdress', state.hotelAddress);
-        formData.append('hotelIntroduction', state.hotelIntroduction);
+            formData.append('hotelRating', RateButton === '없음' ? '' : RateButton);
+            formData.append('hotelAmenities', activeAmenitiesBtn)
+            formData.append('hotelTouristAttractionList', locations.filter(loc => loc !== ''))
 
-        formData.append('hotelRating', RateButton === '없음' ? '' : RateButton);
-        formData.append('hotelAmenities', activeAmenitiesBtn)
-        formData.append('hotelTouristAttractionList', locations.filter(loc => loc !== ''))
-
-        formData.append('uploadThumbnail', uploadThumbnail);
-        formData.append('hotelDelThumbnail', delThumbnail);
-        uploadImages.forEach((file) => {
-            formData.append('uploadImages', file);
-        })
-        formData.append('hotelDelImages', delImages);
+            formData.append('uploadThumbnail', uploadThumbnail);
+            formData.append('hotelDelThumbnail', delThumbnail);
+            uploadImages.forEach((file) => {
+                formData.append('uploadImages', file);
+            })
+            formData.append('hotelDelImages', delImages);
 
 
-        try {
-            const response = await adminPrivateApi.put('/admin/hotelUpdate', formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-            if (response.status === 200) {
-                alert('업뎃완료')
-                hotelModalToggle(true)
-            } else {
+            try {
+                const response = await adminPrivateApi.put('/admin/hotelUpdate', formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    });
+                if (response.status === 200) {
+                    alert('업뎃완료')
+                    hotelModalToggle(true)
+                } else {
+                    alert('업뎃실패')
+                }
+
+            } catch (error) {
                 alert('업뎃실패')
             }
-
-        } catch (error) {
-            alert('업뎃실패')
         }
-
-
     }
 
     // 서버로 데이터 보내기
