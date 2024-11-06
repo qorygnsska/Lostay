@@ -18,7 +18,7 @@ export default function RoomEditAdmin({ propRoom, roomModalToggle, roomModalShow
     })
 
     useEffect(() => {
-        if (propRoom) {
+        if (propRoom && roomModalShow === true) {
             setState({
                 roomName: propRoom.roomName,
                 roomCount: propRoom.roomCount,
@@ -34,13 +34,14 @@ export default function RoomEditAdmin({ propRoom, roomModalToggle, roomModalShow
             setThumbnail(propRoom.roomThumbnail)
             setUploadThumbnail(null)
             setImages(propRoom.roomImageList)
+            setOriImagesLen(propRoom.roomImageList.length)
             const updatedIntrodution = Array(8).fill('').map((_, index) => propRoom.roomIntroductionList[index] || '');
             setIntroduction(updatedIntrodution);
 
 
 
         }
-    }, [propRoom]);
+    }, [propRoom, roomModalShow]);
     // 저장된 호텔 정보들
     // ==================== END ======================== //
 
@@ -116,9 +117,9 @@ export default function RoomEditAdmin({ propRoom, roomModalToggle, roomModalShow
 
     // ==================== START ======================== //
     // 썸네일 설정
-    const [thumbnail, setThumbnail] = useState('');
-    const [delThumbnail, setDelThumbnail] = useState('');
-    const [uploadThumbnail, setUploadThumbnail] = useState('');
+    const [thumbnail, setThumbnail] = useState(null);
+    const [delThumbnail, setDelThumbnail] = useState(null);
+    const [uploadThumbnail, setUploadThumbnail] = useState(null);
 
     const handlerUploadThumbnail = (e) => {
         setUploadThumbnail(e.target.files[0])
@@ -139,6 +140,7 @@ export default function RoomEditAdmin({ propRoom, roomModalToggle, roomModalShow
     // ==================== START ======================== //
     // 이미지 설정
     const [images, setImages] = useState([]);
+    const [oriImagesLen, setOriImagesLen] = useState(0)
     const [delImages, setDelImages] = useState([]);
     const [uploadImages, setUploadImages] = useState([]);
 
@@ -176,47 +178,70 @@ export default function RoomEditAdmin({ propRoom, roomModalToggle, roomModalShow
     // ==================== START ======================== //
     // 서버로 데이터 보내기
     const handelerUpdate = async () => {
-        const formData = new FormData();
 
 
-        formData.append('roomNo', propRoom.roomNo);
-        formData.append('roomName', state.roomName);
-        formData.append('roomCount', state.roomCount);
-        formData.append('roomPrice', state.roomPrice);
-        formData.append('roomDiscount', state.roomDiscount);
-        formData.append('roomPeopleMax', state.roomPeopleMax);
-        formData.append('roomPeopleInfo', state.roomPeopleInfo);
-        formData.append('roomCheckinTime', formatTimeForLocalTime(state.roomCheckinTime));
-        formData.append('roomCheckoutTime', formatTimeForLocalTime(state.roomCheckoutTime));
+        if (state.roomName.length === 0) {
+            alert("객실명을 작성해주세요.")
+        } else if (state.roomCount.length === 0) {
+            alert("방 갯수를 작성해주세요")
+        } else if (state.roomCount < 1) {
+            alert("방 갯수는 1개 이상으로 작성해주세요")
+        } else if (state.roomPrice.length === 0) {
+            alert("가격을 작성해주세요.")
+        } else if (state.roomDiscount.length === 0) {
+            alert("할인율을 작성해주세요.")
+        } else if (state.roomPeopleMax.length === 0) {
+            alert("최대인원 수를 작성해주세요.")
+        } else if (state.roomPeopleMax < 1) {
+            alert("최대인원 수는 1명 이상으로 작성해주세요.")
+        } else if (state.roomPeopleInfo.length === 0) {
+            alert("인원정보를 작성해주세요.")
+        } else if (uploadThumbnail === null && delThumbnail !== null) {
+            alert("썸네일 이미지를 추가해주세요.")
+        } else if (uploadImages.length === 0 && oriImagesLen === delImages.length) {
+            alert("이미지를 추가해주세요.")
+        } else {
+            const formData = new FormData();
 
-        formData.append('roomAmenities', activeAmenitiesBtn)
+            formData.append('roomNo', propRoom.roomNo);
+            formData.append('roomName', state.roomName);
+            formData.append('roomCount', state.roomCount);
+            formData.append('roomPrice', state.roomPrice);
+            formData.append('roomDiscount', state.roomDiscount);
+            formData.append('roomPeopleMax', state.roomPeopleMax);
+            formData.append('roomPeopleInfo', state.roomPeopleInfo);
+            formData.append('roomCheckinTime', formatTimeForLocalTime(state.roomCheckinTime));
+            formData.append('roomCheckoutTime', formatTimeForLocalTime(state.roomCheckoutTime));
 
-        formData.append('roomIntroductionList', introduction.filter(loc => loc !== ''))
+            formData.append('roomAmenities', activeAmenitiesBtn)
 
-        formData.append('uploadThumbnail', uploadThumbnail);
-        formData.append('roomDelThumbnail', delThumbnail);
-        uploadImages.forEach((file) => {
-            formData.append('uploadImages', file);
-        })
-        formData.append('roomDelImages', delImages);
+            formData.append('roomIntroductionList', introduction.filter(loc => loc !== ''))
+
+            formData.append('uploadThumbnail', uploadThumbnail);
+            formData.append('roomDelThumbnail', delThumbnail);
+            uploadImages.forEach((file) => {
+                formData.append('uploadImages', file);
+            })
+            formData.append('roomDelImages', delImages);
 
 
-        try {
-            const response = await adminPrivateApi.put('/admin/roomUpdate', formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-            if (response.status === 200) {
-                alert('업뎃완료')
-                roomModalToggle(true)
-            } else {
+            try {
+                const response = await adminPrivateApi.put('/admin/roomUpdate', formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    });
+                if (response.status === 200) {
+                    alert('업뎃완료')
+                    roomModalToggle(true)
+                } else {
+                    alert('업뎃실패')
+                }
+
+            } catch (error) {
                 alert('업뎃실패')
             }
-
-        } catch (error) {
-            alert('업뎃실패')
         }
     }
 
