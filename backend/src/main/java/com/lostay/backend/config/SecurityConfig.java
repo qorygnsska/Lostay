@@ -79,7 +79,7 @@ public class SecurityConfig {
 						auth
 							.antMatchers("/cart/*/","/mypage/*/","/payment/*/","/point/*/","/user/*/","/bookhistory/*/").hasAnyRole("ROLE_USER")
 							.antMatchers("/admin/login", "/main/*", "/event/**", "/hotel/*","/review/*","/room/*","/sms/**","/userReissue/**","/adminReissue/**").permitAll() 
-							.antMatchers("/admin/**").hasAnyRole("ROLE_ADMIN")
+							.antMatchers("/admin/*/").hasAnyRole("ROLE_ADMIN")
 							.anyRequest().authenticated())
 
 
