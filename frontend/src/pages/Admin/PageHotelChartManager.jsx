@@ -104,7 +104,7 @@ export default function PageHotelChartManager() {
 
     const revenueData = async () => {
         try {
-            const response = await adminPrivateApi.get(`http://localhost:9090/admin/revenueData?hotelNo=${propHotel.hotelNo}&year=${selectedYear}`)
+            const response = await adminPrivateApi.get(`/admin/revenueData?hotelNo=${propHotel.hotelNo}&year=${selectedYear}`)
 
             if (response.status === 200) {
                 console.log(response.data)

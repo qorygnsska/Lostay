@@ -103,7 +103,7 @@ public class AdminController {
 	// 이벤트 삭제(1026 JIP)
 	@DeleteMapping("/event/{eventNo}") // 변경전: /adminEvent/{eventNo} 변경후:admin/event/{eventNo}
 	public ResponseEntity<?> deleteAdminEvent(@PathVariable Long eventNo) {
-
+		
 		boolean result = adminService.deleteEvent(eventNo);
 
 		if (result) {
