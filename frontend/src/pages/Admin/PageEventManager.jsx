@@ -13,8 +13,8 @@ import { useSelector } from 'react-redux'
 export default function PageEventManager() {
     /////////////////////////////////////////////////////////////////LoginState
     const navigate = useNavigate();
-    const adminState = useSelector((state) => state.user.userState);
-    const adminAT = useSelector((state) => state.user.userAt)
+    const adminState = useSelector((state) => state.admin.adminState);
+    const adminAT = useSelector((state) => state.admin.adminAT)
 
     useEffect(() => {
 
