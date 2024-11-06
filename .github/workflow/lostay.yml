@@ -1,0 +1,61 @@
+name: lostay    # workflow 이름
+
+on:  # workflow 실행 조건
+  push:
+    branches: [ "master" ]  # main 브랜치에 push될 때 실행
+  pull_request:
+    branches: [ "master" ]  # main 브랜치로 PR 생성될 때 실행
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # 실행될 환경
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        
+    - name: Copy Secret
+      env:
+        OCCUPY_SECRET: ${{secrets.OCCUPY_SECRET}}
+        OCCUPY_SECRET_DIR: src/main/resources
+        OCCUPY_SECRET_TEST_DIR: src/test/resources
+        OCCUPY_SECRET_DIR_FILE_NAME: application.properties
+      run: |
+        echo $OCCUPY_SECRET | base64 --decode > $OCCUPY_SECRET_DIR/$OCCUPY_SECRET_DIR_FILE_NAME
+        echo $OCCUPY_SECRET | base64 --decode > $OCCUPY_SECRET_TEST_DIR/$OCCUPY_SECRET_DIR_FILE_NAME
+
+        # ENV 파일 생성     
+      - name: Copy ENV Secret       
+        env:         
+          ENV_SECRET: ${{secrets.ENV_SECRET}}  # Github에 새로 추가할 시크릿 키       
+        run: |        
+          echo $ENV_SECRET | base64 --decode > .env     
+    
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb987a3c375e1
+      with:
+        arguments: build
+
+    # AWS 배포를 위한 단계들
+    - name: Make Directory for deliver
+      run: mkdir deploy && cp build/libs/*.jar deploy/ && cp appspec.yml deploy/ && cp script/deploy.sh deploy/
+      
+    - name: Make zip file
+      run: zip -r -qq -j exquiz-me-was.zip deploy
+      
+    # - name: AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: $
+    #     aws-secret-access-key: $
+    #     aws-region: ap-northeast-2
+
+    # S3에 파일 업로드하는 단계 추가 필요...
