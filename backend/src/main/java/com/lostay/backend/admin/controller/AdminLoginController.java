@@ -39,6 +39,22 @@ public class AdminLoginController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@PostMapping("/logout")
+	public ResponseEntity<?> logoutAdmin() {
+		//OAuth2가 없는데 뭘 받아와서 넘겨주나? adminEntity를 어떻게 확인함?
+		
+		boolean result = adminService.logoutAdmin();
+		
+		if(result) {
+			return ResponseEntity.ok("Log-out_admin_SUCCESS");
+		} else {
+			return ResponseEntity.notFound().build(); //code: 404
+		}
+		
+	}
+	
+	
 		
 		
 }

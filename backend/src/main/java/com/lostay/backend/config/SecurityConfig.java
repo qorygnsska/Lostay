@@ -78,8 +78,8 @@ public class SecurityConfig {
 				.authorizeHttpRequests((auth) -> 
 						auth
 							.antMatchers("/cart/*/","/mypage/*/","/payment/*/","/point/*/","/user/*/","/bookhistory/*/").hasAnyRole("ROLE_USER")
-							//.antMatchers("/admin/**").hasAnyRole("ROLE_USER")//adminPage 엘라스틱서치 될때까지만 열어둘게요~
-							.antMatchers("/main/*", "/event/**", "/hotel/*","/review/*","/room/*","/sms/**","/userReissue/**","/adminReissue/**", "/admin/**", "/es/*").permitAll() 
+							.antMatchers("/admin/login", "/main/*", "/event/**", "/hotel/*","/review/*","/room/*","/sms/**","/userReissue/**","/adminReissue/**").permitAll() 
+							.antMatchers("/admin/**").hasAnyRole("ROLE_ADMIN")
 							.anyRequest().authenticated())
 
 

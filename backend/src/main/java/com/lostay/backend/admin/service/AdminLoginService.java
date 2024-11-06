@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.lostay.backend.admin.entity.Admin;
 import com.lostay.backend.admin.repository.AdminRepository;
 import com.lostay.backend.jwt.JWTUtil;
+import com.lostay.backend.redis.repository.RedisRepository;
 import com.lostay.backend.refresh_token.dto.AdminRefreshTokenDTO;
 import com.lostay.backend.refresh_token.service.RefreshTokenService;
 import com.lostay.backend.user.repository.UserRepository;
@@ -24,6 +25,9 @@ public class AdminLoginService {
 
 	@Autowired
 	private final AdminRepository adminRepo;
+	
+	@Autowired
+	private RedisRepository redisRepo;
 
 	@Autowired
 	private final RefreshTokenService refreshTokenService;
@@ -81,4 +85,23 @@ public class AdminLoginService {
 
 		refreshTokenService.create(adminRefreshTokenDTO);
 	}
+
+	
+	public boolean logoutAdmin() {
+		System.out.println("AdminLoginService.logoutAdmin()");
+		try {
+			
+			String adminId = "admin";
+			redisRepo.deleteById(adminId);
+			return true;
+			
+		}catch(Exception e) {
+			return false;
+		}
+	}
+	
+	
+	
+	
+	
 }
