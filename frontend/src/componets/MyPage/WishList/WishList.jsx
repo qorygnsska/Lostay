@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { privateApi } from "../../../api/api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaRegHeart } from "react-icons/fa";
 
 export default function WishList({ wishList, setToast, setToastText, index }) {
     const [wishState, setWishState] = useState(true);
     const [cartNo, setCartNo] = useState(wishList.cartNo);
+    const navigate = useNavigate();
 
     const wishToggle = async (event) => {
         event.preventDefault();
@@ -21,17 +22,18 @@ export default function WishList({ wishList, setToast, setToastText, index }) {
             } else {
                 const response = await privateApi.post(`/cart/save?hotelId=${wishList.hotelNo}`); // API 요청
                 if (response.status === 200) {
-                    console.log(response)
+
                     setWishState(!wishState)
                     setToast(true)
                     setToastText('찜 추가')
-                    console.log(response.data)
+
                     setCartNo(response.data.cartNo)
                 }
             }
 
         } catch (error) {
-            console.error(error);
+            alert('서버와의 접속이 원할하지 않습니다.')
+            navigate("/")
         }
     };
 

@@ -9,21 +9,21 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function PageHotelChartManager() {
-  /////////////////////////////////////////////////////////////////LoginState
-  const navigate = useNavigate();
-  const adminState = useSelector((state) => state.admin.adminState);
-  const adminAT = useSelector((state) => state.admin.adminAT)
+    /////////////////////////////////////////////////////////////////LoginState
+    const navigate = useNavigate();
+    const adminState = useSelector((state) => state.admin.adminState);
+    const adminAT = useSelector((state) => state.admin.adminAT)
 
-  useEffect(() => {
+    useEffect(() => {
 
-    if (adminState === false) {
-      alert('접근이 불가능합니다.');
-      navigate("/admin-login");
-    } else {
-      //console.log(adminAT);
-    }
-  }, []);
-  /////////////////////////////////////////////////////////////////LoginState
+        if (adminState === false) {
+            alert('접근이 불가능합니다.');
+            navigate("/admin-login");
+        } else {
+            //console.log(adminAT);
+        }
+    }, []);
+    /////////////////////////////////////////////////////////////////LoginState
 
     // ==================== START ======================== //
     // 페이지 네이션
@@ -76,11 +76,9 @@ export default function PageHotelChartManager() {
                 setHotelRoomList(response.data)
                 setTotalPage(response.data.totalPages)
                 //console.log(response.data)
-            } else {
-                console.log('에러')
             }
         } catch (error) {
-            console.log('에러')
+            alert('잘못된 요청 입니다.')
         }
     }
 
@@ -122,11 +120,11 @@ export default function PageHotelChartManager() {
     const revenueData = async () => {
         try {
             const response = await adminPrivateApi.get(`/admin/revenueData?hotelNo=${propHotel.hotelNo}&year=${selectedYear}`)
-            
+
             if (response.status === 200) {
                 //console.log(response.data)
                 setBranchChart(response.data.revenueData)
-            } else if(response.status === 204){ //data is empty
+            } else if (response.status === 204) { //data is empty
                 //console.log('no-content')
                 setBranchChart([]);
             }

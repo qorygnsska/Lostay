@@ -1,19 +1,29 @@
 import React, { useEffect } from "react";
 import "./Login.css";
 import Navbar from "../../componets/Navbar/Navbar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/userSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
     const dispatch = useDispatch();
     let navigate = useNavigate();
+    const user = useSelector((state) => state.user.userState);
+    const userAt = useSelector((state) => state.user.userAt)
 
     useEffect(() => {
+        if (user === true && userAt !== null) {
+
+            alert('이미 로그인 중입니다.');
+            navigate("/");
+            return;
+        }
+
+
         const handleLoginMessage = (event) => {
             if (event.data.type === "LOGIN_SUCCESS") {
                 const { accessToken } = event.data.payload;
-                console.log(accessToken);
+
                 // Redux에 액세스 토큰 저장
                 dispatch(login({ userState: true, aT: accessToken }));
                 navigate("/");

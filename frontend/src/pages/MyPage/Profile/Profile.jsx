@@ -20,12 +20,13 @@ export default function Profile() {
 
         try {
             const response = await privateApi.get('/mypage/Edit'); // API 요청
-            console.log(response.data)
+
             setProfile(response.data)
             return response.data;
 
         } catch (error) {
-            console.error(error);
+            alert('서버와의 접속이 원할하지 않습니다.')
+            navigate("/")
         }
     };
     const user = useSelector((state) => state.user.userState);
@@ -316,12 +317,13 @@ export default function Profile() {
     const postPhoneNum = async (phonenum) => {
 
         try {
-            const response = await axios.post(`/sms/loginPhone/${phonenum}`); // API 요청
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/sms/loginPhone/${phonenum}`); // API 요청
             setServerCode(response.data);
             return response.data;
 
         } catch (error) {
-            console.error(error);
+            alert('서버와의 접속이 원할하지 않습니다.')
+            navigate("/")
         }
     };
 
@@ -334,7 +336,8 @@ export default function Profile() {
             return response.data;
 
         } catch (error) {
-            console.error(error);
+            alert('서버와의 접속이 원할하지 않습니다.')
+            navigate("/")
         }
     };
 
@@ -387,7 +390,7 @@ export default function Profile() {
                                     readOnly={!nicknameEdit}
                                     maxLength={12}
                                     placeholder="최대 12자까지만 입력 가능합니다."
-                                    className={nameWarning && 'warning'}
+                                    className={nameWarning ? 'warning' : ''}
                                 />
                                 <FaPencil
                                     className="icon focus"

@@ -26,7 +26,8 @@ export default function MyPage() {
             return response.data;
 
         } catch (error) {
-            console.log(error)
+            alert('서버와의 접속이 원할하지 않습니다.')
+            navigate("/")
         }
     };
 

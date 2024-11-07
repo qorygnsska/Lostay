@@ -47,24 +47,7 @@ export default function PageAdminHome() {
   // ==================== START ======================== //
   // 데이터 가져오기
   // 년도별 데이터
-  const getData = async () => {
-    try {
-      const [yearChartResp, branchChartResp, monthChartResp] = await Promise.all([
-        adminPrivateApi.get('/admin/revenueYearChart'),
-        adminPrivateApi.get(`/admin/revenuebranchChart?year=${selectedYear}`),
-        adminPrivateApi.get(`/admin/revenueMonthChart?year=${selectedYear}`),
 
-      ])
-
-      setYearChart(yearChartResp.data);
-      setBranchChart(branchChartResp.data);
-      setMonthChart(monthChartResp.data);
-      //console.log(monthChartResp.data)
-
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
 
   // 월별, 분기별 데이터 가져오기
@@ -85,6 +68,26 @@ export default function PageAdminHome() {
   }
 
   useEffect(() => {
+
+    const getData = async () => {
+      try {
+        const [yearChartResp, branchChartResp, monthChartResp] = await Promise.all([
+          adminPrivateApi.get('/admin/revenueYearChart'),
+          adminPrivateApi.get(`/admin/revenuebranchChart?year=${selectedYear}`),
+          adminPrivateApi.get(`/admin/revenueMonthChart?year=${selectedYear}`),
+
+        ])
+
+        setYearChart(yearChartResp.data);
+        setBranchChart(branchChartResp.data);
+        setMonthChart(monthChartResp.data);
+        //console.log(monthChartResp.data)
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     getData();
   }, []);
 
