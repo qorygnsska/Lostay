@@ -242,11 +242,15 @@ public class AdminController {
 	public ResponseEntity<RevenueDataDTO> getRevenueData(@RequestParam Long hotelNo, @RequestParam int year) {
 		System.out.println("revenueData 실행");
 		RevenueDataDTO revenueData = adminService.getRevenueDataByHotelNo(hotelNo, year);
+		
 		// revenueData가 비어있는지 확인
-		if (revenueData.getRevenueData() == null || revenueData.getRevenueData().isEmpty()) {
-			return ResponseEntity.notFound().build(); // 404 Not Found
+		if (revenueData.getRevenueData() == null) {
+			return ResponseEntity.notFound().build();// code 404
+		}else if(revenueData.getRevenueData().isEmpty()){
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
+		}else {
+			return new ResponseEntity<>(revenueData, HttpStatus.OK); // 200 OK
 		}
-		return new ResponseEntity<>(revenueData, HttpStatus.OK); // 200 OK
 	}
 
 }

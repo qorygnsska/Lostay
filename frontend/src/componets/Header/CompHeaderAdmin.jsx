@@ -54,12 +54,12 @@ export default function CompHeaderAdmin() {
 
     const handleLogout = () => {    //#btn_logout 클릭 시 : 관리자 로그아웃
 
-        if (window.confirm('정말 로그아웃?')) {
+        if (window.confirm('관리자 로그아웃을 진행하시겠습니까?')) {
 
             adminPrivateApi.post('/admin/logout')
                 .then(response => {
                     //console.log(response);
-                    if (response.status===200) {
+                    if (response.status === 200) {
                         alert('정상적으로 로그아웃되었습니다.');
                         dispatch(adminLogout()); //redux 컨테이너에서 관리자 삭제
                         navigate('/admin-login');  //not refreshing
@@ -97,6 +97,10 @@ export default function CompHeaderAdmin() {
                     <Nav variant="underline" >
 
                         <Nav.Item>
+                            <NavLink to="/admin-hotelchart" className="nav-link" >차트</NavLink>
+                        </Nav.Item>
+
+                        <Nav.Item>
                             <NavLink to="/admin-hotel" className="nav-link" >호텔&middot;객실</NavLink>
                         </Nav.Item>
 
@@ -107,21 +111,15 @@ export default function CompHeaderAdmin() {
                         </Nav.Item>
 
                         <Nav.Item>
-                            {/* <Nav.Link href="/admin-event" className={`${selectedLink=="/admin-event"?"active":""}`} >이벤트</Nav.Link> */}
-                            {/* <Link to="/admin-event" className={`nav-link ${selectedLink=="/admin-event"?"active":""}`}>이벤트</Link> */}
-                            <NavLink to="/admin-event" className="nav-link" >이벤트</NavLink>
-                        </Nav.Item>
-
-                        <Nav.Item>
                             {/* <Nav.Link href="/admin-review" className={`${selectedLink =="/admin-review"?"active":""}`} >리뷰</Nav.Link> */}
                             {/* <Link to="/admin-review" className={`nav-link ${selectedLink=="/admin-review"?"active":""}`}>리뷰</Link> */}
                             <NavLink to="/admin-review" className="nav-link" >리뷰</NavLink>
                         </Nav.Item>
 
                         <Nav.Item>
-                            {/* <Nav.Link href="/admin-user" className={`${selectedLink=="/admin-user"?"active":""}`} >회원</Nav.Link> */}
-                            {/* <Link to="/admin-user" className={`nav-link ${selectedLink=="/admin-user"?"active":""}`}>회원</Link> */}
-                            <NavLink to="/admin-hotelchart" className="nav-link" >차트</NavLink>
+                            {/* <Nav.Link href="/admin-event" className={`${selectedLink=="/admin-event"?"active":""}`} >이벤트</Nav.Link> */}
+                            {/* <Link to="/admin-event" className={`nav-link ${selectedLink=="/admin-event"?"active":""}`}>이벤트</Link> */}
+                            <NavLink to="/admin-event" className="nav-link" >이벤트</NavLink>
                         </Nav.Item>
 
                         <Nav.Item id="btn_container">

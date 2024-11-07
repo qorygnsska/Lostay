@@ -330,6 +330,33 @@
     /* 관리자 호텔 차트 페이지 */
     .table--wrap {
         min-height: 290px;
+
+        #table_entire_hotel {
+            .hotel_no {
+                width: 5%;
+            }
+    
+            .hotel_name {
+                width: 32.5%;
+            }
+    
+            .hotel_rating {
+                width: 10%;
+            }
+    
+            .hotel_address {
+                width: 22.5%;
+            }
+    
+            .hotel_commission {
+                width: 10%;
+            }
+    
+            .hotel_update {
+                width: 20%;
+            }
+    
+        }
     }
 
     .dropdown--box {

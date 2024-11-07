@@ -21,9 +21,10 @@ export default function PageEventList() {
     //Server에 db-event 요청
     const getEventList = () => {
 
-        fetch(process.env.REACT_APP_BASE_URL + '/event/list')    // fetch() : (default) request 'GET', 'async'
+        fetch('http://localhost:9090/event/list')    // fetch() : (default) request 'GET', 'async'
             .then(response => response.json())  // response가 오면 json 변환
             .then(data => {
+                //console.log(data);
                 //결과물로 setEventList 
                 setEventList(data);
             })

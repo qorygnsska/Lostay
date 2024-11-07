@@ -20,7 +20,7 @@ export default function PageHotelChartManager() {
       alert('접근이 불가능합니다.');
       navigate("/admin-login");
     } else {
-      console.log(adminAT);
+      //console.log(adminAT);
     }
   }, []);
   /////////////////////////////////////////////////////////////////LoginState
@@ -121,16 +121,16 @@ export default function PageHotelChartManager() {
     const revenueData = async () => {
         try {
             const response = await adminPrivateApi.get(`/admin/revenueData?hotelNo=${propHotel.hotelNo}&year=${selectedYear}`)
-
+            
             if (response.status === 200) {
-                console.log(response.data)
+                //console.log(response.data)
                 setBranchChart(response.data.revenueData)
-            } else {
-                console.log('에러')
+            } else if(response.status === 204){ //data is empty
+                //console.log('no-content')
                 setBranchChart([]);
             }
-        } catch (error) {
-            console.log('에러')
+        } catch (error) { //data is null
+            //console.log('null(404)')
             setBranchChart([]);
         }
     }

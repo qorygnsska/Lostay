@@ -12,7 +12,7 @@ export default function HotelEditAdmin({ propHotel, hotelModalToggle, hotelModal
         hotelCommission: '',
         hotelIntroduction: '',
     })
-    console.log(propHotel)
+    //console.log(propHotel)
 
 
     useEffect(() => {
