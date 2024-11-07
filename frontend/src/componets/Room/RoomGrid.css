@@ -129,7 +129,8 @@
      }
 
      .srBtn {
-          padding: 6px;
+          width: 90px;
+          padding: 7px;
           border-radius: 10px;
           background-color: rgb(187, 187, 187);
           color: white;
