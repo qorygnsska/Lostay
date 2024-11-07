@@ -46,11 +46,12 @@ export default function BookingHistory() {
     const payCancle = async (payNo) => {  // async 키워드 추가
         try {
             const response = await privateApi.post(`/payment/Cancle?payNo=${payNo}`); // API 요청
-            console.log(response.data);
+
             getData(activeTab)
             return response.data;
         } catch (error) {
-            console.error(error);
+            alert('서버와의 접속이 원할하지 않습니다.')
+            navigate("/")
         }
     };
 
@@ -69,11 +70,12 @@ export default function BookingHistory() {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log(response.data);
+
             getData(activeTab)
             return response.data;
         } catch (error) {
-            console.error(error);
+            alert('서버와의 접속이 원할하지 않습니다.')
+            navigate("/")
         }
     }
 
@@ -81,12 +83,13 @@ export default function BookingHistory() {
         const request = activeTab === 0 ? 'book' : activeTab === 1 ? `booked?showMonth=${selectedDate}` : `bookcancle?showMonth=${selectedDate}`;
         try {
             const response = await privateApi.get(`/bookhistory/${request}`); // API 요청
-            console.log(response.data)
+
             setBookList(response.data)
             return response.data;
 
         } catch (error) {
-            console.error(error);
+            alert('서버와의 접속이 원할하지 않습니다.')
+            navigate("/")
         }
     };
 
@@ -107,7 +110,6 @@ export default function BookingHistory() {
 
     const handlePaymentCancel = async (payNo) => {
         const result = await payCancle(payNo);
-        console.log('결제 취소 결과:', result);
     };
 
 

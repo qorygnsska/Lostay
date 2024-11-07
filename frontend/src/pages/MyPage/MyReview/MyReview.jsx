@@ -35,12 +35,12 @@ export default function MyReview() {
             fetchNextPage()
         }
     }, [inView])
-    console.log(data)
+
 
     return (
         <div className="my--review--container">
             <BackNav title="내 리뷰" />
-            {console.log(data)}
+
             <div className="my--review--wrap">
                 {/* 작성한 리뷰 개수 */}
                 <div className="review--total">

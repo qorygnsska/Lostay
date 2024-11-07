@@ -67,7 +67,7 @@ export default function ReviewCarousel({ images, handleImageSelect, isModal, pro
                 <div className='default--image--wrap'>
                     {
                         images.map((image, index) => (
-                            <div className="image--box" onClick={() => handleImageSelect(index)}>
+                            <div className="image--box" key={index} onClick={() => handleImageSelect(index)}>
                                 <img src={image} alt={`슬라이드 ${index + 1}`} className={`${isModal && propIndex === index && "isSelect"}`} />
                             </div>
                         ))
