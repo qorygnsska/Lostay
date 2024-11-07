@@ -80,9 +80,9 @@ const router = createBrowserRouter([
             { path: "/event-detail/:no", element: <PageEventDetail /> },
             { path: "/admin-home", element: <PageAdminHome /> },
             { path: "/admin-hotel", element: <PageHotelManager /> },
+            { path: "/admin-user", element: <PageUserManager /> },
             { path: "/admin-event", element: <PageEventManager />, errorElement:<ToAdminLogin /> },
             { path: "/admin-review", element: <PageReviewManager /> },
-            { path: "/admin-user", element: <PageUserManager /> },
             { path: "/admin-hotelchart", element: <PageHotelChart /> },
 
         ],

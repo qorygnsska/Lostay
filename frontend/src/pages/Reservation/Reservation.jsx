@@ -8,9 +8,8 @@ import AgreeChkInfo from "../../componets/Reservation/AgreeChkInfo";
 import { BsExclamationCircle } from "react-icons/bs";
 import axios from "axios";
 import { privateApi } from "../../api/api";
-import { replace, unstable_HistoryRouter, useLocation, useNavigate, useNavigationType } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setIsTimerActive, setPageTimer } from "../../store/timerSlice";
+import { replace, useLocation, useNavigate, useNavigationType } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 
 const agreeInfo = [
@@ -60,12 +59,21 @@ export default function Reservation() {
     const user = useSelector((state) => state.user.userState);
     const userAt = useSelector((state) => state.user.userAt)
     const navigate = useNavigate();
-
+    const roomNo = queryParams?.get('roomNo');
+    const checkInDate = queryParams?.get('checkInDate');
+    const checkOutDate = queryParams?.get('checkOutDate');
+    const hotelNo = queryParams?.get('hotelNo')
+    const peopleMax = queryParams?.get('peopleMax')
     useEffect(() => {
 
         if (user === false || userAt === null) {
             alert("로그인 후 이용해주세요.");
             navigate("/login", { replace: true });
+
+            return;
+        } else if (roomNo === null || checkInDate === null || checkOutDate === null) {
+            alert("잘못된 요청입니다.");
+            navigate("/", { replace: true });
 
             return;
         }
@@ -75,23 +83,23 @@ export default function Reservation() {
         const getData = async () => {
             // URL 파라미터에서 roomNo를 추출
 
-            const roomNo = queryParams.get('roomNo');
-            const checkInDate = queryParams.get('checkInDate').split('T')[0];
-            const checkOutDate = queryParams.get('checkOutDate').split('T')[0];
+            const formattedCheckInDate = checkInDate.split('T')[0];
+            const formattedCheckOutDate = checkOutDate.split('T')[0];
 
             try {
                 const [hotelRoomInfoResp, userInfoResp] = await Promise.all([
                     privateApi.get('/payment/HotelRoomInfo', {
                         params: {
                             roomNo: roomNo,
-                            checkInDate: checkInDate, // 'YYYY-MM-DD' 형식의 날짜 전달
-                            checkOutDate: checkOutDate,
+                            checkInDate: formattedCheckInDate, // 'YYYY-MM-DD' 형식의 날짜 전달
+                            checkOutDate: formattedCheckOutDate,
                         },
                     }),
                     privateApi.get('payment/UserInfo'),
                 ]);
 
                 setHotelRoomInfo(hotelRoomInfoResp.data)
+                console.log(hotelRoomInfoResp.data)
                 setUserInfo(userInfoResp.data)
             } catch (error) {
                 console.error(error);
@@ -182,6 +190,8 @@ export default function Reservation() {
 
     // 페이지 타이머 함수
     // 15분 타이머 걸겅러야됌
+    const [timerRunning, setTimerRunning] = useState(true);
+
     useEffect(() => {
         const currentTime = Date.now();
         let timerEndTime = localStorage.getItem("timerEndTime"); // 로컬 스토리지에서 종료 시간 가져오기
@@ -198,38 +208,44 @@ export default function Reservation() {
             console.log(remainingTime)
             // 타이머가 종료되면 다른 페이지로 이동
             if (remainingTime <= 0) {
-                alert('결제 시간이 끝났습니다. 이전 페이지로 돌아갑니다.')
-                navigate("-1", { replace: true }); // 타이머 만료 후 이동할 페이지
+                alert('결제 시간이 만료되었습니다.')
+                navigate(`/roomList/${hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`, { replace: true })
 
                 localStorage.removeItem("timerEndTime"); // 종료 후 로컬 스토리지에서 타이머 종료 시간 삭제
             }
         };
 
-        // 1초마다 타이머 업데이트
-        const interval = setInterval(updateTimeLeft, 1000);
 
         // 뒤로 가기 버튼을 눌렀을 때 타이머 초기화
-        const handlePopState = () => {
+
+
+        const handlePopState = (event) => {
+            navigate(`/roomList/${hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`, { replace: true })
             localStorage.removeItem("timerEndTime"); // 타이머 종료 시간 삭제
         };
 
         window.addEventListener("popstate", handlePopState); // 뒤로 가기 버튼 눌렀을 때 타이머 초기화
 
-
         // 컴포넌트 언마운트 시 타이머 정리
+        let interval = null
+        if (timerRunning) {
+            // 타이머가 실행 중이면 1초마다 타이머 업데이트
+            interval = setInterval(updateTimeLeft, 1000);
+        } else {
+            clearInterval(interval);
+        }
         return () => {
             clearInterval(interval);
         };
-    }, [navigate]);
+    }, [timerRunning, navigate]);
 
     const navigationType = useNavigationType();
     useEffect(() => {
-
-        // 새로고침을 제외하고 초기화
         if (navigationType !== "POP") {
             localStorage.removeItem("timerEndTime");
         }
     }, [navigationType]);
+
 
 
     // 인증번호 전송 버튼 활성화 여부
@@ -460,6 +476,9 @@ export default function Reservation() {
                 return;
             }
 
+            setTimerRunning(false); // 타이머 멈춤
+            localStorage.removeItem("timerEndTime"); // 타이머 종료 시간 삭제
+
             const merchant_uid = "merchant_" + new Date().getTime()
             privateApi.post('/payment/Before', {
                 point: Number(inputPoint),
@@ -472,16 +491,21 @@ export default function Reservation() {
                 // 사전검증 성공
                 .then((res) => {
                     if (res.status === 200) {
+                        console.log(payType.disPg, merchant_uid)
                         requestPay(payType.disPg, merchant_uid)
                     } else {
                         // accessToken 발급 실패 or 사전검증 요청 실패
                         alert('결제에 실패했습니다.')
+                        navigate(`/roomList/${hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`, { replace: true })
+                        localStorage.removeItem("timerEndTime");
                     }
 
                 })
                 .catch((error) => {
                     // accessToken 발급 실패 or 사전검증 요청 실패
                     alert("결제에 실패했습니다.")
+                    navigate(`/roomList/${hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`, { replace: true })
+                    localStorage.removeItem("timerEndTime");
                 });
         }
 
@@ -536,6 +560,8 @@ export default function Reservation() {
                 } else {
                     // 결제 실패 했을 때
                     alert("결제에 실패했습니다.")
+                    navigate(`/roomList/${hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`, { replace: true })
+                    localStorage.removeItem("timerEndTime");
                 }
             });
         }
@@ -584,17 +610,24 @@ export default function Reservation() {
                 imp_uid: rsp.imp_uid,
             });
 
-            if (res.status !== 200) {
+            if (res.status === 200) {
+                navigate(`/roomList/${hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`, { replace: true })
+                localStorage.removeItem("timerEndTime");
+            } else {
                 alert('고객센터에 전화해주세요')
+                navigate(`/roomList/${hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`, { replace: true })
+                localStorage.removeItem("timerEndTime");
             }
 
         } catch (error) {
             // 에러 처리
             alert('고객센터에 전화해주세요')
+            navigate(`/roomList/${hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`, { replace: true })
+            localStorage.removeItem("timerEndTime");
         }
     }
     // 결제
-    // ==================== START ======================== //
+    // ==================== END ======================== //
 
 
     const [useAllPoints, setUseAllPoints] = useState(false); // 포인트 모두 사용

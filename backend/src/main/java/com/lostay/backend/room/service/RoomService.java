@@ -63,6 +63,61 @@ public class RoomService {
 		RoomListHotelInfoDTO Hoteldto = roomRepo.findHotelInfo(hotelNo);
 		List<RoomCustomDTO> list = roomRepo.findRoomCumstomList(hotelNo, in, out);
 
+//		레디스
+		String ping = redisTemplate.getConnectionFactory().getConnection().ping();
+		System.out.println("Redis connection: " + ping); // true가 출력되어야 함
+
+		Set<String> keys = redisTemplate.keys("*");
+		List<String> redisKey = new ArrayList<String>();
+		for (String value : keys) {
+			if (value.length() > 9) {
+				if (value.substring(0, 10).equals("roomCheck:")) {
+					redisKey.add(value.substring(10));
+					System.out.println("keys : " + value);
+				}
+			}
+		}
+		
+		
+		
+		if (redisKey != null) {
+			LocalDate reqCheckInDay = checkInDate.toLocalDate();
+			LocalDate reqCheckOutDay = checkOutDate.toLocalDate();
+			for(RoomCustomDTO dto : list) {
+				int totalCount = 0;
+				for (String key : redisKey) {
+					System.out.println("여기서 출력되니?" + key.toString());
+
+					System.out.println("이 부분 왜 출력이 안되는거야? : " + key);
+					System.out.println("총 카운트가 몇이야 ? " + totalCount);
+					Optional<RoomCheck> roomCheck = roomRedisRepo.findById(Long.parseLong(key));
+					if (roomCheck != null) {
+						// 각 필드를 가져오기 (예: "roomNo", "checkInDay", "checkOutDay")
+						Long roomNo = roomCheck.get().getRoomNo();
+						LocalDate checkInDay = (roomCheck.get().getCheckInDay());
+						LocalDate checkOutDay = (roomCheck.get().getCheckOutDay());
+
+						// 비교 로직
+						if (roomNo.equals(dto.getRoomNo()) && checkInDay.isBefore(reqCheckOutDay)
+								&& checkOutDay.isAfter(reqCheckInDay)) {
+							totalCount += 1;
+						}
+					}
+				}
+				
+				dto.setAvailableRoomsCnt(Long.valueOf(dto.getAvailableRooms()).intValue() - totalCount);
+			}
+			
+		} else {
+			System.out.println("키가 널인거야? 말이 안되는데");
+		}
+		
+		
+		
+
+		
+
+		
 //		List<RoomDTO> dtos = new ArrayList<RoomDTO>();
 //		
 //		int reviewCount = revRepo.findHotelReviewCount(hotelNo);

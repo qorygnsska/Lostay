@@ -23,5 +23,26 @@ public class RoomCustomDTO {
 	private int roomDiscount;					// 객실할인율
 	private int discountPrice;              // 할인된 금액
 	private Long availableRooms;            // 남은 방 개수
+	
+	private int availableRoomsCnt;	// 레디스까지 포함한 남은 방 개수
+	
+	public RoomCustomDTO(Long roomNo, String roomName, String roomThumbnail, String roomPeopleInfo, int roomPeopleMax,
+			LocalTime roomCheckinTime, LocalTime roomCheckoutTime, int roomPrice, int roomDiscount, int discountPrice,
+			Long availableRooms) {
+
+		this.roomNo = roomNo;
+		this.roomName = roomName;
+		this.roomThumbnail = roomThumbnail;
+		this.roomPeopleInfo = roomPeopleInfo;
+		this.roomPeopleMax = roomPeopleMax;
+		this.roomCheckinTime = roomCheckinTime;
+		this.roomCheckoutTime = roomCheckoutTime;
+		this.roomPrice = roomPrice;
+		this.roomDiscount = roomDiscount;
+		this.discountPrice = discountPrice;
+		this.availableRooms = availableRooms;
+	}
+	
+	
 
 }

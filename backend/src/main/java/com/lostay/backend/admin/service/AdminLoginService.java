@@ -91,14 +91,14 @@ public class AdminLoginService {
 			// DB Admin테이블에서 토큰에서 가져온 adminNo와 일치하는 친구가 있는지 확인
 			Admin adminEntity = adminRepo.findById(adminNo)
 					.orElseThrow(() -> new EntityNotFoundException("Admin not found"));
-			System.out.println("AdminLoginService.admin: " + adminEntity.toString());
+			//System.out.println("AdminLoginService.admin: " + adminEntity.toString());
 
 			// PrimaryKey(AdminNo)가 아닌 AdminId로 토큰 관리
 			String adminId = adminEntity.getAdminId();
-			System.out.println("AdminLoginService.adminId: " + adminId);
+			//System.out.println("AdminLoginService.adminId: " + adminId);
 
 			adminRedisRepo.deleteById(adminId);// boolean타입으로 리턴할 수 없음(void)
-			System.out.println("Redis에서 지웠다");
+			//System.out.println("Redis에서 지웠다");
 			return true;
 		} catch (Exception e) {
 			return false;
