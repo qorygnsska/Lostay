@@ -31,7 +31,7 @@
 
     /* 관리자 홈 페이지 */
     .select--wrap {
-        padding-top: 50px;
+        padding-top: 80px;
         display: flex;
         width: 1400px;
         justify-content: space-between;
@@ -144,6 +144,10 @@
 
         }
 
+        .year--chart {
+            margin-top: 50px;
+        }
+
         .select--title {
             font-size: 20px;
             margin-bottom: 20px;
@@ -151,6 +155,10 @@
         }
 
 
+    }
+
+    .year--wrap {
+        padding-top: 40px;
     }
 
     .select--wrap:last-child {
@@ -335,27 +343,27 @@
             .hotel_no {
                 width: 5%;
             }
-    
+
             .hotel_name {
                 width: 32.5%;
             }
-    
+
             .hotel_rating {
                 width: 10%;
             }
-    
+
             .hotel_address {
                 width: 22.5%;
             }
-    
+
             .hotel_commission {
                 width: 10%;
             }
-    
+
             .hotel_update {
                 width: 20%;
             }
-    
+
         }
     }
 
