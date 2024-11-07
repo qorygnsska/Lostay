@@ -59,7 +59,7 @@ export default function PageAdminHome() {
       setYearChart(yearChartResp.data);
       setBranchChart(branchChartResp.data);
       setMonthChart(monthChartResp.data);
-      console.log(monthChartResp.data)
+      //console.log(monthChartResp.data)
 
     } catch (error) {
       console.error(error);
@@ -115,7 +115,7 @@ export default function PageAdminHome() {
       // 총합 계산
       setTotalYearCommission(totalCommissionData.reduce((acc, curr) => acc + curr, 0));
       setTotalYearReservations(totalReservationsData.reduce((acc, curr) => acc + curr, 0));
-      console.log(totalCommissionData)
+      //console.log(totalCommissionData)
       setYearLabel(labels);
       setTotalYearCommissionData(totalCommissionData);
       setTotalYearReservationsData(totalReservationsData);
@@ -473,7 +473,7 @@ export default function PageAdminHome() {
             </div>
             <div className='select--total--box'>
               <ul>
-                <li>
+                <li >
                   <div className='selYear'>{selectedYear}년</div>
                 </li>
 
@@ -482,7 +482,7 @@ export default function PageAdminHome() {
                   <div className='branch--info'>
                     {totalMonthCommissionData &&
                       totalMonthCommissionData.map((data, index) => (
-                        <div className='info'>
+                        <div key={index + 1} className='info'>
                           <span>{index + 1}분기 : {data.toLocaleString()}원</span>
                         </div>
                       ))

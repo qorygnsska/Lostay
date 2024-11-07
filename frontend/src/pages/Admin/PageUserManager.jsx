@@ -19,7 +19,7 @@ export default function PageUserManager() {
             alert('접근이 불가능합니다.');
             navigate("/admin-login");
         } else {
-            console.log(adminAT);
+            //console.log(adminAT);
         }
     }, []);
     /////////////////////////////////////////////////////////////////LoginState
