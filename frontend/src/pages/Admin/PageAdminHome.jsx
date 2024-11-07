@@ -371,7 +371,7 @@ export default function PageAdminHome() {
       <div className='page--admin--home--container page--admin'>
         <CompHeaderAdmin />
 
-        <div className='select--wrap'>
+        <div className='select--wrap year--wrap'>
           <div className='select--total'>
             <div className='select--title'>
               총 중개료 / 예약 건수
@@ -392,7 +392,7 @@ export default function PageAdminHome() {
             </div>
 
           </div>
-          <div className='select--chart--box'> {/* 막대 그래프를 감싸는 DIV */}
+          <div className='select--chart--box year--chart'> {/* 막대 그래프를 감싸는 DIV */}
             <div className='chart'>
               <Bar data={yearData} options={yearOptions} /> {/* Bar 컴포넌트 사용 */}
             </div>
