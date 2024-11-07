@@ -328,12 +328,12 @@ export default function HotelMap() {
         });
     };
 
-    useLayoutEffect(() => {
-        if(location === null){
-            alert("비정상적인 접근입니다.");
-            window.location.href = '/';
-        }
-    })
+    // useLayoutEffect(() => {
+    //     if(location === null){
+    //         alert("비정상적인 접근입니다.");
+    //         window.location.href = '/';
+    //     }
+    // })
 
     // 맵 띄우기
     useEffect(() => {
