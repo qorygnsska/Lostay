@@ -90,27 +90,24 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 			  + "JOIN rs.payment p " 
 			  + "WHERE p.room.roomNo = r.roomNo " 
 			  +	"AND rs.checkIn <= :checkOutDate " 
-			  +	"AND rs.checkOut >= :checkInDate))) " 
+			  +	"AND rs.checkOut >= :checkInDate "
+			  + "AND rs.resStatus = 'Y' ))) " 
 			  +	"FROM Room r " 
 			  +	"JOIN r.hotel h " 
-			  +	"WHERE r.roomCount <> (SELECT COUNT(rs.reservationNo) FROM Reservation rs " 
-			  +	"JOIN rs.payment p " 
-			  +	"WHERE p.room.roomNo = r.roomNo " 
-			  +	"AND rs.checkIn <= :checkOutDate " 
-			  +	"AND rs.checkOut >= :checkInDate) " 
-			  +	"AND h.hotelNo = :hotelNo") 
+			  +	"WHERE h.hotelNo = :hotelNo ")  
 	List<RoomCustomDTO> findRoomCumstomList(@Param("hotelNo") Long hotelNo
 			                               ,@Param("checkInDate") LocalDateTime in
 			                               ,@Param("checkOutDate") LocalDateTime out);
 
 
-	
+// 이용 가능한 객실 수	
 	@Query("SELECT "
 			  + "(r.roomCount - (SELECT COUNT(rs.reservationNo) FROM Reservation rs " 
 			  + "JOIN rs.payment p " 
 			  + "WHERE p.room.roomNo = r.roomNo " 
 			  +	"AND rs.checkIn <= :checkOutDate " 
-			  +	"AND rs.checkOut >= :checkInDate)) " 
+			  +	"AND rs.checkOut >= :checkInDate "
+			  + "AND rs.resStatus = 'Y' )) " 
 			  +	"FROM Room r " 
 			  + "WHERE roomNo = :roomNo ") 
 	Long findAvailableCount(@Param("roomNo")Long roomNo
