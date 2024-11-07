@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import { GrLinkTop } from 'react-icons/gr'
+// import { GrLinkTop } from 'react-icons/gr'
+import { RiArrowUpSLine } from "react-icons/ri";
+
 
 export default function NavTop() {
 
@@ -21,7 +23,8 @@ export default function NavTop() {
     return (
         <>
             <div className='nav--top--container' hidden={hideBtn}>
-                <button id="nav_to_top" onClick={goToTheTop}><GrLinkTop size="24" /></button>
+                {/* <button id="nav_to_top" onClick={goToTheTop}><GrLinkTop size="24" /></button> */}
+                 <button id="nav_to_top" onClick={goToTheTop}><RiArrowUpSLine size="24"/></button>
             </div>
         </>
     )
