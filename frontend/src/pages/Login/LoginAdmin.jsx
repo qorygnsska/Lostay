@@ -16,9 +16,7 @@ export default function LoginAdmin() {
 
     useEffect(() => {
 
-        if (adminState !== false) {
-            console.log('AdminState: ' + adminState);
-            console.log('AccessToken: ' + adminAT);
+        if (adminState !== false && adminAT !== null) {
             alert('이미 로그인 중입니다.');
             navigate("/admin-home");
         }
@@ -66,9 +64,9 @@ export default function LoginAdmin() {
                     withCredentials: true,
                 });
             if (response.status === 200) {
-                axiosAccessToken()
+                await axiosAccessToken()
             } else {
-                console.log('에러')
+                setWarning(true)
             }
         } catch (error) {
             setWarning(true)

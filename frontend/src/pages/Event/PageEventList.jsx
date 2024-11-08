@@ -65,7 +65,7 @@ export default function PageEventList() {
                     <Form.Switch id="switch_viewer" label="현재 진행 중" onClick={() => setViewOngoing(!viewOngoing)} />
                 </div>
 
-                <div id="container_event_list">
+                <div id="container_event_list" className="justify-content-center justify-content-md-start">
                     {/* 자꾸 인덱스 넣어주라 그러네... event.key */}
                     {/* {eventList.map(event => (
                         <Link className="link_to_event_detail" to={`../event-detail/${event.event_no}`}>

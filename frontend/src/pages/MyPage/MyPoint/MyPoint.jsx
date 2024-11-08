@@ -37,7 +37,8 @@ export default function MyPoint() {
             return response.data;
 
         } catch (error) {
-            console.error(error);
+            alert('서버와의 접속이 원할하지 않습니다.')
+            navigate("/")
         }
     };
 

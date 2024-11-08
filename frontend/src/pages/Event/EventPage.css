@@ -37,7 +37,7 @@
     #container_event_list {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
+        /* justify-content: flex-start; 클래스네임으로 반응형 설정 중*/ 
         margin-bottom: 60px;
         padding: 12px;
         gap: 12px;

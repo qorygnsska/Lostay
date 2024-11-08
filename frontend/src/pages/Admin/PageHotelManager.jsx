@@ -60,6 +60,7 @@ export default function PageHotelManager() {
     const functionForMyChild = (fromMyChild) => {
         setText_fromChild(fromMyChild);
         setActivePage(1);//검색어가 바뀔 때 1page 요청
+        setCurPage(1);//검색어가 바뀔 때 1page 요청
     }
 
     // ==================== START ======================== //
