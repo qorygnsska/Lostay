@@ -42,9 +42,11 @@ export default function MyPage() {
             navigate("/login", { replace: true });
 
             return;
+        } else {
+            getData();
         }
 
-        getData();
+
     }, []);
 
 
