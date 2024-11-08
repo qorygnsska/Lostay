@@ -3,6 +3,8 @@ import { IoPersonSharp } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { LuNavigation } from "react-icons/lu";
+import { IoHomeOutline } from "react-icons/io5";
 
 export default function Navbar() {
     const user = useSelector((state) => state.user.userState);
@@ -23,15 +25,23 @@ export default function Navbar() {
     return (
         <div className="navbar--container">
             <div className="navbar--wrap">
+                <Link to="/" className="link">
+                    <IoHomeOutline className="icon" />
+                </Link>
+
+                <Link to="/hotelMap" className="link">
+                    <LuNavigation className="icon"/>
+                </Link>
+
                 <Link to="/wishlist" className="link">
                     <FaRegHeart className="icon" />
                 </Link>
 
-                <Link to="/" className="link">
-                    <div className="home">LS</div>
-                </Link>
+
 
                 <IoPersonSharp className="icon" onClick={handlerMypage} />
+
+
             </div>
         </div>
     );

@@ -171,7 +171,7 @@ export default function HotelReviews() {
     
     
                 <div className='RoomFilter2'>
-                    <div><input type='checkbox' className='ImgCheck' onClick={ClickOnlyImg}/> 사진후기만 보기</div>
+                    <div><input type='checkbox' id='ImgCheck' onClick={ClickOnlyImg}/><label htmlFor="ImgCheck" id='ImgCheckLa'>사진후기만 보기</label></div>
                     <div className='RoomFilterName2' onClick={orderClick}>{sort} <GrDown/></div>
                 </div>
     

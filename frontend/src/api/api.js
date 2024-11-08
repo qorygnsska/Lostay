@@ -12,7 +12,7 @@ privateApi.interceptors.request.use(
     (config) => {
         const state = store.getState();
         const accessToken = state.user.aT; // Redux에서 accessToken 가져오기
-        console.log(accessToken);
+
         if (accessToken) {
             config.headers["Authorization"] = `${accessToken}`;
         }
