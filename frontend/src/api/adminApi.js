@@ -46,7 +46,6 @@ adminPrivateApi.interceptors.response.use(
 
                     if (newAccessToken === null) {
                         store.dispatch(adminLogout());
-                        alert('이용 시간이 만료되어 로그아웃 됩니다.1')
                         window.location.replace('/admin-login');
                     }
 
@@ -57,13 +56,11 @@ adminPrivateApi.interceptors.response.use(
                     return adminPrivateApi(error.config);
                 } else {
                     store.dispatch(adminLogout());
-                    alert('이용 시간이 만료되어 로그아웃 됩니다.2')
                     window.location.replace('/admin-login');
                 }
             } catch (error) {
                 // refresh token 요청 실패 시 로그아웃
                 store.dispatch(adminLogout());
-                alert('이용 시간이 만료되어 로그아웃 됩니다.3')
                 window.location.replace('/admin-login');
             }
         }

@@ -47,7 +47,6 @@ privateApi.interceptors.response.use(
                     console.log('newToken', newAccessToken)
                     if (newAccessToken === null) {
                         store.dispatch(logout());
-                        alert('이용 시간이 만료되어 로그아웃 됩니다.1')
                         window.location.replace('/login');
                     }
 
@@ -58,13 +57,11 @@ privateApi.interceptors.response.use(
                     return privateApi(error.config);
                 } else {
                     store.dispatch(logout());
-                    alert('이용 시간이 만료되어 로그아웃 됩니다.2')
                     window.location.replace('/login');
                 }
             } catch (error) {
                 // refresh token 요청 실패 시 로그아웃
                 store.dispatch(logout());
-                alert('이용 시간이 만료되어 로그아웃 됩니다.3')
                 window.location.replace('/login');
             }
         }
