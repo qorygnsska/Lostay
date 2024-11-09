@@ -34,11 +34,12 @@
 <br><br><br>
 
 
-## :dart: 메인 기능
+## :dart: 메인 기
 
 ### 길찾기
   - Kakao + TMap API 이용한 길찾기
   - 자동차 + 도보 + 대중교통 선택 가능
+<img src="https://github.com/user-attachments/assets/cd1a1bd8-49be-4b75-a2d4-cfeae3bf6720" width="450" height="550"/>
 <br><br>
   
 ### 검색
