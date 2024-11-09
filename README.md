@@ -34,7 +34,7 @@
 <br><br><br>
 
 
-## :dart: 메인 기
+## :dart: 메인 기능
 
 ### 길찾기
   - Kakao + TMap API 이용한 길찾기
@@ -45,17 +45,23 @@
 ### 검색
   - Elasticesearch norl 분석기 사용
   - 검색 필터 기능
- <br><br>
-  
+
+<img src="https://github.com/user-attachments/assets/3002e538-8f8f-4e23-a34f-9cfeb62a3638" width="450" height="550"/>
+
+<br><br>
+
 ### 로그인
   - JWT + Oauth2 사용한 소셜 로그인
   - 회원가입 / 로그인 통합
-  - coolSms API 이용한 휴대폰 번호 인증
+  - coolSms API 이용한 휴대폰 번호 인증...
  <br><br>
     
 ### 결제
   - 사전 검증, 사후 검증, 환불 기능
   - PortOne API 사용
   - Synchronized을 이용한 중복 예약 방지
+
+<img src="https://github.com/user-attachments/assets/fa3ea8bc-2616-431b-9b5b-ea9bb439f143" width="450" height="550"/>
+
 <br><br><br>
 
