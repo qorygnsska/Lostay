@@ -8,7 +8,7 @@
 <br><br><br>
 
 
-# :busts_in_silhouette: 팀원 구성
+# :busts_in_silhouette: 팀원 구성 및 역할
 ### FrontEnd + BackEnd
   - 박정일
   - 안효준
