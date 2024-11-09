@@ -99,7 +99,7 @@ export default function Reservation() {
                 ]);
 
                 setHotelRoomInfo(hotelRoomInfoResp.data)
-                console.log(hotelRoomInfoResp.data)
+
                 setUserInfo(userInfoResp.data)
             } catch (error) {
                 console.error(error);
@@ -205,7 +205,7 @@ export default function Reservation() {
         // 남은 시간 계산
         const updateTimeLeft = () => {
             const remainingTime = Math.max(0, Math.floor((timerEndTime - Date.now()) / 1000)); // 남은 시간(초) 계산
-            console.log(remainingTime)
+
             // 타이머가 종료되면 다른 페이지로 이동
             if (remainingTime <= 0) {
                 alert('결제 시간이 만료되었습니다.')
@@ -220,8 +220,9 @@ export default function Reservation() {
 
 
         const handlePopState = (event) => {
-            navigate(`/roomList/${hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`, { replace: true })
+            //            navigate(`/roomList/${hotelNo}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}`, { replace: true })
             localStorage.removeItem("timerEndTime"); // 타이머 종료 시간 삭제
+            window.removeEventListener("popstate", handlePopState);
         };
 
         window.addEventListener("popstate", handlePopState); // 뒤로 가기 버튼 눌렀을 때 타이머 초기화
@@ -491,7 +492,6 @@ export default function Reservation() {
                 // 사전검증 성공
                 .then((res) => {
                     if (res.status === 200) {
-                        console.log(payType.disPg, merchant_uid)
                         requestPay(payType.disPg, merchant_uid)
                     } else {
                         // accessToken 발급 실패 or 사전검증 요청 실패
@@ -510,7 +510,6 @@ export default function Reservation() {
         }
 
         const requestPay = (pg, merchant_uid) => {
-            console.log('pg사에 요청보내기.')
             IMP.request_pay({
                 pg: pg,
                 merchant_uid: merchant_uid,
@@ -531,14 +530,14 @@ export default function Reservation() {
                                 if (rsp.paid_amount === res.data.response.amount) {
                                     // 최종 성공
                                     const originalDateTime = res.data.response.paidAt;
-                                    console.log(originalDateTime);
+
 
                                     // ISO 8601 형식의 날짜를 Date 객체로 변환
                                     const dateObject = new Date(originalDateTime);
 
                                     // 한국 시간으로 변환
                                     const payDay = new Date(dateObject.getTime() + (9 * 60 * 60 * 1000));
-                                    console.log(payDay.toISOString()); // ISO 형식으로 출력
+
                                     putData(rsp, payDay);
                                 } else {
                                     // 금액 불일치 환불해야함
@@ -591,14 +590,14 @@ export default function Reservation() {
                 navigate('/', { replace: true });
             } else {
                 // 데이터 삽입 실패 환불해야함..
-                console.log('데이터 넣을 때 넣기오류')
+
                 alert("결제에 실패했습니다.")
                 Vcancle(rsp);
             }
         } catch (error) {
             // 환불해야함...
             alert("결제에 실패했습니다.")
-            console.log('데이터 넣을 때 서버오류')
+
             Vcancle(rsp);
         }
     }

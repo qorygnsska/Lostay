@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, Container, FormControl, InputGroup, ListGroup, Modal } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom';
 import Navbar from '../../componets/Navbar/Navbar';
@@ -201,7 +201,6 @@ export default function HotelMap() {
             setbusShow(true);
             setbusVisible(false);
             console.log(ChoiceRoad);
-            
         }
         
     },[ChoiceRoad])
@@ -312,59 +311,8 @@ export default function HotelMap() {
         }
     }
 
-
-    // 기본주소 좌표로 바꾸기
+    // 주소를 좌표로 변환하기 구하기(길찾기 재료)
     const getLatLngFromAddress = (address) => {
-        return new Promise((resolve, reject) => {
-            geocoder.addressSearch(address, (result, status) => {
-                if (status === kakao.maps.services.Status.OK) {
-                    const latLng = new kakao.maps.LatLng(result[0].y, result[0].x);
-                    resolve(latLng);
-                    
-                } else {
-                    reject(new Error('주소를 찾을 수 없습니다.'));
-                }
-            });
-        });
-    };
-
-    // useLayoutEffect(() => {
-    //     if(location === null){
-    //         alert("비정상적인 접근입니다.");
-    //         window.location.href = '/';
-    //     }
-    // })
-
-    // 맵 띄우기
-    useEffect(() => {
-        if (myaddress) {
-            startRef.current.value = myaddress;// 폼의 출발지에 자동으로 채우기
-            startNameRef.current.value = myaddressName;
-            endRef.current.value = location; 
-            endNameRef.current.value = hotelName;
-        
-            const container = document.getElementById('KakaoMap');
-
-            getLatLngFromAddress(myaddress)
-                .then(latLng => {
-                    const options = {
-                        center: latLng,
-                        level: 3,
-                    };
-                    const newMap = new kakao.maps.Map(container, options) // 지도 생성 및 객체 리턴
-                    setMap(newMap);
-                
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
-       
-    }, [myaddress]);
-
-
-    // 길찾기 주소 좌표 구하기
-    const getLatLngFromAddress2 = (address) => {
         return new Promise((resolve, reject) => {
             geocoder.addressSearch(address, (result, status) => {
                 if (status === kakao.maps.services.Status.OK) {
@@ -377,6 +325,51 @@ export default function HotelMap() {
             });
         });
     };
+
+
+    // 맵 띄우기
+    useEffect(() => {
+        if (myaddress) {
+            startRef.current.value = myaddress;// 폼의 출발지에 자동으로 채우기
+            startNameRef.current.value = myaddressName;
+            endRef.current.value = location; 
+            endNameRef.current.value = hotelName;
+        
+            const container = document.getElementById('KakaoMap');
+
+            getLatLngFromAddress(myaddress)
+                .then(({latitude, longitude}) => {
+                    const latLng = new kakao.maps.LatLng(latitude, longitude); // LatLng 객체로 변환!
+                    const options = {
+                        center: latLng,
+                        level: 3,
+                    };
+                    const newMap = new kakao.maps.Map(container, options) // 지도 생성 및 객체 리턴
+                    setMap(newMap);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+       
+    }, [myaddress]);
+
+    // 현재 위치에 마커 찍기
+    useEffect(() => {
+        if (map) {
+            getLatLngFromAddress(myaddress)
+                .then(nowCoords => {
+                    const newStartMarker = addMarker(nowCoords, "현재");
+                    setStartMarker(newStartMarker);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    }, [map])
+
+
+    
 
     // 차량 길찾기
     const carRoute = async (startLng, startLat, endLng, endLat) => {
@@ -414,13 +407,13 @@ export default function HotelMap() {
             });
     
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                console.log("대중교통 지원안함");
             }
     
             const data = await response.json();
             return data;
         } catch (error) {
-            console.error('Fetch error:', error);
+            console.log("대중교통 지원안함");
         }
     };
 
@@ -445,13 +438,13 @@ export default function HotelMap() {
             });
     
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                console.log("도보 지원안함");
             }
     
             const data = await response.json();
             return data;
         } catch (error) {
-            console.error('Fetch error:', error);
+            console.log("도보 지원안함");
         }
     };
 
@@ -597,8 +590,8 @@ export default function HotelMap() {
 
         try {
             // 출발지와 도착지의 위도, 경도 구하기
-            const startCoords = await getLatLngFromAddress2(startAddress);
-            const endCoords = await getLatLngFromAddress2(endAddress);
+            const startCoords = await getLatLngFromAddress(startAddress);
+            const endCoords = await getLatLngFromAddress(endAddress);
 
             // 이동수단이 차일 때
             if(car === true){
@@ -736,7 +729,7 @@ export default function HotelMap() {
             
 
         } catch (error) {
-            console.error(error);
+            alert("길찾기를 지원하지 않는 경로입니다.");
         }
    
     };
