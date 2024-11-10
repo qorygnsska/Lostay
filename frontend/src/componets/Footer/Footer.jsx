@@ -33,7 +33,7 @@ export default function Footer() {
             </div> */}
 
             <div className='footer--company'>
-                <p>Copyright Lostay COMPANY Crop. All rights reserved.</p>
+                <p>Copyright Lostay COMPANY Corp. All rights reserved.</p>
             </div>
         </div>
 
