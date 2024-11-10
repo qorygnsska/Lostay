@@ -23,11 +23,11 @@ export default function RoomGrid({ rooms, fetchHotelRoomList, checkInDate, check
             if (response.status === 200) {
                 navigate(`/reservation?roomNo=${roomNo}&rid=${response.data}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&peopleMax=${peopleMax}&hotelNo=${hotelNo}`);
             } else {
-                alert('이미 예약이 마감되었습니다.')
+                alert('잘못된 요청입니다.')
                 fetchHotelRoomList()
             }
         } catch (error) {
-            alert('이미 예약이 마감되었습니다.')
+            alert('서버와의 통신이 원활하지 않습니다.')
             fetchHotelRoomList()
         }
 
