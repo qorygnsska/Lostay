@@ -117,7 +117,7 @@ public class PaymentController {
 		try {
 			 long userNo = customOAuth2User.getUserNo();
 				
-			 int amount = paySer.compareAmount(userNo,paymentBeforeDTO.getPoint(),paymentBeforeDTO.getRoomNo(),paymentBeforeDTO.getDisNo());
+			 int amount = paySer.compareAmount(userNo,paymentBeforeDTO.getPoint(),paymentBeforeDTO.getRoomNo(),paymentBeforeDTO.getDisNo(),paymentBeforeDTO.getCheckIn(),paymentBeforeDTO.getCheckOut());
 		
 			 if(amount < 0) {
 				 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
