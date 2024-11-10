@@ -46,7 +46,9 @@ adminPrivateApi.interceptors.response.use(
 
                     if (newAccessToken === null) {
                         store.dispatch(adminLogout());
-                        window.location.replace('/admin-login');
+                        alert('이용시간이 만료되었습니다. 로그인 후 이용해주세요.')
+                        window.location.href ='/admin-login';
+                        
                     }
 
                     store.dispatch(adminLogin({ adminState: true, adminAT: newAccessToken }));
@@ -56,12 +58,14 @@ adminPrivateApi.interceptors.response.use(
                     return adminPrivateApi(error.config);
                 } else {
                     store.dispatch(adminLogout());
-                    window.location.replace('/admin-login');
+                    alert('이용시간이 만료되었습니다. 로그인 후 이용해주세요.')
+                    window.location.href ='/admin-login';
                 }
             } catch (error) {
                 // refresh token 요청 실패 시 로그아웃
                 store.dispatch(adminLogout());
-                window.location.replace('/admin-login');
+                alert('이용시간이 만료되었습니다. 로그인 후 이용해주세요.')
+                window.location.href ='/admin-login';
             }
         }
 

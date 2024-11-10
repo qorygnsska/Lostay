@@ -387,7 +387,7 @@ export default function PageAdminHome() {
                 </li>
 
                 <li className='reservation--box'>
-                  <div className='info--title'><FaSquare className='reservation--icon' />예약검수</div>
+                  <div className='info--title'><FaSquare className='reservation--icon' />예약건수</div>
                   <div className='info'>총 <span className='reservation'>{totalYearReservations.toLocaleString()}</span>건</div>
                 </li>
               </ul>

@@ -47,7 +47,8 @@ privateApi.interceptors.response.use(
                     console.log('newToken', newAccessToken)
                     if (newAccessToken === null) {
                         store.dispatch(logout());
-                        window.location.replace('/login');
+                        alert('이용시간이 만료되었습니다. 로그인 후 이용해주세요.')
+                        window.location.href ='/login';
                     }
 
                     store.dispatch(login({ userState: true, aT: newAccessToken }));
@@ -57,12 +58,14 @@ privateApi.interceptors.response.use(
                     return privateApi(error.config);
                 } else {
                     store.dispatch(logout());
-                    window.location.replace('/login');
+                    alert('이용시간이 만료되었습니다. 로그인 후 이용해주세요.')
+                    window.location.href ='/login';
                 }
             } catch (error) {
                 // refresh token 요청 실패 시 로그아웃
                 store.dispatch(logout());
-                window.location.replace('/login');
+                alert('이용시간이 만료되었습니다. 로그인 후 이용해주세요.')
+                window.location.href ='/login';
             }
         }
 

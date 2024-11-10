@@ -12,13 +12,13 @@ export default function AgreeDetailModal({ modalShow, onClose, detailData }) {
             </Modal.Header>
             <Modal.Body>
                 {Array.isArray(content) && content.length > 0
-                    ? content.map((data) => (
-                          <ul>
-                              <li key={data.id} className="textList">
-                                  {data.text}
-                              </li>
-                          </ul>
-                      ))
+                    ? content.map((data, index) => (
+                        <ul key={index}>
+                            <li key={data.id} className="textList">
+                                {data.text}
+                            </li>
+                        </ul>
+                    ))
                     : null}
             </Modal.Body>
         </Modal>

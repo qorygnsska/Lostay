@@ -23,6 +23,7 @@ public class SmsService {
 	public Object sendSms(String phoneNum) {
 		phoneNum = phoneNum.replace("-", "");
         String certificationCode = Integer.toString((int)(Math.random() * (999999 - 100000 + 1)) + 100000); // 6자리 인증 코드를 랜덤으로 생성
+        System.out.println(certificationCode);
         smsUtil.sendOne(phoneNum, certificationCode); // SMS 인증 유틸리티를 사용하여 SMS 발송
         
         Map<String, String> numMap = new HashMap<>();

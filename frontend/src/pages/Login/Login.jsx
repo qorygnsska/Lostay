@@ -41,9 +41,9 @@ export default function Login() {
 
     const onSocialLogin = (social) => {
         const popupUrl = `${process.env.REACT_APP_BASE_URL}/oauth2/authorization/${social}`;
-        const width = 600;
+        const width = 500;
         const height = 600;
-        const left = window.innerWidth / 2 - width / 2;
+        const left = window.innerWidth / 2 - width / 2 - 100.;
         const top = window.innerHeight / 2 - height / 2;
 
         window.open(popupUrl, `${social}Login`, `width=${width},height=${height},top=${top},left=${left}`);
