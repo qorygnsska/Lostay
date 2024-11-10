@@ -21,16 +21,21 @@ export default function RoomFilterModal({show, handleClose, rooms, ChoiceRoom, C
                     )}
                     
                 </div>
-                {rooms.map((room,idx) => (
-                    <div className='Rooms' key={idx}>
-                        {ChoiceRoom === room.roomName ? (
-                            <span className='RoomsContent'  style={{ color: 'red' }}>{room.roomName} <IoCheckmark/></span>
-                        ) : (
-                            <span className='RoomsContent' onClick={() => ClickRoom(room.roomName, String(idx + 1))}>{room.roomName}</span>
-                        )}
-                        
-                    </div>
-                ))}
+                {rooms.map((room,idx) => {
+                    const matchingRoom = rooms.find(hotelRoom => hotelRoom.roomName === room.roomName);
+                    const roomNo = matchingRoom ? matchingRoom.roomNo : null;
+
+                    return(
+                        <div className='Rooms' key={idx}>
+                            {ChoiceRoom === room.roomName ? (
+                                <span className='RoomsContent'  style={{ color: 'red' }}>{room.roomName} <IoCheckmark/></span>
+                            ) : (
+                                <span className='RoomsContent' onClick={() => ClickRoom(room.roomName, String(roomNo))}>{room.roomName}</span>
+                            )}
+                            
+                        </div>
+                    );
+                })}
             </div>
         </Modal.Body>
     </Modal>
