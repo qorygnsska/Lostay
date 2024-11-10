@@ -205,7 +205,7 @@ export default function Reservation() {
         // 남은 시간 계산
         const updateTimeLeft = () => {
             const remainingTime = Math.max(0, Math.floor((timerEndTime - Date.now()) / 1000)); // 남은 시간(초) 계산
-
+            console.log(remainingTime)
             // 타이머가 종료되면 다른 페이지로 이동
             if (remainingTime <= 0) {
                 alert('결제 시간이 만료되었습니다.')
