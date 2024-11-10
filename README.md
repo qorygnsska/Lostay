@@ -38,6 +38,8 @@
 
 # :bar_chart: ERD
 
+<img src="https://github.com/user-attachments/assets/bbf3b0bb-6ab3-48e5-90a5-8f22ae4fe6ed" width="100%" height="600"/>
+
 <br><br><br>
 # :dart: 메인 기능
 
