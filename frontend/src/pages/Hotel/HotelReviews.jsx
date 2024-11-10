@@ -83,7 +83,7 @@ export default function HotelReviews() {
     const [ChoiceRoom, setChoiceRoom] = useState();
     useEffect(() => {
         if (Reviews) {
-            const roomName = roomNo === '0' ? '객실 전체' : Reviews.hotelInfo.hotelRoom[Number(roomNo) - 1].roomName;
+            const roomName = roomNo === '0' ? '객실 전체' : Reviews.hotelInfo.hotelRoom.find(room => room.roomNo === Number(roomNo))?.roomName || '객실 정보 없음';
             setChoiceRoom(roomName);
         }
     }, [Reviews, roomNo]);
@@ -213,7 +213,7 @@ export default function HotelReviews() {
     
                 <ReImgModal imgs={images} show={show} ImgIdx={ImgIdx} handleClose={handleClose}/>
     
-                <RoomFilterModal show={show3} handleClose={handleClose3} rooms={Reviews.hotelInfo.hotelRoom} ChoiceRoom={ChoiceRoom} ClickRoom={ClickRoom}/>
+                <RoomFilterModal show={show3} handleClose={handleClose3} rooms={Reviews.hotelInfo.hotelRoom} ChoiceRoom={ChoiceRoom} ClickRoom={ClickRoom} />
     
                 <RoomOrderModal show={show4} handleClose={handleClose4} Orders={Orders} sort={sort} ClickOrder={ClickOrder}/>
     
