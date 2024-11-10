@@ -3,6 +3,7 @@ package com.lostay.backend.payment.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -260,7 +261,7 @@ public class PaymentService {
 	}
 
 	// 사전검증, 결제 전에 결제하려는 금액과 실제 결제할 금액이 같은지
-	public int compareAmount(long userNo, int point, Long roomNo, Long disNo) {
+	public int compareAmount(long userNo, int point, Long roomNo, Long disNo, LocalDateTime checkIn, LocalDateTime checkOut) {
 
 		User user = userRepo.findById(userNo).get();
 		int amount = -1;
@@ -270,7 +271,12 @@ public class PaymentService {
 			return amount;
 		} else {
 			Room room = roomRepo.findById(roomNo).get();
-			int discountPrice = room.getRoomPrice() - (room.getRoomPrice() * room.getRoomDiscount() / 100);
+			
+			long period = ChronoUnit.DAYS.between(checkIn.toLocalDate(), checkOut.toLocalDate());
+			
+			int discountPrice = (room.getRoomPrice() - (room.getRoomPrice() * room.getRoomDiscount() / 100))* (int)period;
+			
+			
 
 			Discount discount = disRepo.findById(disNo).get();
 
