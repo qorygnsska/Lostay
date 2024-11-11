@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,9 +48,9 @@ public class MainService {
 		return locationDTOList;
 	}
 
-	// 이벤트 조회(전체) //eventOnGoing()으로 대체하여 미사용 (1104 JIP)
+	// 이벤트 조회(전체: 이벤트리스트 페이지) 
 	public Object eventFindAll() {
-		List<Event> eventEntity = eventRepo.findAll();
+		List<Event> eventEntity = eventRepo.findAll(Sort.by("eventNo").descending());
 		List<EventDTO> eventDTOList = new ArrayList<EventDTO>();
 		for (Event e : eventEntity) {
 			EventDTO dto = new EventDTO();
@@ -65,7 +65,7 @@ public class MainService {
 		return eventDTOList;
 	}
 	
-	// 이벤트 조회(현재 진행 중 1104 JIP 추가)
+	// 이벤트 조회(현재 진행 중 1104 JIP 추가: 메인페이지)
 	public Object eventOnGoing() {
 		
 		//결과로 돌려줄 eventList

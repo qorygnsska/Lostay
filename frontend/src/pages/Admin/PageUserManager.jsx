@@ -51,7 +51,10 @@ export default function PageUserManager() {
     const [pageCount, setPageCount] = useState(1);
     const [activePage, setActivePage] = useState(1);
     const pageComp = [];  //pageCount(totalPage) 개수만큼 페이지 버튼 컴포넌트를 담을 배열 초기화
-    for (let page = 1; page <= pageCount; page++) {
+    const startPage = Math.max(1, activePage-2); //현재페이지 기준 다섯개 페이지만 보여주기
+    const endPage = Math.min(pageCount, startPage+4);
+
+    for (let page = startPage; page <= endPage; page++) {
         pageComp.push(
             <Pagination.Item key={page} active={page === activePage} onClick={() => setActivePage(page)}>{page}</Pagination.Item>
         )

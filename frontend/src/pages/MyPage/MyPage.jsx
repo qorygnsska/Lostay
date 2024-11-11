@@ -26,8 +26,8 @@ export default function MyPage() {
             return response.data;
 
         } catch (error) {
-            alert('서버와의 접속이 원할하지 않습니다.')
-            navigate("/")
+            //alert('로그인 후 이용해 주세요')
+            //navigate("/")
         }
     };
 

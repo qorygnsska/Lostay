@@ -12,7 +12,7 @@ export default function Footer() {
                 <p>(주)로스테이 컴퍼니는 통신판매중개자로서 통신판매의 당사자가 아니며, 상품의 예약, 이용 및 환불 등과 관련한 의무와 책임은 각 판매자에게 있습니다.</p>
             </div>
 
-            <div className='footer--service--btn'>
+            {/* <div className='footer--service--btn'>
                 <a href='example.com'>
                     <button>
                         서비스 이용 약관
@@ -30,10 +30,10 @@ export default function Footer() {
                         전자금융거래 이용자 주의사항
                     </button>
                 </a>
-            </div>
+            </div> */}
 
             <div className='footer--company'>
-                <p>Copyright Lostay COMPANY Crop. All rights reserved.</p>
+                <p>Copyright Lostay COMPANY Corp. All rights reserved.</p>
             </div>
         </div>
 

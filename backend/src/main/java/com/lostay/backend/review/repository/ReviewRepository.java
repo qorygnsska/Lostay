@@ -21,7 +21,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 		       "FROM Review r " +
 		       "JOIN r.user u " +
 		       "JOIN r.room rm " +
-		       "WHERE u.userNo = :userNo")
+		       "WHERE u.userNo = :userNo " +
+		       "ORDER BY r.reviewCreateAt DESC ")
 	Page<Object[]> findTop10ReviewPage(@Param("userNo") Long userNo, Pageable pageable);
 	
 	// 객실리스트 전체 리뷰 조회
