@@ -12,8 +12,8 @@
             display: flex;
             gap: 10px;
             padding: 20px 5px;
-          
-            
+
+
 
             .wishlist--img {
                 position: relative;
@@ -35,7 +35,7 @@
                         height: 35px;
                     }
 
-                    .icon{
+                    .icon {
                         margin-top: 3px;
                         margin-right: 3px;
                         width: 28px;
@@ -66,7 +66,7 @@
                         .review--box {
                             display: flex;
                             align-items: center;
-                            padding-left: 7px;
+                            padding-left: 3px;
                             width: 35px;
                             height: 20px;
                             border-radius: 7px;
@@ -74,13 +74,13 @@
                             margin-right: 4px;
 
                             .review--avg {
-                                font-size: 13px;
+                                font-size: 12px;
                             }
 
                             .star--Icon {
                                 width: 10px;
                                 height: 10px;
-                                margin-right: 3px
+                                margin-right: 2px
                             }
                         }
 
@@ -95,7 +95,7 @@
                 .hotel--info>div:nth-child(1) {
                     font-size: 11px;
                     color: var(--lightGrayColor2);
-                    
+
                 }
 
                 .hotel--info>div:nth-child(2) {
@@ -105,7 +105,7 @@
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     margin-bottom: 1px;
-                    
+
                 }
 
                 .hotel--info>div:nth-child(3) {
@@ -143,6 +143,6 @@
     }
 }
 
-.wishlist--component--container.wishlist--border{
+.wishlist--component--container.wishlist--border {
     border-right: 2px solid var(--lightGrayColor4);
 }

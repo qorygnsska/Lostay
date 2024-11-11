@@ -65,7 +65,7 @@ export default function WishList({ wishList, setToast, setToastText, index }) {
                                 <div className="review--box">
                                     <FaStar className="star--Icon" />
                                     <span className="review--avg">
-                                        <strong>{wishList.reviewRating ? wishList.reviewRating.toLocaleString() : 0}</strong>
+                                        <strong>{wishList.reviewRating ? wishList.reviewRating.toFixed(1) : 0}</strong>
                                     </span>
                                 </div>
                                 <span className="totalReviewCount">{wishList.totalReviewCount}명 평가</span>
