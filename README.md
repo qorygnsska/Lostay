@@ -33,7 +33,7 @@
 - Github
 
 ### ETC
-- Kakao Mobility API, Kakao Map API, TMap API, Elasticesearch API, ProtOne API, coolSms API, OAuth2(Google, Kakao, Naver)
+- Kakao Mobility API, Kakao Map API, TMap API, Elasticesearch API, PortOne API, coolSms API, OAuth2(Google, Kakao, Naver)
 <br><br><br>
 
 # :bar_chart: ERD
